@@ -1,7 +1,8 @@
-package com.example.bungkusyuk
+package com.example.bungkusyuk.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.bungkusyuk.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
