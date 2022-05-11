@@ -54,8 +54,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             ),
 
             intArrayOf(
-                ContextCompat.getColor(this, R.color.purple_700),
-                ContextCompat.getColor(this, R.color.purple_700)
+                ContextCompat.getColor(this, R.color.brown_med),
+                ContextCompat.getColor(this, R.color.brown_med)
             )
         )
 
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     setBoxStrokeColorStateList(colorStrokeAboveRatio)
                     defaultHintTextColor = colorStrokeAboveRatio
                     hintTextColor = colorStrokeAboveRatio
-                    editText!!.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.purple_500))
+                    editText!!.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.brown_dark))
                 }
             } else {
                 binding.tiSearch.apply {
@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.toolbar.background.alpha = newAlpha
 
         if (ratio >= 0.65F) {
-            binding.toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.purple_700))
+            binding.toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.brown_med))
         } else {
             binding.toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
         }
