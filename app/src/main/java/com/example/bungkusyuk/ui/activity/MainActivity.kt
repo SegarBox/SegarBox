@@ -2,13 +2,18 @@ package com.example.bungkusyuk.ui.activity
 
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.PorterDuff
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.NestedScrollView
 import com.example.bungkusyuk.R
 import com.example.bungkusyuk.databinding.ActivityMainBinding
+import com.example.bungkusyuk.helper.getHelperColor
+import com.example.bungkusyuk.helper.getHelperDrawable
 import kotlin.math.max
 import kotlin.math.min
 
@@ -42,8 +47,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             ),
 
             intArrayOf(
-                ContextCompat.getColor(this, R.color.white),
-                ContextCompat.getColor(this, R.color.white)
+                this.getHelperColor(R.color.white),
+                this.getHelperColor(R.color.white)
             )
         )
 
@@ -54,21 +59,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             ),
 
             intArrayOf(
-                ContextCompat.getColor(this, R.color.brown_med),
-                ContextCompat.getColor(this, R.color.brown_med)
+                this.getHelperColor(R.color.brown_med),
+                this.getHelperColor(R.color.brown_med)
             )
         )
 
         // Initial Set Toolbar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.decorView.windowInsetsController?.setSystemBarsAppearance(0,
+                APPEARANCE_LIGHT_STATUS_BARS)
+        }
         binding.toolbar.background.alpha = 0
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        binding.tiSearch.apply {
-            setBoxStrokeColorStateList(colorStrokeBelowRatio)
-            defaultHintTextColor = colorStrokeBelowRatio
-            hintTextColor = colorStrokeBelowRatio
-            editText!!.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.white))
-        }
+        setSearchBar(colorStrokeBelowRatio, this.getHelperColor(R.color.white))
+
 
         // On Scrolled
         binding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
@@ -82,22 +87,39 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             // Set Toolbar Items
             if (ratio >= 0.65F) {
-                binding.tiSearch.apply {
-                    setBoxStrokeColorStateList(colorStrokeAboveRatio)
-                    defaultHintTextColor = colorStrokeAboveRatio
-                    hintTextColor = colorStrokeAboveRatio
-                    editText!!.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.brown_dark))
+                setSearchBar(colorStrokeAboveRatio, this.getHelperColor(R.color.brown_med))
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    window.decorView.windowInsetsController?.setSystemBarsAppearance(
+                        APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS)
                 }
+
             } else {
-                binding.tiSearch.apply {
-                    setBoxStrokeColorStateList(colorStrokeBelowRatio)
-                    defaultHintTextColor = colorStrokeBelowRatio
-                    hintTextColor = colorStrokeBelowRatio
-                    editText!!.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.white))
+                setSearchBar(colorStrokeBelowRatio, this.getHelperColor(R.color.white))
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    window.decorView.windowInsetsController?.setSystemBarsAppearance(0,
+                        APPEARANCE_LIGHT_STATUS_BARS)
                 }
             }
 
         })
+    }
+
+    private fun setSearchBar(colorStroke: ColorStateList, colorIcon: Int) {
+        binding.tiSearch.apply {
+            setBoxStrokeColorStateList(colorStroke)
+            defaultHintTextColor = colorStroke
+            hintTextColor = colorStroke
+            editText!!.setTextColor(colorIcon)
+
+            var searchIcon = this@MainActivity.getHelperDrawable(R.drawable.ic_baseline_search_24)
+            searchIcon = DrawableCompat.wrap(searchIcon)
+            DrawableCompat.setTint(searchIcon, colorIcon)
+            DrawableCompat.setTintMode(searchIcon, PorterDuff.Mode.SRC_IN)
+            editText!!.setCompoundDrawablesWithIntrinsicBounds(searchIcon, null, null, null)
+
+        }
     }
 
     override fun onClick(v: View?) {
@@ -110,15 +132,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-
         val newAlpha = (ratio * 255).toInt()
         binding.toolbar.background.alpha = newAlpha
-
-        if (ratio >= 0.65F) {
-            binding.toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.brown_med))
-        } else {
-            binding.toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
-        }
     }
 
     override fun onDestroy() {

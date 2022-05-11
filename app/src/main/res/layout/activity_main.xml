@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/whiteFake"
     tools:context=".ui.activity.MainActivity">
 
@@ -17,25 +17,32 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:fitsSystemWindows="true"
-            android:background="@color/white">
+            android:layout_height="110dp"
+            android:background="@color/white"
+            android:fitsSystemWindows="true">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ti_search"
-                android:layout_width="200dp"
-                android:layout_height="60dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:hint="Search">
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:hint="@string/search"
+                app:boxCornerRadiusBottomEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusTopStart="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:drawableStart="@drawable/ic_baseline_search_24"
+                    android:drawablePadding="10dp"
+                    android:inputType="textAutoComplete"
+                    android:padding="10dp"
                     android:textColor="@color/black"
-                    android:padding="10dp"/>
+                    android:textSize="15sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -58,17 +65,17 @@
             <LinearLayout
                 android:id="@+id/header"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="130dp"
                 android:background="@drawable/rounded_toolbar"
                 android:orientation="vertical" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="detail"
-                android:textSize="18sp"
-                android:id="@+id/btn_detail"/>
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tv_ratio"
@@ -79,8 +86,7 @@
                 android:textSize="40sp"
                 tools:text="0.1" />
 
-            <include
-                layout="@layout/custom_toolbar_main"/>
+            <include layout="@layout/custom_toolbar_main" />
 
             <TextView
                 android:layout_width="wrap_content"
