@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/layout/activity_detail.xml" value="0.23854166666666668" />
+        <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/layout/activity_feature.xml" value="0.23854166666666668" />
+        <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/layout/activity_main.xml" value="0.23854166666666668" />
         <entry key="..\:/github/BungkusYuk/app/src/main/res/drawable/rounded_toolbar.xml" value="0.16" />
         <entry key="..\:/github/BungkusYuk/app/src/main/res/layout/activity_detail.xml" value="0.2421875" />
         <entry key="..\:/github/BungkusYuk/app/src/main/res/layout/activity_feature.xml" value="0.2421875" />
@@ -11,7 +14,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

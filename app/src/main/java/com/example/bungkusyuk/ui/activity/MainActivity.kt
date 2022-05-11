@@ -67,8 +67,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             setBoxStrokeColorStateList(colorStrokeBelowRatio)
             defaultHintTextColor = colorStrokeBelowRatio
             hintTextColor = colorStrokeBelowRatio
+            editText!!.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.white))
         }
-
 
         // On Scrolled
         binding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
@@ -86,12 +86,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     setBoxStrokeColorStateList(colorStrokeAboveRatio)
                     defaultHintTextColor = colorStrokeAboveRatio
                     hintTextColor = colorStrokeAboveRatio
+                    editText!!.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.purple_500))
                 }
             } else {
                 binding.tiSearch.apply {
                     setBoxStrokeColorStateList(colorStrokeBelowRatio)
                     defaultHintTextColor = colorStrokeBelowRatio
                     hintTextColor = colorStrokeBelowRatio
+                    editText!!.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.white))
                 }
             }
 
