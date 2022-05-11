@@ -24,7 +24,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ti_search"
                 android:layout_width="200dp"
-                android:layout_height="46dp"
+                android:layout_height="60dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -32,7 +32,10 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:padding="10dp"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
