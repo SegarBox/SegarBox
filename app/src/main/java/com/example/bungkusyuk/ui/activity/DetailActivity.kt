@@ -43,7 +43,7 @@ class DetailActivity : AppCompatActivity() {
 
             // Set Toolbar Title
             if (ratio >= 0.65F) {
-                mToolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.purple_700))
+                mToolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.brown_med))
             } else {
                 mToolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
             }
