@@ -3,9 +3,9 @@
     <style name="Theme.BungkusYuk" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimary">@color/whiteButtonColorDarkMode</item>
         <item name="colorPrimaryVariant">@color/brown_med</item>
-        <item name="colorOnPrimary">@color/brown_dark</item>
+        <item name="colorOnPrimary">@color/brown_med</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/brown_dark</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
