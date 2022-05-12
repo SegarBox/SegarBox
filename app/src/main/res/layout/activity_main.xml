@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whiteFake"
+    android:background="?attr/colorPrimaryVariant"
     tools:context=".ui.activity.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -18,7 +18,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="110dp"
-            android:background="@color/white"
+            android:background="?attr/colorSecondaryVariant"
             android:fitsSystemWindows="true">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -48,56 +48,11 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/header"
-                android:layout_width="match_parent"
-                android:layout_height="130dp"
-                android:background="@drawable/rounded_toolbar"
-                android:orientation="vertical" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_detail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="detail"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tv_ratio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="@color/black"
-                android:textSize="40sp"
-                tools:text="0.1" />
-
-            <include layout="@layout/custom_toolbar_main" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="sadasdasds\nsadsadasdasdad\nsadsadasdasdad\nsadsadasdasdad\nsadsadasdasdad\nsadsadasdasdad"
-                android:textColor="@color/black"
-                android:textSize="60sp" />
-        </LinearLayout>
-
-
-    </androidx.core.widget.NestedScrollView>
+    <include
+        android:id="@+id/content"
+        layout="@layout/content_main"/>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
