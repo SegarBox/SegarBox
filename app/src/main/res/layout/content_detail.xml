@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="10dp"
+    android:paddingBottom="12dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,38 +16,36 @@
             android:id="@+id/iv_item"
             android:layout_width="match_parent"
             android:layout_height="400dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:scaleType="centerCrop"
             android:src="@drawable/cauliflowers"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="32sp"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:maxLines="2"
-            android:ellipsize="end"
+            android:text="Cauliflower 100g"
             android:textColor="?attr/colorPrimary"
-            app:layout_constraintTop_toBottomOf="@+id/iv_item"
+            android:textSize="32sp"
             android:textStyle="bold"
-            android:text="Cauliflower 100g"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_item" />
 
         <TextView
             android:id="@+id/tv_item_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_extrabold"
+            android:text="Rp4000,00"
+            android:textColor="?attr/colorPrimary"
             android:textSize="28sp"
             android:textStyle="bold"
-            android:textColor="?attr/colorPrimary"
             app:layout_constraintStart_toStartOf="@+id/tv_item_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_item_name"
-            android:text="Rp4000,00" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
 
         <TextView
             android:id="@+id/textView3"
@@ -65,20 +62,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:ellipsize="end"
             android:text="@string/lorem"
             android:textColor="?attr/colorPrimary"
             android:textSize="16sp"
-            android:paddingBottom="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textView3"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_item_description"/>
+            android:layout_height="200dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_description" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

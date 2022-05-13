@@ -2,7 +2,7 @@
     <string name="app_name">BungkusYuk</string>
     <string name="search">Search</string>
     <string name="harga">Harga</string>
-    <string name="_1_pack">/1 pack</string>
+    <string name="_1_pack">/ 1 pack</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum vel sapien eget placerat. Maecenas dictum turpis in metus ornare efficitur. Vestibulum tristique diam eu iaculis laoreet. Quisque feugiat eros in ullamcorper pharetra.</string>
     <string name="add_to_cart">Add to Cart</string>
 </resources>

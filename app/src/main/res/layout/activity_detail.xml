@@ -4,36 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whiteFake"
+    android:background="?attr/colorPrimaryVariant"
+    android:fitsSystemWindows="true"
     tools:context=".ui.activity.DetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
         android:outlineProvider="none">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:fitsSystemWindows="true"
-            android:layout_height="110dp"
-            android:background="@color/white"
-            app:navigationIcon="@drawable/ic_baseline_arrow_back_ios_new_24"/>
+            android:layout_height="60dp"
+            android:background="?attr/colorPrimaryVariant"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_ios_new_24" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <include
         android:id="@+id/content"
-        layout="@layout/content_detail"/>
+        layout="@layout/content_detail" />
 
     <com.google.android.material.button.MaterialButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:text="@string/add_to_cart"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_gravity="bottom"/>
+        app:cornerRadius="16dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
