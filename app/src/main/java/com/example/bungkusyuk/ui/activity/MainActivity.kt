@@ -1,12 +1,12 @@
 package com.example.bungkusyuk.ui.activity
 
+import android.R.attr.state_checked
 import android.R.attr.state_focused
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +20,7 @@ import com.example.bungkusyuk.R
 import com.example.bungkusyuk.data.local.datastore.SettingPreferences
 import com.example.bungkusyuk.databinding.ActivityMainBinding
 import com.example.bungkusyuk.helper.getColorFromAttr
+import com.example.bungkusyuk.helper.getHelperColor
 import com.example.bungkusyuk.helper.getHelperDrawable
 import com.example.bungkusyuk.ui.viewmodel.PrefViewModel
 import com.example.bungkusyuk.ui.viewmodel.PrefViewModelFactory
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun init() {
         setToolbar()
+        setBottomNav()
         observeData()
         binding.content.btnDetail.setOnClickListener(this)
         binding.content.btnDarkmode.setOnClickListener(this)
@@ -122,6 +124,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             binding.toolbar.ivCart.setColorFilter(colorIcon, PorterDuff.Mode.SRC_IN)
 
         }
+    }
+
+    private fun setBottomNav() {
+        val bottomNavColor = ColorStateList(
+            arrayOf(
+                intArrayOf(-state_checked),
+                intArrayOf(state_checked),
+            ),
+
+            intArrayOf(
+                this.getHelperColor(R.color.lightModeUnActiveButton),
+                this.getColorFromAttr(colorPrimary)
+            )
+        )
+
+        binding.bottomNav.itemIconTintList = bottomNavColor
     }
 
     private fun observeData() {
