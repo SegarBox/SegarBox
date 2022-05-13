@@ -15,5 +15,5 @@
     <color name="lightModeDivider">#F3F3F3</color>
     <color name="darkModeUnActiveButton">#746B70</color>
     <color name="darkModeActiveButton">#CBC2B9</color>
-    <color name="lightModeUnActiveButton">#BBBBBB</color>
+    <color name="lightModeUnActiveButton">#959595</color>
 </resources>
