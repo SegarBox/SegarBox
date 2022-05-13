@@ -5,10 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -84,10 +82,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         )
 
         // Initial Set Toolbar
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.decorView.windowInsetsController?.setSystemBarsAppearance(0,
-                APPEARANCE_LIGHT_STATUS_BARS)
-        }
         binding.toolbar.background.alpha = 0
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -106,19 +100,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             // Set Toolbar Items
             if (ratio >= 0.65F) {
                 setSearchBar(colorStrokeAboveRatio, this.getColorFromAttr(colorPrimary))
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    window.decorView.windowInsetsController?.setSystemBarsAppearance(
-                        APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS)
-                }
-
             } else {
                 setSearchBar(colorStrokeBelowRatio, this.getColorFromAttr(colorSecondaryVariant))
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    window.decorView.windowInsetsController?.setSystemBarsAppearance(0,
-                        APPEARANCE_LIGHT_STATUS_BARS)
-                }
             }
 
         })
