@@ -4,7 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/drawable/box.xml" value="0.1395" />
+        <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.2415" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/drawable/ic_baseline_arrow_back_ios_new_24.xml" value="0.2595" />
+        <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.2415" />
+        <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.2415" />
+        <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/drawable/ic_baseline_remove_24.xml" value="0.2415" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/drawable/item_row_main_desc.xml" value="0.1395" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/drawable/rounded_toolbar.xml" value="0.1395" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/layout/activity_detail.xml" value="0.264" />
@@ -12,24 +16,19 @@
         <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/layout/activity_main.xml" value="0.23854166666666668" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/layout/content_detail.xml" value="0.264" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/layout/content_main.xml" value="0.1" />
+        <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/layout/counter.xml" value="0.6" />
+        <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/layout/item_row_cart.xml" value="0.264" />
+        <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/layout/item_row_confirm.xml" value="0.264" />
+        <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/layout/item_row_history.xml" value="0.264" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/layout/item_row_main.xml" value="0.4" />
-        <entry key="..\:/github/BungkusYuk/app/src/main/res/drawable/box.xml" value="0.2115" />
         <entry key="..\:/github/BungkusYuk/app/src/main/res/drawable/ic_baseline_arrow_back_ios_new_24.xml" value="0.2115" />
-        <entry key="..\:/github/BungkusYuk/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.2115" />
-        <entry key="..\:/github/BungkusYuk/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.2115" />
-        <entry key="..\:/github/BungkusYuk/app/src/main/res/drawable/ic_baseline_shopping_cart_24.xml" value="0.2115" />
-        <entry key="..\:/github/BungkusYuk/app/src/main/res/drawable/ic_baseline_sticky_note_2_24.xml" value="0.2115" />
-        <entry key="..\:/github/BungkusYuk/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2115" />
-        <entry key="..\:/github/BungkusYuk/app/src/main/res/drawable/item_row_main_desc.xml" value="0.2115" />
         <entry key="..\:/github/BungkusYuk/app/src/main/res/drawable/rounded_toolbar.xml" value="0.16" />
         <entry key="..\:/github/BungkusYuk/app/src/main/res/layout/activity_detail.xml" value="0.2421875" />
         <entry key="..\:/github/BungkusYuk/app/src/main/res/layout/activity_feature.xml" value="0.2421875" />
         <entry key="..\:/github/BungkusYuk/app/src/main/res/layout/activity_main.xml" value="0.2421875" />
         <entry key="..\:/github/BungkusYuk/app/src/main/res/layout/content_detail.xml" value="0.2421875" />
-        <entry key="..\:/github/BungkusYuk/app/src/main/res/layout/content_main.xml" value="0.264" />
+        <entry key="..\:/github/BungkusYuk/app/src/main/res/layout/content_main.xml" value="0.2421875" />
         <entry key="..\:/github/BungkusYuk/app/src/main/res/layout/custom_toolbar_main.xml" value="0.2421875" />
-        <entry key="..\:/github/BungkusYuk/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2421875" />
-        <entry key="..\:/github/BungkusYuk/app/src/main/res/menu/main_menu.xml" value="0.2421875" />
       </map>
     </option>
   </component>
