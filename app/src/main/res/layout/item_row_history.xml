@@ -13,7 +13,6 @@
         android:layout_margin="16dp"
         android:elevation="40dp"
         app:cardCornerRadius="10dp"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 

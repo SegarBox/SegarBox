@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="Cauliflower 100g"
+            android:text="Cauliflower"
             android:textColor="?attr/colorPrimary"
             android:textSize="32sp"
             android:textStyle="bold"
@@ -36,14 +36,13 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_item" />
 
         <TextView
-            android:id="@+id/tv_item_price"
+            android:id="@+id/tv_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_extrabold"
-            android:text="Rp4000,00"
+            android:text="100g / pack"
             android:textColor="?attr/colorPrimary"
-            android:textSize="28sp"
-            android:textStyle="bold"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="@+id/tv_item_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
 
@@ -51,11 +50,13 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/_1_pack"
+            android:text="Rp 4.000"
+            android:layout_marginTop="4dp"
+            android:textStyle="bold"
             android:textColor="?attr/colorPrimary"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="@+id/tv_item_price"
-            app:layout_constraintTop_toBottomOf="@+id/tv_item_price" />
+            android:textSize="28sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_quantity"
+            app:layout_constraintTop_toBottomOf="@+id/tv_quantity" />
 
         <TextView
             android:id="@+id/tv_item_description"
