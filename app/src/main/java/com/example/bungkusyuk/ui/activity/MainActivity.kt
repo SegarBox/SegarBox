@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -82,20 +83,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         )
 
         // Initial Set Toolbar
-        binding.toolbar.background.alpha = 0
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+        binding.toolbar.root.background.alpha = 0
         setSearchBar(colorStrokeBelowRatio, this.getColorFromAttr(colorSecondaryVariant))
 
 
         // On Scrolled
         binding.content.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
-            val headerHeight: Int = binding.content.header.height - binding.toolbar.height
+            val headerHeight: Int = binding.content.header.height - binding.toolbar.root.height
             ratio = min(max(scrollY, 0), headerHeight).toFloat() / headerHeight
             val newAlpha = (ratio * 255).toInt()
 
             // Set Toolbar
-            binding.toolbar.background.alpha = newAlpha
+            binding.toolbar.root.background.alpha = newAlpha
 
             // Set Toolbar Items
             if (ratio >= 0.65F) {
@@ -108,7 +107,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setSearchBar(colorStroke: ColorStateList, colorIcon: Int) {
-        binding.tiSearch.apply {
+        binding.toolbar.tiSearch.apply {
             setBoxStrokeColorStateList(colorStroke)
             defaultHintTextColor = colorStroke
             hintTextColor = colorStroke
@@ -119,6 +118,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             DrawableCompat.setTint(searchIcon, colorIcon)
             DrawableCompat.setTintMode(searchIcon, PorterDuff.Mode.SRC_IN)
             editText!!.setCompoundDrawablesWithIntrinsicBounds(searchIcon, null, null, null)
+
+            binding.toolbar.ivCart.setColorFilter(colorIcon, PorterDuff.Mode.SRC_IN)
 
         }
     }
@@ -141,6 +142,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_detail -> {
@@ -159,7 +161,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         val newAlpha = (ratio * 255).toInt()
-        binding.toolbar.background.alpha = newAlpha
+        binding.toolbar.root.background.alpha = newAlpha
     }
 
     override fun onDestroy() {

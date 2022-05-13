@@ -7,52 +7,13 @@
     android:background="?attr/colorPrimaryVariant"
     tools:context=".ui.activity.MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:outlineProvider="none">
-
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:background="?attr/colorSecondaryVariant"
-            android:fitsSystemWindows="true">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ti_search"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="280dp"
-                android:layout_height="50dp"
-                android:hint="@string/search"
-                app:boxCornerRadiusBottomEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusTopStart="16dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_baseline_search_24"
-                    android:drawablePadding="10dp"
-                    android:inputType="textAutoComplete"
-                    android:padding="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </androidx.appcompat.widget.Toolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
     <include
         android:id="@+id/content"
         layout="@layout/content_main"/>
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/custom_toolbar_main"/>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

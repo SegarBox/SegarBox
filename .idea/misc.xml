@@ -16,7 +16,9 @@
         <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/layout/content_main.xml" value="0.1" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/layout/counter.xml" value="0.6" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/BungkusYuk/app/src/main/res/layout/item_row_main.xml" value="0.4" />
+        <entry key="..\:/github/BungkusYuk/app/src/main/res/drawable/box.xml" value="0.2115" />
         <entry key="..\:/github/BungkusYuk/app/src/main/res/drawable/ic_baseline_arrow_back_ios_new_24.xml" value="0.2115" />
+        <entry key="..\:/github/BungkusYuk/app/src/main/res/drawable/ic_baseline_shopping_cart_24.xml" value="0.2115" />
         <entry key="..\:/github/BungkusYuk/app/src/main/res/drawable/rounded_toolbar.xml" value="0.16" />
         <entry key="..\:/github/BungkusYuk/app/src/main/res/layout/activity_detail.xml" value="0.2421875" />
         <entry key="..\:/github/BungkusYuk/app/src/main/res/layout/activity_feature.xml" value="0.2421875" />
@@ -24,6 +26,7 @@
         <entry key="..\:/github/BungkusYuk/app/src/main/res/layout/content_detail.xml" value="0.2421875" />
         <entry key="..\:/github/BungkusYuk/app/src/main/res/layout/content_main.xml" value="0.2421875" />
         <entry key="..\:/github/BungkusYuk/app/src/main/res/layout/custom_toolbar_main.xml" value="0.2421875" />
+        <entry key="..\:/github/BungkusYuk/app/src/main/res/menu/main_menu.xml" value="0.2421875" />
       </map>
     </option>
   </component>
