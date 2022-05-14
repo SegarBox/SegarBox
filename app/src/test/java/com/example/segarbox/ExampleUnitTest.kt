@@ -1,4 +1,4 @@
-package com.example.bungkusyuk
+package com.example.segarbox
 
 import org.junit.Test
 

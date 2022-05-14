@@ -1,4 +1,4 @@
-package com.example.bungkusyuk.ui.activity
+package com.example.segarbox.ui.activity
 
 import android.R.attr.state_checked
 import android.R.attr.state_focused
@@ -16,14 +16,14 @@ import androidx.core.widget.NestedScrollView
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.example.bungkusyuk.R
-import com.example.bungkusyuk.data.local.datastore.SettingPreferences
-import com.example.bungkusyuk.databinding.ActivityMainBinding
-import com.example.bungkusyuk.helper.getColorFromAttr
-import com.example.bungkusyuk.helper.getHelperColor
-import com.example.bungkusyuk.helper.getHelperDrawable
-import com.example.bungkusyuk.ui.viewmodel.PrefViewModel
-import com.example.bungkusyuk.ui.viewmodel.PrefViewModelFactory
+import com.example.segarbox.R
+import com.example.segarbox.data.local.datastore.SettingPreferences
+import com.example.segarbox.databinding.ActivityMainBinding
+import com.example.segarbox.helper.getColorFromAttr
+import com.example.segarbox.helper.getHelperColor
+import com.example.segarbox.helper.getHelperDrawable
+import com.example.segarbox.ui.viewmodel.PrefViewModel
+import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.google.android.material.R.attr.colorPrimary
 import com.google.android.material.R.attr.colorSecondaryVariant
 import kotlin.math.max

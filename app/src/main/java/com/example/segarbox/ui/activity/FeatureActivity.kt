@@ -1,8 +1,8 @@
-package com.example.bungkusyuk.ui.activity
+package com.example.segarbox.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.bungkusyuk.R
+import com.example.segarbox.R
 
 class FeatureActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

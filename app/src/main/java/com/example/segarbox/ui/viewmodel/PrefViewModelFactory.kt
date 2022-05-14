@@ -1,8 +1,8 @@
-package com.example.bungkusyuk.ui.viewmodel
+package com.example.segarbox.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.bungkusyuk.data.local.datastore.SettingPreferences
+import com.example.segarbox.data.local.datastore.SettingPreferences
 
 class PrefViewModelFactory private constructor(private val pref: SettingPreferences) :
     ViewModelProvider.NewInstanceFactory() {

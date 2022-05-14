@@ -1,8 +1,8 @@
-package com.example.bungkusyuk.ui.activity
+package com.example.segarbox.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.bungkusyuk.databinding.ActivityDetailBinding
+import com.example.segarbox.databinding.ActivityDetailBinding
 
 class DetailActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.example.bungkusyuk.data.local.datastore
+package com.example.segarbox.data.local.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
