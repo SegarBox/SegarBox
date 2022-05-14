@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="108dp"
     android:layout_height="44dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
     <com.google.android.material.button.MaterialButton
@@ -10,27 +10,24 @@
         android:layout_width="32dp"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-        app:icon="@drawable/ic_baseline_remove_24"
         android:padding="4dp"
-        />
+        app:icon="@drawable/ic_baseline_remove_24" />
 
     <TextView
         android:id="@+id/tv_count"
         android:layout_width="44dp"
         android:layout_height="match_parent"
-        android:text="0"
-        android:textSize="32sp"
-        android:textColor="@color/brown_med"
         android:gravity="center"
-        />
+        android:text="0"
+        android:textColor="?attr/colorOnSecondary"
+        android:textSize="32sp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_add"
         android:layout_width="32dp"
         android:layout_height="match_parent"
         android:layout_gravity="right"
-        app:icon="@drawable/ic_baseline_add_24"
         android:padding="4dp"
-        />
+        app:icon="@drawable/ic_baseline_add_24" />
 
 </LinearLayout>

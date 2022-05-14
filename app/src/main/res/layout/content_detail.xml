@@ -29,7 +29,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:text="Cauliflower"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="32sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_extrabold"
             android:text="100g / pack"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="@+id/tv_item_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
@@ -50,11 +50,11 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rp 4.000"
             android:layout_marginTop="4dp"
-            android:textStyle="bold"
-            android:textColor="?attr/colorPrimary"
+            android:text="Rp 4.000"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="28sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/tv_quantity"
             app:layout_constraintTop_toBottomOf="@+id/tv_quantity" />
 
@@ -67,7 +67,7 @@
             android:layout_marginEnd="16dp"
             android:ellipsize="end"
             android:text="@string/lorem"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/textView3"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -77,9 +77,9 @@
             layout="@layout/counter"
             android:layout_width="wrap_content"
             android:layout_height="44dp"
+            android:layout_marginRight="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/textView3"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginRight="16dp"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <Space
             android:layout_width="match_parent"
