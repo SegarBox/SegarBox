@@ -10,6 +10,7 @@
     app:cardCornerRadius="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -45,7 +46,7 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="@id/relativeLayout"
-            tools:text="Sayur Bayam" />
+            android:text="Sayur Bayam" />
 
         <TextView
             android:id="@+id/textView2"
@@ -54,18 +55,26 @@
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/textView"
-            tools:text="1 ikat" />
+            android:text="1 ikat" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView2"
             app:layout_constraintBottom_toBottomOf="@id/relativeLayout"
-            android:layout_marginBottom="20dp"
-            tools:text="Rp4000,00" />
+            app:layout_constraintStart_toStartOf="@+id/textView2"
+            android:text="Rp4000,00" />
+
+        <Space
+            android:id="@+id/space"
+            android:layout_width="16dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/layout"
+            app:layout_constraintStart_toEndOf="@id/layout"
+            app:layout_constraintTop_toTopOf="@id/layout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

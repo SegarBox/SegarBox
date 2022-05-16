@@ -19,10 +19,13 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
+import com.example.segarbox.data.local.model.DummyModel
 import com.example.segarbox.databinding.ActivityMainBinding
 import com.example.segarbox.helper.getColorFromAttr
 import com.example.segarbox.helper.getHelperColor
 import com.example.segarbox.helper.getHelperDrawable
+import com.example.segarbox.ui.adapter.DummyAdapter
+import com.example.segarbox.ui.adapter.DummyAdapter2
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.google.android.material.R.attr.colorPrimary
@@ -55,6 +58,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setToolbar()
         setBottomNav()
         observeData()
+        setAdapter()
         binding.content.btnDetail.setOnClickListener(this)
         binding.content.btnDarkmode.setOnClickListener(this)
     }
@@ -159,6 +163,38 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    private fun setAdapter() {
+        val listItem = arrayListOf(
+            DummyModel(),
+            DummyModel(),
+            DummyModel(),
+            DummyModel(),
+            DummyModel(),
+            DummyModel(),
+            DummyModel(),
+            DummyModel()
+        )
+        val adapter1 = DummyAdapter()
+        adapter1.submitList(listItem)
+
+        val adapter2 = DummyAdapter2()
+        adapter2.submitList(listItem)
+
+        binding.content.rv1.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+            binding.content.rv1.setHasFixedSize(true)
+            binding.content.rv1.adapter = adapter1
+        }
+
+        binding.content.rv2.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+            binding.content.rv2.setHasFixedSize(true)
+            binding.content.rv2.adapter = adapter2
+        }
+
+
     }
 
 

@@ -20,8 +20,8 @@
 
         <ImageView
             android:id="@+id/feature1"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:src="@drawable/ic_baseline_sticky_note_2_24"
@@ -32,8 +32,8 @@
 
         <ImageView
             android:id="@+id/feature2"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
             android:src="@drawable/ic_baseline_sticky_note_2_24"
             app:layout_constraintEnd_toStartOf="@id/feature3"
             app:layout_constraintStart_toEndOf="@id/feature1"
@@ -41,8 +41,8 @@
 
         <ImageView
             android:id="@+id/feature3"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
             android:src="@drawable/ic_baseline_sticky_note_2_24"
             app:layout_constraintEnd_toStartOf="@id/feature4"
             app:layout_constraintStart_toEndOf="@id/feature2"
@@ -50,8 +50,8 @@
 
         <ImageView
             android:id="@+id/feature4"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
             android:layout_marginEnd="16dp"
             android:src="@drawable/ic_baseline_sticky_note_2_24"
             app:layout_constraintEnd_toEndOf="parent"
@@ -99,10 +99,10 @@
             app:layout_constraintTop_toBottomOf="@id/feature4" />
 
         <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider_feature"
+            android:id="@+id/divider1"
             android:layout_width="match_parent"
-            android:layout_height="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintTop_toBottomOf="@id/tv_feature1" />
 
         <TextView
@@ -110,13 +110,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Start Shopping"
+            android:layout_marginTop="24dp"
+            android:text="Choose Feature"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="20dp"
             android:theme="@style/poppinsBold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider_feature" />
+            app:layout_constraintTop_toBottomOf="@id/divider1" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv1"
@@ -125,6 +125,36 @@
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/tv_title1"
+            tools:listitem="@layout/item_row_feature" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/rv1" />
+
+
+        <TextView
+            android:id="@+id/tv_title2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="Start Shopping"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="20dp"
+            android:theme="@style/poppinsBold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider2" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/tv_title2"
             tools:listitem="@layout/item_row_main" />
 
         <com.google.android.material.button.MaterialButton
@@ -139,7 +169,7 @@
             app:cornerRadius="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv1" />
+            app:layout_constraintTop_toBottomOf="@id/rv2" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_darkmode"
