@@ -114,7 +114,8 @@
             android:text="Choose Feature"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="20dp"
-            android:theme="@style/poppinsBold"
+            android:textStyle="bold"
+            android:theme="@style/poppinsMedium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider1" />
 
@@ -144,7 +145,8 @@
             android:text="Start Shopping"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="20dp"
-            android:theme="@style/poppinsBold"
+            android:textStyle="bold"
+            android:theme="@style/poppinsMedium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider2" />
 

@@ -21,7 +21,13 @@
         <item name="fontFamily">@font/poppins</item>
     </style>
 
-    <style name="poppinsBold">
+    <style name="poppinsExtraBold">
         <item name="fontFamily">@font/poppins_extrabold</item>
     </style>
+
+    <style name="poppinsMedium">
+        <item name="fontFamily">@font/poppins_medium</item>
+    </style>
+
+
 </resources>

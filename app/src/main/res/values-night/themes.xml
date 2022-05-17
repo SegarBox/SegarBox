@@ -5,7 +5,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/whiteButtonColorDarkMode</item>
         <!-- Full Background -->
-        <item name="colorPrimaryVariant">@color/brown_dark_fake</item>
+        <item name="colorPrimaryVariant">@color/brown_med</item>
         <item name="colorOnPrimary">@color/brown_med</item>
 
         <!-- Secondary brand color. -->
@@ -20,7 +20,13 @@
         <!-- Customize your theme here. -->
         <item name="fontFamily">@font/poppins</item>
     </style>
-    <style name="poppinsBold">
+
+    <style name="poppinsExtraBold">
         <item name="fontFamily">@font/poppins_extrabold</item>
     </style>
+
+    <style name="poppinsMedium">
+        <item name="fontFamily">@font/poppins_medium</item>
+    </style>
+
 </resources>
