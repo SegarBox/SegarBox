@@ -10,13 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SegarBox">
         <activity
-            android:name="com.example.segarbox.ui.activity.FeatureActivity"
+            android:name=".ui.activity.LoginActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.segarbox.ui.activity.DetailActivity"
+            android:name=".ui.activity.FeatureActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.segarbox.ui.activity.MainActivity"
+            android:name=".ui.activity.DetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
