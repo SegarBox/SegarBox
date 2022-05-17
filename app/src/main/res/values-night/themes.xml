@@ -5,13 +5,13 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/whiteButtonColorDarkMode</item>
         <!-- Full Background -->
-        <item name="colorPrimaryVariant">@color/brown_med</item>
-        <item name="colorOnPrimary">@color/brown_med</item>
+        <item name="colorPrimaryVariant">@color/brown_dark</item>
+        <item name="colorOnPrimary">@color/brown_dark</item>
 
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/whiteButtonColorDarkMode</item>
         <!-- Toolbar -->
-        <item name="colorSecondaryVariant">@color/brown_dark</item>
+        <item name="colorSecondaryVariant">@color/brown_dark_fake</item>
         <item name="colorOnSecondary">@color/whiteButtonColorDarkMode</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
