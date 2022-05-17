@@ -21,13 +21,10 @@ class DummyAdapter2: ListAdapter<DummyModel, DummyAdapter2.DummyViewHolder>(Dumm
         val context = holder.binding.root.context
         val item = getItem(position)
 
-//        Glide.with(context)
-//            .load(item.image)
-//            .into(holder.binding.imageView)
+        Glide.with(context)
+            .load(item.image)
+            .into(holder.binding.imageView)
 
-        if (position == itemCount - 1) {
-            holder.binding.space.isVisible = true
-        }
-
+        holder.binding.space.isVisible = position == itemCount - 1
     }
 }

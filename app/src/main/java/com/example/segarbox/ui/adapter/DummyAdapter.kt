@@ -26,9 +26,7 @@ class DummyAdapter: ListAdapter<DummyModel, DummyAdapter.DummyViewHolder>(DummyD
             .circleCrop()
             .into(holder.binding.ivItem)
 
-        if (position == itemCount - 1) {
-            holder.binding.space.isVisible = true
-        }
+        holder.binding.space.isVisible = position == itemCount - 1
 
     }
 }
