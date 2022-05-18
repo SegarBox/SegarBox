@@ -18,4 +18,8 @@
     <string name="quantity">0</string>
     <string name="iv_item">iv_item</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="name">Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="confirmation_password">Confirmation Password</string>
+    <string name="register">Register</string>
 </resources>
