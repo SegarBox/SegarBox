@@ -1,7 +1,8 @@
-package com.example.segarbox
+package com.example.segarbox.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.segarbox.R
 
 class HistoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
