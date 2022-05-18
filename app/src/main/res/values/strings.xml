@@ -17,4 +17,5 @@
     <string name="forgot_password">Forgot Password</string>
     <string name="quantity">0</string>
     <string name="iv_item">iv_item</string>
+    <string name="edit_profile">Edit Profile</string>
 </resources>

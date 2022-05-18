@@ -1,19 +1,19 @@
 package com.example.segarbox.ui.activity
 
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import androidx.appcompat.app.AppCompatActivity
 import com.example.segarbox.R
 import com.example.segarbox.databinding.ActivityDetailBinding
+import com.example.segarbox.databinding.ActivityProfileBinding
 
-class DetailActivity : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity() {
 
-    private var _binding: ActivityDetailBinding? = null
+    private var _binding: ActivityProfileBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        _binding = ActivityDetailBinding.inflate(layoutInflater)
+        _binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         init()
@@ -25,10 +25,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setToolbar() {
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = "Cauliflower"
-        binding.toolbar.setNavigationOnClickListener {
-            onBackPressed()
-        }
+        supportActionBar?.title = "Profile"
     }
 
     override fun onDestroy() {
@@ -41,5 +38,4 @@ class DetailActivity : AppCompatActivity() {
         inflater.inflate(R.menu.option_menu, menu)
         return true
     }
-
 }
