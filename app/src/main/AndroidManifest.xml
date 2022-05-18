@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SegarBox">
         <activity
-            android:name=".HistoryActivity"
+            android:name=".ui.activity.HistoryActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.MainActivity"
