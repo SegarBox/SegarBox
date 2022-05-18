@@ -9,7 +9,7 @@
         android:id="@+id/btn_remove"
         android:layout_width="32dp"
         android:layout_height="match_parent"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:padding="4dp"
         app:icon="@drawable/ic_baseline_remove_24" />
 
@@ -18,7 +18,7 @@
         android:layout_width="44dp"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="0"
+        android:text="@string/quantity"
         android:textColor="?attr/colorOnSecondary"
         android:textSize="32sp" />
 
@@ -26,7 +26,7 @@
         android:id="@+id/btn_add"
         android:layout_width="32dp"
         android:layout_height="match_parent"
-        android:layout_gravity="right"
+        android:layout_gravity="end"
         android:padding="4dp"
         app:icon="@drawable/ic_baseline_add_24" />
 
