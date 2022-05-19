@@ -176,15 +176,15 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.content.rv1.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            binding.content.rv1.setHasFixedSize(true)
-            binding.content.rv1.adapter = adapter1
+            setHasFixedSize(true)
+            adapter = adapter1
         }
 
         binding.content.rv2.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            binding.content.rv2.setHasFixedSize(true)
-            binding.content.rv2.adapter = adapter2
+            setHasFixedSize(true)
+            adapter = adapter2
         }
     }
 

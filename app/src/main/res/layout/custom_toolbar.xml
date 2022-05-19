@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
+    android:layout_height="61dp"
     android:background="?attr/colorSecondaryVariant">
 
     <ImageView
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:textColor="?attr/colorOnSecondary"
+        android:textColor="?attr/colorPrimary"
         android:textSize="20sp"
         android:theme="@style/poppinsMedium"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -32,8 +32,8 @@
 
     <ImageView
         android:id="@+id/iv_cart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_baseline_shopping_cart_24"
         android:visibility="gone"
