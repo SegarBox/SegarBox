@@ -21,4 +21,9 @@
 
     <string name="tab_history_text_1">In Progress</string>
     <string name="tab_history_text_2">History</string>
+
+    <string name="name">Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="confirmation_password">Confirmation Password</string>
+    <string name="register">Register</string>
 </resources>
