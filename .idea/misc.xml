@@ -60,6 +60,7 @@
         <entry key="..\:/github/SegarBox/app/src/main/res/drawable/ic_baseline_sticky_note_2_24.xml" value="0.1865" />
         <entry key="..\:/github/SegarBox/app/src/main/res/drawable/item_row_main_desc.xml" value="0.1865" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/activity_detail.xml" value="0.2421875" />
+        <entry key="..\:/github/SegarBox/app/src/main/res/layout/activity_history.xml" value="0.2421875" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/activity_login.xml" value="0.20092592592592592" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/activity_main.xml" value="0.2421875" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/activity_profile.xml" value="0.2421875" />
@@ -68,6 +69,8 @@
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/content_main.xml" value="0.19199009083402147" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/counter.xml" value="0.2421875" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/custom_toolbar_main.xml" value="0.2421875" />
+        <entry key="..\:/github/SegarBox/app/src/main/res/layout/fragment_history.xml" value="0.2421875" />
+        <entry key="..\:/github/SegarBox/app/src/main/res/layout/fragment_in_progress.xml" value="0.2421875" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/fragment_login.xml" value="0.20092592592592592" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/fragment_register.xml" value="0.2421875" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_row_cart.xml" value="0.2421875" />
@@ -75,6 +78,8 @@
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_row_feature.xml" value="0.2421875" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_row_history.xml" value="0.2421875" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_row_main.xml" value="0.4" />
+        <entry key="..\:/github/SegarBox/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2421875" />
+        <entry key="..\:/github/SegarBox/app/src/main/res/menu/option_menu.xml" value="0.2421875" />
       </map>
     </option>
   </component>
