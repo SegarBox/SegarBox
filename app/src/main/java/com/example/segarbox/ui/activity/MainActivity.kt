@@ -61,6 +61,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setAdapter()
         binding.content.btnDetail.setOnClickListener(this)
         binding.content.btnDarkmode.setOnClickListener(this)
+        binding.content.btnProfile.setOnClickListener(this)
+        binding.content.btnHistory.setOnClickListener(this)
     }
 
     private fun setToolbar() {
@@ -193,8 +195,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             binding.content.rv2.setHasFixedSize(true)
             binding.content.rv2.adapter = adapter2
         }
-
-
     }
 
 
@@ -209,6 +209,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     isThemeDarkMode -> prefViewModel.saveTheme(false)
                     else -> prefViewModel.saveTheme(true)
                 }
+            }
+
+            R.id.btn_profile -> {
+                startActivity(Intent(this, ProfileActivity::class.java))
+            }
+
+            R.id.btn_history -> {
+                startActivity(Intent(this, HistoryActivity::class.java))
             }
         }
     }

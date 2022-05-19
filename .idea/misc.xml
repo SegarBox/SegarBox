@@ -29,10 +29,10 @@
         <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/activity_detail.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/activity_history.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/activity_profile.xml" value="0.176" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/content_detail.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/content_history.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/content_history.xml" value="0.264" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/content_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/content_profile.xml" value="0.264" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/counter.xml" value="0.22826086956521738" />
@@ -42,6 +42,7 @@
         <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/item_row_cart.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/item_row_confirm.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/item_row_feature.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/item_row_history.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/layout/item_row_main.xml" value="0.4" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/menu/bottom_nav_menu.xml" value="0.23854166666666668" />
         <entry key="..\:/Users/gtgga/Documents/GitHub/SegarBox/app/src/main/res/menu/option_menu.xml" value="0.23854166666666668" />

@@ -76,7 +76,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_email"
             app:layout_constraintTop_toTopOf="@+id/iv_email"
-            tools:text="abcdefghi@gmail.com" />
+            android:text="abcdefghi@gmail.com" />
 
         <ImageView
             android:id="@+id/iv_phone"
@@ -96,7 +96,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_phone"
             app:layout_constraintTop_toTopOf="@+id/iv_phone"
-            tools:text="08123456789" />
+            android:text="08123456789" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/materialButton"
