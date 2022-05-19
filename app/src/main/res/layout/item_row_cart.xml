@@ -3,18 +3,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="388dp"
-    android:layout_height="140dp">
+    android:layout_width="match_parent"
+    android:layout_height="160dp">
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:elevation="40dp"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/checkBox"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -27,16 +35,29 @@
 
     <TextView
         android:id="@+id/tv_item_name"
-        android:layout_width="232dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/brown_med"
-        android:textSize="24sp"
+        android:layout_marginStart="10dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:layout_marginStart="10dp"
+        android:textColor="@color/brown_med"
+        android:textSize="21sp"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toEndOf="@+id/cv_image"
-        app:layout_constraintTop_toTopOf="@+id/cv_image"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Cauliflower" />
+
+    <TextView
+        android:id="@+id/tv_item_variant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/brown_med"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_item_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_name"
+        tools:text="100g" />
 
     <TextView
         android:id="@+id/tv_item_price"
@@ -45,9 +66,11 @@
         android:textColor="@color/brown_med"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/tv_item_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_item_name"
-        tools:text="Rp4000,00" />
+        app:layout_constraintStart_toStartOf="@+id/tv_item_variant"
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_variant"
+        tools:text="Rp4000" />
+
+
 
     <ImageView
         android:id="@+id/btn_delete"
@@ -63,12 +86,18 @@
         layout="@layout/counter"
         android:layout_width="wrap_content"
         android:layout_height="44dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cv_image"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
+        android:layout_width="380dp"
         android:layout_height="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

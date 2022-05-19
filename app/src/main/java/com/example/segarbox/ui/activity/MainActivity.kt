@@ -16,8 +16,6 @@ class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
-    private var ratio = 0F
-    private var isThemeDarkMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,8 +23,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         init()
-
-
     }
 
     private fun init() {

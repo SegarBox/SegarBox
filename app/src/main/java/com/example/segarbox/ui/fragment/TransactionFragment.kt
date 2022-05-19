@@ -1,5 +1,6 @@
 package com.example.segarbox.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.annotation.StringRes
@@ -8,11 +9,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.segarbox.R
 import com.example.segarbox.databinding.FragmentTransactionBinding
+import com.example.segarbox.ui.activity.CartActivity
+import com.example.segarbox.ui.activity.DetailActivity
 import com.example.segarbox.ui.adapter.TransactionPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
 
-class TransactionFragment : Fragment() {
+class TransactionFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentTransactionBinding? = null
     private val binding get() = _binding!!
@@ -33,6 +36,7 @@ class TransactionFragment : Fragment() {
     private fun init() {
         setToolbar()
         setTabWithViewPager()
+        binding.toolbar.ivCart.setOnClickListener(this)
     }
 
     private fun setToolbar() {
@@ -62,6 +66,15 @@ class TransactionFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.iv_cart -> {
+                startActivity(Intent(requireContext(), CartActivity::class.java))
+            }
+
+        }
     }
 
     companion object {
