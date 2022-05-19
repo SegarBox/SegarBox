@@ -28,6 +28,7 @@ import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.data.local.model.DummyModel
 import com.example.segarbox.helper.getColorFromAttr
 import com.example.segarbox.helper.getHelperDrawable
+import com.example.segarbox.ui.activity.CartActivity
 import com.example.segarbox.ui.activity.DetailActivity
 import com.example.segarbox.ui.adapter.DummyAdapter
 import com.example.segarbox.ui.adapter.DummyAdapter2
@@ -65,6 +66,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         setAdapter()
         binding.content.btnDetail.setOnClickListener(this)
         binding.content.btnDarkmode.setOnClickListener(this)
+        binding.toolbar.ivCart.setOnClickListener(this)
     }
 
     private fun setToolbar() {
@@ -210,6 +212,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     isThemeDarkMode -> prefViewModel.saveTheme(false)
                     else -> prefViewModel.saveTheme(true)
                 }
+            }
+
+            R.id.iv_cart -> {
+                startActivity(Intent(requireContext(), CartActivity::class.java))
             }
 
         }
