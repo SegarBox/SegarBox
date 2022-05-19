@@ -26,4 +26,9 @@
     <string name="phone_number">Phone Number</string>
     <string name="confirmation_password">Confirmation Password</string>
     <string name="register">Register</string>
+
+    <string name="firstItemCount">%s item</string>
+    <string name="totalMoreProductCount">+%s more products</string>
+    <string name="grandTotal">Rp%s</string>
+
 </resources>

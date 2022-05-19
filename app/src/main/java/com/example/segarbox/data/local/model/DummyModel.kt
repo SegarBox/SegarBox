@@ -8,10 +8,12 @@ data class DummyModel(
     val price: String = "Rp 12000"
 )
 
-data class DummyModelInProgress(
+data class DummyModelTransaction(
     val firstItemImage: Int = R.drawable.cauliflowers,
-    val firstItemName: String = "Bayam",
-    val firstItemPrice: Int = 4000,
+    val firstItemName: String = "Cauliflowers",
     val firstItemCount: Int = 1,
-
+    val totalMoreProductCount: Int = 2,
+    val grandTotal: Int = 13000
 )
+
+
