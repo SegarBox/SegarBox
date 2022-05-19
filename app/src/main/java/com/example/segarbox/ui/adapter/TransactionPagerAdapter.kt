@@ -1,12 +1,14 @@
 package com.example.segarbox.ui.adapter
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.segarbox.ui.fragment.HistoryFragment
 import com.example.segarbox.ui.fragment.InProgressFragment
 
-class HistorySectionsPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
+class TransactionPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
     override fun getItemCount(): Int {
         return 2
     }
