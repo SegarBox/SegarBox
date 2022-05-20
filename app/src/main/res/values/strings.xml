@@ -30,4 +30,12 @@
     <string name="firstItemCount">%s item</string>
     <string name="totalMoreProductCount">+%s more products</string>
     <string name="grandTotal">Rp%s</string>
+    <string name="choose_address">Choose Address</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="checkout_items">Checkout Items</string>
+    <string name="payment_details">Payment Details</string>
+    <string name="products_sub_total">Products Sub Total</string>
+    <string name="shipping_cost">Shipping Cost</string>
+    <string name="total_price">Total Price</string>
+
 </resources>

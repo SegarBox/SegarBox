@@ -201,6 +201,16 @@
             app:layout_constraintTop_toBottomOf="@id/btn_detail"
             tools:text="Enable Dark Mode" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_checkout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="checkout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_darkmode" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
