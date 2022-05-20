@@ -30,7 +30,7 @@ class DummyAdapterCart: androidx.recyclerview.widget.ListAdapter<DummyModelCart,
             tvItemVariant.text = item.qty
             tvItemPrice.text = context.getString(R.string.grandTotal, item.price.toString())
 
-            divider.isVisible = position != itemCount - 1
+            space.isVisible = position == itemCount - 1
         }
     }
 }

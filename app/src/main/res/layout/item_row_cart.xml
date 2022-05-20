@@ -100,5 +100,12 @@
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/counter" />
 
+    <Space
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

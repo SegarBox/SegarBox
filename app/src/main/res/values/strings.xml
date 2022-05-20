@@ -37,5 +37,7 @@
     <string name="products_sub_total">Products Sub Total</string>
     <string name="shipping_cost">Shipping Cost</string>
     <string name="total_price">Total Price</string>
+    <string name="grand_total">Grand Total</string>
+    <string name="status_check">Status Check</string>
 
 </resources>
