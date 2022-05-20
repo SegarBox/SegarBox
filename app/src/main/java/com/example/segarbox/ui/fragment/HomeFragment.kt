@@ -31,6 +31,7 @@ import com.example.segarbox.helper.getHelperDrawable
 import com.example.segarbox.ui.activity.CartActivity
 import com.example.segarbox.ui.activity.CheckoutActivity
 import com.example.segarbox.ui.activity.DetailActivity
+import com.example.segarbox.ui.activity.InvoiceActivity
 import com.example.segarbox.ui.adapter.DummyAdapter
 import com.example.segarbox.ui.adapter.DummyAdapter2
 import com.example.segarbox.ui.viewmodel.PrefViewModel
@@ -69,6 +70,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.content.btnDarkmode.setOnClickListener(this)
         binding.toolbar.ivCart.setOnClickListener(this)
         binding.content.btnCheckout.setOnClickListener(this)
+        binding.content.btnInvoice.setOnClickListener(this)
     }
 
     private fun setToolbar() {
@@ -223,6 +225,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
             R.id.btn_checkout -> {
                 startActivity(Intent(requireContext(), CheckoutActivity::class.java))
+            }
+
+            R.id.btn_invoice -> {
+                startActivity(Intent(requireContext(), InvoiceActivity::class.java))
             }
 
         }
