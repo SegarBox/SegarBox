@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="108dp"
-    android:layout_height="44dp"
-    android:orientation="horizontal">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_remove"
+    <ImageView
+        android:id="@+id/iv_add"
         android:layout_width="32dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:padding="4dp"
-        app:icon="@drawable/ic_baseline_remove_24" />
+        android:layout_height="32dp"
+        android:src="@drawable/ic_baseline_add_circle_outline_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_count"
-        android:layout_width="44dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:text="@string/quantity"
         android:textColor="?attr/colorOnSecondary"
-        android:textSize="32sp" />
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_add"
+        app:layout_constraintStart_toEndOf="@id/iv_add"
+        app:layout_constraintTop_toTopOf="@id/iv_add" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_add"
+    <ImageView
+        android:id="@+id/iv_remove"
         android:layout_width="32dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:padding="4dp"
-        app:icon="@drawable/ic_baseline_add_24" />
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/ic_baseline_remove_circle_outline_24"
+        app:layout_constraintStart_toEndOf="@id/tv_count"
+        app:layout_constraintTop_toTopOf="@id/iv_add" />
 
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
