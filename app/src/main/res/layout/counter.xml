@@ -8,7 +8,7 @@
         android:id="@+id/iv_add"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:src="@drawable/ic_baseline_add_circle_outline_24"
+        android:src="@drawable/ic_baseline_remove_circle_outline_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,7 +30,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="16dp"
-        android:src="@drawable/ic_baseline_remove_circle_outline_24"
+        android:src="@drawable/ic_baseline_add_circle_outline_24"
         app:layout_constraintStart_toEndOf="@id/tv_count"
         app:layout_constraintTop_toTopOf="@id/iv_add" />
 
