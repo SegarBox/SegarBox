@@ -40,5 +40,6 @@
     <string name="grand_total">Grand Total</string>
     <string name="status_check">Status Check</string>
     <string name="checkout">Checkout</string>
+    <string name="rate">RATE</string>
 
 </resources>
