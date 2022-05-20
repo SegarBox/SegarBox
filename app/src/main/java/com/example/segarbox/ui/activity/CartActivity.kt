@@ -1,14 +1,15 @@
 package com.example.segarbox.ui.activity
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
+import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.segarbox.R
+import com.example.segarbox.data.local.model.DummyModelCart
 import com.example.segarbox.databinding.ActivityCartBinding
-import com.example.segarbox.databinding.ActivityDetailBinding
+import com.example.segarbox.ui.adapter.DummyAdapterCart
 
 class CartActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -25,7 +26,33 @@ class CartActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun init() {
         setToolbar()
+        setAdapter()
+        setupView()
         binding.toolbar.ivBack.setOnClickListener(this)
+    }
+
+    private fun setupView(){
+        binding.bottomPaymentInfo.tvButton.text = "Confirm"
+    }
+
+    private fun setAdapter() {
+        val listItem = arrayListOf(
+            DummyModelCart(),
+            DummyModelCart(),
+            DummyModelCart(),
+            DummyModelCart(),
+            DummyModelCart(),
+            DummyModelCart()
+        )
+
+        val adapterCart = DummyAdapterCart()
+        adapterCart.submitList(listItem)
+
+        binding.content.rvCart.apply {
+            layoutManager = LinearLayoutManager(this@CartActivity, LinearLayoutManager.VERTICAL, false)
+            binding.content.rvCart.setHasFixedSize(true)
+            binding.content.rvCart.adapter = adapterCart
+        }
     }
 
     private fun setToolbar() {

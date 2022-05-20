@@ -10,10 +10,17 @@ data class DummyModel(
 
 data class DummyModelTransaction(
     val firstItemImage: Int = R.drawable.cauliflowers,
-    val firstItemName: String = "Cauliflowers",
+    val firstItemName: String = "Cauliflower",
     val firstItemCount: Int = 1,
     val totalMoreProductCount: Int = 2,
     val grandTotal: Int = 13000
 )
 
-
+data class DummyModelCart(
+    val isChecked: Int = 0,
+    val image: Int = R.drawable.cauliflowers,
+    val itemName: String = "Cauliflower",
+    val qty: String = "100g / pack",
+    val price: Int = 4000,
+    val count: Int = 1
+)
