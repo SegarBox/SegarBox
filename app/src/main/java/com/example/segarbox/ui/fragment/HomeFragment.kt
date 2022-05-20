@@ -104,6 +104,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
 
         // On Scrolled
+
         binding.content.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
             val headerHeight: Int = binding.content.header.height - binding.toolbar.root.height
             ratio = min(max(scrollY, 0), headerHeight).toFloat() / headerHeight

@@ -39,5 +39,6 @@
     <string name="total_price">Total Price</string>
     <string name="grand_total">Grand Total</string>
     <string name="status_check">Status Check</string>
+    <string name="checkout">Checkout</string>
 
 </resources>
