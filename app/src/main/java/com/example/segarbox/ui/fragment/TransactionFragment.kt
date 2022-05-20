@@ -23,7 +23,7 @@ class TransactionFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         _binding = FragmentTransactionBinding.inflate(layoutInflater, container, false)
         return binding.root
     }

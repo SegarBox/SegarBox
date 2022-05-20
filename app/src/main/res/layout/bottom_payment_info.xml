@@ -1,35 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="72dp"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="?attr/colorOnPrimary">
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="?attr/colorPrimaryVariant">
 
     <TextView
-        android:id="@+id/total_price"
+        android:id="@+id/tv_title_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total Price"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Total Price"
+        app:layout_constraintBottom_toTopOf="@id/tv_price"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
+        android:id="@+id/tv_price"
+        style="@style/poppinsMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/total_price"
-        app:layout_constraintTop_toBottomOf="@id/total_price"
+        android:layout_marginBottom="8dp"
         android:textSize="20sp"
         android:textStyle="bold"
-        style="@style/poppinsMedium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tv_title_price"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_price"
         tools:text="Rp13.000" />
 
     <RelativeLayout
-        android:id="@+id/relativeLayout3"
+        android:id="@+id/checkout_layout"
         android:layout_width="180dp"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:background="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,16 +42,18 @@
 
     <TextView
         android:id="@+id/tv_button"
-        android:layout_width="180dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
+        android:text="Checkout"
         android:textAllCaps="true"
         android:textColor="?attr/colorOnPrimary"
         android:textSize="20sp"
-        android:text="Checkout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/relativeLayout3"
-        app:layout_constraintTop_toTopOf="parent"
-         />
+        android:textStyle="bold"
+        android:theme="@style/poppinsMedium"
+        app:layout_constraintBottom_toBottomOf="@id/checkout_layout"
+        app:layout_constraintEnd_toEndOf="@+id/checkout_layout"
+        app:layout_constraintStart_toStartOf="@id/checkout_layout"
+        app:layout_constraintTop_toTopOf="@id/checkout_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
