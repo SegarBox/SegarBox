@@ -39,10 +39,10 @@ class CartActivity : AppCompatActivity(), View.OnClickListener {
         val listItem = arrayListOf(
             DummyModelCart(),
             DummyModelCart(),
-            DummyModelCart(),
-            DummyModelCart(),
-            DummyModelCart(),
-            DummyModelCart()
+//            DummyModelCart(),
+//            DummyModelCart(),
+//            DummyModelCart(),
+//            DummyModelCart()
         )
 
         val adapterCart = DummyAdapterCart()
