@@ -94,6 +94,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_item_price" />
 
     <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

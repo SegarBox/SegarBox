@@ -29,6 +29,8 @@ class DummyAdapterCart: androidx.recyclerview.widget.ListAdapter<DummyModelCart,
             tvItemName.text = item.itemName
             tvItemVariant.text = item.qty
             tvItemPrice.text = context.getString(R.string.grandTotal, item.price.toString())
+
+            divider.isVisible = position != itemCount - 1
         }
     }
 }
