@@ -30,5 +30,4 @@
     <string name="firstItemCount">%s item</string>
     <string name="totalMoreProductCount">+%s more products</string>
     <string name="grandTotal">Rp%s</string>
-
 </resources>

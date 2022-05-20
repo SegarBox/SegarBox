@@ -51,7 +51,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             R.id.iv_cart -> {
                 startActivity(Intent(requireContext(), CartActivity::class.java))
             }
-
         }
     }
 
