@@ -18,13 +18,23 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toTopOf="@id/bottom_payment_info"
-        layout="@layout/content_checkout"/>
+        layout="@layout/content_invoice"/>
 
     <include
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/bottom_payment_info"
         layout="@layout/bottom_payment_info"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/rate"
+        android:textSize="20sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

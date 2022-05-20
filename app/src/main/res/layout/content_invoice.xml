@@ -1,8 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@drawable/inner_shadow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorOnPrimary"
+            android:textStyle="italic"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Pesanan anda sedang diproses" />
+
+        <RelativeLayout
+            android:id="@+id/materialCardView"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/stoked_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_address" />
+
+        <TextView
+            android:id="@+id/tv_title_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/delivery_address"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:theme="@style/poppinsMedium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/materialCardView"
+            app:layout_constraintTop_toTopOf="@+id/materialCardView"
+            tools:text="Stanley Mesa" />
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:maxLines="3"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="16sp"
+            android:ellipsize="end"
+            app:layout_constraintStart_toStartOf="@+id/tv_user_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
+            tools:text="Puri Anjasmoro, Kota Semarang, Jawa Tengah" />
+
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
+
+        <TextView
+            android:id="@+id/tv_title_items"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/checkout_items"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:theme="@style/poppinsMedium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider1" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_checkout_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_items"
+            tools:listitem="@layout/item_row_checkout" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/rv_checkout_item" />
+
+        <TextView
+            android:id="@+id/tv_title_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/payment_details"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:theme="@style/poppinsMedium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider2" />
+
+        <RelativeLayout
+            android:id="@+id/payment_background"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/stroke_background"
+            app:layout_constraintBottom_toBottomOf="@id/space_payment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_payment" />
+
+        <TextView
+            android:id="@+id/tv_title_products_subtotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/products_sub_total"
+            android:textColor="?attr/colorOnSecondary"
+            android:theme="@style/poppinsMedium"
+            app:layout_constraintStart_toStartOf="@id/payment_background"
+            app:layout_constraintTop_toTopOf="@id/payment_background" />
+
+        <TextView
+            android:id="@+id/tv_title_shipping_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/shipping_cost"
+            android:textColor="?attr/colorOnSecondary"
+            android:theme="@style/poppinsMedium"
+            app:layout_constraintStart_toStartOf="@id/payment_background"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_products_subtotal" />
+
+        <TextView
+            android:id="@+id/tv_title_total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/total_price"
+            android:textColor="?attr/colorOnSecondary"
+            android:textStyle="bold"
+            android:theme="@style/poppinsMedium"
+            app:layout_constraintStart_toStartOf="@id/payment_background"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_shipping_cost" />
+
+        <TextView
+            android:id="@+id/tv_products_subtotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:textColor="?attr/colorOnSecondary"
+            android:theme="@style/poppinsMedium"
+            app:layout_constraintEnd_toEndOf="@id/payment_background"
+            app:layout_constraintTop_toTopOf="@id/tv_title_products_subtotal"
+            tools:text="Rp 12.000" />
+
+        <TextView
+            android:id="@+id/tv_shipping_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:textColor="?attr/colorOnSecondary"
+            android:theme="@style/poppinsMedium"
+            app:layout_constraintEnd_toEndOf="@id/payment_background"
+            app:layout_constraintTop_toTopOf="@id/tv_title_shipping_cost"
+            tools:text="Rp 5.000" />
+
+        <TextView
+            android:id="@+id/tv_total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:textColor="?attr/colorOnSecondary"
+            android:textStyle="bold"
+            android:theme="@style/poppinsMedium"
+            app:layout_constraintEnd_toEndOf="@id/payment_background"
+            app:layout_constraintTop_toTopOf="@id/tv_title_total_price"
+            tools:text="Rp 5.000" />
+
+        <Space
+            android:id="@+id/space_payment"
+            android:layout_width="0dp"
+            android:layout_height="16dp"
+            app:layout_constraintEnd_toEndOf="@id/payment_background"
+            app:layout_constraintStart_toStartOf="@id/payment_background"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_total_price" />
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
