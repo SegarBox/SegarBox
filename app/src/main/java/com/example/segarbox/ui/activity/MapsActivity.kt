@@ -33,7 +33,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
     private var _binding: ActivityMapsBinding? = null
     private val binding get() = _binding!!
     private val markerOptions = MarkerOptions()
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var fusedLocationClient:FusedLocationProviderClient
     private val mapsViewModel by viewModels<MapsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +57,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        mMap.setPadding(0, 0, 0, 220)
+        mMap.setPadding(0, 0, 0, 160)
         mMap.uiSettings.isZoomControlsEnabled = true
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -85,21 +85,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
     }
 
     private fun observeData() {
-
-        mapsViewModel.getLatLng.observe(this) { latLng ->
-
-            mapsViewModel.setAddress(this, latLng)
-
-            mapsViewModel.getAddress.observe(this) {
-                placeMarker(it.address, latLng!!)
-                binding.toolbar.tvTitle.apply {
-                    text = it.city
-                    textSize = 14F
-                }
+        mapsViewModel.getAddress.observe(this) {
+            placeMarker(it.address, it.latLng!!)
+            binding.toolbar.tvTitle.apply {
+                text = it.city
+                textSize = 14F
             }
-
         }
-
     }
 
     private fun setToolbar() {
@@ -136,7 +128,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
 
                 if (location != null) {
-                    mapsViewModel.setLatLng(LatLng(location.latitude, location.longitude))
+                    mapsViewModel.setAddress(
+                        this, LatLng(location.latitude, location.longitude)
+                    )
                 } else {
                     Toast.makeText(this,
                         getString(R.string.location_not_found),
@@ -145,10 +139,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
             }
 
             mMap.setOnMapClickListener { latLng ->
-                mapsViewModel.setLatLng(latLng)
+                mapsViewModel.setAddress(this, latLng)
             }
 
-        } else {
+        }
+        else {
             requestPermissionLauncher.launch(
                 arrayOf(
                     ACCESS_FINE_LOCATION,
@@ -164,7 +159,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
     }
 
     override fun onClick(v: View?) {
-        when (v?.id) {
+        when(v?.id) {
             R.id.iv_back -> finish()
         }
     }
