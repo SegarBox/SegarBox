@@ -42,5 +42,6 @@
     <string name="checkout">Checkout</string>
     <string name="invoice">Invoice</string>
     <string name="rate">RATE</string>
+    <string name="add_address">Add Address</string>
 
 </resources>
