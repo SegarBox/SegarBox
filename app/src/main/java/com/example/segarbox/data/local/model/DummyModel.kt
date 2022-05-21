@@ -1,6 +1,7 @@
 package com.example.segarbox.data.local.model
 
 import com.example.segarbox.R
+import com.google.android.gms.maps.model.LatLng
 
 data class DummyModel(
     val image: Int = R.drawable.cauliflowers,
@@ -26,5 +27,8 @@ data class DummyModelCart(
 )
 
 data class DummyAddress(
-    val address: String = "Jl Puri Anjasmoro A11 no 34, Semarang"
+    val address: String = "Jl Puri Anjasmoro A11 no 34, Semarang",
+    val city: String = "",
+    val postalCode: String = "",
+    val latLng: LatLng? = null
 )

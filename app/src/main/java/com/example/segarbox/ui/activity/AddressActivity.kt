@@ -1,5 +1,6 @@
 package com.example.segarbox.ui.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -27,6 +28,7 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener {
         setToolbar()
         setAdapter()
         binding.toolbar.ivBack.setOnClickListener(this)
+        binding.content.btnAddAddress.setOnClickListener(this)
     }
 
     private fun setToolbar() {
@@ -69,6 +71,8 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v?.id) {
             R.id.iv_back -> finish()
+
+            R.id.btn_add_address -> startActivity(Intent(this, MapsActivity::class.java))
         }
     }
 }
