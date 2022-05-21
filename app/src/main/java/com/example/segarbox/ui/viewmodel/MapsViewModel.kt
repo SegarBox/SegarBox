@@ -12,6 +12,10 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class MapsViewModel : ViewModel() {
+
+    private var _getLatLng = MutableLiveData<LatLng>()
+    val getLatLng: LiveData<LatLng> = _getLatLng
+
     private var _getAddress = MutableLiveData<DummyAddress>()
     val getAddress: LiveData<DummyAddress> = _getAddress
 
@@ -30,7 +34,6 @@ class MapsViewModel : ViewModel() {
                         address = location[0].getAddressLine(0),
                         city = location[0].locality,
                         postalCode = location[0].postalCode,
-                        latLng = latLng
                     )
                 )
 
@@ -38,10 +41,13 @@ class MapsViewModel : ViewModel() {
                 _getAddress.postValue(
                     DummyAddress(
                         address = "Location Error",
-                        latLng = latLng
                     )
                 )
             }
         }
+    }
+
+    fun setLatLng(latLng: LatLng) {
+        _getLatLng.postValue(latLng)
     }
 }
