@@ -43,5 +43,6 @@
     <string name="invoice">Invoice</string>
     <string name="rate">RATE</string>
     <string name="add_address">Add Address</string>
+    <string name="address">Address</string>
 
 </resources>

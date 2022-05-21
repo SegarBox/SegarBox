@@ -24,3 +24,7 @@ data class DummyModelCart(
     val price: Int = 4000,
     val count: Int = 1
 )
+
+data class DummyAddress(
+    val address: String = "Jl Puri Anjasmoro A11 no 34, Semarang"
+)
