@@ -96,7 +96,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                 }
 
                 placeMarker(it.address, latLng!!)
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15F))
 
             }
 

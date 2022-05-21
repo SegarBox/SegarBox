@@ -42,7 +42,7 @@ class MapsViewModel : ViewModel() {
                 _getAddress.postValue(
 //                    "Location Error"
                     DummyAddress(
-                        address = ex.message!!,
+                        address = "Location Error",
                     )
                 )
             }
