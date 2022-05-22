@@ -8,12 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.segarbox.data.local.model.DummyModel
 import com.example.segarbox.databinding.ItemRowFeatureBinding
+import com.example.segarbox.databinding.ItemRowRatingBinding
 
-class DummyAdapter: ListAdapter<DummyModel, DummyAdapter.DummyViewHolder>(DummyDiffCallback) {
-    inner class DummyViewHolder(var binding: ItemRowFeatureBinding): RecyclerView.ViewHolder(binding.root)
+class DummyAdapterRating: ListAdapter<DummyModel, DummyAdapterRating.DummyViewHolder>(DummyDiffCallback) {
+    inner class DummyViewHolder(var binding: ItemRowRatingBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DummyViewHolder {
-        val binding = ItemRowFeatureBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemRowRatingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return DummyViewHolder(binding)
     }
 
@@ -25,6 +26,7 @@ class DummyAdapter: ListAdapter<DummyModel, DummyAdapter.DummyViewHolder>(DummyD
             .load(item.image)
             .circleCrop()
             .into(holder.binding.ivItem)
-        holder.binding.space.isVisible = position == itemCount - 1
+        holder.binding.tvItemName.text = "Cauliflower"
+        holder.binding.tvItemVariant.text = item.qty
     }
 }
