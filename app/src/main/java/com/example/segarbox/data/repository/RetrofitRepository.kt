@@ -2,7 +2,6 @@ package com.example.segarbox.data.repository
 
 import com.example.segarbox.data.remote.api.ApiConfig
 import com.example.segarbox.data.remote.response.MapsResponse
-import retrofit2.Response
 
 class RetrofitRepository {
 

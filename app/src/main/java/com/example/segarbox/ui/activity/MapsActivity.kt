@@ -98,7 +98,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
             val results = mapsResponse.results
             binding.toolbar.tvTitle.apply {
 
-                if (results != null) {
+                if (results != null && results.isNotEmpty()) {
                     text = results[0].formattedAddress
                     textSize = 14F
                 } else {
