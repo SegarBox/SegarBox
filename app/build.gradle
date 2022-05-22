@@ -65,7 +65,7 @@ dependencies {
     //noinspection GradleDependency
     implementation 'com.google.android.gms:play-services-location:18.0.0'
     implementation 'androidx.test.espresso:espresso-idling-resource:3.4.0'
-    implementation 'androidx.navigation:navigation-fragment:2.3.5'
+    implementation 'androidx.navigation:navigation-fragment:2.4.2'
     kapt 'androidx.room:room-compiler:2.4.2'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
