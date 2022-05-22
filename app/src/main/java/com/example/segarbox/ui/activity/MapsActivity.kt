@@ -61,8 +61,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
         mMap.uiSettings.isZoomControlsEnabled = true
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        getMyLocation()
         setMapStyle()
+        getMyLocation()
         observeData()
     }
 
