@@ -1,12 +1,13 @@
 package com.example.segarbox.data.remote.api
 
+import com.example.segarbox.BuildConfig
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiConfig {
 
     companion object {
-        var BASE_URL = "https://maps.googleapis.com/maps/api/geocode/"
+        var BASE_URL = BuildConfig.BASE_URL_GOOGLE_MAPS
 
         fun getApiServices(): ApiServices {
             val retrofit = Retrofit.Builder()
