@@ -43,5 +43,10 @@
     <string name="invoice">Invoice</string>
     <string name="rate">RATE</string>
     <string name="add_address">Add Address</string>
+    <string name="address">Address</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="save_location">Save Location</string>
+    <string name="no_location_permission">Sorry, we need to access your location to use maps</string>
+    <string name="location_not_found">Location not found</string>
 
 </resources>

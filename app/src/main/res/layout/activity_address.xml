@@ -4,14 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="?attr/colorPrimaryVariant"
+    android:fitsSystemWindows="true"
     tools:context=".ui.activity.AddressActivity">
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/custom_toolbar"/>
+        layout="@layout/custom_toolbar" />
 
+    <include
+        android:id="@+id/content"
+        layout="@layout/content_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

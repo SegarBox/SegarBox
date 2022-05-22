@@ -1,8 +1,9 @@
 package com.example.segarbox.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.segarbox.R
@@ -27,6 +28,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
         setToolbar()
         setAdapter()
         binding.toolbar.ivBack.setOnClickListener(this)
+        binding.content.btnChooseAddress.setOnClickListener(this)
     }
 
     private fun setToolbar() {
@@ -62,8 +64,10 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when(v?.id) {
+        when (v?.id) {
             R.id.iv_back -> finish()
+
+            R.id.btn_choose_address -> startActivity(Intent(this, AddressActivity::class.java))
         }
     }
 }
