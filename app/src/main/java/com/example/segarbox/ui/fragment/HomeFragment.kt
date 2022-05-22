@@ -28,10 +28,7 @@ import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.data.local.model.DummyModel
 import com.example.segarbox.helper.getColorFromAttr
 import com.example.segarbox.helper.getHelperDrawable
-import com.example.segarbox.ui.activity.CartActivity
-import com.example.segarbox.ui.activity.CheckoutActivity
-import com.example.segarbox.ui.activity.DetailActivity
-import com.example.segarbox.ui.activity.InvoiceActivity
+import com.example.segarbox.ui.activity.*
 import com.example.segarbox.ui.adapter.DummyAdapter
 import com.example.segarbox.ui.adapter.DummyAdapter2
 import com.example.segarbox.ui.viewmodel.PrefViewModel
@@ -71,6 +68,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.toolbar.ivCart.setOnClickListener(this)
         binding.content.btnCheckout.setOnClickListener(this)
         binding.content.btnInvoice.setOnClickListener(this)
+        binding.content.btnRating.setOnClickListener(this)
     }
 
     private fun setToolbar() {
@@ -229,6 +227,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
             R.id.btn_invoice -> {
                 startActivity(Intent(requireContext(), InvoiceActivity::class.java))
+            }
+
+            R.id.btn_rating -> {
+                startActivity(Intent(requireContext(), RatingActivity::class.java))
             }
 
         }
