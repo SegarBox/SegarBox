@@ -73,33 +73,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
         }
     }
 
-    private fun placeMarker(address: String, latLng: LatLng) {
+    private fun placeMarker(latLng: LatLng) {
         mMap.clear()
         mMap.addMarker(
             markerOptions
                 .position(latLng)
-                .title(address)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
         )
     }
 
     private fun observeData() {
 
-        mapsViewModel.getLatLng.observe(this) { latLng ->
+        mapsViewModel.getLatLng.observe(this) {
+            placeMarker(it)
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(it, 15F))
+        }
 
-            mapsViewModel.setAddress(applicationContext, latLng)
-
-            mapsViewModel.getAddress.observe(this) {
-                binding.toolbar.tvTitle.apply {
-                    text = it.address
-                    textSize = 14F
-                }
-
-                placeMarker(it.address, latLng!!)
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15F))
-
+        mapsViewModel.getAddress.observe(this) {
+            binding.toolbar.tvTitle.apply {
+                text = it.address
+                textSize = 14F
             }
-
         }
 
     }
@@ -139,6 +133,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
 
                 if (location != null) {
                     mapsViewModel.setLatLng(LatLng(location.latitude, location.longitude))
+                    mapsViewModel.setAddress(this, LatLng(location.latitude, location.longitude))
                 } else {
                     Toast.makeText(this,
                         getString(R.string.location_not_found),
@@ -147,6 +142,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
             }
 
             mMap.setOnMapClickListener { latLng ->
+                mapsViewModel.setAddress(this, latLng)
                 mapsViewModel.setLatLng(latLng)
             }
 

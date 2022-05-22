@@ -10,8 +10,6 @@ import com.example.segarbox.data.local.model.DummyAddress
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.util.*
 
 class MapsViewModel : ViewModel() {
 
@@ -22,32 +20,30 @@ class MapsViewModel : ViewModel() {
     val getAddress: LiveData<DummyAddress> = _getAddress
 
     fun setAddress(context: Context, latLng: LatLng) {
-        viewModelScope.launch {
-            val geocoder = Geocoder(context, Locale.getDefault())
+        viewModelScope.launch(Dispatchers.IO) {
 
-            withContext(Dispatchers.IO) {
-                try {
-                    val location = geocoder.getFromLocation(
-                        latLng.latitude,
-                        latLng.longitude,
-                        1,
-                    )
-                    _getAddress.postValue(
-                        DummyAddress(
-                            address = location[0].getAddressLine(0),
-                            city = location[0].locality,
-                            postalCode = location[0].postalCode,
-                        )
-                    )
+            val geocoder = Geocoder(context)
 
-                } catch (ex: Exception) {
-                    _getAddress.postValue(
-                        DummyAddress(
-                            address = "Location Error",
-                        )
+            try {
+                val location = geocoder.getFromLocation(
+                    latLng.latitude,
+                    latLng.longitude,
+                    1,
+                )
+                _getAddress.postValue(
+                    DummyAddress(
+                        address = location[0].getAddressLine(0),
+                        city = location[0].locality,
+                        postalCode = location[0].postalCode,
                     )
-                }
+                )
 
+            } catch (ex: Exception) {
+                _getAddress.postValue(
+                    DummyAddress(
+                        address = "Location Error",
+                    )
+                )
             }
 
 
