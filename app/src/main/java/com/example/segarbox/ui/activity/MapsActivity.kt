@@ -103,6 +103,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                     textSize = 14F
                 } else {
                     text = getString(R.string.location_not_found)
+                    textSize = 14F
                 }
             }
 

@@ -44,6 +44,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:text="@string/choose_address"
+            android:textStyle="bold"
+            android:theme="@style/poppinsMedium"
             app:cornerRadius="16dp"
             app:layout_constraintTop_toBottomOf="@id/tv_address" />
 
@@ -187,9 +189,9 @@
             android:layout_width="0dp"
             android:layout_height="16dp"
             android:layout_marginBottom="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/payment_background"
             app:layout_constraintStart_toStartOf="@id/payment_background"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title_total_price" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
