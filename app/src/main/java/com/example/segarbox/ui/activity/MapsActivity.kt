@@ -14,8 +14,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.segarbox.R
+import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.ActivityMapsBinding
+import com.example.segarbox.helper.formatted
 import com.example.segarbox.ui.viewmodel.MapsViewModel
+import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -34,7 +37,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
     private val binding get() = _binding!!
     private val markerOptions = MarkerOptions()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private val mapsViewModel by viewModels<MapsViewModel>()
+    private val mapsViewModel by viewModels<MapsViewModel> {
+        RetrofitViewModelFactory.getInstance(RetrofitRepository())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,11 +94,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(it, 15F))
         }
 
-        mapsViewModel.getAddress.observe(this) {
+        mapsViewModel.address.observe(this) { mapsResponse ->
+            val results = mapsResponse.results
             binding.toolbar.tvTitle.apply {
-                text = it.address
-                textSize = 14F
+
+                if (results != null) {
+                    text = results[0].formattedAddress
+                    textSize = 14F
+                } else {
+                    text = getString(R.string.location_not_found)
+                }
             }
+
         }
 
     }
@@ -133,7 +145,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
 
                 if (location != null) {
                     mapsViewModel.setLatLng(LatLng(location.latitude, location.longitude))
-                    mapsViewModel.setAddress(this, LatLng(location.latitude, location.longitude))
+                    mapsViewModel.getAddress(LatLng(location.latitude,
+                        location.longitude).formatted())
                 } else {
                     Toast.makeText(this,
                         getString(R.string.location_not_found),
@@ -142,8 +155,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
             }
 
             mMap.setOnMapClickListener { latLng ->
-                mapsViewModel.setAddress(this, latLng)
                 mapsViewModel.setLatLng(latLng)
+                mapsViewModel.getAddress(latLng.formatted())
             }
 
         } else {
