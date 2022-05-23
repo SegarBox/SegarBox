@@ -1,16 +1,13 @@
 package com.example.segarbox.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.segarbox.R
 import com.example.segarbox.data.local.model.DummyModel
-import com.example.segarbox.databinding.ActivityCartBinding
 import com.example.segarbox.databinding.ActivityRatingBinding
-import com.example.segarbox.ui.adapter.DummyAdapter
-import com.example.segarbox.ui.adapter.DummyAdapter2
 import com.example.segarbox.ui.adapter.DummyAdapterRating
 
 class RatingActivity : AppCompatActivity(), View.OnClickListener {
