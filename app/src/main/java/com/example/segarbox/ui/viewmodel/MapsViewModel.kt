@@ -9,7 +9,7 @@ import com.example.segarbox.data.repository.RetrofitRepository
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
-class MapsViewModel(private val repo: RetrofitRepository) : ViewModel() {
+class MapsViewModel(private val retrofitRepository: RetrofitRepository) : ViewModel() {
 
     private var _getLatLng = MutableLiveData<LatLng>()
     val getLatLng: LiveData<LatLng> = _getLatLng
@@ -20,7 +20,7 @@ class MapsViewModel(private val repo: RetrofitRepository) : ViewModel() {
 
     fun getAddress(latLng: String) {
         viewModelScope.launch {
-            val mapsResponse = repo.getAddress(latLng)
+            val mapsResponse = retrofitRepository.getAddress(latLng)
             _address.postValue(mapsResponse)
         }
     }
