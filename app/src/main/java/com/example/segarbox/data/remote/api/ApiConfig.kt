@@ -7,11 +7,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiConfig {
 
     companion object {
-        var BASE_URL = BuildConfig.BASE_URL_GOOGLE_MAPS
-
-        fun getApiServices(): ApiServices {
+        fun getApiServices(baseUrl: String): ApiServices {
             val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
             return retrofit.create(ApiServices::class.java)

@@ -99,7 +99,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
             binding.toolbar.tvTitle.apply {
 
                 if (results != null && results.isNotEmpty()) {
-                    text = results[0].formattedAddress
+
+                    // Mencari kota
+                    var city = ""
+
+                    first@ for (result in results) {
+                        second@ for (addressComponent in result.addressComponents) {
+
+                            if (addressComponent.types.contains("administrative_area_level_2") &&
+                                (addressComponent.shortName.contains("Kota") ||
+                                        addressComponent.shortName.contains("Kabupaten"))
+                            ) {
+                                city = addressComponent.shortName
+                                break@first
+                            }
+                        }
+                    }
+
+//                    text = results[0].formattedAddress
+                    text = city
                     textSize = 14F
                 } else {
                     text = getString(R.string.location_not_found)
