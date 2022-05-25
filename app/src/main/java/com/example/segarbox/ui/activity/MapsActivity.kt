@@ -2,6 +2,7 @@ package com.example.segarbox.ui.activity
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Location
@@ -14,6 +15,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.segarbox.R
+import com.example.segarbox.data.local.model.DummyAddress
+import com.example.segarbox.data.local.static.Code
+import com.example.segarbox.data.remote.response.MapsResponse
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.ActivityMapsBinding
 import com.example.segarbox.helper.formatted
@@ -37,6 +41,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
     private val binding get() = _binding!!
     private val markerOptions = MarkerOptions()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var dummyAddress = DummyAddress()
     private val mapsViewModel by viewModels<MapsViewModel> {
         RetrofitViewModelFactory.getInstance(RetrofitRepository())
     }
@@ -57,6 +62,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
     private fun init() {
         setToolbar()
         binding.toolbar.ivBack.setOnClickListener(this)
+        binding.btnSaveLocation.setOnClickListener(this)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -95,38 +101,70 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
         }
 
         mapsViewModel.address.observe(this) { mapsResponse ->
-            val results = mapsResponse.results
+
+            dummyAddress = DummyAddress(
+                address = getAddressFromResponse(mapsResponse),
+                city = getCityFromResponse(mapsResponse),
+                postalCode = getPostalCodeFromResponse(mapsResponse)
+            )
+
             binding.toolbar.tvTitle.apply {
-
-                if (results != null && results.isNotEmpty()) {
-
-                    // Mencari kota
-                    var city = ""
-
-                    first@ for (result in results) {
-                        second@ for (addressComponent in result.addressComponents) {
-
-                            if (addressComponent.types.contains("administrative_area_level_2") &&
-                                (addressComponent.shortName.contains("Kota") ||
-                                        addressComponent.shortName.contains("Kabupaten"))
-                            ) {
-                                city = addressComponent.shortName
-                                break@first
-                            }
-                        }
-                    }
-
-//                    text = results[0].formattedAddress
-                    text = city
-                    textSize = 14F
-                } else {
-                    text = getString(R.string.location_not_found)
-                    textSize = 14F
-                }
+                text = getAddressFromResponse(mapsResponse)
+                textSize = 14F
             }
+
 
         }
 
+    }
+
+    private fun getAddressFromResponse(mapsResponse: MapsResponse): String {
+        val results = mapsResponse.results
+
+        return if (results != null && results.isNotEmpty()) {
+            results[0].formattedAddress
+        } else {
+            Code.LOCATION_NOT_FOUND
+        }
+    }
+
+    private fun getCityFromResponse(mapsResponse: MapsResponse): String {
+        val results = mapsResponse.results
+
+        if (results != null && results.isNotEmpty()) {
+            for (result in results) {
+                for (addressComponent in result.addressComponents) {
+                    if (addressComponent.types.contains("administrative_area_level_2") &&
+                        (addressComponent.shortName.contains("Kota") ||
+                                addressComponent.shortName.contains("Kabupaten"))
+                    ) {
+                        return addressComponent.shortName
+                    }
+                }
+            }
+
+        } else {
+            return Code.LOCATION_NOT_FOUND
+        }
+        return Code.LOCATION_NOT_FOUND
+    }
+
+    private fun getPostalCodeFromResponse(mapsResponse: MapsResponse): String {
+        val results = mapsResponse.results
+
+        if (results != null && results.isNotEmpty()) {
+            for (result in results) {
+                for (addressComponent in result.addressComponents) {
+                    if (addressComponent.types.contains("postal_code")) {
+                        return addressComponent.shortName
+                    }
+                }
+            }
+
+        } else {
+            return Code.LOCATION_NOT_FOUND
+        }
+        return Code.LOCATION_NOT_FOUND
     }
 
     private fun setToolbar() {
@@ -168,7 +206,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                         location.longitude).formatted())
                 } else {
                     Toast.makeText(this,
-                        getString(R.string.location_not_found),
+                        Code.LOCATION_NOT_FOUND,
                         Toast.LENGTH_SHORT).show()
                 }
             }
@@ -196,6 +234,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.iv_back -> finish()
+
+            R.id.btn_save_location -> {
+                if (dummyAddress.city != Code.LOCATION_NOT_FOUND) {
+                    val intent = Intent()
+                    intent.putExtra(Code.ADDRESS_VALUE, dummyAddress)
+                    setResult(Code.RESULT_SAVE_ADDRESS, intent)
+                    finish()
+                }
+                else {
+                    Toast.makeText(this, Code.LOCATION_CANT_BE_REACHED, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 }
