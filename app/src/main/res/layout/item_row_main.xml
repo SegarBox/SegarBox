@@ -10,7 +10,6 @@
         android:id="@+id/card"
         android:layout_width="150dp"
         android:layout_height="270dp"
-        android:elevation="20dp"
         app:cardCornerRadius="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
