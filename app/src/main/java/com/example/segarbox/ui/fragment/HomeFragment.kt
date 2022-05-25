@@ -178,12 +178,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
         val adapter2 = DummyAdapter2()
         adapter2.submitList(listItem)
 
-        binding.content.rv1.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            setHasFixedSize(true)
-            adapter = adapter1
-        }
+//        binding.content.rv1.apply {
+//            layoutManager =
+//                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+//            setHasFixedSize(true)
+//            adapter = adapter1
+//        }
 
         binding.content.rv2.apply {
             layoutManager =

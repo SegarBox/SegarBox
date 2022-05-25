@@ -18,135 +18,135 @@
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/feature1"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/ic_baseline_sticky_note_2_24"
-            app:layout_constraintEnd_toEndOf="@id/tv_feature1"
-            app:layout_constraintStart_toStartOf="@id/tv_feature1"
-            app:layout_constraintTop_toBottomOf="@id/header" />
+<!--        <ImageView-->
+<!--            android:id="@+id/feature1"-->
+<!--            android:layout_width="46dp"-->
+<!--            android:layout_height="46dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:src="@drawable/ic_baseline_sticky_note_2_24"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/tv_feature1"-->
+<!--            app:layout_constraintStart_toStartOf="@id/tv_feature1"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/header" />-->
 
-        <ImageView
-            android:id="@+id/feature2"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:src="@drawable/ic_baseline_sticky_note_2_24"
-            app:layout_constraintEnd_toEndOf="@id/tv_feature2"
-            app:layout_constraintStart_toStartOf="@id/tv_feature2"
-            app:layout_constraintTop_toTopOf="@id/feature1" />
+<!--        <ImageView-->
+<!--            android:id="@+id/feature2"-->
+<!--            android:layout_width="46dp"-->
+<!--            android:layout_height="46dp"-->
+<!--            android:src="@drawable/ic_baseline_sticky_note_2_24"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/tv_feature2"-->
+<!--            app:layout_constraintStart_toStartOf="@id/tv_feature2"-->
+<!--            app:layout_constraintTop_toTopOf="@id/feature1" />-->
 
-        <ImageView
-            android:id="@+id/feature3"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:src="@drawable/ic_baseline_sticky_note_2_24"
-            app:layout_constraintEnd_toEndOf="@id/tv_feature3"
-            app:layout_constraintStart_toStartOf="@id/tv_feature3"
-            app:layout_constraintTop_toTopOf="@id/feature1" />
+<!--        <ImageView-->
+<!--            android:id="@+id/feature3"-->
+<!--            android:layout_width="46dp"-->
+<!--            android:layout_height="46dp"-->
+<!--            android:src="@drawable/ic_baseline_sticky_note_2_24"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/tv_feature3"-->
+<!--            app:layout_constraintStart_toStartOf="@id/tv_feature3"-->
+<!--            app:layout_constraintTop_toTopOf="@id/feature1" />-->
 
-        <ImageView
-            android:id="@+id/feature4"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:src="@drawable/ic_baseline_sticky_note_2_24"
-            app:layout_constraintEnd_toEndOf="@id/tv_feature4"
-            app:layout_constraintStart_toStartOf="@id/tv_feature4"
-            app:layout_constraintTop_toTopOf="@id/feature1" />
+<!--        <ImageView-->
+<!--            android:id="@+id/feature4"-->
+<!--            android:layout_width="46dp"-->
+<!--            android:layout_height="46dp"-->
+<!--            android:src="@drawable/ic_baseline_sticky_note_2_24"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/tv_feature4"-->
+<!--            app:layout_constraintStart_toStartOf="@id/tv_feature4"-->
+<!--            app:layout_constraintTop_toTopOf="@id/feature1" />-->
 
-        <TextView
-            android:id="@+id/tv_feature1"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="Feature"
-            android:textAlignment="center"
-            android:textColor="?attr/colorOnSecondary"
-            app:layout_constraintEnd_toStartOf="@id/tv_feature2"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/feature1" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_feature1"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:ellipsize="end"-->
+<!--            android:maxLines="2"-->
+<!--            android:text="Feature"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="?attr/colorOnSecondary"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/tv_feature2"-->
+<!--            app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/feature1" />-->
 
-        <TextView
-            android:id="@+id/tv_feature2"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="Feature"
-            android:textAlignment="center"
-            android:textColor="?attr/colorOnSecondary"
-            app:layout_constraintEnd_toStartOf="@id/tv_feature3"
-            app:layout_constraintStart_toEndOf="@id/tv_feature1"
-            app:layout_constraintTop_toBottomOf="@id/feature2" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_feature2"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:ellipsize="end"-->
+<!--            android:maxLines="2"-->
+<!--            android:text="Feature"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="?attr/colorOnSecondary"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/tv_feature3"-->
+<!--            app:layout_constraintStart_toEndOf="@id/tv_feature1"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/feature2" />-->
 
-        <TextView
-            android:id="@+id/tv_feature3"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="Feature"
-            android:textAlignment="center"
-            android:textColor="?attr/colorOnSecondary"
-            app:layout_constraintEnd_toStartOf="@id/tv_feature4"
-            app:layout_constraintStart_toEndOf="@id/tv_feature2"
-            app:layout_constraintTop_toBottomOf="@id/feature3" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_feature3"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:ellipsize="end"-->
+<!--            android:maxLines="2"-->
+<!--            android:text="Feature"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="?attr/colorOnSecondary"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/tv_feature4"-->
+<!--            app:layout_constraintStart_toEndOf="@id/tv_feature2"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/feature3" />-->
 
-        <TextView
-            android:id="@+id/tv_feature4"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="Feature"
-            android:textAlignment="center"
-            android:textColor="?attr/colorOnSecondary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_feature3"
-            app:layout_constraintTop_toBottomOf="@id/feature4" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_feature4"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:ellipsize="end"-->
+<!--            android:maxLines="2"-->
+<!--            android:text="Feature"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="?attr/colorOnSecondary"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toEndOf="@id/tv_feature3"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/feature4" />-->
 
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider1"
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_feature1" />
+<!--        <com.google.android.material.divider.MaterialDivider-->
+<!--            android:id="@+id/divider1"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="4dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tv_feature1" />-->
 
-        <TextView
-            android:id="@+id/tv_title1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Choose Feature"
-            android:textColor="?attr/colorOnSecondary"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:theme="@style/poppinsMedium"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider1" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_title1"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:text="Choose Feature"-->
+<!--            android:textColor="?attr/colorOnSecondary"-->
+<!--            android:textSize="20dp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:theme="@style/poppinsMedium"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/divider1" />-->
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/tv_title1"
-            tools:listitem="@layout/item_row_feature" />
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rv1"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tv_title1"-->
+<!--            tools:listitem="@layout/item_row_feature" />-->
 
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/rv1" />
+<!--        <com.google.android.material.divider.MaterialDivider-->
+<!--            android:id="@+id/divider2"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="4dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/rv1" />-->
 
         <TextView
             android:id="@+id/tv_title2"
@@ -160,7 +160,41 @@
             android:textStyle="bold"
             android:theme="@style/poppinsMedium"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider2" />
+            app:layout_constraintTop_toBottomOf="@id/header" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:singleSelection="true"
+            app:layout_constraintTop_toBottomOf="@id/tv_title2"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp">
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/poppinsMedium"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:text="Most Popular"/>
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/poppinsMedium"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:text="Veggies"/>
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/poppinsMedium"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:text="Fruits"/>
+
+
+        </com.google.android.material.chip.ChipGroup>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv2"
@@ -169,7 +203,7 @@
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/tv_title2"
+            app:layout_constraintTop_toBottomOf="@id/chip_group"
             tools:listitem="@layout/item_row_main" />
 
         <com.google.android.material.button.MaterialButton
