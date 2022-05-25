@@ -48,5 +48,9 @@
     <string name="save_location">Save Location</string>
     <string name="no_location_permission">Sorry, we need to access your location to use maps</string>
     <string name="location_not_found">Location not found</string>
+    <string name="shipping_method">Shipping Method</string>
+    <string name="choose">Choose</string>
+    <string name="shipment_details">Shipment Details</string>
+    <string name="etd">%s Hari</string>
 
 </resources>

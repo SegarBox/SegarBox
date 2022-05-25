@@ -2,10 +2,7 @@ package com.example.segarbox.data.repository
 
 import com.example.segarbox.BuildConfig
 import com.example.segarbox.data.remote.api.ApiConfig
-import com.example.segarbox.data.remote.response.CityResponse
-import com.example.segarbox.data.remote.response.MapsResponse
-import com.example.segarbox.data.remote.response.Rajaongkir
-import com.example.segarbox.data.remote.response.Status
+import com.example.segarbox.data.remote.response.*
 
 class RetrofitRepository {
 
@@ -42,6 +39,29 @@ class RetrofitRepository {
 
         } catch (ex: Exception) {
             return CityResponse(Rajaongkir(status = Status(description = ex.message.toString())))
+        }
+    }
+
+    suspend fun getShippingCosts(
+        destination: String,
+        weight: String,
+        courier: String,
+    ): ShippingResponse {
+        try {
+            val request = rajaOngkirApiServices.getShippingCosts(
+                destination = destination,
+                weight = weight,
+                courier = courier
+            )
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            return ShippingResponse()
+        } catch (ex: Exception) {
+            return ShippingResponse()
         }
     }
 

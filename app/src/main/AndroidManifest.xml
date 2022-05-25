@@ -14,12 +14,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SegarBox">
         <activity
+            android:name=".ui.activity.ShippingActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.RatingActivity"
             android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${GOOGLE_MAPS_KEY}" />
+
         <activity
             android:name=".ui.activity.MapsActivity"
             android:exported="false"
