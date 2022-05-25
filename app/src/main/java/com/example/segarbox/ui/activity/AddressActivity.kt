@@ -4,10 +4,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.segarbox.R
 import com.example.segarbox.data.local.model.DummyAddress
+import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.databinding.ActivityAddressBinding
 import com.example.segarbox.ui.adapter.DummyAdapterAddress
 
@@ -63,16 +66,30 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Code.RESULT_SAVE_ADDRESS && result.data != null) {
+                val dummyAddress = result.data?.getParcelableExtra<DummyAddress>(Code.ADDRESS_VALUE)
+                dummyAddress?.let {
+                    val intent = Intent()
+                    intent.putExtra(Code.ADDRESS_VALUE, it)
+                    setResult(Code.RESULT_SAVE_ADDRESS, intent)
+                }
+            }
+        }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
 
     override fun onClick(v: View?) {
-        when(v?.id) {
+        when (v?.id) {
             R.id.iv_back -> finish()
 
-            R.id.btn_add_address -> startActivity(Intent(this, MapsActivity::class.java))
+            R.id.btn_add_address -> {
+                resultLauncher.launch(Intent(this, MapsActivity::class.java))
+            }
         }
     }
 }

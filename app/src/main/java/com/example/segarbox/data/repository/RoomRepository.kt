@@ -18,4 +18,6 @@ class RoomRepository(application: Application) {
 
     fun getCityCount(): LiveData<Int> = mCityDao.getCityCount()
 
+    fun getCity(city: String, type: String): LiveData<List<CityResults>> = mCityDao.getCity(city, type)
+
 }

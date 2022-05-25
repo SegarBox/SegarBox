@@ -15,6 +15,7 @@ class RetrofitRoomViewModelFactory private constructor(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> MainViewModel(roomRepository, retrofitRepository) as T
+            modelClass.isAssignableFrom(ShippingViewModel::class.java) -> ShippingViewModel(roomRepository, retrofitRepository) as T
             else -> throw IllegalArgumentException("Unknown ViewModel Class : ${modelClass.name}")
         }
     }

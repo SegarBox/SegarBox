@@ -1,13 +1,12 @@
 package com.example.segarbox.data.remote.api
 
 import com.example.segarbox.BuildConfig
+import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.response.CityResponse
 import com.example.segarbox.data.remote.response.MapsResponse
+import com.example.segarbox.data.remote.response.ShippingResponse
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Query
-import retrofit2.http.Url
+import retrofit2.http.*
 
 interface ApiServices {
 
@@ -21,4 +20,14 @@ interface ApiServices {
     suspend fun getCity(
         @Header("key") key: String = BuildConfig.RAJAONGKIR_KEY
     ): Response<CityResponse>
+
+    @FormUrlEncoded
+    @POST("cost")
+    suspend fun getShippingCosts(
+        @Header("key") key: String = BuildConfig.RAJAONGKIR_KEY,
+        @Field("origin") origin: String = Code.SEMARANG_ID,
+        @Field("destination") destination: String,
+        @Field("weight") weight: String,
+        @Field("courier") courier: String
+    ): Response<ShippingResponse>
 }
