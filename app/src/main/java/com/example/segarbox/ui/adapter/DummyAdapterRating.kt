@@ -40,18 +40,5 @@ class DummyAdapterRating: ListAdapter<DummyModel, DummyAdapterRating.DummyViewHo
                 Log.e("aaaa", holder.binding.ratingBar.rating.toString())
             }
         }
-//        holder.binding.materialButton2.isVisible = true
-//        holder.binding.materialButton2.setOnClickListener{
-//            Log.e("aaaa", holder.binding.ratingBar.rating.toString())
-//        }
-
-//        var rate:Float = holder.binding.ratingBar.rating
-//
-//        if (rate.equals(0.0)) {
-//            holder.binding.materialButton2.isVisible = false
-//            Log.e("aaaa", rate.toString())
-//        } else {
-////            holder.binding.materialButton2.isVisible = true
-//        }
     }
 }

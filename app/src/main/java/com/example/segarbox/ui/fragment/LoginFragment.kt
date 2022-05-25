@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import com.example.segarbox.R
 import com.example.segarbox.databinding.FragmentLoginBinding
 import com.example.segarbox.helper.getColorFromAttr
@@ -66,8 +67,28 @@ class LoginFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_login -> {
-                startActivity(Intent(requireContext(), MainActivity::class.java))
-                requireActivity().finish()
+                val email = binding.etEmail.text.toString()
+                val password = binding.etPassword.text.toString()
+                when {
+                    email.isEmpty() -> {
+                        binding.tiEmail.error = "Input email"
+                    }
+                    password.isEmpty() -> {
+                        binding.tiPassword.error = "Input password"
+                    }
+                    else -> {
+                        AlertDialog.Builder(requireContext()).apply {
+                            setTitle("Yeah!")
+                            setMessage("Log in success, happy shopping!")
+                            setPositiveButton("Next") { _, _ ->
+                                startActivity(Intent(requireContext(), MainActivity::class.java))
+                                requireActivity().finish()
+                            }
+                            create()
+                            show()
+                        }
+                    }
+                }
             }
         }
     }

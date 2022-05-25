@@ -1,19 +1,22 @@
 package com.example.segarbox.ui.fragment
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import com.example.segarbox.R
 import com.example.segarbox.databinding.FragmentRegisterBinding
 import com.example.segarbox.helper.getColorFromAttr
+import com.example.segarbox.ui.activity.MainActivity
 import com.google.android.material.R.attr.colorOnSecondary
 import com.google.android.material.R.attr.colorPrimary
 
 
-class RegisterFragment : Fragment() {
+class RegisterFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
@@ -33,6 +36,7 @@ class RegisterFragment : Fragment() {
 
     private fun init() {
         setTextColor()
+        binding.btnRegister.setOnClickListener(this)
     }
 
     private fun setTextColor() {
@@ -85,9 +89,60 @@ class RegisterFragment : Fragment() {
         }
     }
 
+    fun isNotEmail(string: String): Boolean {
+        return !android.util.Patterns.EMAIL_ADDRESS.matcher(string).matches()
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btn_register -> {
+                val name = binding.etName.text.toString()
+                val email = binding.etEmail.text.toString()
+                val phone = binding.etPhone.text.toString()
+                val password = binding.etPassword.text.toString()
+                val conPassword = binding.etConPassword.text.toString()
+                when {
+                    name.isEmpty() -> {
+                        binding.tiName.error = "Input name"
+                    }
+                    email.isEmpty() -> {
+                        binding.tiEmail.error = "Input email"
+                    }
+                    isNotEmail(email) -> {
+                        binding.tiEmail.error = "Input a valid email"
+                    }
+                    phone.isEmpty() -> {
+                        binding.tiPhone.error = "Input phone number"
+                    }
+                    password.isEmpty() -> {
+                        binding.tiPassword.error = "Input password"
+                    }
+                    password.isEmpty() -> {
+                        binding.tiPassword.error = "Confirm your password"
+                    }
+                    conPassword != password -> {
+                        binding.tiConPassword.error = "Password is not match"
+                    }
+
+                    else -> {
+                        AlertDialog.Builder(requireContext()).apply {
+                            setTitle("Yeay!")
+                            setMessage("Sign up success, happy shopping!")
+                            setPositiveButton("Next") { _, _ ->
+                                startActivity(Intent(requireContext(), MainActivity::class.java))
+                                requireActivity().finish()
+                            }
+                            create()
+                            show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
-
 }
