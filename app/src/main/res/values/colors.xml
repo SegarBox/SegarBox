@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="purple_200">#FFBB86FC</color>
-    <color name="brown_dark">#2D262A</color>
-    <color name="brown_dark_fake">#2D262B</color>
+    <color name="brown_dark">#0D0305</color>
+    <color name="brown_dark_fake">#0D0304</color>
     <color name="brown_med">#473B42</color>
     <color name="new_green">#02B80E</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="grey">#EAEAEA</color>
-    <color name="greyFake">#EAEAEB</color>
+    <color name="grey">#FFFFFF</color>
+    <color name="greyFake">#FFFFFA</color>
     <color name="white">#FFFFFF</color>
     <color name="whiteButtonText">#E5E5E5</color>
     <color name="whiteButtonColorDarkMode">#EBE5DE</color>

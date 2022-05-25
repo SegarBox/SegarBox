@@ -69,24 +69,22 @@ class LoginFragment : Fragment(), View.OnClickListener {
             R.id.btn_login -> {
                 val email = binding.etEmail.text.toString()
                 val password = binding.etPassword.text.toString()
-                when {
-                    email.isEmpty() -> {
-                        binding.tiEmail.error = "Input email"
-                    }
-                    password.isEmpty() -> {
-                        binding.tiPassword.error = "Input password"
-                    }
-                    else -> {
-                        AlertDialog.Builder(requireContext()).apply {
-                            setTitle("Yeah!")
-                            setMessage("Log in success, happy shopping!")
-                            setPositiveButton("Next") { _, _ ->
-                                startActivity(Intent(requireContext(), MainActivity::class.java))
-                                requireActivity().finish()
-                            }
-                            create()
-                            show()
+                if (email.isEmpty()){
+                    binding.etEmail.error = "Input email"
+                }
+                if (password.isEmpty()){
+                    binding.etPassword.error = "Input password"
+                }
+                if (email.isNotEmpty() && password.isNotEmpty()){
+                    AlertDialog.Builder(requireContext()).apply {
+                        setTitle("Yeah!")
+                        setMessage("Log in success, happy shopping!")
+                        setPositiveButton("Next") { _, _ ->
+                            startActivity(Intent(requireContext(), MainActivity::class.java))
+                            requireActivity().finish()
                         }
+                        create()
+                        show()
                     }
                 }
             }

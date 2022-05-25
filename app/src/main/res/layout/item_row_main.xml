@@ -7,8 +7,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card"
-        android:layout_width="150dp"
-        android:layout_height="270dp"
+        android:layout_width="170dp"
+        android:layout_height="280dp"
         android:layout_marginBottom="20dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
@@ -28,6 +28,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
+                android:layout_margin="10dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/cauliflowers"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -43,40 +44,41 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="12dp"
+                android:layout_marginTop="16dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="Sayur Bayam"
+                android:text="Cabai Merah Keriting"
                 android:textColor="?attr/colorOnSecondary"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/relativeLayout" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tv_qty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1 ikat"
+                android:text="100g"
                 android:textColor="?attr/colorOnSecondary"
-                app:layout_constraintStart_toStartOf="@+id/textView"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintStart_toStartOf="@+id/tv_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
             <TextView
+                android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
                 android:text="Rp4000,00"
                 android:textColor="?attr/colorOnSecondary"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/relativeLayout"
-                app:layout_constraintStart_toStartOf="@+id/textView2" />
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toStartOf="@+id/tv_qty"
+                app:layout_constraintTop_toBottomOf="@+id/tv_qty" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

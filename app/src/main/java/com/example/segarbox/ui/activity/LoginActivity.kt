@@ -63,6 +63,7 @@ class LoginActivity : AppCompatActivity() {
             when {
                 isDarkMode -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    binding.logo.setImageResource(R.drawable.logo_green)
                 }
                 else -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)

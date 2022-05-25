@@ -154,44 +154,58 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Start Shopping"
+            android:text="Hello, "
             android:textColor="?attr/colorOnSecondary"
-            android:textSize="20dp"
+            android:textSize="24dp"
             android:textStyle="bold"
             android:theme="@style/poppinsMedium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header" />
 
+        <TextView
+            android:id="@+id/happy_shopping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start shopping at SegarBox!"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="16dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/tv_title2"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title2" />
+
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:singleSelection="true"
-            app:layout_constraintTop_toBottomOf="@id/tv_title2"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp">
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@+id/happy_shopping"
+            app:layout_constraintTop_toBottomOf="@+id/happy_shopping"
+            app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/c_most_popular"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/poppinsMedium"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:text="Most Popular"/>
+                android:text="Most Popular"
+                android:theme="@style/poppinsMedium" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/c_veggies"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/poppinsMedium"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:text="Veggies"/>
+                android:text="Veggies"
+                android:theme="@style/poppinsMedium" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/c_fruits"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/poppinsMedium"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:text="Fruits"/>
+                android:text="Fruits"
+                android:theme="@style/poppinsMedium" />
 
 
         </com.google.android.material.chip.ChipGroup>
