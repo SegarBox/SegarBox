@@ -16,23 +16,23 @@ import android.R.attr.state_focused
 import android.content.Context
 import android.content.Intent
 import android.graphics.PorterDuff
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.NestedScrollView
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.data.local.model.DummyModel
 import com.example.segarbox.helper.getColorFromAttr
 import com.example.segarbox.helper.getHelperDrawable
 import com.example.segarbox.ui.activity.*
-import com.example.segarbox.ui.adapter.DummyAdapter
-import com.example.segarbox.ui.adapter.DummyAdapter2
+import com.example.segarbox.ui.adapter.DummyAdapterAllProducts
+import com.example.segarbox.ui.adapter.DummyAdapterStartShopping
+import com.example.segarbox.ui.adapter.MarginGridItemDecoration
 import com.example.segarbox.ui.adapter.MarginItemDecoration
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
@@ -180,23 +180,22 @@ class HomeFragment : Fragment(), View.OnClickListener {
             seeAllDummy
         )
 
-        val adapter2 = DummyAdapter2()
-        adapter2.submitList(listItem)
+        val adapterStartShopping = DummyAdapterStartShopping()
+        adapterStartShopping.submitList(listItem)
 
-//        binding.content.rv1.apply {
-//            layoutManager =
-//                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//            setHasFixedSize(true)
-//            adapter = adapter1
-//        }
+        val adapterAllProduct = DummyAdapterAllProducts()
+        adapterAllProduct.submitList(listItem)
 
-        binding.content.rv2.apply {
-
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.content.rvStartShopping.apply {
             addItemDecoration(MarginItemDecoration(48))
             setHasFixedSize(true)
-            adapter = adapter2
+            adapter = adapterStartShopping
+        }
+
+        binding.content.rvAllProducts.apply {
+            addItemDecoration(MarginGridItemDecoration(48))
+            setHasFixedSize(true)
+            adapter = adapterAllProduct
         }
     }
 

@@ -1,17 +1,13 @@
 package com.example.segarbox.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.segarbox.data.local.model.DummyModelTransaction
 import com.example.segarbox.databinding.FragmentInProgressBinding
-import com.example.segarbox.ui.adapter.DummyAdapter
-import com.example.segarbox.ui.adapter.DummyAdapter2
 import com.example.segarbox.ui.adapter.DummyAdapterTransaction
 
 class InProgressFragment : Fragment() {
