@@ -4,12 +4,14 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class SettingPreferences private constructor(private val dataStore: DataStore<Preferences>){
 
     private val keyTheme = booleanPreferencesKey("key_theme")
+    private val keyToken = stringPreferencesKey("key_token")
 
     fun getTheme(): Flow<Boolean> {
         return dataStore.data.map {
@@ -20,6 +22,18 @@ class SettingPreferences private constructor(private val dataStore: DataStore<Pr
     suspend fun saveTheme(isDarkMode: Boolean) {
         dataStore.edit {
             it[keyTheme] = isDarkMode
+        }
+    }
+
+    fun getToken(): Flow<String> {
+        return dataStore.data.map {
+            it[keyToken] ?: ""
+        }
+    }
+
+    suspend fun saveToken(token: String) {
+        dataStore.edit {
+            it[keyToken] = token
         }
     }
 

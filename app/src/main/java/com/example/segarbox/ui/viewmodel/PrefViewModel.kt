@@ -19,4 +19,14 @@ class PrefViewModel(private val pref: SettingPreferences): ViewModel() {
         }
     }
 
+    fun getToken(): LiveData<String> {
+        return pref.getToken().asLiveData()
+    }
+
+    fun saveToken(token: String) {
+        viewModelScope.launch {
+            pref.saveToken(token)
+        }
+    }
+
 }
