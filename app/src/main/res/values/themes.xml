@@ -29,8 +29,5 @@
         <item name="fontFamily">@font/poppins_medium</item>
     </style>
 
-    <style name="onWhite">
-        <item name="android:color">@color/white</item>
-    </style>
 
 </resources>

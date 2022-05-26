@@ -52,5 +52,6 @@
     <string name="choose">Choose</string>
     <string name="shipment_details">Shipment Details</string>
     <string name="etd">%s Hari</string>
+    <string name="see_all">See All</string>
 
 </resources>
