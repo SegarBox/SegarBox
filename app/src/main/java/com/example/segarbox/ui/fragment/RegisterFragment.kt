@@ -1,30 +1,45 @@
 package com.example.segarbox.ui.fragment
 
-import android.content.Intent
+import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
+import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.segarbox.R
+import com.example.segarbox.data.local.datastore.SettingPreferences
+import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.FragmentRegisterBinding
 import com.example.segarbox.helper.getColorFromAttr
-import com.example.segarbox.ui.activity.MainActivity
+import com.example.segarbox.ui.viewmodel.PrefViewModel
+import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
+import com.example.segarbox.ui.viewmodel.RegisterViewModel
+import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.material.R.attr.colorOnSecondary
 import com.google.android.material.R.attr.colorPrimary
 
+private val Context.dataStore by preferencesDataStore(name = "settings")
 
 class RegisterFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
+    private val prefViewModel by viewModels<PrefViewModel> {
+        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
+    }
+    private val registerViewModel by viewModels<RegisterViewModel> {
+        RetrofitViewModelFactory.getInstance(RetrofitRepository())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         _binding = FragmentRegisterBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -36,6 +51,7 @@ class RegisterFragment : Fragment(), View.OnClickListener {
 
     private fun init() {
         setTextColor()
+        observeData()
         binding.btnRegister.setOnClickListener(this)
     }
 
@@ -89,103 +105,69 @@ class RegisterFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun isNotEmail(string: String): Boolean {
-        return !android.util.Patterns.EMAIL_ADDRESS.matcher(string).matches()
+    private fun observeData() {
+        registerViewModel.registerResponse.observe(viewLifecycleOwner) { registerResponse ->
+            // Jika berhasil register
+            when {
+                registerResponse.token != null -> {
+                    prefViewModel.saveToken(registerResponse.token)
+                    requireActivity().finish()
+                }
+                // Jika tidak berhasil register
+                else -> {
+
+                    // Jika error input
+                    when {
+                        registerResponse.errors != null -> {
+
+                            registerResponse.errors.apply {
+
+                                if (this.name != null && this.name.isNotEmpty()) {
+                                    binding.etName.error = this.name[0]
+                                }
+
+                                if (this.email != null && this.email.isNotEmpty()) {
+                                    binding.etEmail.error = this.email[0]
+                                }
+
+                                if (this.phone != null && this.phone.isNotEmpty()) {
+                                    binding.etPhone.error = this.phone[0]
+                                }
+
+                                if (this.password != null && this.password.isNotEmpty()) {
+                                    binding.etPassword.error = this.password[0]
+                                }
+                            }
+                        }
+
+                        // Jika error dari catch
+                        else -> {
+                            registerResponse.message?.let {
+                                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        registerViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+                binding.progressBar.isVisible = isLoading
+            binding.btnRegister.isEnabled = !isLoading
+        }
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_register -> {
-                val name = binding.etName.text.toString()
-                val email = binding.etEmail.text.toString()
-                val phone = binding.etPhone.text.toString()
-                val password = binding.etPassword.text.toString()
-                val conPassword = binding.etConPassword.text.toString()
 
-                if (name.isEmpty()) {
-                    binding.etName.error = "Input name"
-                }
-                if (email.isEmpty()) {
-                    binding.etEmail.error = "Input email"
-                }
-                if (isNotEmail(email)) {
-                    binding.etEmail.error = "Input a valid email"
-                }
-                if (phone.isEmpty()){
-                    binding.etPhone.error = "Input phone number"
-                }
-                if(password.isEmpty()){
-                    binding.etPassword.error = "Input password"
-                }
-                if(conPassword.isEmpty()){
-                    binding.etConPassword.error = "Confirm your password"
-                }
-                if(conPassword != password){
-                    binding.etConPassword.error = "Password is not match"
-                }
-
-                if (binding.etName.error == null && binding.etEmail.error == null && binding.etPhone.error == null && binding.etPassword.error == null && binding.etConPassword.error == null){
-                    AlertDialog.Builder(requireContext()).apply {
-                        setTitle("Yeay!")
-                        setMessage("Sign up success, happy shopping!")
-                        setPositiveButton("Next") { _, _ ->
-                            startActivity(Intent(requireContext(), MainActivity::class.java))
-                            requireActivity().finish()
-                        }
-                        create()
-                        show()
-                    }
-                } else {
-                    AlertDialog.Builder(requireContext()).apply {
-                        setTitle("Error!")
-                        setMessage("Please fill all the required field correctly!")
-                        setPositiveButton("Back") { _, _ ->
-
-                        }
-                    }
-                }
-
-                when {
-//                    name.isEmpty() -> {
-//                        binding.tiName.error = "Input name"
-////                        binding.etName.error = "Input name"
-//                    }
-//                    name.isNotEmpty() -> {
-//                        binding.tiName.error = null
-//                        binding.tiName.helperText = null
-////                        binding.etName.error = null
-//                    }
-//                    email.isEmpty() -> {
-//                        binding.etEmail.error = "Input email"
-//                    }
-//                    isNotEmail(email) -> {
-//                        binding.etEmail.error = "Input a valid email"
-//                    }
-//                    phone.isEmpty() -> {
-//                        binding.tiPhone.error = "Input phone number"
-//                    }
-//                    password.isEmpty() -> {
-//                        binding.tiPassword.error = "Input password"
-//                    }
-//                    conPassword.isEmpty() -> {
-//                        binding.tiPassword.error = "Confirm your password"
-//                    }
-//                    conPassword != password -> {
-//                        binding.tiConPassword.error = "Password is not match"
-//                    }
-//                    else -> {
-//                        AlertDialog.Builder(requireContext()).apply {
-//                            setTitle("Yeay!")
-//                            setMessage("Sign up success, happy shopping!")
-//                            setPositiveButton("Next") { _, _ ->
-//                                startActivity(Intent(requireContext(), MainActivity::class.java))
-//                                requireActivity().finish()
-//                            }
-//                            create()
-//                            show()
-//                        }
-//                    }
-                }
+                registerViewModel.register(
+                    name = binding.etName.text.toString(),
+                    email = binding.etEmail.text.toString(),
+                    phone = binding.etPhone.text.toString(),
+                    password = binding.etPassword.text.toString(),
+                    password_confirmation = binding.etConPassword.text.toString()
+                )
             }
         }
     }

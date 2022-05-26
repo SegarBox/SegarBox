@@ -76,16 +76,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                     binding.etPassword.error = "Input password"
                 }
                 if (email.isNotEmpty() && password.isNotEmpty()){
-                    AlertDialog.Builder(requireContext()).apply {
-                        setTitle("Yeah!")
-                        setMessage("Log in success, happy shopping!")
-                        setPositiveButton("Next") { _, _ ->
-                            startActivity(Intent(requireContext(), MainActivity::class.java))
-                            requireActivity().finish()
-                        }
-                        create()
-                        show()
-                    }
+                    requireActivity().finish()
                 }
             }
         }

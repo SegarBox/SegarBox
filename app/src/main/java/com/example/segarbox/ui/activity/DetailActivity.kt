@@ -1,13 +1,20 @@
 package com.example.segarbox.ui.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.datastore.preferences.preferencesDataStore
 import com.example.segarbox.R
+import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.databinding.ActivityDetailBinding
+import com.example.segarbox.ui.viewmodel.PrefViewModel
+import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 
 class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -35,6 +42,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             tvTitle.text = "Cauliflower"
         }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

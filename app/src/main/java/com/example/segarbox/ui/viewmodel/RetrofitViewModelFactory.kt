@@ -10,6 +10,7 @@ class RetrofitViewModelFactory private constructor(private val retrofitRepositor
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(MapsViewModel::class.java) -> MapsViewModel(retrofitRepository) as T
+            modelClass.isAssignableFrom(RegisterViewModel::class.java) -> RegisterViewModel(retrofitRepository) as T
             else -> throw IllegalArgumentException("Unknown ViewModel Class : ${modelClass.name}")
         }
     }
