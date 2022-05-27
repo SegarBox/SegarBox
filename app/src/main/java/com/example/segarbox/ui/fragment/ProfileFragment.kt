@@ -1,20 +1,32 @@
 package com.example.segarbox.ui.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.fragment.app.viewModels
 import com.example.segarbox.R
+import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.databinding.FragmentProfileBinding
 import com.example.segarbox.ui.activity.CartActivity
+import com.example.segarbox.ui.activity.LoginActivity
+import com.example.segarbox.ui.viewmodel.PrefViewModel
+import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 
+private val Context.dataStore by preferencesDataStore(name = "settings")
 class ProfileFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+    private val prefViewModel by viewModels<PrefViewModel> {
+        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +43,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
     private fun init() {
         setToolbar()
+        observeData()
         binding.toolbar.ivCart.setOnClickListener(this)
     }
 
@@ -38,6 +51,17 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         binding.toolbar.apply {
             ivCart.isVisible = true
             tvTitle.text = "Profile"
+        }
+    }
+
+    private fun observeData() {
+        prefViewModel.getToken().observe(viewLifecycleOwner) { token ->
+
+            Toast.makeText(requireContext(), "token : $token", Toast.LENGTH_SHORT).show()
+            if (token.isEmpty()) {
+                startActivity(Intent(requireActivity(), LoginActivity::class.java))
+                requireActivity().onBackPressed()
+            }
         }
     }
 
