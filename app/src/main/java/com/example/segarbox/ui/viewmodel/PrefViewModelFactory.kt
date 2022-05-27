@@ -9,10 +9,10 @@ class PrefViewModelFactory private constructor(private val pref: SettingPreferen
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(PrefViewModel::class.java)) {
-            return PrefViewModel(pref) as T
+        return when {
+            modelClass.isAssignableFrom(PrefViewModel::class.java) -> PrefViewModel(pref) as T
+            else -> throw IllegalArgumentException("Unknown ViewModel Class : ${modelClass.name}")
         }
-        throw IllegalArgumentException("Unknown ViewModel Class : ${modelClass.name}")
     }
 
     companion object {

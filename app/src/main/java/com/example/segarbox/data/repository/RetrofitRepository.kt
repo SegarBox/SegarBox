@@ -5,7 +5,6 @@ import com.beust.klaxon.Klaxon
 import com.example.segarbox.BuildConfig
 import com.example.segarbox.data.remote.api.ApiConfig
 import com.example.segarbox.data.remote.response.*
-import okhttp3.ResponseBody
 
 
 class RetrofitRepository {
@@ -92,6 +91,27 @@ class RetrofitRepository {
 
         } catch (ex: Exception) {
             return RegisterResponse(message = ex.message.toString())
+        }
+    }
+
+    suspend fun login(
+        email: String,
+        password: String
+    ): LoginResponse {
+        try {
+            val request = segarBoxApiServices.login(email, password)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+
+            val result = Klaxon().parse<LoginResponse>(request.errorBody()!!.string())
+            return result!!
+
+        } catch (ex: Exception) {
+            return LoginResponse(message = ex.message.toString())
         }
     }
 
