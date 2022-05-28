@@ -11,6 +11,7 @@ import com.example.segarbox.R
 import com.example.segarbox.data.local.model.DummyModel
 import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.databinding.ItemRowMainBinding
+import com.example.segarbox.helper.formatQty
 import com.example.segarbox.helper.formatToRupiah
 import com.example.segarbox.helper.getColorFromAttr
 import com.google.android.material.R.attr.colorSecondaryVariant
@@ -45,7 +46,7 @@ class StartShoppingAdapter: ListAdapter<ProductItem, StartShoppingAdapter.StartS
 
         holder.binding.apply {
             tvName.text = item.label
-            tvQty.text = item.qty.toString()
+            tvQty.text = item.qty.formatQty(context)
             tvPrice.text = item.price.formatToRupiah()
         }
 

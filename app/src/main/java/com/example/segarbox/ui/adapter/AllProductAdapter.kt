@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.example.segarbox.R
 import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.databinding.ItemRowMainBinding
+import com.example.segarbox.helper.formatQty
 import com.example.segarbox.helper.formatToRupiah
 
 class AllProductAdapter: ListAdapter<ProductItem, AllProductAdapter.AllProductViewHolder>(DiffCallbackAllProduct) {
@@ -30,7 +31,7 @@ class AllProductAdapter: ListAdapter<ProductItem, AllProductAdapter.AllProductVi
 
                 tvName.text = it.label
                 tvPrice.text = it.price.formatToRupiah()
-                tvQty.text = it.qty.toString()
+                tvQty.text = it.qty.formatQty(context)
             }
 
         }

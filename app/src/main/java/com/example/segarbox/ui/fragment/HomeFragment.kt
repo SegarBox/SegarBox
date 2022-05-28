@@ -174,6 +174,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
             }
 
             override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+
             }
 
             override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {}

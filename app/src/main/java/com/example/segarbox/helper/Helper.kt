@@ -56,3 +56,7 @@ fun String.tidyUpPosEtd(context: Context): String {
 fun Int.formatToRupiah(): String {
     return NumberFormat.getCurrencyInstance(Locale("id", "ID")).format(this)
 }
+
+fun Int.formatQty(context: Context): String {
+    return context.getString(R.string.gram, this.toString())
+}
