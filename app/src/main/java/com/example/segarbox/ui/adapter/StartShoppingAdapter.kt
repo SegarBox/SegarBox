@@ -7,20 +7,24 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.segarbox.R
 import com.example.segarbox.data.local.model.DummyModel
+import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.databinding.ItemRowMainBinding
+import com.example.segarbox.helper.formatQty
+import com.example.segarbox.helper.formatToRupiah
 import com.example.segarbox.helper.getColorFromAttr
 import com.google.android.material.R.attr.colorSecondaryVariant
 
-class DummyAdapterStartShopping: ListAdapter<DummyModel, DummyAdapterStartShopping.DummyViewHolder>(DummyDiffCallback) {
-    inner class DummyViewHolder(var binding: ItemRowMainBinding): RecyclerView.ViewHolder(binding.root)
+class StartShoppingAdapter: ListAdapter<ProductItem, StartShoppingAdapter.StartShoppingViewHolder>(DiffCallbackAllProduct) {
+    inner class StartShoppingViewHolder(var binding: ItemRowMainBinding): RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DummyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StartShoppingViewHolder {
         val binding = ItemRowMainBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return DummyViewHolder(binding)
+        return StartShoppingViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: DummyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: StartShoppingViewHolder, position: Int) {
         val context = holder.binding.root.context
         val item = getItem(position)
 
@@ -37,11 +41,17 @@ class DummyAdapterStartShopping: ListAdapter<DummyModel, DummyAdapterStartShoppi
         )
 
         Glide.with(context)
-            .load(item.image)
+            .load(R.drawable.cauliflowers)
             .into(holder.binding.imageView)
 
+        holder.binding.apply {
+            tvName.text = item.label
+            tvQty.text = item.qty.formatQty(context)
+            tvPrice.text = item.price.formatToRupiah()
+        }
 
-        if (position == itemCount - 1) {
+
+        if (position == itemCount - 1 && (item.category == "dummyVeggies" || item.category == "dummyFruits")) {
             holder.binding.apply {
                 imageView.isVisible = false
                 tvName.isVisible = false

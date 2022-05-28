@@ -1,6 +1,7 @@
 package com.example.segarbox.data.repository
 
 import android.util.Log
+import android.util.Size
 import androidx.lifecycle.LiveData
 import androidx.paging.*
 import com.beust.klaxon.Klaxon
@@ -119,14 +120,14 @@ class RetrofitRepository {
         }
     }
 
-    fun getAllProduct(
+    fun getAllProductPaging(
         apiServices: ApiServices,
         database: MainDatabase,
     ): LiveData<PagingData<ProductItem>> {
 
         @OptIn(ExperimentalPagingApi::class)
         return Pager(
-            config = PagingConfig(pageSize = 5),
+            config = PagingConfig(pageSize = 10),
             remoteMediator = ProductRemoteMediator(
                 apiServices = apiServices,
                 database = database),
@@ -135,6 +136,57 @@ class RetrofitRepository {
             }
         ).liveData
 
+    }
+
+    suspend fun getAllProduct(page: Int, size: Int): ProductResponse {
+        try {
+            val request = segarBoxApiServices.getAllProduct(page, size)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+
+            return ProductResponse(listOf())
+
+        } catch (ex: Exception) {
+            return ProductResponse(listOf())
+        }
+    }
+
+    suspend fun getCategoryProduct(page: Int, size: Int, category: String): ProductResponse {
+        try {
+            val request = segarBoxApiServices.getCategoryProduct(page, size, category)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+
+            return ProductResponse(listOf())
+
+        } catch (ex: Exception) {
+            return ProductResponse(listOf())
+        }
+    }
+
+    suspend fun getLabelProduct(page: Int, size: Int, label: String): ProductResponse {
+        try {
+            val request = segarBoxApiServices.getLabelProduct(page, size, label)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+
+            return ProductResponse(listOf())
+
+        } catch (ex: Exception) {
+            return ProductResponse(listOf())
+        }
     }
 
 

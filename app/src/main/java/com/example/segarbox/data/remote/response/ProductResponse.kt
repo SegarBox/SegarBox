@@ -19,17 +19,11 @@ data class ProductItem(
 	@field:SerializedName("size")
 	val size: Int,
 
-	@field:SerializedName("updated_at")
-	val updatedAt: String,
-
 	@field:SerializedName("price")
 	val price: Int,
 
 	@field:SerializedName("qty")
 	val qty: Int,
-
-	@field:SerializedName("created_at")
-	val createdAt: String,
 
 	@PrimaryKey
 	@field:SerializedName("id")
@@ -42,8 +36,6 @@ data class ProductItem(
 	val detail: String,
 
 	@field:SerializedName("category")
-	val category: String,
+	val category: String = "veggies",
 
-	@field:SerializedName("deleted_at")
-	val deletedAt: String
 ): Parcelable
