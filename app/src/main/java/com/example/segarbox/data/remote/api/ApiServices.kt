@@ -52,6 +52,22 @@ interface ApiServices {
     @Headers("Accept: application/json")
     suspend fun getAllProduct(
         @Query("page[number]") page: Int = 1,
-        @Query("page[size]") size: Int = 5
+        @Query("page[size]") size: Int = 10
+    ): Response<ProductResponse>
+
+    @GET("products")
+    @Headers("Accept: application/json")
+    suspend fun getCategoryProduct(
+        @Query("page[number]") page: Int = 1,
+        @Query("page[size]") size: Int = 10,
+        @Query("filter[category]") category: String
+    ): Response<ProductResponse>
+
+    @GET("products")
+    @Headers("Accept: application/json")
+    suspend fun getLabelProduct(
+        @Query("page[number]") page: Int = 1,
+        @Query("page[size]") size: Int = 10,
+        @Query("filter[label]") label: String
     ): Response<ProductResponse>
 }

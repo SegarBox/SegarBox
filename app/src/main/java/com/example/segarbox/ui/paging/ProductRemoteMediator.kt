@@ -14,14 +14,17 @@ import com.example.segarbox.data.remote.response.ProductItem
 @OptIn(ExperimentalPagingApi::class)
 class ProductRemoteMediator(
     private val database: MainDatabase,
-    private val apiServices: ApiServices
-): RemoteMediator<Int, ProductItem>() {
+    private val apiServices: ApiServices,
+) : RemoteMediator<Int, ProductItem>() {
 
     override suspend fun initialize(): InitializeAction {
         return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
-    override suspend fun load(loadType: LoadType, state: PagingState<Int, ProductItem>, ): MediatorResult {
+    override suspend fun load(
+        loadType: LoadType,
+        state: PagingState<Int, ProductItem>,
+    ): MediatorResult {
 
         val page = when (loadType) {
             LoadType.REFRESH -> {
@@ -64,6 +67,7 @@ class ProductRemoteMediator(
                 val keys = responseBody.data.map {
                     RemoteKeys(id = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
+
                 database.productDao().insertProduct(responseBody.data)
                 database.remoteKeysDao().insertAll(keys)
             }

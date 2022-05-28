@@ -1,22 +1,15 @@
 package com.example.segarbox.ui.fragment
 
-import android.content.res.ColorStateList
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import com.google.android.material.R.attr.colorPrimary
-import com.google.android.material.R.attr.colorSecondaryVariant
-import android.view.LayoutInflater
-import kotlin.math.max
-import kotlin.math.min
-import android.view.View
-import android.view.ViewGroup
-import com.example.segarbox.R
-import com.example.segarbox.databinding.FragmentHomeBinding
 import android.R.attr.state_focused
-import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.PorterDuff
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.graphics.drawable.DrawableCompat
@@ -24,22 +17,30 @@ import androidx.core.widget.NestedScrollView
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.segarbox.BuildConfig
-import com.example.segarbox.data.local.database.MainDatabase
+import androidx.recyclerview.widget.RecyclerView
+import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
-import com.example.segarbox.data.local.model.DummyModel
-import com.example.segarbox.data.remote.api.ApiConfig
+import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.data.repository.RoomRepository
+import com.example.segarbox.databinding.FragmentHomeBinding
 import com.example.segarbox.helper.getColorFromAttr
 import com.example.segarbox.helper.getHelperDrawable
 import com.example.segarbox.ui.activity.*
-import com.example.segarbox.ui.adapter.*
+import com.example.segarbox.ui.adapter.AllProductAdapter
+import com.example.segarbox.ui.adapter.MarginGridItemDecoration
+import com.example.segarbox.ui.adapter.MarginItemDecoration
+import com.example.segarbox.ui.adapter.StartShoppingAdapter
 import com.example.segarbox.ui.viewmodel.MainViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitRoomViewModelFactory
+import com.google.android.material.R.attr.colorPrimary
+import com.google.android.material.R.attr.colorSecondaryVariant
+import kotlin.math.max
+import kotlin.math.min
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -49,12 +50,15 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private val binding get() = _binding!!
     private var ratio = 0F
     private var isThemeDarkMode = false
-    private lateinit var allProductAdapter: AllProductAdapter
+    private val allProductAdapter = AllProductAdapter()
+    private val startShoppingAdapter = StartShoppingAdapter()
+    private var checkedChips = ""
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
     }
     private val mainViewModel by viewModels<MainViewModel> {
-        RetrofitRoomViewModelFactory.getInstance(RoomRepository(requireActivity().application), RetrofitRepository())
+        RetrofitRoomViewModelFactory.getInstance(RoomRepository(requireActivity().application),
+            RetrofitRepository())
     }
 
     override fun onCreateView(
@@ -74,6 +78,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         setToolbar()
         setAdapter()
         observeData()
+        scrollToTopListAdapter()
         binding.content.btnDetail.setOnClickListener(this)
         binding.content.btnDarkmode.setOnClickListener(this)
         binding.toolbar.ivCart.setOnClickListener(this)
@@ -154,6 +159,27 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    private fun scrollToTopListAdapter() {
+        startShoppingAdapter.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+            }
+
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {}
+
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {}
+
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                binding.content.rvStartShopping.scrollToPosition(0)
+            }
+
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+            }
+
+            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {}
+        })
+    }
+
     private fun observeData() {
         prefViewModel.getTheme().observe(viewLifecycleOwner) { isDarkMode ->
             when {
@@ -171,49 +197,62 @@ class HomeFragment : Fragment(), View.OnClickListener {
             }
         }
 
-        mainViewModel.getAllProduct(
-            apiServices = ApiConfig.getApiServices(BuildConfig.BASE_URL_SEGARBOX),
-            database = MainDatabase.getDatabase(requireActivity().application)
-        ).observe(viewLifecycleOwner) {
-            allProductAdapter.submitData(lifecycle, it)
+
+        mainViewModel.allProductResponse.observe(viewLifecycleOwner) {
+            allProductAdapter.submitList(it.data)
         }
+
+
+        binding.content.chipMostPopular.setOnClickListener {
+            mainViewModel.getLabelProduct(1, 10, "bayam")
+            mainViewModel.saveCheckedChips("Most")
+        }
+
+        binding.content.chipVeggies.setOnClickListener {
+            mainViewModel.getCategoryProduct(1, 10, "veggies")
+            mainViewModel.saveCheckedChips("veggies")
+        }
+
+        binding.content.chipFruits.setOnClickListener {
+            mainViewModel.getCategoryProduct(1, 10, "fruits")
+            mainViewModel.saveCheckedChips("fruits")
+        }
+
+        mainViewModel.checkedChips.observe(viewLifecycleOwner) {
+            checkedChips = it
+        }
+
+        mainViewModel.productResponse.observe(viewLifecycleOwner) {
+            val listProduct = arrayListOf<ProductItem>()
+            var dummy: ProductItem? = null
+            if (checkedChips == "fruits") {
+                dummy = ProductItem(1, 1, 1, it.data.size, "a", "a", "dummyFruits")
+            }
+            if (checkedChips == "veggies") {
+                dummy = ProductItem(1, 1, 1, it.data.size, "a", "a", "dummyVeggies")
+            }
+            listProduct.addAll(it.data)
+            dummy?.let {
+                listProduct.add(dummy)
+            }
+            startShoppingAdapter.submitList(listProduct)
+        }
+
     }
 
     private fun setAdapter() {
 
-        val seeAllDummy = DummyModel()
-
-        val listItem = arrayListOf(
-            DummyModel(),
-            DummyModel(),
-            DummyModel(),
-            DummyModel(),
-            DummyModel(),
-            DummyModel(),
-            DummyModel(),
-            DummyModel(),
-            seeAllDummy
-        )
-
-        val adapterStartShopping = DummyAdapterStartShopping()
-        adapterStartShopping.submitList(listItem)
-
-
         binding.content.rvStartShopping.apply {
+            adapter = startShoppingAdapter
             addItemDecoration(MarginItemDecoration(48))
-            setHasFixedSize(true)
-            adapter = adapterStartShopping
         }
 
         binding.content.rvAllProducts.apply {
-            allProductAdapter = AllProductAdapter()
+            adapter = allProductAdapter
             addItemDecoration(MarginGridItemDecoration(48))
-            setHasFixedSize(true)
-            adapter = allProductAdapter.withLoadStateFooter(
-                footer = LoadingStateAdapter { allProductAdapter.retry() }
-            )
         }
     }
+
 
     override fun onResume() {
         super.onResume()

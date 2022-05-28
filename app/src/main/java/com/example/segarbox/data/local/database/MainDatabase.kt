@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.segarbox.data.remote.response.CityResults
 import com.example.segarbox.data.remote.response.ProductItem
 
-@Database(entities = [CityResults::class, ProductItem::class, RemoteKeys::class], version = 2, exportSchema = false)
+@Database(entities = [CityResults::class, ProductItem::class, RemoteKeys::class], version = 3, exportSchema = false)
 abstract class MainDatabase: RoomDatabase() {
     abstract fun cityDao(): CityDao
     abstract fun productDao(): ProductDao
