@@ -13,9 +13,11 @@ import android.view.ViewGroup
 import com.example.segarbox.R
 import com.example.segarbox.databinding.FragmentHomeBinding
 import android.R.attr.state_focused
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.graphics.PorterDuff
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.NestedScrollView
@@ -23,19 +25,21 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.segarbox.BuildConfig
+import com.example.segarbox.data.local.database.MainDatabase
 import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.data.local.model.DummyModel
+import com.example.segarbox.data.remote.api.ApiConfig
+import com.example.segarbox.data.repository.RetrofitRepository
+import com.example.segarbox.data.repository.RoomRepository
 import com.example.segarbox.helper.getColorFromAttr
 import com.example.segarbox.helper.getHelperDrawable
 import com.example.segarbox.ui.activity.*
-import com.example.segarbox.ui.adapter.DummyAdapterAllProducts
-import com.example.segarbox.ui.adapter.DummyAdapterStartShopping
-import com.example.segarbox.ui.adapter.MarginGridItemDecoration
-import com.example.segarbox.ui.adapter.MarginItemDecoration
+import com.example.segarbox.ui.adapter.*
+import com.example.segarbox.ui.viewmodel.MainViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
+import com.example.segarbox.ui.viewmodel.RetrofitRoomViewModelFactory
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -45,8 +49,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private val binding get() = _binding!!
     private var ratio = 0F
     private var isThemeDarkMode = false
+    private lateinit var allProductAdapter: AllProductAdapter
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
+    }
+    private val mainViewModel by viewModels<MainViewModel> {
+        RetrofitRoomViewModelFactory.getInstance(RoomRepository(requireActivity().application), RetrofitRepository())
     }
 
     override fun onCreateView(
@@ -64,8 +72,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     private fun init() {
         setToolbar()
-        observeData()
         setAdapter()
+        observeData()
         binding.content.btnDetail.setOnClickListener(this)
         binding.content.btnDarkmode.setOnClickListener(this)
         binding.toolbar.ivCart.setOnClickListener(this)
@@ -162,6 +170,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 }
             }
         }
+
+        mainViewModel.getAllProduct(
+            apiServices = ApiConfig.getApiServices(BuildConfig.BASE_URL_SEGARBOX),
+            database = MainDatabase.getDatabase(requireActivity().application)
+        ).observe(viewLifecycleOwner) {
+            allProductAdapter.submitData(lifecycle, it)
+        }
     }
 
     private fun setAdapter() {
@@ -183,8 +198,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
         val adapterStartShopping = DummyAdapterStartShopping()
         adapterStartShopping.submitList(listItem)
 
-        val adapterAllProduct = DummyAdapterAllProducts()
-        adapterAllProduct.submitList(listItem)
 
         binding.content.rvStartShopping.apply {
             addItemDecoration(MarginItemDecoration(48))
@@ -193,9 +206,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
 
         binding.content.rvAllProducts.apply {
+            allProductAdapter = AllProductAdapter()
             addItemDecoration(MarginGridItemDecoration(48))
             setHasFixedSize(true)
-            adapter = adapterAllProduct
+            adapter = allProductAdapter.withLoadStateFooter(
+                footer = LoadingStateAdapter { allProductAdapter.retry() }
+            )
         }
     }
 

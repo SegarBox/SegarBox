@@ -1,10 +1,15 @@
 package com.example.segarbox.data.repository
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.paging.*
 import com.beust.klaxon.Klaxon
 import com.example.segarbox.BuildConfig
+import com.example.segarbox.data.local.database.MainDatabase
 import com.example.segarbox.data.remote.api.ApiConfig
+import com.example.segarbox.data.remote.api.ApiServices
 import com.example.segarbox.data.remote.response.*
+import com.example.segarbox.ui.paging.ProductRemoteMediator
 
 
 class RetrofitRepository {
@@ -113,6 +118,24 @@ class RetrofitRepository {
         } catch (ex: Exception) {
             return LoginResponse(message = ex.message.toString())
         }
+    }
+
+    fun getAllProduct(
+        apiServices: ApiServices,
+        database: MainDatabase,
+    ): LiveData<PagingData<ProductItem>> {
+
+        @OptIn(ExperimentalPagingApi::class)
+        return Pager(
+            config = PagingConfig(pageSize = 5),
+            remoteMediator = ProductRemoteMediator(
+                apiServices = apiServices,
+                database = database),
+            pagingSourceFactory = {
+                database.productDao().getAllProduct()
+            }
+        ).liveData
+
     }
 
 

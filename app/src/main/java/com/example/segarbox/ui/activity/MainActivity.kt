@@ -8,7 +8,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.segarbox.BuildConfig
 import com.example.segarbox.R
+import com.example.segarbox.data.local.database.MainDatabase
+import com.example.segarbox.data.remote.api.ApiConfig
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.data.repository.RoomRepository
 import com.example.segarbox.databinding.ActivityMainBinding
@@ -69,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.cityFromApi.observe(this) { cityResponse ->
             mainViewModel.insertCityToDB(cityResponse.rajaongkir.results)
         }
+
     }
 
 

@@ -47,4 +47,11 @@ interface ApiServices {
         @Field("email") email: String,
         @Field("password") password: String
     ): Response<LoginResponse>
+
+    @GET("products")
+    @Headers("Accept: application/json")
+    suspend fun getAllProduct(
+        @Query("page[number]") page: Int = 1,
+        @Query("page[size]") size: Int = 5
+    ): Response<ProductResponse>
 }

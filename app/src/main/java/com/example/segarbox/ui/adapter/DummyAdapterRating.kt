@@ -2,11 +2,7 @@ package com.example.segarbox.ui.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
