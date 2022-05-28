@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.viewModels
@@ -24,6 +26,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
     }
@@ -44,6 +47,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     private fun init() {
         setToolbar()
         observeData()
+        darkModeSetting()
         binding.toolbar.ivCart.setOnClickListener(this)
     }
 
@@ -63,6 +67,28 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 requireActivity().onBackPressed()
             }
         }
+    }
+
+    private fun darkModeSetting(){
+        prefViewModel.getTheme().observe(viewLifecycleOwner) { isDarkMode:Boolean ->
+            when {
+                isDarkMode -> {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    binding.content.sDarkMode.isChecked = true
+//                    binding.content.darkMode.text = "Light Mode"
+                }
+
+                else -> {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    binding.content.sDarkMode.isChecked = false
+                }
+            }
+
+            binding.content.sDarkMode.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+                prefViewModel.saveTheme(isChecked)
+            }
+        }
+
     }
 
     override fun onDestroy() {

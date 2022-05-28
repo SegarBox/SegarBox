@@ -38,7 +38,6 @@ class RetrofitRepository {
     suspend fun getCityFromApi(): CityResponse {
         try {
             val request = rajaOngkirApiServices.getCity()
-
             if (request.isSuccessful) {
                 request.body()?.let {
                     return it

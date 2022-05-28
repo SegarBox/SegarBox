@@ -76,4 +76,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     //TabLayout
     implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation 'com.beust:klaxon:5.5'
 }
