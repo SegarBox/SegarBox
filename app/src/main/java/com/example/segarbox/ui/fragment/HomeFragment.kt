@@ -6,11 +6,9 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.NestedScrollView
@@ -22,10 +20,12 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
+import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.data.repository.RoomRepository
 import com.example.segarbox.databinding.FragmentHomeBinding
+import com.example.segarbox.helper.addDummyProduct
 import com.example.segarbox.helper.getColorFromAttr
 import com.example.segarbox.helper.getHelperDrawable
 import com.example.segarbox.ui.activity.*
@@ -162,8 +162,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private fun scrollToTopListAdapter() {
         startShoppingAdapter.registerAdapterDataObserver(object :
             RecyclerView.AdapterDataObserver() {
-            override fun onChanged() {
-            }
+            override fun onChanged() {}
 
             override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {}
 
@@ -173,9 +172,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 binding.content.rvStartShopping.scrollToPosition(0)
             }
 
-            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
-
-            }
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {}
 
             override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {}
         })
@@ -206,17 +203,17 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         binding.content.chipMostPopular.setOnClickListener {
             mainViewModel.getLabelProduct(1, 10, "bayam")
-            mainViewModel.saveCheckedChips("Most")
+            mainViewModel.saveCheckedChips(Code.MOST_POPULAR_CHIPS)
         }
 
         binding.content.chipVeggies.setOnClickListener {
-            mainViewModel.getCategoryProduct(1, 10, "veggies")
-            mainViewModel.saveCheckedChips("veggies")
+            mainViewModel.getCategoryProduct(1, 10, Code.VEGGIES_CATEGORY)
+            mainViewModel.saveCheckedChips(Code.VEGGIES_CHIPS)
         }
 
         binding.content.chipFruits.setOnClickListener {
-            mainViewModel.getCategoryProduct(1, 10, "fruits")
-            mainViewModel.saveCheckedChips("fruits")
+            mainViewModel.getCategoryProduct(1, 10, Code.FRUITS_CATEGORY)
+            mainViewModel.saveCheckedChips(Code.FRUITS_CHIPS)
         }
 
         mainViewModel.checkedChips.observe(viewLifecycleOwner) {
@@ -226,11 +223,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
         mainViewModel.productResponse.observe(viewLifecycleOwner) {
             val listProduct = arrayListOf<ProductItem>()
             var dummy: ProductItem? = null
-            if (checkedChips == "fruits") {
-                dummy = ProductItem(1, 1, 1, it.data.size, "a", "a", "dummyFruits")
+            if (checkedChips == Code.FRUITS_CHIPS) {
+                dummy = addDummyProduct(Code.DUMMY_FRUITS, it.data.size)
             }
-            if (checkedChips == "veggies") {
-                dummy = ProductItem(1, 1, 1, it.data.size, "a", "a", "dummyVeggies")
+            if (checkedChips == Code.VEGGIES_CHIPS) {
+                dummy = addDummyProduct(Code.DUMMY_VEGGIES, it.data.size)
             }
             listProduct.addAll(it.data)
             dummy?.let {

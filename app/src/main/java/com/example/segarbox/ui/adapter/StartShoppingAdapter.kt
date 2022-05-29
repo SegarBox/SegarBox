@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.segarbox.R
 import com.example.segarbox.data.local.model.DummyModel
+import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.databinding.ItemRowMainBinding
 import com.example.segarbox.helper.formatQty
@@ -51,7 +52,7 @@ class StartShoppingAdapter: ListAdapter<ProductItem, StartShoppingAdapter.StartS
         }
 
 
-        if (position == itemCount - 1 && (item.category == "dummyVeggies" || item.category == "dummyFruits")) {
+        if (position == itemCount - 1 && (item.category == Code.DUMMY_VEGGIES || item.category == Code.DUMMY_FRUITS)) {
             holder.binding.apply {
                 imageView.isVisible = false
                 tvName.isVisible = false

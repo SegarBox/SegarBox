@@ -7,6 +7,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import com.example.segarbox.R
+import com.example.segarbox.data.remote.response.ProductItem
 import com.google.android.gms.maps.model.LatLng
 import java.text.NumberFormat
 import java.util.*
@@ -59,4 +60,8 @@ fun Int.formatToRupiah(): String {
 
 fun Int.formatQty(context: Context): String {
     return context.getString(R.string.gram, this.toString())
+}
+
+fun addDummyProduct(dummyCategoryName: String, listSize: Int): ProductItem {
+    return ProductItem(1, 1, 1, listSize, "dummy", "dummy", dummyCategoryName)
 }
