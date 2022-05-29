@@ -111,6 +111,7 @@ class RegisterFragment : Fragment(), View.OnClickListener {
             when {
                 registerResponse.token != null -> {
                     prefViewModel.saveToken(registerResponse.token)
+                    prefViewModel.saveUserId(registerResponse.user!!.id)
                     requireActivity().finish()
                 }
                 // Jika tidak berhasil register
