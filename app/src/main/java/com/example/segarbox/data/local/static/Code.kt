@@ -16,4 +16,6 @@ object Code {
     const val FRUITS_CHIPS = "fruits_chips"
     const val VEGGIES_CHIPS = "veggies_chips"
     const val MOST_POPULAR_CHIPS = "most_popular_chips"
+    const val FRUITS_CATEGORY = "fruits"
+    const val VEGGIES_CATEGORY = "veggies"
 }

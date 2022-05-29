@@ -207,12 +207,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
 
         binding.content.chipVeggies.setOnClickListener {
-            mainViewModel.getCategoryProduct(1, 10, "veggies")
+            mainViewModel.getCategoryProduct(1, 10, Code.VEGGIES_CATEGORY)
             mainViewModel.saveCheckedChips(Code.VEGGIES_CHIPS)
         }
 
         binding.content.chipFruits.setOnClickListener {
-            mainViewModel.getCategoryProduct(1, 10, "fruits")
+            mainViewModel.getCategoryProduct(1, 10, Code.FRUITS_CATEGORY)
             mainViewModel.saveCheckedChips(Code.FRUITS_CHIPS)
         }
 
