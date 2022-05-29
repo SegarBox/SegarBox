@@ -35,9 +35,6 @@ data class UserLogin(
 	@field:SerializedName("id")
 	val id: Int,
 
-	@field:SerializedName("deleted_at")
-	val deletedAt: Any,
-
 	@field:SerializedName("email")
 	val email: String
 )

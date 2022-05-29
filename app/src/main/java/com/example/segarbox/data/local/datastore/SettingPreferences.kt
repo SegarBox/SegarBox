@@ -41,14 +41,12 @@ class SettingPreferences private constructor(private val dataStore: DataStore<Pr
     fun getUserId(): Flow<Int> {
         return dataStore.data.map {
             it[keyUserId] ?: 0
-            Log.e("eeee get", "${it[keyUserId] ?: 0}")
         }
     }
 
     suspend fun saveUserId(id: Int) {
         dataStore.edit {
             it[keyUserId] = id
-            Log.e("eeee save", it[keyUserId].toString())
         }
     }
 

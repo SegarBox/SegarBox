@@ -74,6 +74,7 @@ interface ApiServices {
     @GET("users/{id}")
     @Headers("Accept: application/json")
     suspend fun getUser(
-        @Path("id") id: Int = 0
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
     ): Response<UserResponse>
 }

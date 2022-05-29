@@ -190,11 +190,10 @@ class RetrofitRepository {
         }
     }
 
-    suspend fun getUser(id: Int): UserResponse {
+    suspend fun getUser(token: String, id: Int): UserResponse {
 
         try {
-            val request = segarBoxApiServices.getUser(id)
-            Log.e("eeee retro", id.toString())
+            val request = segarBoxApiServices.getUser(token, id)
 
             if (request.isSuccessful) {
                 request.body()?.let {

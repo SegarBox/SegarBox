@@ -65,3 +65,7 @@ fun Int.formatQty(context: Context): String {
 fun addDummyProduct(dummyCategoryName: String, listSize: Int): ProductItem {
     return ProductItem(1, 1, 1, listSize, "dummy", "dummy", dummyCategoryName)
 }
+
+fun String.tokenFormat(): String {
+    return "Bearer $this"
+}
