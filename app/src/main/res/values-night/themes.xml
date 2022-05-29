@@ -30,13 +30,14 @@
         <item name="fontFamily">@font/poppins_medium</item>
     </style>
 
-    <style name="chipsChoiceStyle" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="android:fontFamily">@font/poppins_medium</item>
-    </style>
-
     <style name="chipText" parent="TextAppearance.MaterialComponents.Chip">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="buttonColor" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/darkModeRed</item>
+        <item name="android:textColor">@color/whiteButtonText</item>
     </style>
 
 

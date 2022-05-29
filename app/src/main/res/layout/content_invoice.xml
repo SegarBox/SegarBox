@@ -34,7 +34,7 @@
         <RelativeLayout
             android:id="@+id/materialCardView"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="136dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/stroke_background"
@@ -65,6 +65,9 @@
             android:layout_marginEnd="32dp"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
             app:layout_constraintStart_toStartOf="@+id/materialCardView"
             app:layout_constraintTop_toTopOf="@+id/materialCardView"
             tools:text="Stanley Mesa" />
@@ -73,6 +76,7 @@
             android:id="@+id/tv_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:maxLines="3"
@@ -81,7 +85,7 @@
             android:ellipsize="end"
             app:layout_constraintStart_toStartOf="@+id/tv_user_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
-            tools:text="Puri Anjasmoro, Kota Semarang, Jawa Tengah" />
+            tools:text="Puri Anjasmoro, Kota Semarang, Jawaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa Tengah" />
 
 
         <com.google.android.material.divider.MaterialDivider
@@ -144,7 +148,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/stroke_background"
-            app:layout_constraintBottom_toTopOf="@id/space_payment"
+            app:layout_constraintBottom_toBottomOf="@id/space_payment"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title_payment" />
 
@@ -222,10 +226,12 @@
         <Space
             android:id="@+id/space_payment"
             android:layout_width="0dp"
-            android:layout_height="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_total_price" />
+            android:layout_height="16dp"
+            android:layout_marginBottom="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/payment_background"
+            app:layout_constraintStart_toStartOf="@id/payment_background"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_total_price" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>
