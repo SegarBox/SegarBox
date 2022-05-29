@@ -3,6 +3,7 @@ package com.example.segarbox.data.repository
 import android.util.Log
 import android.util.Size
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.*
 import com.beust.klaxon.Klaxon
 import com.example.segarbox.BuildConfig
@@ -186,6 +187,24 @@ class RetrofitRepository {
 
         } catch (ex: Exception) {
             return ProductResponse(listOf())
+        }
+    }
+
+    suspend fun getUser(id: Int): UserResponse {
+
+        try {
+            val request = segarBoxApiServices.getUser(id)
+            Log.e("eeee retro", id.toString())
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            return UserResponse()
+
+        } catch (ex: Exception) {
+            return UserResponse()
         }
     }
 

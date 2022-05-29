@@ -70,4 +70,10 @@ interface ApiServices {
         @Query("page[size]") size: Int = 10,
         @Query("filter[label]") label: String
     ): Response<ProductResponse>
+
+    @GET("users/{id}")
+    @Headers("Accept: application/json")
+    suspend fun getUser(
+        @Path("id") id: Int = 0
+    ): Response<UserResponse>
 }

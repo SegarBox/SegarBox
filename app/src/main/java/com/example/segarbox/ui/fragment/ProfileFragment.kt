@@ -3,6 +3,7 @@ package com.example.segarbox.ui.fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,11 +16,11 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.viewModels
 import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
+import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.FragmentProfileBinding
 import com.example.segarbox.ui.activity.CartActivity
 import com.example.segarbox.ui.activity.LoginActivity
-import com.example.segarbox.ui.viewmodel.PrefViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
+import com.example.segarbox.ui.viewmodel.*
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
 class ProfileFragment : Fragment(), View.OnClickListener {
@@ -27,8 +28,13 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
+    private var userId: Int = 0
+
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
+    }
+    private val profileViewModel by viewModels<ProfileViewModel> {
+        RetrofitViewModelFactory.getInstance(RetrofitRepository())
     }
 
     override fun onCreateView(
@@ -60,12 +66,25 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
     private fun observeData() {
         prefViewModel.getToken().observe(viewLifecycleOwner) { token ->
-
             Toast.makeText(requireContext(), "token : $token", Toast.LENGTH_SHORT).show()
             if (token.isEmpty()) {
                 startActivity(Intent(requireActivity(), LoginActivity::class.java))
                 requireActivity().onBackPressed()
             }
+        }
+
+        prefViewModel.getUserId().observe(viewLifecycleOwner){
+            userId = it
+            Log.e("eeee fragmeaant", it.toString())
+            Log.e("eeee fragmeaant", userId.toString())
+        }
+
+        profileViewModel.user(userId)
+        Log.e("eeee fragment", userId.toString())
+
+        profileViewModel.userResponse.observe(viewLifecycleOwner){ user ->
+            Log.e("eeee name", user.data?.name.toString())
+            binding.content.tvUserName.text = user.data?.name.toString()
         }
     }
 
