@@ -11,4 +11,9 @@ object Code {
     const val TIKI = "tiki"
     const val JNE = "jne"
     const val POS = "pos"
+    const val DUMMY_FRUITS = "dummyfruits"
+    const val DUMMY_VEGGIES = "dummyveggies"
+    const val FRUITS_CHIPS = "fruits_chips"
+    const val VEGGIES_CHIPS = "veggies_chips"
+    const val MOST_POPULAR_CHIPS = "most_popular_chips"
 }
