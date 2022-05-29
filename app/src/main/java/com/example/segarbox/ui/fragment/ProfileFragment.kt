@@ -29,9 +29,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-
-    private var userId: Int = 0
-
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
     }
@@ -75,7 +72,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             else {
                 prefViewModel.getUserId().observe(viewLifecycleOwner){ userId ->
                     if(userId > 0) {
-                        profileViewModel.user(token.tokenFormat() ,userId)
+                        profileViewModel.user(token.tokenFormat(), userId)
                     }
                 }
             }
