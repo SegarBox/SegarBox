@@ -18,6 +18,7 @@
     <color name="darkModeUnActiveButton">#746B70</color>
     <color name="darkModeActiveButton">#CBC2B9</color>
     <color name="lightModeUnActiveButton">#959595</color>
-    <color name="red">#F20000</color>
+    <color name="darkModeRed">#9A0707</color>
+    <color name="lightModeRed">#D60000</color>
 
 </resources>

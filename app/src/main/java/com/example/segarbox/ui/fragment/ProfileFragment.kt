@@ -80,6 +80,8 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
         profileViewModel.userResponse.observe(viewLifecycleOwner){ user ->
             binding.content.tvUserName.text = user.data?.name.toString()
+            binding.content.tvPhone.text = user.data?.phone.toString()
+            binding.content.tvEmail.text = user.data?.email.toString()
         }
     }
 
