@@ -23,4 +23,5 @@ object Code {
     const val NONE_FILTER = "none"
     const val KEY_FILTER = "filter"
     const val KEY_FILTER_VALUE = "value"
+    const val EMPTY_STRING = ""
 }

@@ -89,6 +89,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
         binding.content.btnCheckout.setOnClickListener(this)
         binding.content.btnInvoice.setOnClickListener(this)
         binding.content.btnRating.setOnClickListener(this)
+        binding.content.tvSeeAll.setOnClickListener(this)
     }
 
     private fun setToolbar() {
@@ -296,6 +297,13 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
             R.id.btn_rating -> {
                 startActivity(Intent(requireContext(), RatingActivity::class.java))
+            }
+
+            R.id.tv_see_all -> {
+                val intent = Intent(requireContext(), PaginationActivity::class.java)
+                intent.putExtra(Code.KEY_FILTER, Code.NONE_FILTER)
+                intent.putExtra(Code.KEY_FILTER_VALUE, Code.EMPTY_STRING)
+                startActivity(intent)
             }
 
         }
