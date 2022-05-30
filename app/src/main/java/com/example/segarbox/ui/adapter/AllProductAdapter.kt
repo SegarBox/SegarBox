@@ -25,11 +25,12 @@ class AllProductAdapter: ListAdapter<ProductItem, AllProductAdapter.AllProductVi
         val context = holder.binding.root.context
         val item = getItem(position)
 
-        val newLayoutParams = holder.binding.root.layoutParams
-        newLayoutParams.width = getCardResponsiveWidth()
-        holder.binding.root.layoutParams = newLayoutParams
-
         holder.binding.apply {
+
+            val newLayoutParams = root.layoutParams
+            newLayoutParams.width = getCardResponsiveWidth()
+            root.layoutParams = newLayoutParams
+
             item?.let {
                 Glide.with(context)
                     .load(R.drawable.cauliflowers)
