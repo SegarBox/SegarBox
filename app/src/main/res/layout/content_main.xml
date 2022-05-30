@@ -122,6 +122,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rv_start_shopping" />
 
+        <TextView
+            android:id="@+id/tv_see_all"
+            android:text="@string/see_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorPrimary"
+            android:drawablePadding="4dp"
+            android:textSize="16sp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toTopOf="@id/tv_title_all_products"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title_all_products"
+            app:drawableEndCompat="@drawable/ic_baseline_arrow_forward_ios_24" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_all_products"
             android:layout_width="wrap_content"

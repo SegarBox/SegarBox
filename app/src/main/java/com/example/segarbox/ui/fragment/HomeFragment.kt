@@ -4,6 +4,7 @@ import android.R.attr.state_focused
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,6 +30,7 @@ import com.example.segarbox.databinding.FragmentHomeBinding
 import com.example.segarbox.helper.addDummyProduct
 import com.example.segarbox.helper.getColorFromAttr
 import com.example.segarbox.helper.getHelperDrawable
+import com.example.segarbox.helper.toPixel
 import com.example.segarbox.ui.activity.*
 import com.example.segarbox.ui.adapter.AllProductAdapter
 import com.example.segarbox.ui.adapter.MarginGridItemDecoration
@@ -45,14 +47,15 @@ import kotlin.math.min
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
-class HomeFragment : Fragment(), View.OnClickListener {
+class HomeFragment : Fragment(), View.OnClickListener,
+    StartShoppingAdapter.OnItemStartShoppingClickCallback {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private var ratio = 0F
     private var isThemeDarkMode = false
     private val allProductAdapter = AllProductAdapter()
-    private val startShoppingAdapter = StartShoppingAdapter()
+    private val startShoppingAdapter = StartShoppingAdapter(this)
     private var checkedChips = ""
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
@@ -242,13 +245,15 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private fun setAdapter() {
 
         binding.content.rvStartShopping.apply {
+            val margin = 16
             adapter = startShoppingAdapter
-            addItemDecoration(MarginItemDecoration(48))
+            addItemDecoration(MarginItemDecoration(margin.toPixel(requireContext())))
         }
 
         binding.content.rvAllProducts.apply {
+            val margin = 16
             adapter = allProductAdapter
-            addItemDecoration(MarginGridItemDecoration(48))
+            addItemDecoration(MarginGridItemDecoration(margin.toPixel(requireContext())))
         }
     }
 
@@ -294,6 +299,14 @@ class HomeFragment : Fragment(), View.OnClickListener {
             }
 
         }
+    }
+
+    override fun onItemStartShoppingClicked(item: ProductItem) {
+        Toast.makeText(requireContext(), item.label, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onStartShoppingSeeAllClicked() {
+        Toast.makeText(requireContext(), "See All", Toast.LENGTH_SHORT).show()
     }
 
 }

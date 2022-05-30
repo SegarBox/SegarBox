@@ -10,6 +10,8 @@ import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.databinding.ItemRowMainBinding
 import com.example.segarbox.helper.formatQty
 import com.example.segarbox.helper.formatToRupiah
+import com.example.segarbox.helper.getCardResponsiveWidth
+import com.example.segarbox.helper.getScreenWidthInPixel
 
 class AllProductAdapter: ListAdapter<ProductItem, AllProductAdapter.AllProductViewHolder>(DiffCallbackAllProduct) {
     inner class AllProductViewHolder(var binding: ItemRowMainBinding): RecyclerView.ViewHolder(binding.root)
@@ -22,6 +24,10 @@ class AllProductAdapter: ListAdapter<ProductItem, AllProductAdapter.AllProductVi
     override fun onBindViewHolder(holder: AllProductViewHolder, position: Int) {
         val context = holder.binding.root.context
         val item = getItem(position)
+
+        val newLayoutParams = holder.binding.root.layoutParams
+        newLayoutParams.width = getCardResponsiveWidth()
+        holder.binding.root.layoutParams = newLayoutParams
 
         holder.binding.apply {
             item?.let {

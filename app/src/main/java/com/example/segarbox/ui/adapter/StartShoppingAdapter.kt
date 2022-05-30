@@ -15,9 +15,11 @@ import com.example.segarbox.databinding.ItemRowMainBinding
 import com.example.segarbox.helper.formatQty
 import com.example.segarbox.helper.formatToRupiah
 import com.example.segarbox.helper.getColorFromAttr
+import com.example.segarbox.helper.getScreenWidthInPixel
 import com.google.android.material.R.attr.colorSecondaryVariant
+import com.google.android.material.R.attr.ratingBarStyleIndicator
 
-class StartShoppingAdapter: ListAdapter<ProductItem, StartShoppingAdapter.StartShoppingViewHolder>(DiffCallbackAllProduct) {
+class StartShoppingAdapter(private val onItemStartShoppingClickCallback: OnItemStartShoppingClickCallback): ListAdapter<ProductItem, StartShoppingAdapter.StartShoppingViewHolder>(DiffCallbackAllProduct) {
     inner class StartShoppingViewHolder(var binding: ItemRowMainBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StartShoppingViewHolder {
@@ -28,6 +30,7 @@ class StartShoppingAdapter: ListAdapter<ProductItem, StartShoppingAdapter.StartS
     override fun onBindViewHolder(holder: StartShoppingViewHolder, position: Int) {
         val context = holder.binding.root.context
         val item = getItem(position)
+
 
         val cardBackgroundColor = ColorStateList(
             arrayOf(
@@ -64,6 +67,10 @@ class StartShoppingAdapter: ListAdapter<ProductItem, StartShoppingAdapter.StartS
                 root.elevation = 0F
                 root.backgroundTintList = cardBackgroundColor
 
+                root.setOnClickListener {
+                    onItemStartShoppingClickCallback.onStartShoppingSeeAllClicked()
+                }
+
             }
         } else {
             holder.binding.apply {
@@ -78,7 +85,15 @@ class StartShoppingAdapter: ListAdapter<ProductItem, StartShoppingAdapter.StartS
                 val defaultColor = root.cardBackgroundColor
                 root.backgroundTintList = defaultColor
 
+                root.setOnClickListener {
+                    onItemStartShoppingClickCallback.onItemStartShoppingClicked(item)
+                }
             }
         }
+    }
+
+    interface OnItemStartShoppingClickCallback {
+        fun onItemStartShoppingClicked(item: ProductItem)
+        fun onStartShoppingSeeAllClicked()
     }
 }

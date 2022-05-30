@@ -1,6 +1,7 @@
 package com.example.segarbox.helper
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import androidx.annotation.AttrRes
@@ -68,4 +69,20 @@ fun addDummyProduct(dummyCategoryName: String, listSize: Int): ProductItem {
 
 fun String.tokenFormat(): String {
     return "Bearer $this"
+}
+
+fun getScreenWidthInPixel(): Int {
+    return Resources.getSystem().displayMetrics.widthPixels
+}
+
+fun Int.toPixel(context: Context): Int {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        this.toFloat(),
+        context.resources.displayMetrics
+    ).toInt()
+}
+
+fun getCardResponsiveWidth(): Int {
+    return Math.floor((getScreenWidthInPixel() * 0.425)).toInt()
 }
