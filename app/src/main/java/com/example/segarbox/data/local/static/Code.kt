@@ -18,4 +18,9 @@ object Code {
     const val MOST_POPULAR_CHIPS = "most_popular_chips"
     const val FRUITS_CATEGORY = "fruits"
     const val VEGGIES_CATEGORY = "veggies"
+    const val CATEGORY_FILTER = "category"
+    const val LABEL_FILTER = "label"
+    const val NONE_FILTER = "none"
+    const val KEY_FILTER = "filter"
+    const val KEY_FILTER_VALUE = "value"
 }

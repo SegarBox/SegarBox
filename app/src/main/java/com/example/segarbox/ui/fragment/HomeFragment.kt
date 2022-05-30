@@ -305,8 +305,20 @@ class HomeFragment : Fragment(), View.OnClickListener,
         Toast.makeText(requireContext(), item.label, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onStartShoppingSeeAllClicked() {
-        Toast.makeText(requireContext(), "See All", Toast.LENGTH_SHORT).show()
+    override fun onStartShoppingSeeAllClicked(item: ProductItem) {
+        val intent = Intent(requireContext(), PaginationActivity::class.java)
+
+        if (item.category == Code.DUMMY_VEGGIES) {
+            intent.putExtra(Code.KEY_FILTER, Code.CATEGORY_FILTER)
+            intent.putExtra(Code.KEY_FILTER_VALUE, Code.VEGGIES_CATEGORY)
+        }
+
+        if (item.category == Code.DUMMY_FRUITS) {
+            intent.putExtra(Code.KEY_FILTER, Code.CATEGORY_FILTER)
+            intent.putExtra(Code.KEY_FILTER_VALUE, Code.FRUITS_CATEGORY)
+        }
+
+        startActivity(intent)
     }
 
 }

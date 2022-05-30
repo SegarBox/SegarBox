@@ -68,7 +68,7 @@ class StartShoppingAdapter(private val onItemStartShoppingClickCallback: OnItemS
                 root.backgroundTintList = cardBackgroundColor
 
                 root.setOnClickListener {
-                    onItemStartShoppingClickCallback.onStartShoppingSeeAllClicked()
+                    onItemStartShoppingClickCallback.onStartShoppingSeeAllClicked(item)
                 }
 
             }
@@ -94,6 +94,6 @@ class StartShoppingAdapter(private val onItemStartShoppingClickCallback: OnItemS
 
     interface OnItemStartShoppingClickCallback {
         fun onItemStartShoppingClicked(item: ProductItem)
-        fun onStartShoppingSeeAllClicked()
+        fun onStartShoppingSeeAllClicked(item: ProductItem)
     }
 }
