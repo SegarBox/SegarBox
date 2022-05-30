@@ -86,6 +86,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
         binding.content.btnDetail.setOnClickListener(this)
         binding.content.btnDarkmode.setOnClickListener(this)
         binding.toolbar.ivCart.setOnClickListener(this)
+        binding.toolbar.etSearch.setOnClickListener(this)
         binding.content.btnCheckout.setOnClickListener(this)
         binding.content.btnInvoice.setOnClickListener(this)
         binding.content.btnRating.setOnClickListener(this)
@@ -120,6 +121,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
         // Initial Set Toolbar
         binding.toolbar.root.background.alpha = 0
+        binding.toolbar.etSearch.isFocusable = false
         setSearchBar(colorStrokeBelowRatio,
             requireActivity().getColorFromAttr(colorSecondaryVariant))
 
@@ -199,7 +201,6 @@ class HomeFragment : Fragment(), View.OnClickListener,
                 }
             }
         }
-
 
         mainViewModel.allProductResponse.observe(viewLifecycleOwner) {
             allProductAdapter.submitList(it.data)
@@ -303,6 +304,12 @@ class HomeFragment : Fragment(), View.OnClickListener,
                 val intent = Intent(requireContext(), PaginationActivity::class.java)
                 intent.putExtra(Code.KEY_FILTER, Code.NONE_FILTER)
                 intent.putExtra(Code.KEY_FILTER_VALUE, Code.EMPTY_STRING)
+                startActivity(intent)
+            }
+
+            R.id.et_search -> {
+                val intent = Intent(requireContext(), PaginationActivity::class.java)
+                intent.putExtra(Code.IS_SEARCH_BAR_PRESSED, true)
                 startActivity(intent)
             }
 

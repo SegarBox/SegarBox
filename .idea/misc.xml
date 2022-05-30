@@ -92,6 +92,7 @@
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/activity_login.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/activity_main.xml" value="0.2421875" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/activity_pagination.xml" value="0.1987179487179487" />
+        <entry key="..\:/github/SegarBox/app/src/main/res/layout/activity_shipping.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/content_cart.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/content_checkout.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/content_detail.xml" value="0.2421875" />
@@ -105,6 +106,7 @@
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/fragment_login.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/fragment_profile.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/fragment_register.xml" value="0.1987179487179487" />
+        <entry key="..\:/github/SegarBox/app/src/main/res/layout/fragment_transaction.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_loading.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_row_cart.xml" value="0.264" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_row_checkout.xml" value="0.1987179487179487" />
