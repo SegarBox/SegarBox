@@ -8,14 +8,21 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.example.segarbox.data.local.database.MainDatabase
 import com.example.segarbox.data.local.database.RemoteKeys
+import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.api.ApiServices
 import com.example.segarbox.data.remote.response.ProductItem
+import com.example.segarbox.data.remote.response.ProductResponse
+import retrofit2.Response
 
 @OptIn(ExperimentalPagingApi::class)
 class ProductRemoteMediator(
     private val database: MainDatabase,
     private val apiServices: ApiServices,
+    private val filter: String,
+    private val filterValue: String
 ) : RemoteMediator<Int, ProductItem>() {
+
+    private lateinit var responseData: Response<ProductResponse>
 
     override suspend fun initialize(): InitializeAction {
         return InitializeAction.LAUNCH_INITIAL_REFRESH
@@ -48,12 +55,31 @@ class ProductRemoteMediator(
         }
 
         try {
-            val responseData = apiServices.getAllProduct(
-                page = page,
-                size = state.config.pageSize
-            )
+
+            when (filter) {
+                Code.CATEGORY_FILTER -> {
+                    responseData = apiServices.getCategoryProduct(
+                        page = page,
+                        size = state.config.pageSize,
+                        category = filterValue
+                    )
+                }
+                Code.LABEL_FILTER -> {
+                    responseData = apiServices.getLabelProduct(
+                        page = page,
+                        size = state.config.pageSize,
+                        label = filterValue
+                    )
+                }
+                else -> {
+                    responseData = apiServices.getAllProduct(
+                        page = page,
+                        size = state.config.pageSize
+                    )
+                }
+            }
+
             val responseBody = responseData.body()!!
-            Log.d("BRO BRO BRO BRO", responseBody.data.toString())
 
             val endOfPaginationReached = responseBody.data.isEmpty()
 

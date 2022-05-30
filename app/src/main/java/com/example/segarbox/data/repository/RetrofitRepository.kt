@@ -12,6 +12,7 @@ import com.example.segarbox.data.remote.api.ApiConfig
 import com.example.segarbox.data.remote.api.ApiServices
 import com.example.segarbox.data.remote.response.*
 import com.example.segarbox.ui.paging.ProductRemoteMediator
+import java.sql.DataTruncation
 
 
 class RetrofitRepository {
@@ -102,7 +103,7 @@ class RetrofitRepository {
 
     suspend fun login(
         email: String,
-        password: String
+        password: String,
     ): LoginResponse {
         try {
             val request = segarBoxApiServices.login(email, password)
@@ -121,9 +122,11 @@ class RetrofitRepository {
         }
     }
 
-    fun getAllProductPaging(
+    fun getProductPaging(
         apiServices: ApiServices,
         database: MainDatabase,
+        filter: String,
+        filterValue: String,
     ): LiveData<PagingData<ProductItem>> {
 
         @OptIn(ExperimentalPagingApi::class)
@@ -131,7 +134,9 @@ class RetrofitRepository {
             config = PagingConfig(pageSize = 10),
             remoteMediator = ProductRemoteMediator(
                 apiServices = apiServices,
-                database = database),
+                database = database,
+                filter = filter,
+                filterValue = filterValue),
             pagingSourceFactory = {
                 database.productDao().getAllProduct()
             }

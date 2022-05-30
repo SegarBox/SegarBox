@@ -51,15 +51,15 @@ interface ApiServices {
     @GET("products")
     @Headers("Accept: application/json")
     suspend fun getAllProduct(
-        @Query("page[number]") page: Int = 1,
-        @Query("page[size]") size: Int = 10
+        @Query("page[number]") page: Int,
+        @Query("page[size]") size: Int
     ): Response<ProductResponse>
 
     @GET("products")
     @Headers("Accept: application/json")
     suspend fun getCategoryProduct(
-        @Query("page[number]") page: Int = 1,
-        @Query("page[size]") size: Int = 10,
+        @Query("page[number]") page: Int,
+        @Query("page[size]") size: Int,
         @Query("filter[category]") category: String
     ): Response<ProductResponse>
 
