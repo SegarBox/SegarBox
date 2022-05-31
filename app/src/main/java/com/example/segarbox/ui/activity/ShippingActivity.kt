@@ -17,6 +17,9 @@ import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.data.repository.RoomRepository
 import com.example.segarbox.databinding.ActivityShippingBinding
+import com.example.segarbox.helper.tidyUpJneEtd
+import com.example.segarbox.helper.tidyUpPosEtd
+import com.example.segarbox.helper.tidyUpTikiEtd
 import com.example.segarbox.ui.adapter.ShippingAdapter
 import com.example.segarbox.ui.viewmodel.RetrofitRoomViewModelFactory
 import com.example.segarbox.ui.viewmodel.ShippingViewModel
@@ -120,15 +123,42 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
                             shippingModel.service = costs.service
 
                             costs.cost.forEach { cost ->
+
                                 shippingModel.price = cost.value
                                 shippingModel.etd = cost.etd
                             }
-                            listShipment.add(shippingModel)
+
+                            // Cek Maksimal 1 Hari
+                            when (shippingModel.code) {
+                                Code.TIKI.uppercase() -> {
+                                    val etd = shippingModel.etd.tidyUpTikiEtd(this).split(" ")[0].toInt()
+                                    if (etd <= 1) {
+                                        listShipment.add(shippingModel)
+                                    }
+                                }
+                                Code.JNE.uppercase() -> {
+                                    val etd = shippingModel.etd.tidyUpJneEtd(this).split(" ")[0].toInt()
+                                    if (etd <= 1) {
+                                        listShipment.add(shippingModel)
+                                    }
+                                }
+                                else -> {
+                                    val etd = shippingModel.etd.tidyUpPosEtd(this).split(" ")[0].toInt()
+                                    if (etd <= 1) {
+                                        listShipment.add(shippingModel)
+                                    }
+                                }
+                            }
+
                         }
                     }
                 }
             }
 
+            // Toast jika list shipment empty
+            if (listShipment.isEmpty()) {
+                Toast.makeText(this, Code.LOCATION_CANT_BE_REACHED, Toast.LENGTH_SHORT).show()
+            }
             shippingAdapter.submitList(listShipment)
         }
 

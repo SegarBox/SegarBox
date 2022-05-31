@@ -60,5 +60,6 @@
     <string name="veggies">Veggies</string>
     <string name="most_popular">Most Popular</string>
     <string name="logout">Logout</string>
+    <string name="stock">Stock : %s</string>
 
 </resources>

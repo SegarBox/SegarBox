@@ -5,9 +5,9 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/iv_add"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:id="@+id/iv_remove"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:src="@drawable/ic_baseline_remove_circle_outline_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -17,22 +17,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
         android:text="@string/quantity"
         android:textColor="?attr/colorOnSecondary"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_add"
-        app:layout_constraintStart_toEndOf="@id/iv_add"
-        app:layout_constraintTop_toTopOf="@id/iv_add" />
+        android:textSize="26sp"
+        app:layout_constraintStart_toEndOf="@id/iv_remove"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/iv_remove"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:id="@+id/iv_add"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_marginStart="16dp"
         android:src="@drawable/ic_baseline_add_circle_outline_24"
         app:layout_constraintStart_toEndOf="@id/tv_count"
-        app:layout_constraintTop_toTopOf="@id/iv_add" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

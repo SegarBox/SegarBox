@@ -1,19 +1,17 @@
 package com.example.segarbox.data.repository
 
 import android.util.Log
-import android.util.Size
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.paging.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.beust.klaxon.Klaxon
 import com.example.segarbox.BuildConfig
-import com.example.segarbox.data.local.database.MainDatabase
 import com.example.segarbox.data.remote.api.ApiConfig
 import com.example.segarbox.data.remote.api.ApiServices
 import com.example.segarbox.data.remote.response.*
 import com.example.segarbox.ui.paging.ProductPagingSource
-import com.example.segarbox.ui.paging.ProductRemoteMediator
-import java.sql.DataTruncation
 
 
 class RetrofitRepository {
@@ -157,6 +155,22 @@ class RetrofitRepository {
         }
     }
 
+    suspend fun getProductById(id: Int): ProductByIdResponse {
+        try {
+            val request = segarBoxApiServices.getProductById(id)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            return ProductByIdResponse()
+
+        } catch (ex: Exception) {
+            return ProductByIdResponse()
+        }
+    }
+
     suspend fun getCategoryProduct(page: Int, size: Int, category: String): ProductResponse {
         try {
             val request = segarBoxApiServices.getCategoryProduct(page, size, category)
@@ -242,6 +256,36 @@ class RetrofitRepository {
 //            return LogoutResponse()
 //        }
 //    }
+    suspend fun addCart(token: String, productId: Int, productQty: Int): AddCartResponse {
+        try {
+            val request = segarBoxApiServices.addToCart(token, productId, productQty)
 
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            return AddCartResponse()
+        } catch (ex: Exception) {
+            return AddCartResponse()
+        }
+    }
+
+    suspend fun getUserCart(token: String): UserCartResponse {
+        try {
+            val request = segarBoxApiServices.getUserCart(token)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            Log.e("UNSUCCESS", request.errorBody()!!.string())
+            return UserCartResponse()
+        } catch (ex: Exception) {
+            Log.e("CATCH", ex.message.toString())
+            return UserCartResponse()
+        }
+    }
 
 }

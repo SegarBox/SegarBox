@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="120dp"
+    android:paddingBottom="142dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,13 +30,13 @@
             android:layout_marginEnd="16dp"
             android:text="Cauliflower"
             android:textColor="?attr/colorOnSecondary"
-            android:textSize="32sp"
+            android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_item" />
 
         <TextView
-            android:id="@+id/tv_quantity"
+            android:id="@+id/tv_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_extrabold"
@@ -52,10 +53,10 @@
             android:layout_marginTop="4dp"
             android:text="Rp 4.000"
             android:textColor="?attr/colorOnSecondary"
-            android:textSize="28sp"
+            android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/tv_quantity"
-            app:layout_constraintTop_toBottomOf="@+id/tv_quantity" />
+            app:layout_constraintStart_toStartOf="@+id/tv_size"
+            app:layout_constraintTop_toBottomOf="@+id/tv_size" />
 
         <TextView
             android:id="@+id/tv_item_description"
@@ -72,12 +73,25 @@
             app:layout_constraintStart_toStartOf="@+id/tv_price"
             app:layout_constraintTop_toBottomOf="@+id/tv_price" />
 
+        <TextView
+            android:id="@+id/tv_stock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_extrabold"
+            tools:text="Stock : 5"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/counter"
+            app:layout_constraintStart_toStartOf="@id/counter"
+            app:layout_constraintTop_toTopOf="@id/tv_size"
+            app:layout_constraintBottom_toBottomOf="@id/tv_size"/>
+
         <include
             android:id="@+id/counter"
             layout="@layout/counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_price"
             app:layout_constraintEnd_toEndOf="parent" />
 

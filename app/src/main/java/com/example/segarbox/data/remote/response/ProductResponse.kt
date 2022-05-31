@@ -16,6 +16,9 @@ data class ProductResponse(
 @Parcelize
 data class ProductItem(
 
+	@field:SerializedName("image")
+	val image: String,
+
 	@field:SerializedName("size")
 	val size: Int,
 

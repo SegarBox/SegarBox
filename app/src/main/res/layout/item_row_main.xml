@@ -54,7 +54,7 @@
             app:layout_constraintTop_toTopOf="@id/relativeLayout" />
 
         <TextView
-            android:id="@+id/tv_qty"
+            android:id="@+id/tv_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="100g"
@@ -71,8 +71,8 @@
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/tv_qty"
-            app:layout_constraintTop_toBottomOf="@+id/tv_qty" />
+            app:layout_constraintStart_toStartOf="@+id/tv_size"
+            app:layout_constraintTop_toBottomOf="@+id/tv_size" />
 
         <TextView
             android:id="@+id/tv_see_all"

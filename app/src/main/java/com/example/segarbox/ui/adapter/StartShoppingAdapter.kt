@@ -8,18 +8,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.segarbox.R
-import com.example.segarbox.data.local.model.DummyModel
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.databinding.ItemRowMainBinding
-import com.example.segarbox.helper.formatQty
-import com.example.segarbox.helper.formatToRupiah
-import com.example.segarbox.helper.getColorFromAttr
-import com.example.segarbox.helper.getScreenWidthInPixel
+import com.example.segarbox.helper.*
 import com.google.android.material.R.attr.colorSecondaryVariant
-import com.google.android.material.R.attr.ratingBarStyleIndicator
 
-class StartShoppingAdapter(private val onItemStartShoppingClickCallback: OnItemStartShoppingClickCallback): ListAdapter<ProductItem, StartShoppingAdapter.StartShoppingViewHolder>(DiffCallbackAllProduct) {
+class StartShoppingAdapter(private val onItemStartShoppingClickCallback: OnItemStartShoppingClickCallback): ListAdapter<ProductItem, StartShoppingAdapter.StartShoppingViewHolder>(DiffCallbackProduct) {
     inner class StartShoppingViewHolder(var binding: ItemRowMainBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StartShoppingViewHolder {
@@ -50,7 +45,7 @@ class StartShoppingAdapter(private val onItemStartShoppingClickCallback: OnItemS
 
         holder.binding.apply {
             tvName.text = item.label
-            tvQty.text = item.qty.formatQty(context)
+            tvSize.text = item.size.formatProductSize(context)
             tvPrice.text = item.price.formatToRupiah()
         }
 
@@ -59,7 +54,7 @@ class StartShoppingAdapter(private val onItemStartShoppingClickCallback: OnItemS
             holder.binding.apply {
                 imageView.isVisible = false
                 tvName.isVisible = false
-                tvQty.isVisible = false
+                tvSize.isVisible = false
                 tvPrice.isVisible = false
 
                 tvSeeAll.isVisible = true
@@ -76,7 +71,7 @@ class StartShoppingAdapter(private val onItemStartShoppingClickCallback: OnItemS
             holder.binding.apply {
                 imageView.isVisible = true
                 tvName.isVisible = true
-                tvQty.isVisible = true
+                tvSize.isVisible = true
                 tvPrice.isVisible = true
 
                 tvSeeAll.isVisible = false

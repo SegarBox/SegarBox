@@ -14,6 +14,8 @@ class RetrofitViewModelFactory private constructor(private val retrofitRepositor
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> LoginViewModel(retrofitRepository) as T
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> ProfileViewModel(retrofitRepository) as T
             modelClass.isAssignableFrom(PaginationViewModel::class.java) -> PaginationViewModel(retrofitRepository) as T
+            modelClass.isAssignableFrom(DetailViewModel::class.java) -> DetailViewModel(retrofitRepository) as T
+            modelClass.isAssignableFrom(CartViewModel::class.java) -> CartViewModel(retrofitRepository) as T
             else -> throw IllegalArgumentException("Unknown ViewModel Class : ${modelClass.name}")
         }
     }

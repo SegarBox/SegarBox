@@ -8,13 +8,10 @@ import com.bumptech.glide.Glide
 import com.example.segarbox.R
 import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.databinding.ItemRowMainBinding
-import com.example.segarbox.helper.formatQty
-import com.example.segarbox.helper.formatToRupiah
-import com.example.segarbox.helper.getCardResponsiveWidth
-import com.example.segarbox.helper.getScreenWidthInPixel
+import com.example.segarbox.helper.*
 
 class AllProductAdapter(private val onItemAllProductClickCallback: OnItemAllProductClickCallback) :
-    ListAdapter<ProductItem, AllProductAdapter.AllProductViewHolder>(DiffCallbackAllProduct) {
+    ListAdapter<ProductItem, AllProductAdapter.AllProductViewHolder>(DiffCallbackProduct) {
     inner class AllProductViewHolder(var binding: ItemRowMainBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -39,7 +36,7 @@ class AllProductAdapter(private val onItemAllProductClickCallback: OnItemAllProd
 
             tvName.text = item.label
             tvPrice.text = item.price.formatToRupiah()
-            tvQty.text = item.qty.formatQty(context)
+            tvSize.text = item.size.formatProductSize(context)
 
             root.setOnClickListener {
                 onItemAllProductClickCallback.onItemAllProductClicked(item)

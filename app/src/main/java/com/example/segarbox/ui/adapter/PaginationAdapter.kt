@@ -8,11 +8,11 @@ import com.bumptech.glide.Glide
 import com.example.segarbox.R
 import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.databinding.ItemRowMainBinding
-import com.example.segarbox.helper.formatQty
+import com.example.segarbox.helper.formatProductSize
 import com.example.segarbox.helper.formatToRupiah
 import com.example.segarbox.helper.getCardResponsiveWidth
 
-class PaginationAdapter(private val onItemPaginationClickCallback: OnItemPaginationClickCallback): PagingDataAdapter<ProductItem, PaginationAdapter.PaginationViewHolder>(DiffCallbackAllProduct) {
+class PaginationAdapter(private val onItemPaginationClickCallback: OnItemPaginationClickCallback): PagingDataAdapter<ProductItem, PaginationAdapter.PaginationViewHolder>(DiffCallbackProduct) {
     inner class PaginationViewHolder(var binding: ItemRowMainBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PaginationViewHolder {
@@ -37,7 +37,7 @@ class PaginationAdapter(private val onItemPaginationClickCallback: OnItemPaginat
 
                 tvName.text = item.label
                 tvPrice.text = item.price.formatToRupiah()
-                tvQty.text = item.qty.formatQty(context)
+                tvSize.text = item.size.formatProductSize(context)
 
                 root.setOnClickListener {
                     onItemPaginationClickCallback.onItemPaginationClicked(item)

@@ -1,10 +1,13 @@
-package com.example.segarbox
+package com.example.segarbox.ui.activity
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.Window
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -12,11 +15,12 @@ import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.databinding.ActivitySplashScreenBinding
-import com.example.segarbox.ui.activity.MainActivity
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
+
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 class SplashScreenActivity : AppCompatActivity() {
@@ -49,6 +53,13 @@ class SplashScreenActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }, delay)
+    }
+
+    private fun setNavigationBar() {
+        val w: Window = window
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        w.navigationBarColor = Color.TRANSPARENT
     }
 
     private fun observeData() {

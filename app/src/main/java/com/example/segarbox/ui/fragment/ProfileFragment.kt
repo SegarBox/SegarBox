@@ -113,6 +113,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             }
             R.id.btn_logout -> {
                 prefViewModel.deleteTokenAndUserId()
+                requireActivity().onBackPressed()
             }
         }
     }
