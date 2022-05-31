@@ -68,7 +68,6 @@ class MainActivity : AppCompatActivity() {
                 mainViewModel.getCityFromApi()
             }
         }
-
         mainViewModel.cityFromApi.observe(this) { cityResponse ->
             mainViewModel.insertCityToDB(cityResponse.rajaongkir.results)
         }

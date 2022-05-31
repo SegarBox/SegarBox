@@ -45,7 +45,7 @@ import com.google.android.material.R.attr.colorSecondaryVariant
 import kotlin.math.max
 import kotlin.math.min
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+//private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class HomeFragment : Fragment(), View.OnClickListener,
     StartShoppingAdapter.OnItemStartShoppingClickCallback {
@@ -57,9 +57,9 @@ class HomeFragment : Fragment(), View.OnClickListener,
     private val allProductAdapter = AllProductAdapter()
     private val startShoppingAdapter = StartShoppingAdapter(this)
     private var checkedChips = ""
-    private val prefViewModel by viewModels<PrefViewModel> {
-        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
-    }
+//    private val prefViewModel by viewModels<PrefViewModel> {
+//        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
+//    }
     private val mainViewModel by viewModels<MainViewModel> {
         RetrofitRoomViewModelFactory.getInstance(RoomRepository(requireActivity().application),
             RetrofitRepository())
@@ -186,21 +186,21 @@ class HomeFragment : Fragment(), View.OnClickListener,
     }
 
     private fun observeData() {
-        prefViewModel.getTheme().observe(viewLifecycleOwner) { isDarkMode ->
-            when {
-                isDarkMode -> {
-                    isThemeDarkMode = true
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-//                    binding.content.btnDarkmode.text = "Disable Dark Mode"
-                }
-
-                else -> {
-                    isThemeDarkMode = false
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-//                    binding.content.btnDarkmode.text = "Enable Dark Mode"
-                }
-            }
-        }
+//        prefViewModel.getTheme().observe(viewLifecycleOwner) { isDarkMode ->
+//            when {
+//                isDarkMode -> {
+//                    isThemeDarkMode = true
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+////                    binding.content.btnDarkmode.text = "Disable Dark Mode"
+//                }
+//
+//                else -> {
+//                    isThemeDarkMode = false
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+////                    binding.content.btnDarkmode.text = "Enable Dark Mode"
+//                }
+//            }
+//        }
 
         mainViewModel.allProductResponse.observe(viewLifecycleOwner) {
             allProductAdapter.submitList(it.data)

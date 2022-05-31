@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.segarbox.data.local.datastore.SettingPreferences
 
-class PrefViewModelFactory private constructor(private val pref: SettingPreferences) :
+class PrefViewModelFactory(private val pref: SettingPreferences) :
     ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
