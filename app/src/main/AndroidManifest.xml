@@ -24,7 +24,8 @@
         </activity>
         <activity
             android:name=".ui.activity.PaginationActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".ui.activity.ShippingActivity"
             android:exported="false" />
