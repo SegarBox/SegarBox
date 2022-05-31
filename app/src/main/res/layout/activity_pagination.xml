@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimaryVariant"
-    android:fitsSystemWindows="true"
     tools:context=".ui.activity.PaginationActivity">
 
     <include
-        layout="@layout/custom_toolbar"
+        layout="@layout/custom_toolbar_main"
         android:id="@+id/toolbar"/>
 
     <androidx.recyclerview.widget.RecyclerView

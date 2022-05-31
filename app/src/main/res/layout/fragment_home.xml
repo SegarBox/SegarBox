@@ -12,6 +12,6 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/custom_toolbar_main"/>
+        layout="@layout/custom_toolbar_main" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

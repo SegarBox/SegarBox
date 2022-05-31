@@ -28,6 +28,7 @@ class PaginationActivity : AppCompatActivity(), View.OnClickListener {
     private val binding get() = _binding!!
     private var filter: String? = null
     private var filterValue: String? = null
+    private var isHomeSearchBarPressed: Boolean = false
     private val paginationAdapter = PaginationAdapter()
     private val paginationViewModel by viewModels<PaginationViewModel> {
         RetrofitViewModelFactory.getInstance(RetrofitRepository())
@@ -46,18 +47,18 @@ class PaginationActivity : AppCompatActivity(), View.OnClickListener {
         setToolbar()
         setAdapter()
         observeData()
+
+        Toast.makeText(this, isHomeSearchBarPressed.toString(), Toast.LENGTH_SHORT).show()
     }
 
     private fun setToolbar() {
-        binding.toolbar.apply {
-            tvTitle.text = "Pagination"
-            ivBack.isVisible = true
-        }
+
     }
 
     private fun getPaginationIntent() {
         filter = intent.getStringExtra(Code.KEY_FILTER)
         filterValue = intent.getStringExtra(Code.KEY_FILTER_VALUE)
+        isHomeSearchBarPressed = intent.getBooleanExtra(Code.IS_SEARCH_BAR_PRESSED, false)
     }
 
     private fun setAdapter() {
@@ -99,7 +100,6 @@ class PaginationActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when(v?.id) {
-
         }
     }
 }
