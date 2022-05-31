@@ -18,7 +18,8 @@
         android:id="@+id/pattern"
         android:layout_width="match_parent"
         android:layout_height="210dp"
-        android:src="@drawable/pat_black"
+        android:src="@drawable/pat_white"
+        android:alpha="0.035"
         android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="@id/relativeLayout2"
         app:layout_constraintStart_toStartOf="@id/relativeLayout2"
@@ -149,7 +150,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_logout"
-        style="@style/buttonColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"

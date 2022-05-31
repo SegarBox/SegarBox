@@ -35,10 +35,10 @@
         <item name="android:fontFamily">@font/poppins_medium</item>
     </style>
 
-    <style name="buttonColor" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/darkModeRed</item>
-        <item name="android:textColor">@color/whiteButtonText</item>
-    </style>
+<!--    <style name="buttonColor" parent="Widget.MaterialComponents.Button">-->
+<!--        <item name="backgroundTint">@color/darkModeRed</item>-->
+<!--        <item name="android:textColor">@color/whiteButtonText</item>-->
+<!--    </style>-->
 
 
 </resources>

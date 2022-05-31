@@ -62,8 +62,8 @@ class LoginActivity : AppCompatActivity() {
         prefViewModel.getTheme().observe(this) { isDarkMode ->
             when {
                 isDarkMode -> {
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     binding.logo.setImageResource(R.drawable.logo_green)
+                    binding.pat.setImageResource(R.drawable.pat_black)
                 }
             }
         }
