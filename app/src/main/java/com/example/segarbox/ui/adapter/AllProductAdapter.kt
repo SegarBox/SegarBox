@@ -13,8 +13,10 @@ import com.example.segarbox.helper.formatToRupiah
 import com.example.segarbox.helper.getCardResponsiveWidth
 import com.example.segarbox.helper.getScreenWidthInPixel
 
-class AllProductAdapter: ListAdapter<ProductItem, AllProductAdapter.AllProductViewHolder>(DiffCallbackAllProduct) {
-    inner class AllProductViewHolder(var binding: ItemRowMainBinding): RecyclerView.ViewHolder(binding.root)
+class AllProductAdapter(private val onItemAllProductClickCallback: OnItemAllProductClickCallback) :
+    ListAdapter<ProductItem, AllProductAdapter.AllProductViewHolder>(DiffCallbackAllProduct) {
+    inner class AllProductViewHolder(var binding: ItemRowMainBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllProductViewHolder {
         val binding = ItemRowMainBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -31,17 +33,22 @@ class AllProductAdapter: ListAdapter<ProductItem, AllProductAdapter.AllProductVi
             newLayoutParams.width = getCardResponsiveWidth()
             root.layoutParams = newLayoutParams
 
-            item?.let {
-                Glide.with(context)
-                    .load(R.drawable.cauliflowers)
-                    .into(imageView)
+            Glide.with(context)
+                .load(R.drawable.cauliflowers)
+                .into(imageView)
 
-                tvName.text = it.label
-                tvPrice.text = it.price.formatToRupiah()
-                tvQty.text = it.qty.formatQty(context)
+            tvName.text = item.label
+            tvPrice.text = item.price.formatToRupiah()
+            tvQty.text = item.qty.formatQty(context)
+
+            root.setOnClickListener {
+                onItemAllProductClickCallback.onItemAllProductClicked(item)
             }
 
         }
+    }
 
+    interface OnItemAllProductClickCallback {
+        fun onItemAllProductClicked(item: ProductItem)
     }
 }

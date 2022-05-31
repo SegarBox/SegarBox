@@ -1,6 +1,8 @@
 package com.example.segarbox.helper
 
+import android.R.attr.state_focused
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
@@ -10,6 +12,8 @@ import androidx.core.content.ContextCompat
 import com.example.segarbox.R
 import com.example.segarbox.data.remote.response.ProductItem
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.R.attr.colorPrimary
+import com.google.android.material.R.attr.colorSecondaryVariant
 import java.text.NumberFormat
 import java.util.*
 
@@ -85,4 +89,32 @@ fun Int.toPixel(context: Context): Int {
 
 fun getCardResponsiveWidth(): Int {
     return Math.floor((getScreenWidthInPixel() * 0.425)).toInt()
+}
+
+fun Context.getColorStateListSecondaryVariant(): ColorStateList {
+    return ColorStateList(
+        arrayOf(
+            intArrayOf(-state_focused),
+            intArrayOf(state_focused),
+        ),
+
+        intArrayOf(
+            this.getColorFromAttr(colorSecondaryVariant),
+            this.getColorFromAttr(colorSecondaryVariant)
+        )
+    )
+}
+
+fun Context.getColorStateListPrimary(): ColorStateList {
+    return ColorStateList(
+        arrayOf(
+            intArrayOf(-state_focused),
+            intArrayOf(state_focused),
+        ),
+
+        intArrayOf(
+            this.getColorFromAttr(colorPrimary),
+            this.getColorFromAttr(colorPrimary)
+        )
+    )
 }
