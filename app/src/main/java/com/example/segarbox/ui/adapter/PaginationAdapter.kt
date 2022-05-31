@@ -12,7 +12,7 @@ import com.example.segarbox.helper.formatQty
 import com.example.segarbox.helper.formatToRupiah
 import com.example.segarbox.helper.getCardResponsiveWidth
 
-class PaginationAdapter(): PagingDataAdapter<ProductItem, PaginationAdapter.PaginationViewHolder>(DiffCallbackAllProduct) {
+class PaginationAdapter(private val onItemPaginationClickCallback: OnItemPaginationClickCallback): PagingDataAdapter<ProductItem, PaginationAdapter.PaginationViewHolder>(DiffCallbackAllProduct) {
     inner class PaginationViewHolder(var binding: ItemRowMainBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PaginationViewHolder {
@@ -30,17 +30,25 @@ class PaginationAdapter(): PagingDataAdapter<ProductItem, PaginationAdapter.Pagi
             newLayoutParams.width = getCardResponsiveWidth()
             root.layoutParams = newLayoutParams
 
-            item?.let {
+            item?.let { item ->
                 Glide.with(context)
                     .load(R.drawable.cauliflowers)
                     .into(imageView)
 
-                tvName.text = it.label
-                tvPrice.text = it.price.formatToRupiah()
-                tvQty.text = it.qty.formatQty(context)
+                tvName.text = item.label
+                tvPrice.text = item.price.formatToRupiah()
+                tvQty.text = item.qty.formatQty(context)
+
+                root.setOnClickListener {
+                    onItemPaginationClickCallback.onItemPaginationClicked(item)
+                }
             }
 
         }
+    }
+
+    interface OnItemPaginationClickCallback {
+        fun onItemPaginationClicked(item: ProductItem)
     }
 
 }

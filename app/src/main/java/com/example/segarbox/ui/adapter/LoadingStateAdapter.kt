@@ -30,7 +30,6 @@ class LoadingStateAdapter(private val retry: () -> Unit):  LoadStateAdapter<Load
             if (loadState is LoadState.Error) {
                 tvError.text = context.getString(R.string.rto)
             }
-            progressBar.isVisible = loadState is LoadState.Loading
             btnRetry.isVisible = loadState is LoadState.Error
             tvError.isVisible = loadState is LoadState.Error
         }

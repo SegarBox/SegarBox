@@ -12,7 +12,11 @@ import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
+import com.example.segarbox.data.local.static.Code
+import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.databinding.ActivityDetailBinding
+import com.example.segarbox.helper.formatQty
+import com.example.segarbox.helper.formatToRupiah
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 
@@ -20,6 +24,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private var _binding: ActivityDetailBinding? = null
     private val binding get() = _binding!!
+    private var productItem: ProductItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,16 +35,33 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun init() {
+        getIntentDetail()
         setToolbar()
+        setDetail()
         binding.toolbar.ivBack.setOnClickListener(this)
         binding.toolbar.ivCart.setOnClickListener(this)
+    }
+
+    private fun getIntentDetail() {
+        productItem = intent.getParcelableExtra(Code.KEY_DETAIL_VALUE)
     }
 
     private fun setToolbar() {
         binding.toolbar.apply {
             ivBack.isVisible = true
             ivCart.isVisible = true
-            tvTitle.text = "Cauliflower"
+            tvTitle.text = productItem?.label ?: ""
+        }
+    }
+
+    private fun setDetail() {
+        binding.content.apply {
+            productItem?.let { item ->
+                tvItemName.text = item.label
+                tvQuantity.text = item.qty.formatQty(this@DetailActivity)
+                tvPrice.text = item.price.formatToRupiah()
+                tvItemDescription.text = item.detail
+            }
         }
     }
 

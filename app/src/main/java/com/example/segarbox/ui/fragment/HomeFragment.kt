@@ -27,10 +27,7 @@ import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.data.repository.RoomRepository
 import com.example.segarbox.databinding.FragmentHomeBinding
-import com.example.segarbox.helper.addDummyProduct
-import com.example.segarbox.helper.getColorFromAttr
-import com.example.segarbox.helper.getHelperDrawable
-import com.example.segarbox.helper.toPixel
+import com.example.segarbox.helper.*
 import com.example.segarbox.ui.activity.*
 import com.example.segarbox.ui.adapter.AllProductAdapter
 import com.example.segarbox.ui.adapter.MarginGridItemDecoration
@@ -48,13 +45,14 @@ import kotlin.math.min
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class HomeFragment : Fragment(), View.OnClickListener,
-    StartShoppingAdapter.OnItemStartShoppingClickCallback {
+    StartShoppingAdapter.OnItemStartShoppingClickCallback,
+    AllProductAdapter.OnItemAllProductClickCallback {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private var ratio = 0F
     private var isThemeDarkMode = false
-    private val allProductAdapter = AllProductAdapter()
+    private val allProductAdapter = AllProductAdapter(this)
     private val startShoppingAdapter = StartShoppingAdapter(this)
     private var checkedChips = ""
     private val prefViewModel by viewModels<PrefViewModel> {
@@ -94,35 +92,10 @@ class HomeFragment : Fragment(), View.OnClickListener,
     }
 
     private fun setToolbar() {
-        // Hooks
-        val colorStrokeBelowRatio = ColorStateList(
-            arrayOf(
-                intArrayOf(-state_focused),
-                intArrayOf(state_focused),
-            ),
-
-            intArrayOf(
-                requireActivity().getColorFromAttr(colorSecondaryVariant),
-                requireActivity().getColorFromAttr(colorSecondaryVariant)
-            )
-        )
-
-        val colorStrokeAboveRatio = ColorStateList(
-            arrayOf(
-                intArrayOf(-state_focused),
-                intArrayOf(state_focused),
-            ),
-
-            intArrayOf(
-                requireActivity().getColorFromAttr(colorPrimary),
-                requireActivity().getColorFromAttr(colorPrimary)
-            )
-        )
-
         // Initial Set Toolbar
         binding.toolbar.root.background.alpha = 0
         binding.toolbar.etSearch.isFocusable = false
-        setSearchBar(colorStrokeBelowRatio,
+        setSearchBar(requireActivity().getColorStateListSecondaryVariant(),
             requireActivity().getColorFromAttr(colorSecondaryVariant))
 
 
@@ -138,10 +111,10 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
             // Set Toolbar Items
             if (ratio >= 0.65F) {
-                setSearchBar(colorStrokeAboveRatio,
+                setSearchBar(requireActivity().getColorStateListPrimary(),
                     requireActivity().getColorFromAttr(colorPrimary))
             } else {
-                setSearchBar(colorStrokeBelowRatio,
+                setSearchBar(requireActivity().getColorStateListSecondaryVariant(),
                     requireActivity().getColorFromAttr(colorSecondaryVariant))
             }
 
@@ -317,7 +290,9 @@ class HomeFragment : Fragment(), View.OnClickListener,
     }
 
     override fun onItemStartShoppingClicked(item: ProductItem) {
-        Toast.makeText(requireContext(), item.label, Toast.LENGTH_SHORT).show()
+        val intent = Intent(requireContext(), DetailActivity::class.java)
+        intent.putExtra(Code.KEY_DETAIL_VALUE, item)
+        startActivity(intent)
     }
 
     override fun onStartShoppingSeeAllClicked(item: ProductItem) {
@@ -333,6 +308,12 @@ class HomeFragment : Fragment(), View.OnClickListener,
             intent.putExtra(Code.KEY_FILTER_VALUE, Code.FRUITS_CATEGORY)
         }
 
+        startActivity(intent)
+    }
+
+    override fun onItemAllProductClicked(item: ProductItem) {
+        val intent = Intent(requireContext(), DetailActivity::class.java)
+        intent.putExtra(Code.KEY_DETAIL_VALUE, item)
         startActivity(intent)
     }
 

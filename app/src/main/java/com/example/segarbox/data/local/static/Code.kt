@@ -25,4 +25,5 @@ object Code {
     const val KEY_FILTER_VALUE = "value"
     const val EMPTY_STRING = ""
     const val IS_SEARCH_BAR_PRESSED = "is_search_bar_pressed"
+    const val KEY_DETAIL_VALUE = "key_detail_value"
 }

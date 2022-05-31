@@ -14,11 +14,10 @@ class PaginationViewModel(private val retrofitRepository: RetrofitRepository) : 
 
     fun getProductPaging(
         apiServices: ApiServices,
-        database: MainDatabase,
         filter: String,
         filterValue: String,
     ): LiveData<PagingData<ProductItem>> {
-        return retrofitRepository.getProductPaging(apiServices, database, filter, filterValue)
+        return retrofitRepository.getProductPaging(apiServices, filter, filterValue)
             .cachedIn(viewModelScope)
     }
 }

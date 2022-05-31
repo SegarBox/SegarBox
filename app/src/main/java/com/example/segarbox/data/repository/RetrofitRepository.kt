@@ -11,6 +11,7 @@ import com.example.segarbox.data.local.database.MainDatabase
 import com.example.segarbox.data.remote.api.ApiConfig
 import com.example.segarbox.data.remote.api.ApiServices
 import com.example.segarbox.data.remote.response.*
+import com.example.segarbox.ui.paging.ProductPagingSource
 import com.example.segarbox.ui.paging.ProductRemoteMediator
 import java.sql.DataTruncation
 
@@ -124,21 +125,16 @@ class RetrofitRepository {
 
     fun getProductPaging(
         apiServices: ApiServices,
-        database: MainDatabase,
         filter: String,
         filterValue: String,
     ): LiveData<PagingData<ProductItem>> {
 
-        @OptIn(ExperimentalPagingApi::class)
         return Pager(
-            config = PagingConfig(pageSize = 10),
-            remoteMediator = ProductRemoteMediator(
-                apiServices = apiServices,
-                database = database,
-                filter = filter,
-                filterValue = filterValue),
+            config = PagingConfig(
+                pageSize = 10
+            ),
             pagingSourceFactory = {
-                database.productDao().getAllProduct()
+                ProductPagingSource(apiServices, filter, filterValue)
             }
         ).liveData
 
@@ -187,10 +183,11 @@ class RetrofitRepository {
                     return it
                 }
             }
-
+            Log.e("ERROR LABEL", request.errorBody()!!.string())
             return ProductResponse(listOf())
 
         } catch (ex: Exception) {
+            Log.e("ERROR LABEL CATCH", ex.message.toString())
             return ProductResponse(listOf())
         }
     }
