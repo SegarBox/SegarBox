@@ -73,16 +73,13 @@ class TransactionFragment : Fragment(), View.OnClickListener {
 
     private fun observeData() {
         prefViewModel.getToken().observe(viewLifecycleOwner) { token ->
-
             Toast.makeText(requireContext(), "token : $token", Toast.LENGTH_SHORT).show()
             if (token.isEmpty()) {
                 startActivity(Intent(requireActivity(), LoginActivity::class.java))
                 requireActivity().onBackPressed()
-
             }
         }
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -94,7 +91,6 @@ class TransactionFragment : Fragment(), View.OnClickListener {
             R.id.iv_cart -> {
                 startActivity(Intent(requireContext(), CartActivity::class.java))
             }
-
         }
     }
 

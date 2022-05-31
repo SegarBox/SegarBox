@@ -1,15 +1,12 @@
 package com.example.segarbox.ui.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.segarbox.R
 import com.example.segarbox.data.local.model.DummyAddress
 import com.example.segarbox.data.local.model.ShippingModel
@@ -20,7 +17,7 @@ import com.example.segarbox.databinding.ActivityShippingBinding
 import com.example.segarbox.ui.adapter.ShippingAdapter
 import com.example.segarbox.ui.viewmodel.RetrofitRoomViewModelFactory
 import com.example.segarbox.ui.viewmodel.ShippingViewModel
-import kotlin.math.cos
+import com.google.android.material.snackbar.Snackbar
 
 class ShippingActivity : AppCompatActivity(), View.OnClickListener,
     ShippingAdapter.OnItemClickCallback {
@@ -91,9 +88,10 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
                                     shippingViewModel.setDestinationId(list[0].cityId)
                                 }
                                 else -> {
-                                    Toast.makeText(this,
-                                        Code.LOCATION_CANT_BE_REACHED,
-                                        Toast.LENGTH_SHORT).show()
+                                    Snackbar.make(binding.root, Code.LOCATION_CANT_BE_REACHED, Snackbar.LENGTH_SHORT).show()
+//                                    Toast.makeText(this,
+//                                        Code.LOCATION_CANT_BE_REACHED,
+//                                        Toast.LENGTH_SHORT).show()
                                 }
                             }
 

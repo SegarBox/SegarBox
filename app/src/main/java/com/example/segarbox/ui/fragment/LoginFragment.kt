@@ -3,27 +3,24 @@ package com.example.segarbox.ui.fragment
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.FragmentLoginBinding
 import com.example.segarbox.helper.getColorFromAttr
-import com.example.segarbox.ui.activity.MainActivity
 import com.example.segarbox.ui.viewmodel.LoginViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
-import com.google.android.material.R.attr.*
+import com.google.android.material.R.attr.colorOnSecondary
+import com.google.android.material.R.attr.colorPrimary
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
 class LoginFragment : Fragment(), View.OnClickListener {

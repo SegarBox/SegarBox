@@ -1,27 +1,18 @@
 package com.example.segarbox.ui.fragment
 
-import android.R.attr.state_focused
-import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.content.res.Resources
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.NestedScrollView
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.segarbox.R
-import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.data.repository.RetrofitRepository
@@ -34,8 +25,6 @@ import com.example.segarbox.ui.adapter.MarginGridItemDecoration
 import com.example.segarbox.ui.adapter.MarginItemDecoration
 import com.example.segarbox.ui.adapter.StartShoppingAdapter
 import com.example.segarbox.ui.viewmodel.MainViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitRoomViewModelFactory
 import com.google.android.material.R.attr.colorPrimary
 import com.google.android.material.R.attr.colorSecondaryVariant

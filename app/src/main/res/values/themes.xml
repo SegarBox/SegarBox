@@ -34,10 +34,4 @@
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/poppins_medium</item>
     </style>
-
-<!--    <style name="buttonColor" parent="Widget.MaterialComponents.Button">-->
-<!--        <item name="backgroundTint">@color/lightModeRed</item>-->
-<!--    </style>-->
-
-
 </resources>
