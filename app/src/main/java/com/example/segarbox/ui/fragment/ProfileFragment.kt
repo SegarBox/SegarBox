@@ -64,6 +64,17 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     }
 
     private fun observeData() {
+//        prefViewModel.getTheme().observe(viewLifecycleOwner) { isDarkMode ->
+//            when {
+//                isDarkMode -> {
+//                    binding.content.pattern.setImageResource(R.drawable.pat_white)
+//                }
+//                else -> {
+//                    binding.content.pattern.setImageResource(R.drawable.pat_black)
+//                }
+//            }
+//        }
+
         prefViewModel.getToken().observe(viewLifecycleOwner) { token ->
             if (token.isEmpty()) {
                 startActivity(Intent(requireActivity(), LoginActivity::class.java))
