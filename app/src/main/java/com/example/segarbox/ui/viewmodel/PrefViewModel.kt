@@ -38,4 +38,10 @@ class PrefViewModel(private val pref: SettingPreferences): ViewModel() {
             pref.saveUserId(id)
         }
     }
+
+    fun deleteTokenAndUserId(){
+        viewModelScope.launch {
+            pref.deleteTokenAndUserId()
+        }
+    }
 }

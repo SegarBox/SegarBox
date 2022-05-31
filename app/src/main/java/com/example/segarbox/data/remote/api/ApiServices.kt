@@ -78,5 +78,9 @@ interface ApiServices {
         @Path("id") id: Int
     ): Response<UserResponse>
 
+    @FormUrlEncoded
+    @POST("logout")
+    @Headers("Accept: application/json")
+    suspend fun logout(): Response<LogoutResponse>
 
 }

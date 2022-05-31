@@ -212,5 +212,22 @@ class RetrofitRepository {
         }
     }
 
+//    suspend fun logout(): LogoutResponse {
+//
+//        try {
+//            val request = segarBoxApiServices.logout()
+//
+//            if (request.isSuccessful) {
+//                request.body()?.let {
+//                    return it
+//                }
+//            }
+//            return LogoutResponse()
+//
+//        } catch (ex: Exception) {
+//            return LogoutResponse()
+//        }
+//    }
+
 
 }
