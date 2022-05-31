@@ -50,6 +50,13 @@ class SettingPreferences private constructor(private val dataStore: DataStore<Pr
         }
     }
 
+    suspend fun deleteTokenAndUserId() {
+        dataStore.edit {
+            it[keyToken] = ""
+            it[keyUserId] = 0
+        }
+    }
+
     companion object {
         @Volatile
         private var INSTANCE: SettingPreferences? = null

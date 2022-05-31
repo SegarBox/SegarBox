@@ -52,8 +52,8 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     private fun init() {
         setToolbar()
         observeData()
-        darkModeSetting()
         binding.toolbar.ivCart.setOnClickListener(this)
+        binding.content.btnLogout.setOnClickListener(this)
     }
 
     private fun setToolbar() {
@@ -105,11 +105,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun darkModeSetting(){
-
-
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
@@ -119,6 +114,9 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         when (v?.id) {
             R.id.iv_cart -> {
                 startActivity(Intent(requireContext(), CartActivity::class.java))
+            }
+            R.id.btn_logout -> {
+                prefViewModel.deleteTokenAndUserId()
             }
         }
     }

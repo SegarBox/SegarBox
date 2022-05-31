@@ -148,7 +148,7 @@
         app:layout_constraintTop_toTopOf="@+id/dark_mode" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/materialButton"
+        android:id="@+id/btn_logout"
         style="@style/buttonColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
