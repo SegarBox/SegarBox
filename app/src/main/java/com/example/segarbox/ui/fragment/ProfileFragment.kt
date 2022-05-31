@@ -69,7 +69,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 isDarkMode -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     binding.content.sDarkMode.isChecked = true
-//                    binding.content.pattern.setImageResource(R.drawable.pat_white)
+                    binding.content.pattern.setImageResource(R.drawable.pat_black)
                 }
 
                 else -> {
@@ -90,11 +90,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 requireActivity().onBackPressed()
             }
             else {
-                prefViewModel.getUserId().observe(viewLifecycleOwner){ userId ->
-                    if(userId > 0) {
-                        profileViewModel.user(token.tokenFormat(), userId)
-                    }
-                }
+                profileViewModel.user(token.tokenFormat())
             }
         }
 

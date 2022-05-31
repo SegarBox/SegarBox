@@ -38,22 +38,22 @@ class SettingPreferences private constructor(private val dataStore: DataStore<Pr
         }
     }
 
-    fun getUserId(): Flow<Int> {
-        return dataStore.data.map {
-            it[keyUserId] ?: 0
-        }
-    }
-
-    suspend fun saveUserId(id: Int) {
-        dataStore.edit {
-            it[keyUserId] = id
-        }
-    }
+//    fun getUserId(): Flow<Int> {
+//        return dataStore.data.map {
+//            it[keyUserId] ?: 0
+//        }
+//    }
+//
+//    suspend fun saveUserId(id: Int) {
+//        dataStore.edit {
+//            it[keyUserId] = id
+//        }
+//    }
 
     suspend fun deleteTokenAndUserId() {
         dataStore.edit {
             it[keyToken] = ""
-            it[keyUserId] = 0
+//            it[keyUserId] = 0
         }
     }
 

@@ -9,6 +9,14 @@
     tools:context=".ui.activity.LoginActivity">
 
     <ImageView
+        android:id="@+id/pat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/pat_white"
+        android:alpha="0.035"
+        android:scaleType="centerCrop"/>
+
+    <ImageView
         android:id="@+id/logo"
         android:layout_width="250dp"
         android:layout_height="wrap_content"

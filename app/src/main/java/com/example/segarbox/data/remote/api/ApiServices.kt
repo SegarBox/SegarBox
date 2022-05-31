@@ -71,16 +71,24 @@ interface ApiServices {
         @Query("filter[label]") label: String
     ): Response<ProductResponse>
 
-    @GET("users/{id}")
+    @GET("users/1")
     @Headers("Accept: application/json")
     suspend fun getUser(
-        @Header("Authorization") token: String,
-        @Path("id") id: Int
+        @Header("Authorization") token: String
     ): Response<UserResponse>
+
+//    @GET("users/{id}")
+//    @Headers("Accept: application/json")
+//    suspend fun getUser(
+//        @Header("Authorization") token: String,
+//        @Path("id") id: Int
+//    ): Response<UserResponse>
 
     @FormUrlEncoded
     @POST("logout")
     @Headers("Accept: application/json")
-    suspend fun logout(): Response<LogoutResponse>
+    suspend fun logout(
+        @Header("Authorization") token: String
+    ): Response<LogoutResponse>
 
 }

@@ -192,10 +192,10 @@ class RetrofitRepository {
         }
     }
 
-    suspend fun getUser(token: String, id: Int): UserResponse {
+    suspend fun getUser(token: String): UserResponse {
 
         try {
-            val request = segarBoxApiServices.getUser(token, id)
+            val request = segarBoxApiServices.getUser(token)
 
             if (request.isSuccessful) {
                 request.body()?.let {
@@ -208,6 +208,23 @@ class RetrofitRepository {
             return UserResponse()
         }
     }
+
+//    suspend fun getUser(token: String, id: Int): UserResponse {
+//
+//        try {
+//            val request = segarBoxApiServices.getUser(token, id)
+//
+//            if (request.isSuccessful) {
+//                request.body()?.let {
+//                    return it
+//                }
+//            }
+//            return UserResponse()
+//
+//        } catch (ex: Exception) {
+//            return UserResponse()
+//        }
+//    }
 
 //    suspend fun logout(): LogoutResponse {
 //

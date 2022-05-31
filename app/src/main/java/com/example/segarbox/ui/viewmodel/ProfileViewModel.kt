@@ -15,10 +15,10 @@ class ProfileViewModel (private val retrofitRepository: RetrofitRepository): Vie
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    fun user(token: String, id: Int) {
+    fun user(token: String) {
         viewModelScope.launch {
             _isLoading.postValue(true)
-            val response = retrofitRepository.getUser(token, id)
+            val response = retrofitRepository.getUser(token)
             _userResponse.postValue(response)
             _isLoading.postValue(false)
         }

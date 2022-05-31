@@ -6,41 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".SplashScreenActivity">
 
-    <RelativeLayout
+    <ImageView
         android:id="@+id/bg"
         android:layout_width="match_parent"
         android:layout_height="900dp"
         android:scaleType="centerCrop"
-        android:background="@drawable/splash_bg"
+        android:background="@color/new_green"
         app:flow_verticalBias="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <ImageView
-        android:id="@+id/pat"
-        android:layout_width="match_parent"
-        android:layout_height="900dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/pat_white"
-        android:alpha="0.1"
-        app:flow_verticalBias="0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/pat"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="900dp"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        android:src="@drawable/pat_white"-->
+<!--        android:alpha="0.04"-->
+<!--        app:flow_verticalBias="0"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"/>-->
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/splash"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        app:lottie_rawRes="@raw/banana"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        app:lottie_rawRes="@raw/segarwhite"
         app:lottie_autoPlay="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/splashGreen"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        app:lottie_rawRes="@raw/segargreen"
+        app:lottie_autoPlay="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
