@@ -64,16 +64,25 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     }
 
     private fun observeData() {
-//        prefViewModel.getTheme().observe(viewLifecycleOwner) { isDarkMode ->
-//            when {
-//                isDarkMode -> {
+        prefViewModel.getTheme().observe(viewLifecycleOwner) { isDarkMode:Boolean ->
+            when {
+                isDarkMode -> {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    binding.content.sDarkMode.isChecked = true
 //                    binding.content.pattern.setImageResource(R.drawable.pat_white)
-//                }
-//                else -> {
+                }
+
+                else -> {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    binding.content.sDarkMode.isChecked = false
 //                    binding.content.pattern.setImageResource(R.drawable.pat_black)
-//                }
-//            }
-//        }
+                }
+            }
+
+            binding.content.sDarkMode.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+                prefViewModel.saveTheme(isChecked)
+            }
+        }
 
         prefViewModel.getToken().observe(viewLifecycleOwner) { token ->
             if (token.isEmpty()) {
@@ -97,23 +106,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     }
 
     private fun darkModeSetting(){
-        prefViewModel.getTheme().observe(viewLifecycleOwner) { isDarkMode:Boolean ->
-            when {
-                isDarkMode -> {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    binding.content.sDarkMode.isChecked = true
-                }
 
-                else -> {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    binding.content.sDarkMode.isChecked = false
-                }
-            }
-
-            binding.content.sDarkMode.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                prefViewModel.saveTheme(isChecked)
-            }
-        }
 
     }
 

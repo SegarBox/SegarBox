@@ -84,7 +84,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
         observeData()
         scrollToTopListAdapter()
         binding.content.btnDetail.setOnClickListener(this)
-        binding.content.btnDarkmode.setOnClickListener(this)
+//        binding.content.btnDarkmode.setOnClickListener(this)
         binding.toolbar.ivCart.setOnClickListener(this)
         binding.toolbar.etSearch.setOnClickListener(this)
         binding.content.btnCheckout.setOnClickListener(this)
@@ -191,13 +191,13 @@ class HomeFragment : Fragment(), View.OnClickListener,
                 isDarkMode -> {
                     isThemeDarkMode = true
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    binding.content.btnDarkmode.text = "Disable Dark Mode"
+//                    binding.content.btnDarkmode.text = "Disable Dark Mode"
                 }
 
                 else -> {
                     isThemeDarkMode = false
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    binding.content.btnDarkmode.text = "Enable Dark Mode"
+//                    binding.content.btnDarkmode.text = "Enable Dark Mode"
                 }
             }
         }
@@ -277,12 +277,12 @@ class HomeFragment : Fragment(), View.OnClickListener,
                 startActivity(Intent(requireContext(), DetailActivity::class.java))
             }
 
-            R.id.btn_darkmode -> {
-                when {
-                    isThemeDarkMode -> prefViewModel.saveTheme(false)
-                    else -> prefViewModel.saveTheme(true)
-                }
-            }
+//            R.id.btn_darkmode -> {
+//                when {
+//                    isThemeDarkMode -> prefViewModel.saveTheme(false)
+//                    else -> prefViewModel.saveTheme(true)
+//                }
+//            }
 
             R.id.iv_cart -> {
                 startActivity(Intent(requireContext(), CartActivity::class.java))
