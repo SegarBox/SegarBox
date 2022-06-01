@@ -57,7 +57,7 @@
     <string name="retry">Retry</string>
     <string name="rto">Request Timed Out</string>
     <string name="fruits">Fruits</string>
-    <string name="veggies">Veggies</string>
+    <string name="veggies">Vegetables</string>
     <string name="most_popular">Most Popular</string>
     <string name="logout">Logout</string>
     <string name="stock">Stock : %s</string>

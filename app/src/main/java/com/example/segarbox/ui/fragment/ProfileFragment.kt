@@ -69,7 +69,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 isDarkMode -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     binding.content.sDarkMode.isChecked = true
-                    binding.content.pattern.setImageResource(R.drawable.pat_black)
+//                    binding.content.pattern.setImageResource(R.drawable.pat_black)
                 }
 
                 else -> {

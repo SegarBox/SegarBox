@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
@@ -22,6 +21,7 @@ import com.example.segarbox.ui.viewmodel.RegisterViewModel
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.material.R.attr.colorOnSecondary
 import com.google.android.material.R.attr.colorPrimary
+import com.google.android.material.snackbar.Snackbar
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
 
@@ -144,7 +144,8 @@ class RegisterFragment : Fragment(), View.OnClickListener {
                         // Jika error dari catch
                         else -> {
                             registerResponse.message?.let {
-                                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+//                                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
@@ -161,7 +162,6 @@ class RegisterFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_register -> {
-
                 registerViewModel.register(
                     name = binding.etName.text.toString(),
                     email = binding.etEmail.text.toString(),

@@ -3,15 +3,11 @@ package com.example.segarbox.ui.activity
 import android.R.attr.state_checked
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.segarbox.BuildConfig
 import com.example.segarbox.R
-import com.example.segarbox.data.local.database.MainDatabase
-import com.example.segarbox.data.remote.api.ApiConfig
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.data.repository.RoomRepository
 import com.example.segarbox.databinding.ActivityMainBinding

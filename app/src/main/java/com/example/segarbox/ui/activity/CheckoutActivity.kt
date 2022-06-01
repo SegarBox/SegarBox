@@ -3,7 +3,6 @@ package com.example.segarbox.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -20,6 +19,7 @@ import com.example.segarbox.helper.tidyUpJneEtd
 import com.example.segarbox.helper.tidyUpPosEtd
 import com.example.segarbox.helper.tidyUpTikiEtd
 import com.example.segarbox.ui.adapter.DummyAdapterCheckout
+import com.google.android.material.snackbar.Snackbar
 
 class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -145,9 +145,10 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                     intent.putExtra(Code.ADDRESS_VALUE, address)
                     resultLauncher.launch(intent)
                 } else {
-                    Toast.makeText(this,
-                        "Please add your delivery address first!",
-                        Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, "Please add your delivery address first!", Snackbar.LENGTH_SHORT).show()
+//                    Toast.makeText(this,
+//                        "Please add your delivery address first!",
+//                        Toast.LENGTH_SHORT).show()
                 }
             }
         }

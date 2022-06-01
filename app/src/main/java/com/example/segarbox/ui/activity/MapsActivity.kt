@@ -8,7 +8,6 @@ import android.content.res.Resources
 import android.location.Location
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +32,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListener {
 
@@ -181,9 +181,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                     getMyLocation()
                 }
                 else -> {
-                    Toast.makeText(this,
-                        getString(R.string.no_location_permission),
-                        Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, getString(R.string.no_location_permission), Snackbar.LENGTH_SHORT).show()
+//                    Toast.makeText(this,
+//                        getString(R.string.no_location_permission),
+//                        Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
@@ -205,9 +206,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                     mapsViewModel.getAddress(LatLng(location.latitude,
                         location.longitude).formatted())
                 } else {
-                    Toast.makeText(this,
-                        Code.LOCATION_NOT_FOUND,
-                        Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, Code.LOCATION_NOT_FOUND, Snackbar.LENGTH_SHORT).show()
+//                    Toast.makeText(this,
+//                        Code.LOCATION_NOT_FOUND,
+//                        Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -243,7 +245,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                     finish()
                 }
                 else {
-                    Toast.makeText(this, Code.LOCATION_CANT_BE_REACHED, Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, Code.LOCATION_CANT_BE_REACHED, Snackbar.LENGTH_SHORT).show()
+//                    Toast.makeText(this, Code.LOCATION_CANT_BE_REACHED, Toast.LENGTH_SHORT).show()
                 }
             }
         }
