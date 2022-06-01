@@ -60,6 +60,10 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun getIntentDetail() {
         productItem = intent.getParcelableExtra(Code.KEY_DETAIL_VALUE)
+        val productQtyFromCart = intent?.getIntExtra(Code.KEY_PRODUCT_QTY, 0)
+        productQtyFromCart?.let {
+            detailViewModel.saveQuantity(it)
+        }
     }
 
     private fun setToolbar() {
@@ -144,10 +148,15 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onNewIntent(intent: Intent?) {
-        val item = intent?.getParcelableExtra<ProductItem>(Code.KEY_DETAIL_VALUE)
-        setDetail(item)
-        item?.let {
+        productItem = intent?.getParcelableExtra(Code.KEY_DETAIL_VALUE)
+        val productQtyFromCart = intent?.getIntExtra(Code.KEY_PRODUCT_QTY, 0)
+        productItem?.let {
             binding.toolbar.tvTitle.text = it.label
+            detailViewModel.getProductById(it.id)
+            setDetail(it)
+        }
+        productQtyFromCart?.let {
+            detailViewModel.saveQuantity(it)
         }
         super.onNewIntent(intent)
     }

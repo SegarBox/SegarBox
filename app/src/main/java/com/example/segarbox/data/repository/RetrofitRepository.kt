@@ -1,6 +1,5 @@
 package com.example.segarbox.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -197,11 +196,9 @@ class RetrofitRepository {
                     return it
                 }
             }
-            Log.e("ERROR LABEL", request.errorBody()!!.string())
             return ProductResponse(listOf())
 
         } catch (ex: Exception) {
-            Log.e("ERROR LABEL CATCH", ex.message.toString())
             return ProductResponse(listOf())
         }
     }
@@ -265,7 +262,9 @@ class RetrofitRepository {
                     return it
                 }
             }
-            return AddCartResponse()
+
+            val result = Klaxon().parse<AddCartResponse>(request.errorBody()!!.string())
+            return result!!
 
         } catch (ex: Exception) {
             return AddCartResponse()
@@ -287,5 +286,71 @@ class RetrofitRepository {
             return UserCartResponse()
         }
     }
+
+    suspend fun getIsCheckedUserCart(token: String): UserCartResponse {
+        try {
+            val request = segarBoxApiServices.getIsCheckedUserCart(token)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            return UserCartResponse()
+
+        } catch (ex: Exception) {
+            return UserCartResponse()
+        }
+    }
+
+    suspend fun deleteUserCart(token: String, cartId: Int): DeleteCartResponse {
+        try {
+            val request = segarBoxApiServices.deleteUserCart(token, cartId)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            return DeleteCartResponse()
+
+        } catch (ex: Exception) {
+            return DeleteCartResponse(message = ex.message.toString())
+        }
+    }
+
+    suspend fun updateUserCart(token: String, cartId: Int, productId: Int, productQty: Int, isChecked: Int): UpdateCartResponse {
+        try {
+            val request = segarBoxApiServices.updateUserCart(token, cartId, productId, productQty, isChecked)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            val result = Klaxon().parse<UpdateCartResponse>(request.errorBody()!!.string())
+            return result!!
+
+        } catch (ex: Exception) {
+            return UpdateCartResponse()
+        }
+    }
+
+    suspend fun getCartDetail(token: String, shippingCost: Int): CartDetailResponse {
+        try {
+            val request = segarBoxApiServices.getCartDetail(token, shippingCost)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            return CartDetailResponse()
+
+        } catch (ex: Exception) {
+            return CartDetailResponse()
+        }
+    }
+
 
 }

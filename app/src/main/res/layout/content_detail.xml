@@ -5,8 +5,7 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="142dp"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:paddingBottom="148dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,10 +14,9 @@
         <ImageView
             android:id="@+id/iv_item"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="320dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:scaleType="centerCrop"
             android:src="@drawable/cauliflowers"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,6 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
             android:text="Cauliflower"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="28sp"
@@ -80,7 +79,7 @@
             android:fontFamily="@font/poppins_extrabold"
             tools:text="Stock : 5"
             android:textColor="?attr/colorPrimary"
-            android:textSize="18sp"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@id/counter"
             app:layout_constraintStart_toStartOf="@id/counter"
             app:layout_constraintTop_toTopOf="@id/tv_size"

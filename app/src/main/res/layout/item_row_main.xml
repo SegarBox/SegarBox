@@ -22,20 +22,15 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="130dp"
-            android:layout_margin="10dp"
-            android:scaleType="centerCrop"
             android:src="@drawable/cauliflowers"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/tv_name"
@@ -51,7 +46,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/relativeLayout" />
+            app:layout_constraintTop_toBottomOf="@id/imageView"/>
 
         <TextView
             android:id="@+id/tv_size"
