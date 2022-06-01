@@ -11,7 +11,7 @@ import com.example.segarbox.databinding.ItemRowCartBinding
 import com.example.segarbox.helper.formatProductSize
 import com.example.segarbox.helper.formatToRupiah
 
-class CartAdapter : ListAdapter<UserCartItem, CartAdapter.CartViewHolder>(DiffCallbackCart) {
+class CartAdapter(private val onItemCartClickCallback: OnItemCartClickCallback) : ListAdapter<UserCartItem, CartAdapter.CartViewHolder>(DiffCallbackCart) {
     inner class CartViewHolder(var binding: ItemRowCartBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
@@ -31,10 +31,27 @@ class CartAdapter : ListAdapter<UserCartItem, CartAdapter.CartViewHolder>(DiffCa
             tvItemName.text = item.product.label
             tvItemPrice.text = item.product.price.formatToRupiah()
             tvItemSize.text = item.product.size.formatProductSize(context)
-
+            counter.tvCount.text = item.productQty.toString()
             checkBox.isChecked = item.isChecked == 1
+
+            root.setOnClickListener {
+                onItemCartClickCallback.onRootClicked(item)
+            }
+
+            ivStash.setOnClickListener {
+                onItemCartClickCallback.onStashClicked(item)
+            }
+
         }
 
+    }
+
+    interface OnItemCartClickCallback {
+        fun onCheckboxClicked(item: UserCartItem)
+        fun onRemoveClicked(item: UserCartItem)
+        fun onAddClicked(item: UserCartItem)
+        fun onStashClicked(item: UserCartItem)
+        fun onRootClicked(item: UserCartItem)
     }
 
 }

@@ -3,12 +3,14 @@ package com.example.segarbox.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
+import com.bumptech.glide.Glide
 import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.data.local.static.Code
@@ -31,7 +33,6 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     private val binding get() = _binding!!
     private var productItem: ProductItem? = null
     private var quantity = 0
-    private var token: String? = null
     private val detailViewModel by viewModels<DetailViewModel> {
         RetrofitViewModelFactory.getInstance(RetrofitRepository())
     }
@@ -43,14 +44,13 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         _binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         init()
     }
 
     private fun init() {
         getIntentDetail()
         setToolbar()
-        setDetail()
+        setDetail(productItem)
         observeData()
         binding.toolbar.ivBack.setOnClickListener(this)
         binding.toolbar.ivCart.setOnClickListener(this)
@@ -70,13 +70,16 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun setDetail() {
+    private fun setDetail(item: ProductItem?) {
         binding.content.apply {
-            productItem?.let { item ->
-                tvItemName.text = item.label
-                tvSize.text = item.size.formatProductSize(this@DetailActivity)
-                tvPrice.text = item.price.formatToRupiah()
-                tvItemDescription.text = item.detail
+            item?.let { it ->
+                Glide.with(this@DetailActivity)
+                    .load(it.image)
+                    .into(ivItem)
+                tvItemName.text = it.label
+                tvSize.text = it.size.formatProductSize(this@DetailActivity)
+                tvPrice.text = it.price.formatToRupiah()
+                tvItemDescription.text = it.detail
             }
         }
     }
@@ -111,7 +114,9 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
                     startActivity(Intent(this, LoginActivity::class.java))
                 } else {
                     productItem?.let {
-                        detailViewModel.addCart(token = token.tokenFormat(), productId = it.id, productQty = quantity)
+                        detailViewModel.addCart(token = token.tokenFormat(),
+                            productId = it.id,
+                            productQty = quantity)
                     }
                 }
             }
@@ -120,8 +125,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         detailViewModel.addCartResponse.observe(this) { addCartResponse ->
             if (addCartResponse.message != null) {
                 Toast.makeText(this, addCartResponse.message, Toast.LENGTH_SHORT).show()
-            }
-            else {
+            } else {
                 addCartResponse.info?.let {
                     Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                 }
@@ -137,6 +141,15 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         }
 
 
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        val item = intent?.getParcelableExtra<ProductItem>(Code.KEY_DETAIL_VALUE)
+        setDetail(item)
+        item?.let {
+            binding.toolbar.tvTitle.text = it.label
+        }
+        super.onNewIntent(intent)
     }
 
 

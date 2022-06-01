@@ -40,7 +40,7 @@ class StartShoppingAdapter(private val onItemStartShoppingClickCallback: OnItemS
         )
 
         Glide.with(context)
-            .load(R.drawable.cauliflowers)
+            .load(item.image)
             .into(holder.binding.imageView)
 
         holder.binding.apply {

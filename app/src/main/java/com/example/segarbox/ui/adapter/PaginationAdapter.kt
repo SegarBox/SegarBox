@@ -32,7 +32,7 @@ class PaginationAdapter(private val onItemPaginationClickCallback: OnItemPaginat
 
             item?.let { item ->
                 Glide.with(context)
-                    .load(R.drawable.cauliflowers)
+                    .load(item.image)
                     .into(imageView)
 
                 tvName.text = item.label

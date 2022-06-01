@@ -43,6 +43,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private fun init(){
         observeData()
+        setNavigationBar()
         splashDelay()
     }
 
