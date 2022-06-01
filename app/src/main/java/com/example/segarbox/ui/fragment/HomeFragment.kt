@@ -1,27 +1,18 @@
 package com.example.segarbox.ui.fragment
 
-import android.R.attr.state_focused
-import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.content.res.Resources
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.NestedScrollView
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.segarbox.R
-import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.data.repository.RetrofitRepository
@@ -34,15 +25,11 @@ import com.example.segarbox.ui.adapter.MarginGridItemDecoration
 import com.example.segarbox.ui.adapter.MarginItemDecoration
 import com.example.segarbox.ui.adapter.StartShoppingAdapter
 import com.example.segarbox.ui.viewmodel.MainViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitRoomViewModelFactory
 import com.google.android.material.R.attr.colorPrimary
 import com.google.android.material.R.attr.colorSecondaryVariant
 import kotlin.math.max
 import kotlin.math.min
-
-//private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class HomeFragment : Fragment(), View.OnClickListener,
     StartShoppingAdapter.OnItemStartShoppingClickCallback,
@@ -51,13 +38,9 @@ class HomeFragment : Fragment(), View.OnClickListener,
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private var ratio = 0F
-    private var isThemeDarkMode = false
     private val allProductAdapter = AllProductAdapter(this)
     private val startShoppingAdapter = StartShoppingAdapter(this)
     private var checkedChips = ""
-//    private val prefViewModel by viewModels<PrefViewModel> {
-//        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
-//    }
     private val mainViewModel by viewModels<MainViewModel> {
         RetrofitRoomViewModelFactory.getInstance(RoomRepository(requireActivity().application),
             RetrofitRepository())
@@ -82,7 +65,6 @@ class HomeFragment : Fragment(), View.OnClickListener,
         observeData()
         scrollToTopListAdapter()
         binding.content.btnDetail.setOnClickListener(this)
-//        binding.content.btnDarkmode.setOnClickListener(this)
         binding.toolbar.ivCart.setOnClickListener(this)
         binding.toolbar.etSearch.setOnClickListener(this)
         binding.content.btnCheckout.setOnClickListener(this)
@@ -159,21 +141,6 @@ class HomeFragment : Fragment(), View.OnClickListener,
     }
 
     private fun observeData() {
-//        prefViewModel.getTheme().observe(viewLifecycleOwner) { isDarkMode ->
-//            when {
-//                isDarkMode -> {
-//                    isThemeDarkMode = true
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-////                    binding.content.btnDarkmode.text = "Disable Dark Mode"
-//                }
-//
-//                else -> {
-//                    isThemeDarkMode = false
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-////                    binding.content.btnDarkmode.text = "Enable Dark Mode"
-//                }
-//            }
-//        }
 
         mainViewModel.allProductResponse.observe(viewLifecycleOwner) {
             allProductAdapter.submitList(it.data)
@@ -249,13 +216,6 @@ class HomeFragment : Fragment(), View.OnClickListener,
             R.id.btn_detail -> {
                 startActivity(Intent(requireContext(), DetailActivity::class.java))
             }
-
-//            R.id.btn_darkmode -> {
-//                when {
-//                    isThemeDarkMode -> prefViewModel.saveTheme(false)
-//                    else -> prefViewModel.saveTheme(true)
-//                }
-//            }
 
             R.id.iv_cart -> {
                 startActivity(Intent(requireContext(), CartActivity::class.java))

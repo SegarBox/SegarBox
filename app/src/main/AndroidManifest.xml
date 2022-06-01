@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SegarBox">
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".ui.activity.SplashScreenActivity"
             android:launchMode="singleTask"
             android:exported="true" >
             <intent-filter>
@@ -48,13 +48,15 @@
             android:exported="false" />
         <activity
             android:name=".ui.activity.CartActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".ui.activity.LoginActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.activity.DetailActivity"
+            android:launchMode="singleTask"
             android:exported="false" />
         <activity
             android:name=".ui.activity.MainActivity"

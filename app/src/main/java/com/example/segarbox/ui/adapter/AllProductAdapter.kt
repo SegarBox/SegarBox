@@ -31,7 +31,7 @@ class AllProductAdapter(private val onItemAllProductClickCallback: OnItemAllProd
             root.layoutParams = newLayoutParams
 
             Glide.with(context)
-                .load(R.drawable.cauliflowers)
+                .load(item.image)
                 .into(imageView)
 
             tvName.text = item.label

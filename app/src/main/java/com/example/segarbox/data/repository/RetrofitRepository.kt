@@ -266,6 +266,7 @@ class RetrofitRepository {
                 }
             }
             return AddCartResponse()
+
         } catch (ex: Exception) {
             return AddCartResponse()
         }
@@ -280,10 +281,9 @@ class RetrofitRepository {
                     return it
                 }
             }
-            Log.e("UNSUCCESS", request.errorBody()!!.string())
             return UserCartResponse()
+
         } catch (ex: Exception) {
-            Log.e("CATCH", ex.message.toString())
             return UserCartResponse()
         }
     }
