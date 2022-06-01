@@ -1,6 +1,8 @@
 package com.example.segarbox.data.remote.response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class UserCartResponse(
 
@@ -8,6 +10,7 @@ data class UserCartResponse(
 	val data: List<UserCartItem>? = null,
 )
 
+@Parcelize
 data class UserCartItem(
 
 	@field:SerializedName("product")
@@ -33,5 +36,5 @@ data class UserCartItem(
 
 	@field:SerializedName("id")
 	val id: Int
-)
+) : Parcelable
 

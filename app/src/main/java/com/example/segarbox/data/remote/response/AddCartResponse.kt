@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class AddCartResponse(
 
 	@field:SerializedName("data")
-	val data: AddCartData? = null,
+	val data: CartData? = null,
 
 	@field:SerializedName("info")
 	val info: String? = null,
@@ -14,7 +14,7 @@ data class AddCartResponse(
 	val message: String? = null
 )
 
-data class AddCartData(
+data class CartData(
 
 	@field:SerializedName("updated_at")
 	val updatedAt: String,

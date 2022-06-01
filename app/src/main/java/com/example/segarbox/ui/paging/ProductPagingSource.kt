@@ -1,5 +1,6 @@
 package com.example.segarbox.ui.paging
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.segarbox.data.local.static.Code
@@ -43,7 +44,6 @@ class ProductPagingSource(
                     )
                 }
             }
-
 
             val responseBody = responseData.body()!!
 

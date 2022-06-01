@@ -74,6 +74,7 @@ class TransactionFragment : Fragment(), View.OnClickListener {
     private fun observeData() {
         prefViewModel.getToken().observe(viewLifecycleOwner) { token ->
             Toast.makeText(requireContext(), "token : $token", Toast.LENGTH_SHORT).show()
+
             if (token.isEmpty()) {
                 startActivity(Intent(requireActivity(), LoginActivity::class.java))
                 requireActivity().onBackPressed()

@@ -48,13 +48,15 @@
             android:exported="false" />
         <activity
             android:name=".ui.activity.CartActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".ui.activity.LoginActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.activity.DetailActivity"
+            android:launchMode="singleTask"
             android:exported="false" />
         <activity
             android:name=".ui.activity.MainActivity"
