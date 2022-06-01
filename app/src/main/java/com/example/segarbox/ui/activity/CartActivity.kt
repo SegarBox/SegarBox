@@ -12,19 +12,26 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
-import com.example.segarbox.data.local.model.DummyModelCart
+import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.ActivityCartBinding
-import com.example.segarbox.ui.adapter.DummyAdapterCart
+import com.example.segarbox.helper.tokenFormat
+import com.example.segarbox.ui.adapter.CartAdapter
+import com.example.segarbox.ui.viewmodel.CartViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
+import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
 class CartActivity : AppCompatActivity(), View.OnClickListener {
 
     private var _binding: ActivityCartBinding? = null
     private val binding get() = _binding!!
+    private val cartAdapter = CartAdapter()
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
+    }
+    private val cartViewModel by viewModels<CartViewModel> {
+        RetrofitViewModelFactory.getInstance(RetrofitRepository())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,22 +55,10 @@ class CartActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setAdapter() {
-        val listItem = arrayListOf(
-            DummyModelCart(),
-            DummyModelCart(),
-//            DummyModelCart(),
-//            DummyModelCart(),
-//            DummyModelCart(),
-//            DummyModelCart()
-        )
-
-        val adapterCart = DummyAdapterCart()
-        adapterCart.submitList(listItem)
-
         binding.content.rvCart.apply {
             layoutManager = LinearLayoutManager(this@CartActivity, LinearLayoutManager.VERTICAL, false)
             binding.content.rvCart.setHasFixedSize(true)
-            binding.content.rvCart.adapter = adapterCart
+            binding.content.rvCart.adapter = cartAdapter
         }
     }
 
@@ -76,13 +71,25 @@ class CartActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun observeData() {
         prefViewModel.getToken().observe(this) { token ->
-            Toast.makeText(this, token, Toast.LENGTH_SHORT).show()
-
             if (token.isEmpty()) {
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
+            else {
+                Toast.makeText(this, token, Toast.LENGTH_SHORT).show()
+                cartViewModel.getUserCart(token.tokenFormat())
+            }
         }
+
+        cartViewModel.userCart.observe(this) { userCartResponse ->
+            userCartResponse.data?.let {
+                cartAdapter.submitList(it)
+            }
+        }
+
+//        cartViewModel.isLoading.observe(this) { isLoading ->
+//
+//        }
     }
 
     override fun onDestroy() {

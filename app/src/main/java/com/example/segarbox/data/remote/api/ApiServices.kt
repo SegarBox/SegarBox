@@ -55,6 +55,12 @@ interface ApiServices {
         @Query("page[size]") size: Int
     ): Response<ProductResponse>
 
+    @GET("products/{id}")
+    @Headers("Accept: application/json")
+    suspend fun getProductById(
+        @Path("id") id: Int
+    ): Response<ProductByIdResponse>
+
     @GET("products")
     @Headers("Accept: application/json")
     suspend fun getCategoryProduct(
@@ -90,5 +96,22 @@ interface ApiServices {
     suspend fun logout(
         @Header("Authorization") token: String
     ): Response<LogoutResponse>
+
+    @FormUrlEncoded
+    @POST("carts")
+    @Headers("Accept: application/json")
+    suspend fun addToCart(
+        @Header("Authorization") token: String,
+        @Field("product_id") productId: Int,
+        @Field("product_qty") productQty: Int,
+        @Field("is_checked") isChecked: Int = 1,
+    ): Response<AddCartResponse>
+
+    @GET("carts")
+    @Headers("Accept: application/json")
+    suspend fun getUserCart(
+        @Header("Authorization") token: String,
+        @Query("include") include: String = "product"
+    ): Response<UserCartResponse>
 
 }

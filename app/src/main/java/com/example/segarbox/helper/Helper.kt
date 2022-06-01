@@ -63,12 +63,12 @@ fun Int.formatToRupiah(): String {
     return NumberFormat.getCurrencyInstance(Locale("id", "ID")).format(this)
 }
 
-fun Int.formatQty(context: Context): String {
+fun Int.formatProductSize(context: Context): String {
     return context.getString(R.string.gram, this.toString())
 }
 
 fun addDummyProduct(dummyCategoryName: String, listSize: Int): ProductItem {
-    return ProductItem(1, 1, 1, listSize, "dummy", "dummy", dummyCategoryName)
+    return ProductItem("dummy", 1, 1, 1, listSize, "dummy", "dummy", dummyCategoryName)
 }
 
 fun String.tokenFormat(): String {
