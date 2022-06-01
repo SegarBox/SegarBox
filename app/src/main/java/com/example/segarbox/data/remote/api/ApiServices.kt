@@ -83,13 +83,6 @@ interface ApiServices {
         @Header("Authorization") token: String
     ): Response<UserResponse>
 
-//    @GET("users/{id}")
-//    @Headers("Accept: application/json")
-//    suspend fun getUser(
-//        @Header("Authorization") token: String,
-//        @Path("id") id: Int
-//    ): Response<UserResponse>
-
     @FormUrlEncoded
     @POST("logout")
     @Headers("Accept: application/json")
@@ -111,7 +104,45 @@ interface ApiServices {
     @Headers("Accept: application/json")
     suspend fun getUserCart(
         @Header("Authorization") token: String,
-        @Query("include") include: String = "product"
+        @Query("include") include: String = "product",
+        @Query("page[size]") size: Int = 100,
+        @Query("sort") sort: String = "-id"
     ): Response<UserCartResponse>
 
+    @GET("carts")
+    @Headers("Accept: application/json")
+    suspend fun getIsCheckedUserCart(
+        @Header("Authorization") token: String,
+        @Query("include") include: String = "product",
+        @Query("page[size]") size: Int = 100,
+        @Query("sort") sort: String = "-id",
+        @Query("filter[is_checked]") isChecked: Int = 1
+    ): Response<UserCartResponse>
+
+    @DELETE("carts/{id}")
+    @Headers("Accept: application/json")
+    suspend fun deleteUserCart(
+        @Header("Authorization") token: String,
+        @Path("id") cartId: Int
+    ): Response<DeleteCartResponse>
+
+    @FormUrlEncoded
+    @PUT("carts/{id}")
+    @Headers("Accept: application/json")
+    suspend fun updateUserCart(
+        @Header("Authorization") token: String,
+        @Path("id") cartId: Int,
+        @Field("product_id") productId: Int,
+        @Field("product_qty") productQty: Int,
+        @Field("is_checked") isChecked: Int = 1
+    ): Response<UpdateCartResponse>
+
+
+    @FormUrlEncoded
+    @POST("carts/details")
+    @Headers("Accept: application/json")
+    suspend fun getCartDetail(
+        @Header("Authorization") token: String,
+        @Field("shipping_cost") shippingCost: Int = 0,
+    ): Response<CartDetailResponse>
 }
