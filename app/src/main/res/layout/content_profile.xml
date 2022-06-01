@@ -14,16 +14,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/pattern"
-        android:layout_width="match_parent"
-        android:layout_height="210dp"
-        android:src="@drawable/pat_white"
-        android:alpha="0.035"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toTopOf="@id/relativeLayout2"
-        app:layout_constraintStart_toStartOf="@id/relativeLayout2"
-        app:layout_constraintEnd_toEndOf="@id/relativeLayout2"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/pattern"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="210dp"-->
+<!--        android:src="@drawable/pat_white"-->
+<!--        android:alpha="0.035"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        app:layout_constraintTop_toTopOf="@id/relativeLayout2"-->
+<!--        app:layout_constraintStart_toStartOf="@id/relativeLayout2"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/relativeLayout2"/>-->
 
     <RelativeLayout
         android:id="@+id/relativeLayout3"

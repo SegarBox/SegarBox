@@ -18,37 +18,37 @@
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_title2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Hello, "
-            android:textColor="?attr/colorOnSecondary"
-            android:textSize="24dp"
-            android:textStyle="bold"
-            android:theme="@style/poppinsMedium"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_title2"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:text="Hello, Gabriella"-->
+<!--            android:textColor="?attr/colorOnSecondary"-->
+<!--            android:textSize="24dp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:theme="@style/poppinsMedium"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/header" />-->
 
-        <TextView
-            android:id="@+id/happy_shopping"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="16dp"
-            android:text="Start shopping at SegarBox!"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/tv_title2"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title2" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_title2"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="2dp"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            android:text="Start shopping at SegarBox!"-->
+<!--            android:textSize="20dp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/tv_title2"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/tv_title2" />-->
 
 
         <HorizontalScrollView
             android:id="@+id/chip_scroll_view"
-            app:layout_constraintStart_toStartOf="@+id/happy_shopping"
-            app:layout_constraintTop_toBottomOf="@+id/happy_shopping"
+            app:layout_constraintStart_toStartOf="@+id/header"
+            app:layout_constraintTop_toBottomOf="@+id/header"
             android:layout_width="match_parent"
             android:scrollbars="none"
             android:layout_marginTop="16dp"

@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SegarBox">
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".ui.activity.SplashScreenActivity"
             android:launchMode="singleTask"
             android:exported="true" >
             <intent-filter>
