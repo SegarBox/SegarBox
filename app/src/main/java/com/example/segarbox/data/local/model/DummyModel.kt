@@ -29,8 +29,8 @@ data class DummyModelCart(
 )
 
 @Parcelize
-data class DummyAddress(
-    val address: String = Code.LOCATION_NOT_FOUND,
+data class AddressModel(
+    val street: String = Code.LOCATION_NOT_FOUND,
     val city: String = Code.LOCATION_NOT_FOUND,
     val postalCode: String = Code.LOCATION_NOT_FOUND,
 ) : Parcelable

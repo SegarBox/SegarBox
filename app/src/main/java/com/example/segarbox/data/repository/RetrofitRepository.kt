@@ -1,6 +1,5 @@
 package com.example.segarbox.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -8,6 +7,8 @@ import androidx.paging.PagingData
 import androidx.paging.liveData
 import com.beust.klaxon.Klaxon
 import com.example.segarbox.BuildConfig
+import com.example.segarbox.data.local.model.MakeOrderBody
+import com.example.segarbox.data.local.model.ProductTransactions
 import com.example.segarbox.data.remote.api.ApiConfig
 import com.example.segarbox.data.remote.api.ApiServices
 import com.example.segarbox.data.remote.response.*
@@ -238,7 +239,7 @@ class RetrofitRepository {
 //        }
 //    }
 
-//    suspend fun logout(): LogoutResponse {
+    //    suspend fun logout(): LogoutResponse {
 //
 //        try {
 //            val request = segarBoxApiServices.logout()
@@ -320,9 +321,16 @@ class RetrofitRepository {
         }
     }
 
-    suspend fun updateUserCart(token: String, cartId: Int, productId: Int, productQty: Int, isChecked: Int): UpdateCartResponse {
+    suspend fun updateUserCart(
+        token: String,
+        cartId: Int,
+        productId: Int,
+        productQty: Int,
+        isChecked: Int,
+    ): UpdateCartResponse {
         try {
-            val request = segarBoxApiServices.updateUserCart(token, cartId, productId, productQty, isChecked)
+            val request =
+                segarBoxApiServices.updateUserCart(token, cartId, productId, productQty, isChecked)
 
             if (request.isSuccessful) {
                 request.body()?.let {
@@ -350,6 +358,76 @@ class RetrofitRepository {
 
         } catch (ex: Exception) {
             return CartDetailResponse()
+        }
+    }
+
+    suspend fun saveAddress(
+        token: String,
+        street: String,
+        city: String,
+        postalCode: String,
+    ): AddAddressResponse {
+        try {
+            val request = segarBoxApiServices.saveAddress(token, street, city, postalCode)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            return AddAddressResponse()
+
+        } catch (ex: Exception) {
+            return AddAddressResponse(message = ex.message.toString())
+        }
+    }
+
+    suspend fun getUserAddresses(token: String): GetAddressResponse {
+        try {
+            val request = segarBoxApiServices.getUserAddresses(token)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            return GetAddressResponse()
+
+        } catch (ex: Exception) {
+            return GetAddressResponse(message = ex.message.toString())
+        }
+    }
+
+    suspend fun deleteAddress(token: String, addressId: Int): DeleteAddressResponse {
+        try {
+            val request = segarBoxApiServices.deleteAddress(token, addressId)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            return DeleteAddressResponse()
+
+        } catch (ex: Exception) {
+            return DeleteAddressResponse(message = ex.message.toString())
+        }
+    }
+
+    suspend fun makeOrderTransaction(token: String, makeOrderBody: MakeOrderBody, ): MakeOrderResponse {
+        try {
+            val request = segarBoxApiServices.makeOrderTransaction(token, makeOrderBody)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            val result = Klaxon().parse<MakeOrderResponse>(request.errorBody()!!.string())
+            return result!!
+
+        } catch (ex: Exception) {
+            return MakeOrderResponse(message = ex.message.toString())
         }
     }
 

@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.data.local.static.Code
-import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.data.remote.response.UserCartItem
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.ActivityCartBinding
@@ -34,7 +33,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
     private var _binding: ActivityCartBinding? = null
     private val binding get() = _binding!!
     private val cartAdapter = CartAdapter(this)
-    private var token: String? = null
+    private var token = ""
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
     }
@@ -61,7 +60,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun setupView() {
-        binding.bottomPaymentInfo.tvButton.text = "Checkout"
+        binding.bottomPaymentInfo.tvButton.text = getString(R.string.checkout)
     }
 
     private fun setAdapter() {
@@ -76,23 +75,22 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
     private fun setToolbar() {
         binding.toolbar.apply {
             ivBack.isVisible = true
-            tvTitle.text = "Cart"
+            tvTitle.text = getString(R.string.cart)
         }
     }
 
     private fun observeData() {
         prefViewModel.getToken().observe(this) { token ->
+            this.token = token
             if (token.isEmpty()) {
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
-            } else {
-                this.token = token
             }
         }
 
         cartViewModel.deleteUserCartResponse.observe(this) { deleteCartResponse ->
             deleteCartResponse.data?.let {
-                token?.let { token ->
+                if (token.isNotEmpty()) {
                     cartViewModel.getUserCart(token.tokenFormat())
                 }
             }
@@ -104,13 +102,13 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
 
         cartViewModel.updateUserCartResponse.observe(this) { updateCartResponse ->
             updateCartResponse.data?.let {
-                token?.let { token ->
+                if (token.isNotEmpty()) {
                     cartViewModel.getUserCart(token.tokenFormat())
                 }
             }
 
             updateCartResponse.message?.let {
-                token?.let { token ->
+                if (token.isNotEmpty()) {
                     cartViewModel.getUserCart(token.tokenFormat())
                 }
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
@@ -120,7 +118,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
         cartViewModel.userCart.observe(this) { userCartResponse ->
             userCartResponse.data?.let {
                 cartAdapter.submitList(it)
-                token?.let { token ->
+                if (token.isNotEmpty()) {
                     cartViewModel.getCartDetail(token.tokenFormat(), 0)
                 }
             }
@@ -157,8 +155,8 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
                                 startActivity(Intent(this, CheckoutActivity::class.java))
                             }
                             else -> {
-                                token?.let {
-                                    cartViewModel.getUserCart(it.tokenFormat())
+                                if (token.isNotEmpty()) {
+                                    cartViewModel.getUserCart(token.tokenFormat())
                                 }
                             }
                         }
@@ -195,8 +193,8 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
     override fun onResume() {
         super.onResume()
 
-        token?.let {
-            cartViewModel.getUserCart(it.tokenFormat())
+        if (token.isNotEmpty()) {
+            cartViewModel.getUserCart(token.tokenFormat())
         }
     }
 
@@ -211,18 +209,17 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
                 finish()
             }
             R.id.checkout_layout -> {
-                token?.let {
-                    cartViewModel.getIsCheckedUserCart(it.tokenFormat())
+                if (token.isNotEmpty()) {
+                    cartViewModel.getIsCheckedUserCart(token.tokenFormat())
                 }
             }
         }
     }
 
     override fun onCheckboxClicked(item: UserCartItem) {
-        token?.let {
-            var newIsChecked = 1
-            newIsChecked = if (item.isChecked == 1) 0 else 1
-            cartViewModel.updateUserCart(it.tokenFormat(),
+        if (token.isNotEmpty()) {
+            val newIsChecked = if (item.isChecked == 1) 0 else 1
+            cartViewModel.updateUserCart(token.tokenFormat(),
                 item.id,
                 item.productId,
                 item.productQty,
@@ -231,9 +228,9 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     override fun onRemoveClicked(item: UserCartItem) {
-        token?.let {
+        if (token.isNotEmpty()) {
             val newProductQty = item.productQty - 1
-            cartViewModel.updateUserCart(it.tokenFormat(),
+            cartViewModel.updateUserCart(token.tokenFormat(),
                 item.id,
                 item.productId,
                 newProductQty,
@@ -242,9 +239,9 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     override fun onAddClicked(item: UserCartItem) {
-        token?.let {
+        if (token.isNotEmpty()) {
             val newProductQty = item.productQty + 1
-            cartViewModel.updateUserCart(it.tokenFormat(),
+            cartViewModel.updateUserCart(token.tokenFormat(),
                 item.id,
                 item.productId,
                 newProductQty,
@@ -253,14 +250,14 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     override fun onStashClicked(item: UserCartItem) {
-        token?.let {
-            cartViewModel.deleteUserCart(it.tokenFormat(), item.id)
+        if (token.isNotEmpty()) {
+            cartViewModel.deleteUserCart(token.tokenFormat(), item.id)
         }
     }
 
     override fun onItemProductQtyChanged(item: UserCartItem) {
-        token?.let {
-            cartViewModel.updateUserCart(it.tokenFormat(),
+        if (token.isNotEmpty()) {
+            cartViewModel.updateUserCart(token.tokenFormat(),
                 item.id,
                 item.productId,
                 item.productQty,

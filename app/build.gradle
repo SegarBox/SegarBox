@@ -62,6 +62,7 @@ dependencies {
     implementation 'androidx.room:room-paging:2.4.0-rc01'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
+    implementation 'com.beust:klaxon:5.5'
     //noinspection GradleDependency
     implementation 'com.google.android.gms:play-services-maps:18.0.0'
     //noinspection GradleDependency
@@ -69,6 +70,7 @@ dependencies {
     implementation 'androidx.test.espresso:espresso-idling-resource:3.4.0'
     implementation 'androidx.navigation:navigation-fragment:2.4.2'
     implementation 'com.beust:klaxon:5.5'
+    implementation 'io.github.nikartm:image-support:2.0.0'
     kapt 'androidx.room:room-compiler:2.4.2'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
@@ -76,7 +78,6 @@ dependencies {
 
     //TabLayout
     implementation "androidx.viewpager2:viewpager2:1.0.0"
-    implementation 'com.beust:klaxon:5.5'
 
     //Lottie
     implementation 'com.airbnb.android:lottie:3.4.1'

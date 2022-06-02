@@ -14,5 +14,5 @@ data class CartDetailResponse(
 	val subtotalProducts: Int = 0,
 
 	@field:SerializedName("shipping_cost")
-	val shippingCost: String = "0"
+	val shippingCost: Int = 0
 )

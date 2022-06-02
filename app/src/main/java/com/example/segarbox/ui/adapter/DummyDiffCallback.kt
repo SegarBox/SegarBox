@@ -1,7 +1,6 @@
 package com.example.segarbox.ui.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.segarbox.data.local.model.DummyAddress
 import com.example.segarbox.data.local.model.DummyModel
 
 object DummyDiffCallback : DiffUtil.ItemCallback<DummyModel>() {
