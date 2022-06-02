@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ProductTransactions(
     @field:SerializedName("product_id")
-    val product_id: Int,
+    val productId: Int,
 
     @field:SerializedName("qty")
     val qty: Int

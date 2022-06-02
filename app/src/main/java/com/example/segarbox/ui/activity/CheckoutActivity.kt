@@ -98,7 +98,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                 it.forEach { userCartItem ->
                     listProductTransactions.add(ProductTransactions(
                         userCartItem.product.id,
-                        userCartItem.product.qty
+                        userCartItem.productQty
                     ))
                 }
                 checkoutDetailsAdapter.submitList(it)
