@@ -118,3 +118,17 @@ fun Context.getColorStateListPrimary(): ColorStateList {
         )
     )
 }
+
+fun Context.getColorStateListRed(): ColorStateList {
+    return ColorStateList(
+        arrayOf(
+            intArrayOf(-state_focused),
+            intArrayOf(state_focused),
+        ),
+
+        intArrayOf(
+            this.getHelperColor(R.color.lightModeRed),
+            this.getHelperColor(R.color.lightModeRed)
+        )
+    )
+}

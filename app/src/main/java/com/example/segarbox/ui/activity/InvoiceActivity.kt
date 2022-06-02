@@ -7,9 +7,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.segarbox.R
 import com.example.segarbox.data.local.model.DummyModelCart
-import com.example.segarbox.databinding.ActivityDetailBinding
 import com.example.segarbox.databinding.ActivityInvoiceBinding
-import com.example.segarbox.ui.adapter.DummyAdapterCheckout
 
 class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -53,12 +51,12 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
             DummyModelCart()
         )
 
-        val adapterInvoice = DummyAdapterCheckout()
-        adapterInvoice.submitList(listItem)
+//        val adapterInvoice = DummyAdapterCheckout()
+//        adapterInvoice.submitList(listItem)
 
         binding.content.rvCheckoutItem.apply {
             layoutManager = LinearLayoutManager(this@InvoiceActivity)
-            adapter = adapterInvoice
+//            adapter = adapterInvoice
         }
     }
 

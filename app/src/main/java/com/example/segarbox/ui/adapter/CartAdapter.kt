@@ -56,7 +56,7 @@ class CartAdapter(private val onItemCartClickCallback: OnItemCartClickCallback) 
             }
 
             root.setOnClickListener {
-                onItemCartClickCallback.onRootClicked(item.product, item.productQty)
+                onItemCartClickCallback.onRootClicked(item)
             }
 
             ivStash.setOnClickListener {
@@ -88,7 +88,7 @@ class CartAdapter(private val onItemCartClickCallback: OnItemCartClickCallback) 
         fun onRemoveClicked(item: UserCartItem)
         fun onAddClicked(item: UserCartItem)
         fun onStashClicked(item: UserCartItem)
-        fun onRootClicked(productItem: ProductItem, productQty: Int)
+        fun onRootClicked(item: UserCartItem)
         fun onItemProductQtyChanged(item: UserCartItem)
     }
 

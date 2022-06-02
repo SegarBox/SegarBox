@@ -3,7 +3,6 @@ package com.example.segarbox.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -15,11 +14,10 @@ import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.response.ProductItem
+import com.example.segarbox.data.remote.response.UserCartItem
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.ActivityDetailBinding
-import com.example.segarbox.helper.formatProductSize
-import com.example.segarbox.helper.formatToRupiah
-import com.example.segarbox.helper.tokenFormat
+import com.example.segarbox.helper.*
 import com.example.segarbox.ui.viewmodel.DetailViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
@@ -32,6 +30,10 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     private var _binding: ActivityDetailBinding? = null
     private val binding get() = _binding!!
     private var productItem: ProductItem? = null
+    private var userCartItem: UserCartItem? = null
+    private var fromActivity: String? = null
+    private var productQtyFromCart: Int? = null
+    private var productIsCheckedFromCart: Int? = null
     private var quantity = 0
     private val detailViewModel by viewModels<DetailViewModel> {
         RetrofitViewModelFactory.getInstance(RetrofitRepository())
@@ -59,10 +61,18 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun getIntentDetail() {
+        // From Home
         productItem = intent.getParcelableExtra(Code.KEY_DETAIL_VALUE)
-        val productQtyFromCart = intent?.getIntExtra(Code.KEY_PRODUCT_QTY, 0)
-        productQtyFromCart?.let {
-            detailViewModel.saveQuantity(it)
+
+        // From Cart
+        fromActivity = intent.getStringExtra(Code.KEY_FROM_ACTIVITY)
+
+        fromActivity?.let {
+            userCartItem = intent.getParcelableExtra(Code.KEY_USERCART_VALUE)
+            userCartItem?.let { userCartItem ->
+                productItem = userCartItem.product
+                detailViewModel.saveQuantity(userCartItem.productQty)
+            }
         }
     }
 
@@ -96,6 +106,9 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
         detailViewModel.productById.observe(this) { productById ->
             productById.data?.let {
+                if (it.qty < quantity) {
+                    detailViewModel.saveQuantity(it.qty)
+                }
                 binding.content.tvStock.text = getString(R.string.stock, it.qty.toString())
                 binding.content.counter.ivAdd.isEnabled = quantity < it.qty
             }
@@ -103,12 +116,25 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
         detailViewModel.quantity.observe(this) { qty ->
             quantity = qty
+            binding.btnAddToCart.isEnabled = qty != 0
             binding.content.counter.apply {
                 tvCount.text = qty.toString()
                 ivRemove.isEnabled = qty != 0
             }
 
-            binding.btnAddToCart.isEnabled = qty != 0
+            // Set Button jika dari Cart
+            fromActivity?.let {
+                if (it == Code.CART_ACTIVITY) {
+                    binding.btnAddToCart.isEnabled = true
+                    if (qty > 0) {
+                        binding.btnAddToCart.backgroundTintList = this.getColorStateListPrimary()
+                        binding.btnAddToCart.text = "Update Cart"
+                    } else {
+                        binding.btnAddToCart.backgroundTintList = this.getColorStateListRed()
+                        binding.btnAddToCart.text = "DELETE FROM CART"
+                    }
+                }
+            }
         }
 
         prefViewModel.getToken().observe(this) { token ->
@@ -117,11 +143,30 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
                 if (token.isEmpty()) {
                     startActivity(Intent(this, LoginActivity::class.java))
                 } else {
-                    productItem?.let {
-                        detailViewModel.addCart(token = token.tokenFormat(),
-                            productId = it.id,
-                            productQty = quantity)
+
+                    // Set Jika dari Cart atau tidak
+                    if (fromActivity != null && fromActivity == Code.CART_ACTIVITY) {
+                        // Jika quantity > 0
+                        userCartItem?.let { userCartItem ->
+                            if (quantity > 0) {
+                                detailViewModel.updateUserCart(token.tokenFormat(),
+                                    userCartItem.id,
+                                    userCartItem.product.id,
+                                    quantity,
+                                    userCartItem.isChecked)
+                            }
+                            else {
+                                detailViewModel.deleteUserCart(token.tokenFormat(), userCartItem.id)
+                            }
+                        }
+                    } else {
+                        productItem?.let {
+                            detailViewModel.addCart(token = token.tokenFormat(),
+                                productId = it.id,
+                                productQty = quantity)
+                        }
                     }
+
                 }
             }
         }
@@ -132,6 +177,33 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             } else {
                 addCartResponse.info?.let {
                     Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        detailViewModel.updateUserCartResponse.observe(this) { updateCartResponse ->
+            if (updateCartResponse.message != null ) {
+                Toast.makeText(this, updateCartResponse.message, Toast.LENGTH_SHORT).show()
+                productItem?.let {
+                    detailViewModel.getProductById(it.id)
+                }
+            } else {
+                updateCartResponse.info?.let {
+                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, CartActivity::class.java))
+                    finish()
+                }
+            }
+        }
+
+        detailViewModel.deleteUserCartResponse.observe(this) { deleteCartResponse ->
+            if (deleteCartResponse.message != null ) {
+                Toast.makeText(this, deleteCartResponse.message, Toast.LENGTH_SHORT).show()
+            } else {
+                deleteCartResponse.info?.let {
+                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, CartActivity::class.java))
+                    finish()
                 }
             }
         }
@@ -147,19 +219,24 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        productItem = intent?.getParcelableExtra(Code.KEY_DETAIL_VALUE)
-        val productQtyFromCart = intent?.getIntExtra(Code.KEY_PRODUCT_QTY, 0)
-        productItem?.let {
-            binding.toolbar.tvTitle.text = it.label
-            detailViewModel.getProductById(it.id)
-            setDetail(it)
-        }
-        productQtyFromCart?.let {
-            detailViewModel.saveQuantity(it)
-        }
-        super.onNewIntent(intent)
-    }
+//    override fun onNewIntent(intent: Intent?) {
+//        fromActivity = intent?.getStringExtra(Code.KEY_FROM_ACTIVITY)
+//        productItem = intent?.getParcelableExtra(Code.KEY_DETAIL_VALUE)
+//        val productQtyFromCart = intent?.getIntExtra(Code.KEY_PRODUCT_QTY, 0)
+//        productItem?.let {
+//            binding.toolbar.tvTitle.text = it.label
+//            detailViewModel.getProductById(it.id)
+//            setDetail(it)
+//        }
+//        productQtyFromCart?.let {
+//            detailViewModel.saveQuantity(it)
+//        }
+//        fromActivity?.let {
+//            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+//        }
+//        Log.e("ON NEW INTENT", "TRUE")
+//        super.onNewIntent(intent)
+//    }
 
 
     override fun onDestroy() {
@@ -174,18 +251,19 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.iv_cart -> {
                 startActivity(Intent(this, CartActivity::class.java))
+                finish()
             }
             R.id.iv_add -> {
+                detailViewModel.saveQuantity(quantity + 1)
                 productItem?.let {
                     detailViewModel.getProductById(it.id)
                 }
-                detailViewModel.saveQuantity(quantity + 1)
             }
             R.id.iv_remove -> {
+                detailViewModel.saveQuantity(quantity - 1)
                 productItem?.let {
                     detailViewModel.getProductById(it.id)
                 }
-                detailViewModel.saveQuantity(quantity - 1)
             }
         }
     }

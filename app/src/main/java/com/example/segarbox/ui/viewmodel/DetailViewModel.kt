@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.segarbox.data.remote.response.AddCartResponse
-import com.example.segarbox.data.remote.response.ProductByIdResponse
-import com.example.segarbox.data.remote.response.ProductResponse
+import com.example.segarbox.data.remote.response.*
 import com.example.segarbox.data.repository.RetrofitRepository
 import kotlinx.coroutines.launch
 
@@ -21,11 +19,14 @@ class DetailViewModel(private val retrofitRepository: RetrofitRepository): ViewM
     private var _addCartResponse = MutableLiveData<AddCartResponse>()
     val addCartResponse: LiveData<AddCartResponse> = _addCartResponse
 
+    private var _updateUserCartResponse = MutableLiveData<UpdateCartResponse>()
+    val updateUserCartResponse: LiveData<UpdateCartResponse> = _updateUserCartResponse
+
+    private var _deleteUserCartResponse = MutableLiveData<DeleteCartResponse>()
+    val deleteUserCartResponse: LiveData<DeleteCartResponse> = _deleteUserCartResponse
+
     private var _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
-
-    private var _goToCart = MutableLiveData<Boolean>()
-    val goToCart: LiveData<Boolean> = _goToCart
 
     init {
         saveQuantity(0)
@@ -47,11 +48,27 @@ class DetailViewModel(private val retrofitRepository: RetrofitRepository): ViewM
     fun addCart(token: String, productId: Int, productQty: Int) {
         viewModelScope.launch {
             _isLoading.postValue(true)
-            _goToCart.postValue(false)
             val request = retrofitRepository.addCart(token, productId, productQty)
             _addCartResponse.postValue(request)
             _isLoading.postValue(false)
-            _goToCart.postValue(true)
+        }
+    }
+
+    fun updateUserCart(token: String, cartId: Int, productId: Int, productQty: Int, isChecked: Int) {
+        viewModelScope.launch {
+            _isLoading.postValue(true)
+            val request = retrofitRepository.updateUserCart(token, cartId, productId, productQty, isChecked)
+            _updateUserCartResponse.postValue(request)
+            _isLoading.postValue(false)
+        }
+    }
+
+    fun deleteUserCart(token: String, cartId: Int) {
+        viewModelScope.launch {
+            _isLoading.postValue(true)
+            val request = retrofitRepository.deleteUserCart(token, cartId)
+            _deleteUserCartResponse.postValue(request)
+            _isLoading.postValue(false)
         }
     }
 }

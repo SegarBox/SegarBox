@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:elevation="16dp"
@@ -22,7 +23,7 @@
             android:id="@+id/iv_item"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@drawable/cauliflowers" />
 
     </androidx.cardview.widget.CardView>
@@ -43,7 +44,7 @@
         tools:text="Cauliflower" />
 
     <TextView
-        android:id="@+id/tv_item_variant"
+        android:id="@+id/tv_item_size"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -92,6 +93,8 @@
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider"
         android:layout_width="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_height="2dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 

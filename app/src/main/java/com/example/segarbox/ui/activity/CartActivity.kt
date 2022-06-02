@@ -68,8 +68,8 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
         binding.content.rvCart.apply {
             layoutManager =
                 LinearLayoutManager(this@CartActivity, LinearLayoutManager.VERTICAL, false)
-            binding.content.rvCart.setHasFixedSize(true)
-            binding.content.rvCart.adapter = cartAdapter
+            setHasFixedSize(true)
+            adapter = cartAdapter
         }
     }
 
@@ -110,8 +110,8 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
             }
 
             updateCartResponse.message?.let {
-                token?.let {
-                    cartViewModel.getUserCart(it.tokenFormat())
+                token?.let { token ->
+                    cartViewModel.getUserCart(token.tokenFormat())
                 }
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
@@ -135,7 +135,9 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
             isCheckedCartResponse.data?.let { listCart ->
                 when {
                     listCart.isEmpty() -> {
-                        Toast.makeText(this, "You haven't selected any items yet", Toast.LENGTH_SHORT)
+                        Toast.makeText(this,
+                            "You haven't selected any items yet",
+                            Toast.LENGTH_SHORT)
                             .show()
                     }
                     else -> {
@@ -266,10 +268,10 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun onRootClicked(productItem: ProductItem, productQty: Int) {
+    override fun onRootClicked(item: UserCartItem) {
         val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra(Code.KEY_DETAIL_VALUE, productItem)
-        intent.putExtra(Code.KEY_PRODUCT_QTY, productQty)
+        intent.putExtra(Code.KEY_FROM_ACTIVITY, Code.CART_ACTIVITY)
+        intent.putExtra(Code.KEY_USERCART_VALUE, item)
         startActivity(intent)
     }
 

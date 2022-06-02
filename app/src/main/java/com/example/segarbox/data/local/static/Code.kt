@@ -27,4 +27,8 @@ object Code {
     const val IS_SEARCH_BAR_PRESSED = "is_search_bar_pressed"
     const val KEY_DETAIL_VALUE = "key_detail_value"
     const val KEY_PRODUCT_QTY = "key_product_qty"
+    const val KEY_IS_CHECKED = "key_is_checked"
+    const val KEY_FROM_ACTIVITY = "key_from_activity"
+    const val CART_ACTIVITY = "cart_activity"
+    const val KEY_USERCART_VALUE = "key_usercart_value"
 }
