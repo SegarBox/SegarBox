@@ -32,8 +32,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     private var productItem: ProductItem? = null
     private var userCartItem: UserCartItem? = null
     private var fromActivity: String? = null
-    private var productQtyFromCart: Int? = null
-    private var productIsCheckedFromCart: Int? = null
+    private var token = ""
     private var quantity = 0
     private val detailViewModel by viewModels<DetailViewModel> {
         RetrofitViewModelFactory.getInstance(RetrofitRepository())
@@ -128,17 +127,24 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
                     binding.btnAddToCart.isEnabled = true
                     if (qty > 0) {
                         binding.btnAddToCart.backgroundTintList = this.getColorStateListPrimary()
-                        binding.btnAddToCart.text = "Update Cart"
+                        binding.btnAddToCart.text = getString(R.string.update_cart)
                     } else {
                         binding.btnAddToCart.backgroundTintList = this.getColorStateListRed()
-                        binding.btnAddToCart.text = "DELETE FROM CART"
+                        binding.btnAddToCart.text = getString(R.string.delete_from_cart)
                     }
                 }
             }
         }
 
         prefViewModel.getToken().observe(this) { token ->
+            this.token = token
 
+            // Menampilkan Badge
+            if (token.isNotEmpty()) {
+                detailViewModel.getUserCart(token.tokenFormat())
+            }
+
+            // Saat menekan button addToCart
             binding.btnAddToCart.setOnClickListener {
                 if (token.isEmpty()) {
                     startActivity(Intent(this, LoginActivity::class.java))
@@ -175,6 +181,9 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             if (addCartResponse.message != null) {
                 Toast.makeText(this, addCartResponse.message, Toast.LENGTH_SHORT).show()
             } else {
+                if (token.isNotEmpty()) {
+                    detailViewModel.getUserCart(token.tokenFormat())
+                }
                 addCartResponse.info?.let {
                     Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                 }
@@ -208,6 +217,12 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
+        detailViewModel.userCart.observe(this) { userCartResponse ->
+            userCartResponse.meta?.let { meta ->
+                binding.toolbar.ivCart.badgeValue = meta.total
+            }
+        }
+
         detailViewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar.isVisible = isLoading
             binding.content.counter.apply {
@@ -218,25 +233,6 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
 
     }
-
-//    override fun onNewIntent(intent: Intent?) {
-//        fromActivity = intent?.getStringExtra(Code.KEY_FROM_ACTIVITY)
-//        productItem = intent?.getParcelableExtra(Code.KEY_DETAIL_VALUE)
-//        val productQtyFromCart = intent?.getIntExtra(Code.KEY_PRODUCT_QTY, 0)
-//        productItem?.let {
-//            binding.toolbar.tvTitle.text = it.label
-//            detailViewModel.getProductById(it.id)
-//            setDetail(it)
-//        }
-//        productQtyFromCart?.let {
-//            detailViewModel.saveQuantity(it)
-//        }
-//        fromActivity?.let {
-//            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-//        }
-//        Log.e("ON NEW INTENT", "TRUE")
-//        super.onNewIntent(intent)
-//    }
 
 
     override fun onDestroy() {

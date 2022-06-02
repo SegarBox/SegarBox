@@ -16,6 +16,9 @@ class DetailViewModel(private val retrofitRepository: RetrofitRepository): ViewM
     private var _productById = MutableLiveData<ProductByIdResponse>()
     val productById: LiveData<ProductByIdResponse> = _productById
 
+    private var _userCart = MutableLiveData<UserCartResponse>()
+    val userCart: LiveData<UserCartResponse> = _userCart
+
     private var _addCartResponse = MutableLiveData<AddCartResponse>()
     val addCartResponse: LiveData<AddCartResponse> = _addCartResponse
 
@@ -41,6 +44,15 @@ class DetailViewModel(private val retrofitRepository: RetrofitRepository): ViewM
             _isLoading.postValue(true)
             val request = retrofitRepository.getProductById(id)
             _productById.postValue(request)
+            _isLoading.postValue(false)
+        }
+    }
+
+    fun getUserCart(token: String) {
+        viewModelScope.launch {
+            _isLoading.postValue(true)
+            val request = retrofitRepository.getUserCart(token)
+            _userCart.postValue(request)
             _isLoading.postValue(false)
         }
     }

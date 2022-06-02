@@ -1,22 +1,47 @@
 package com.example.segarbox.ui.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.segarbox.R
-import com.example.segarbox.data.local.model.DummyAddress
+import com.example.segarbox.data.local.datastore.SettingPreferences
+import com.example.segarbox.data.local.model.AddressModel
 import com.example.segarbox.data.local.static.Code
+import com.example.segarbox.data.remote.response.AddressData
+import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.ActivityAddressBinding
+import com.example.segarbox.helper.tokenFormat
+import com.example.segarbox.ui.adapter.AddressAdapter
 import com.example.segarbox.ui.adapter.DummyAdapterAddress
+import com.example.segarbox.ui.viewmodel.AddressViewModel
+import com.example.segarbox.ui.viewmodel.PrefViewModel
+import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
+import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 
-class AddressActivity : AppCompatActivity(), View.OnClickListener {
+private val Context.dataStore by preferencesDataStore(name = "settings")
+class AddressActivity : AppCompatActivity(), View.OnClickListener,
+    AddressAdapter.OnItemAddressClickCallback {
 
     private var _binding: ActivityAddressBinding? = null
     private val binding get() = _binding!!
+    private val addressAdapter = AddressAdapter(this)
+    private var token = ""
+    private val prefViewModel by viewModels<PrefViewModel> {
+        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
+    }
+    private val addressViewModel by viewModels<AddressViewModel> {
+        RetrofitViewModelFactory.getInstance(RetrofitRepository())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +54,8 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener {
     private fun init() {
         setToolbar()
         setAdapter()
+        scrollToTopListAdapter()
+        observeData()
         binding.toolbar.ivBack.setOnClickListener(this)
         binding.content.btnAddAddress.setOnClickListener(this)
     }
@@ -41,41 +68,67 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setAdapter() {
-        val listItem = arrayListOf(
-            DummyAddress(),
-            DummyAddress(),
-            DummyAddress(),
-            DummyAddress(),
-            DummyAddress(),
-            DummyAddress(),
-            DummyAddress(),
-            DummyAddress(),
-            DummyAddress(),
-            DummyAddress(),
-            DummyAddress(),
-            DummyAddress(),
-        )
-
-        val adapterAddress = DummyAdapterAddress()
-        adapterAddress.submitList(listItem)
-
         binding.content.rvAddress.apply {
             layoutManager = LinearLayoutManager(this@AddressActivity)
-            adapter = adapterAddress
+            adapter = addressAdapter
         }
     }
 
-    private val resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Code.RESULT_SAVE_ADDRESS && result.data != null) {
-                val dummyAddress = result.data?.getParcelableExtra<DummyAddress>(Code.ADDRESS_VALUE)
-                dummyAddress?.let {
-                    val intent = Intent()
-                    intent.putExtra(Code.ADDRESS_VALUE, it)
-                    setResult(Code.RESULT_SAVE_ADDRESS, intent)
-                }
+    private fun scrollToTopListAdapter() {
+        addressAdapter.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {}
+
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {}
+
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {}
+
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                binding.content.rvAddress.scrollToPosition(0)
+            }
+
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {}
+
+            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {}
+        })
+    }
+
+    private fun observeData() {
+        prefViewModel.getToken().observe(this) { token ->
+            this.token = token
+        }
+
+        addressViewModel.addressResponse.observe(this) { addressResponse ->
+            addressResponse.data?.let {
+                addressAdapter.submitList(it)
             }
         }
+
+        addressViewModel.deleteAddressResponse.observe(this) { deleteAddressResponse ->
+            deleteAddressResponse.info?.let {
+                if (token.isNotEmpty()) {
+                    addressViewModel.getUserAddresses(token.tokenFormat())
+                }
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+            }
+
+            deleteAddressResponse.message?.let {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        addressViewModel.isLoading.observe(this) { isLoading ->
+            binding.progressBar.isVisible = isLoading
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (token.isNotEmpty()) {
+            addressViewModel.getUserAddresses(token.tokenFormat())
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -87,8 +140,21 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener {
             R.id.iv_back -> finish()
 
             R.id.btn_add_address -> {
-                resultLauncher.launch(Intent(this, MapsActivity::class.java))
+                startActivity(Intent(this, MapsActivity::class.java))
             }
+        }
+    }
+
+    override fun onAddressClicked(addressData: AddressData) {
+        val intent = Intent()
+        intent.putExtra(Code.ADDRESS_VALUE, addressData)
+        setResult(Code.RESULT_SAVE_ADDRESS, intent)
+        finish()
+    }
+
+    override fun onStashClicked(addressData: AddressData) {
+        if (token.isNotEmpty()) {
+            addressViewModel.deleteAddress(token.tokenFormat(), addressData.id)
         }
     }
 }

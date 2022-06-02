@@ -2,26 +2,32 @@ package com.example.segarbox.ui.activity
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.annotation.SuppressLint
-import android.content.Intent
+import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.datastore.preferences.preferencesDataStore
 import com.example.segarbox.R
-import com.example.segarbox.data.local.model.DummyAddress
+import com.example.segarbox.data.local.datastore.SettingPreferences
+import com.example.segarbox.data.local.model.AddressModel
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.response.MapsResponse
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.ActivityMapsBinding
 import com.example.segarbox.helper.formatted
+import com.example.segarbox.helper.tokenFormat
 import com.example.segarbox.ui.viewmodel.MapsViewModel
+import com.example.segarbox.ui.viewmodel.PrefViewModel
+import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -35,6 +41,8 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 
+private val Context.dataStore by preferencesDataStore(name = "settings")
+
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListener {
 
     private lateinit var mMap: GoogleMap
@@ -42,9 +50,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
     private val binding get() = _binding!!
     private val markerOptions = MarkerOptions()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var dummyAddress = DummyAddress()
+    private var addressModel = AddressModel()
+    private var token = ""
     private val mapsViewModel by viewModels<MapsViewModel> {
         RetrofitViewModelFactory.getInstance(RetrofitRepository())
+    }
+    private val prefViewModel by viewModels<PrefViewModel> {
+        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,8 +115,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
 
         mapsViewModel.address.observe(this) { mapsResponse ->
 
-            dummyAddress = DummyAddress(
-                address = getAddressFromResponse(mapsResponse),
+            addressModel = AddressModel(
+                street = getAddressFromResponse(mapsResponse),
                 city = getCityFromResponse(mapsResponse),
                 postalCode = getPostalCodeFromResponse(mapsResponse)
             )
@@ -113,9 +125,30 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                 text = getAddressFromResponse(mapsResponse)
                 textSize = 14F
             }
-
-
         }
+
+        prefViewModel.getToken().observe(this) { token ->
+            this.token = token
+        }
+
+        mapsViewModel.addressResponse.observe(this) { addressResponse ->
+            if (addressResponse.message != null) {
+                Log.e("ERROR", addressResponse.message)
+                Toast.makeText(this, addressResponse.message, Toast.LENGTH_SHORT).show()
+            }
+            else {
+                addressResponse.info?.let {
+                    Toast.makeText(this, addressResponse.info, Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            }
+        }
+
+
+        mapsViewModel.isLoading.observe(this) { isLoading ->
+            binding.progressBar.isVisible = isLoading
+        }
+
 
     }
 
@@ -182,10 +215,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                     getMyLocation()
                 }
                 else -> {
-                    Snackbar.make(binding.root, getString(R.string.no_location_permission), Snackbar.LENGTH_SHORT).show()
-//                    Toast.makeText(this,
-//                        getString(R.string.no_location_permission),
-//                        Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root,
+                        getString(R.string.no_location_permission),
+                        Snackbar.LENGTH_SHORT).show()
                     finish()
                 }
             }
@@ -207,7 +239,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                     mapsViewModel.getAddress(LatLng(location.latitude,
                         location.longitude).formatted())
                 } else {
-                    Snackbar.make(binding.root, Code.LOCATION_NOT_FOUND, Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, Code.LOCATION_NOT_FOUND, Snackbar.LENGTH_SHORT)
+                        .show()
 //                    Toast.makeText(this,
 //                        Code.LOCATION_NOT_FOUND,
 //                        Toast.LENGTH_SHORT).show()
@@ -239,14 +272,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
             R.id.iv_back -> finish()
 
             R.id.btn_save_location -> {
-                if (dummyAddress.city != Code.LOCATION_NOT_FOUND) {
-                    val intent = Intent()
-                    intent.putExtra(Code.ADDRESS_VALUE, dummyAddress)
-                    setResult(Code.RESULT_SAVE_ADDRESS, intent)
-                    finish()
-                }
-                else {
-                    Snackbar.make(binding.root, Code.LOCATION_CANT_BE_REACHED, Snackbar.LENGTH_SHORT).show()
+                if (addressModel.street != Code.LOCATION_NOT_FOUND &&
+                    addressModel.city != Code.LOCATION_NOT_FOUND &&
+                    addressModel.postalCode != Code.LOCATION_NOT_FOUND
+                ) {
+
+                    if (token.isNotEmpty()) {
+                        mapsViewModel.saveAddress(token.tokenFormat(),
+                            addressModel.street,
+                            addressModel.city,
+                            addressModel.postalCode)
+                    }
+
+
+                } else {
+                    Snackbar.make(binding.root,
+                        Code.LOCATION_CANT_BE_REACHED,
+                        Snackbar.LENGTH_SHORT).show()
 //                    Toast.makeText(this, Code.LOCATION_CANT_BE_REACHED, Toast.LENGTH_SHORT).show()
                 }
             }

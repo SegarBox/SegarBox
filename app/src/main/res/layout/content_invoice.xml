@@ -31,17 +31,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Pesanan anda sedang diproses" />
 
-        <RelativeLayout
-            android:id="@+id/materialCardView"
-            android:layout_width="match_parent"
-            android:layout_height="136dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/stroke_background"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_address" />
-
         <TextView
             android:id="@+id/tv_title_address"
             android:layout_width="wrap_content"
@@ -56,34 +45,55 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
 
+        <RelativeLayout
+            android:id="@+id/address_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/stroke_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/space_address"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_address" />
+
+        <Space
+            android:id="@+id/space_address"
+            android:layout_width="0dp"
+            android:layout_height="16dp"
+            app:layout_constraintEnd_toEndOf="@id/address_layout"
+            app:layout_constraintStart_toStartOf="@id/address_layout"
+            app:layout_constraintTop_toBottomOf="@id/tv_address" />
+
         <TextView
             android:id="@+id/tv_user_name"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
             android:textStyle="bold"
             android:maxLines="1"
             android:ellipsize="end"
-            app:layout_constraintStart_toStartOf="@+id/materialCardView"
-            app:layout_constraintTop_toTopOf="@+id/materialCardView"
+            app:layout_constraintStart_toStartOf="@+id/address_layout"
+            app:layout_constraintEnd_toEndOf="@id/address_layout"
+            app:layout_constraintTop_toTopOf="@+id/address_layout"
             tools:text="Stanley Mesa" />
 
         <TextView
             android:id="@+id/tv_address"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
             android:maxLines="3"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
             android:ellipsize="end"
             app:layout_constraintStart_toStartOf="@+id/tv_user_name"
+            app:layout_constraintEnd_toEndOf="@id/tv_user_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
             tools:text="Puri Anjasmoro, Kota Semarang, Jawaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa Tengah" />
 
@@ -93,7 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
+            app:layout_constraintTop_toBottomOf="@+id/address_layout" />
 
         <TextView
             android:id="@+id/tv_title_items"
@@ -113,9 +123,7 @@
             android:id="@+id/rv_checkout_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             app:layout_constraintTop_toBottomOf="@id/tv_title_items"
             tools:listitem="@layout/item_row_checkout"/>
 

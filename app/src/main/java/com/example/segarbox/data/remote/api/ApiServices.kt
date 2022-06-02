@@ -1,6 +1,8 @@
 package com.example.segarbox.data.remote.api
 
 import com.example.segarbox.BuildConfig
+import com.example.segarbox.data.local.model.MakeOrderBody
+import com.example.segarbox.data.local.model.ProductTransactions
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.response.*
 import retrofit2.Response
@@ -52,7 +54,8 @@ interface ApiServices {
     @Headers("Accept: application/json")
     suspend fun getAllProduct(
         @Query("page[number]") page: Int,
-        @Query("page[size]") size: Int
+        @Query("page[size]") size: Int,
+        @Query("sort") sort: String = "label"
     ): Response<ProductResponse>
 
     @GET("products/{id}")
@@ -145,4 +148,39 @@ interface ApiServices {
         @Header("Authorization") token: String,
         @Field("shipping_cost") shippingCost: Int = 0,
     ): Response<CartDetailResponse>
+
+    @FormUrlEncoded
+    @POST("addresses")
+    @Headers("Accept: application/json")
+    suspend fun saveAddress(
+        @Header("Authorization") token: String,
+        @Field("street") street: String,
+        @Field("city") city: String,
+        @Field("postal_code") postalCode: String,
+    ): Response<AddAddressResponse>
+
+    @GET("addresses")
+    @Headers("Accept: application/json")
+    suspend fun getUserAddresses(
+        @Header("Authorization") token: String,
+        @Query("page[size]") size: Int = 100,
+        @Query("sort") sort: String = "-id",
+    ): Response<GetAddressResponse>
+
+
+    @DELETE("addresses/{id}")
+    @Headers("Accept: application/json")
+    suspend fun deleteAddress(
+        @Header("Authorization") token: String,
+        @Path("id") addressId: Int
+    ): Response<DeleteAddressResponse>
+
+
+    @POST("transactions")
+    @Headers("Accept: application/json")
+    suspend fun makeOrderTransaction(
+        @Header("Authorization") token: String,
+        @Body body: MakeOrderBody
+    ): Response<MakeOrderResponse>
+
 }

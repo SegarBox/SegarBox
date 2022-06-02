@@ -1,18 +1,24 @@
 package com.example.segarbox.ui.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.segarbox.R
+import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.data.repository.RetrofitRepository
@@ -25,12 +31,16 @@ import com.example.segarbox.ui.adapter.MarginGridItemDecoration
 import com.example.segarbox.ui.adapter.MarginItemDecoration
 import com.example.segarbox.ui.adapter.StartShoppingAdapter
 import com.example.segarbox.ui.viewmodel.MainViewModel
+import com.example.segarbox.ui.viewmodel.PrefViewModel
+import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitRoomViewModelFactory
+import com.google.android.gms.dynamic.IFragmentWrapper
 import com.google.android.material.R.attr.colorPrimary
 import com.google.android.material.R.attr.colorSecondaryVariant
 import kotlin.math.max
 import kotlin.math.min
 
+private val Context.dataStore by preferencesDataStore(name = "settings")
 class HomeFragment : Fragment(), View.OnClickListener,
     StartShoppingAdapter.OnItemStartShoppingClickCallback,
     AllProductAdapter.OnItemAllProductClickCallback {
@@ -41,9 +51,13 @@ class HomeFragment : Fragment(), View.OnClickListener,
     private val allProductAdapter = AllProductAdapter(this)
     private val startShoppingAdapter = StartShoppingAdapter(this)
     private var checkedChips = ""
+    private var token = ""
     private val mainViewModel by viewModels<MainViewModel> {
         RetrofitRoomViewModelFactory.getInstance(RoomRepository(requireActivity().application),
             RetrofitRepository())
+    }
+    private val prefViewModel by viewModels<PrefViewModel> {
+        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
     }
 
     override fun onCreateView(
@@ -52,6 +66,8 @@ class HomeFragment : Fragment(), View.OnClickListener,
     ): View {
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return binding.root
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -142,6 +158,10 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
     private fun observeData() {
 
+        prefViewModel.getToken().observe(viewLifecycleOwner) { token ->
+            this.token = token
+        }
+
         mainViewModel.allProductResponse.observe(viewLifecycleOwner) {
             allProductAdapter.submitList(it.data)
         }
@@ -182,6 +202,16 @@ class HomeFragment : Fragment(), View.OnClickListener,
             startShoppingAdapter.submitList(listProduct)
         }
 
+        mainViewModel.userCart.observe(viewLifecycleOwner) { userCartResponse ->
+            userCartResponse.meta?.let {
+                binding.toolbar.ivCart.badgeValue = it.total
+            }
+        }
+
+        mainViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBar.isVisible = isLoading
+        }
+
     }
 
     private fun setAdapter() {
@@ -202,6 +232,13 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
     override fun onResume() {
         super.onResume()
+        // Update Badge
+        if (token.isNotEmpty()) {
+            mainViewModel.getUserCart(token.tokenFormat())
+        } else {
+            binding.toolbar.ivCart.badgeValue = 0
+        }
+
         val newAlpha = (ratio * 255).toInt()
         binding.toolbar.root.background.alpha = newAlpha
     }

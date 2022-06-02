@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="95dp"
-    android:fitsSystemWindows="true"
-    android:background="?attr/colorSecondaryVariant">
+    android:background="?attr/colorSecondaryVariant"
+    android:fitsSystemWindows="true">
 
     <ImageView
         android:id="@+id/iv_back"
@@ -21,28 +21,32 @@
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="0dp"
-        app:layout_constraintEnd_toStartOf="@id/iv_cart"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
         android:textColor="?attr/colorPrimary"
         android:textSize="20sp"
-        android:layout_marginEnd="16dp"
-        android:maxLines="2"
-        android:ellipsize="end"
         android:theme="@style/poppinsMedium"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/iv_cart"
         app:layout_constraintStart_toEndOf="@id/iv_back"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Title" />
 
-    <ImageView
+
+    <ru.nikartm.support.ImageBadgeView
         android:id="@+id/iv_cart"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_baseline_shopping_cart_24"
         android:visibility="gone"
+        android:src="@drawable/ic_baseline_shopping_cart_24"
+        app:ibv_badgeTextSize="11dp"
+        app:ibv_badgeValue="0"
+        app:ibv_fixedBadgeRadius="9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

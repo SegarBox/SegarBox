@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.segarbox.data.local.model.DummyAddress
+import com.example.segarbox.data.local.model.AddressModel
 import com.example.segarbox.databinding.ItemRowAddressBinding
 
-class DummyAdapterAddress: ListAdapter<DummyAddress, DummyAdapterAddress.DummyViewHolder>(DummyDiffCallbackAddress) {
+class DummyAdapterAddress: ListAdapter<AddressModel, DummyAdapterAddress.DummyViewHolder>(DummyDiffCallbackAddress) {
     inner class DummyViewHolder(var binding: ItemRowAddressBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DummyViewHolder {
@@ -20,7 +20,7 @@ class DummyAdapterAddress: ListAdapter<DummyAddress, DummyAdapterAddress.DummyVi
         val item = getItem(position)
 
         holder.binding.apply {
-            tvAddress.text = item.address
+            tvAddress.text = item.street
             space.isVisible = position == itemCount - 1
         }
     }

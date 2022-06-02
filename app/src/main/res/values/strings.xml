@@ -61,5 +61,8 @@
     <string name="most_popular">Most Popular</string>
     <string name="logout">Logout</string>
     <string name="stock">Stock : %s</string>
+    <string name="update_cart">Update Cart</string>
+    <string name="delete_from_cart">Delete From Cart</string>
+    <string name="make_order">Make Order</string>
 
 </resources>

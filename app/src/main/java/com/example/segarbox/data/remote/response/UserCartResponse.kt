@@ -8,6 +8,9 @@ data class UserCartResponse(
 
 	@field:SerializedName("data")
 	val data: List<UserCartItem>? = null,
+
+	@field:SerializedName("meta")
+	val meta: Meta? = null,
 )
 
 @Parcelize
@@ -37,4 +40,10 @@ data class UserCartItem(
 	@field:SerializedName("id")
 	val id: Int
 ) : Parcelable
+
+data class Meta(
+
+	@field:SerializedName("total")
+	val total: Int,
+)
 
