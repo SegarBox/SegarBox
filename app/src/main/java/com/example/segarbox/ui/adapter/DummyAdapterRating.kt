@@ -28,7 +28,7 @@ class DummyAdapterRating: ListAdapter<DummyModel, DummyAdapterRating.DummyViewHo
             .circleCrop()
             .into(holder.binding.ivItem)
         holder.binding.tvItemName.text = "Cauliflower"
-        holder.binding.tvItemVariant.text = item.qty
+        holder.binding.tvDate.text = item.qty
 
         holder.binding.ratingBar.setOnRatingBarChangeListener { _, _, _ ->
             holder.binding.materialButton2.isVisible = true
