@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +23,9 @@ import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.data.repository.RoomRepository
 import com.example.segarbox.databinding.FragmentHomeBinding
 import com.example.segarbox.helper.*
-import com.example.segarbox.ui.activity.*
+import com.example.segarbox.ui.activity.CartActivity
+import com.example.segarbox.ui.activity.DetailActivity
+import com.example.segarbox.ui.activity.PaginationActivity
 import com.example.segarbox.ui.adapter.AllProductAdapter
 import com.example.segarbox.ui.adapter.MarginGridItemDecoration
 import com.example.segarbox.ui.adapter.MarginItemDecoration
@@ -79,12 +80,12 @@ class HomeFragment : Fragment(), View.OnClickListener,
         setAdapter()
         observeData()
         scrollToTopListAdapter()
-        binding.content.btnDetail.setOnClickListener(this)
+//        binding.content.btnDetail.setOnClickListener(this)
         binding.toolbar.ivCart.setOnClickListener(this)
         binding.toolbar.etSearch.setOnClickListener(this)
-        binding.content.btnCheckout.setOnClickListener(this)
-        binding.content.btnInvoice.setOnClickListener(this)
-        binding.content.btnRating.setOnClickListener(this)
+//        binding.content.btnCheckout.setOnClickListener(this)
+//        binding.content.btnInvoice.setOnClickListener(this)
+//        binding.content.btnRating.setOnClickListener(this)
         binding.content.tvSeeAll.setOnClickListener(this)
     }
 
@@ -256,25 +257,25 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.btn_detail -> {
-                startActivity(Intent(requireContext(), DetailActivity::class.java))
-            }
+//            R.id.btn_detail -> {
+//                startActivity(Intent(requireContext(), DetailActivity::class.java))
+//            }
 
             R.id.iv_cart -> {
                 startActivity(Intent(requireContext(), CartActivity::class.java))
             }
 
-            R.id.btn_checkout -> {
-                startActivity(Intent(requireContext(), CheckoutActivity::class.java))
-            }
+//            R.id.btn_checkout -> {
+//                startActivity(Intent(requireContext(), CheckoutActivity::class.java))
+//            }
+//
+//            R.id.btn_invoice -> {
+//                startActivity(Intent(requireContext(), InvoiceActivity::class.java))
+//            }
 
-            R.id.btn_invoice -> {
-                startActivity(Intent(requireContext(), InvoiceActivity::class.java))
-            }
-
-            R.id.btn_rating -> {
-                startActivity(Intent(requireContext(), RatingActivity::class.java))
-            }
+//            R.id.btn_rating -> {
+//                startActivity(Intent(requireContext(), RatingActivity::class.java))
+//            }
 
             R.id.tv_see_all -> {
                 val intent = Intent(requireContext(), PaginationActivity::class.java)

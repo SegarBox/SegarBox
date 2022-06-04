@@ -147,19 +147,19 @@
             app:spanCount="2"
             tools:listitem="@layout/item_row_main" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="200dp"
-            android:text="Detail"
-            android:textAllCaps="false"
-            android:textSize="18sp"
-            app:cornerRadius="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_all_products" />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btn_detail"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="200dp"-->
+<!--            android:text="Detail"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textSize="18sp"-->
+<!--            app:cornerRadius="16dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/rv_all_products" />-->
 
 <!--        <com.google.android.material.button.MaterialButton-->
 <!--            android:id="@+id/btn_darkmode"-->
@@ -175,35 +175,35 @@
 <!--            app:layout_constraintTop_toBottomOf="@id/btn_detail"-->
 <!--            tools:text="Enable Dark Mode" />-->
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_checkout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="checkout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_detail" />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btn_checkout"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:text="checkout"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/btn_detail" />-->
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_invoice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="invoice"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_checkout" />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btn_invoice"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:text="invoice"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/btn_checkout" />-->
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="rating"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_invoice" />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btn_rating"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:text="rating"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/btn_invoice" />-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
