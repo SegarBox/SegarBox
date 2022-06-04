@@ -1,18 +1,18 @@
 package com.example.segarbox.ui.activity
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
-import com.example.segarbox.data.local.model.DummyModelCart
 import com.example.segarbox.data.local.static.Code
-import com.example.segarbox.data.remote.response.TransactionItem
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.ActivityInvoiceBinding
 import com.example.segarbox.helper.formatToRupiah
@@ -30,6 +30,7 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
     private var _binding: ActivityInvoiceBinding? = null
     private val binding get() = _binding!!
     private val invoiceAdapter = InvoiceAdapter()
+    private var token = ""
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
     }
@@ -56,6 +57,8 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
         setupView()
         observeData()
         binding.toolbar.ivBack.setOnClickListener(this)
+        binding.bottomPaymentInfo.checkoutLayout.setOnClickListener(this)
+        binding.content.btnHome.setOnClickListener(this)
     }
 
     private fun setupView() {
@@ -78,6 +81,7 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun observeData() {
         prefViewModel.getToken().observe(this) { token ->
+            this.token = token
             if (token.isNotEmpty()) {
                 if (getTransactionId != 0) {
                     invoiceViewModel.getTransactionById(token.tokenFormat(), getTransactionId)
@@ -96,6 +100,14 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
                     tvProductsSubtotal.text = it.subtotalProducts.formatToRupiah()
                     tvShippingCost.text = it.shippingCost.formatToRupiah()
                     tvTotalPrice.text = it.totalPrice.formatToRupiah()
+
+                }
+                if (it.status == "inprogress") {
+                    binding.bottomPaymentInfo.root.isVisible = true
+                    binding.content.btnRating.isVisible = false
+                } else {
+                    binding.bottomPaymentInfo.root.isVisible = false
+                    binding.content.btnRating.isVisible = true
                 }
                 binding.bottomPaymentInfo.tvPrice.text = it.totalPrice.formatToRupiah()
             }
@@ -104,6 +116,19 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
         invoiceViewModel.userResponse.observe(this) { userResponse ->
             userResponse.data?.let {
                 binding.content.tvUserName.text = it.name
+            }
+        }
+
+        invoiceViewModel.updateTransactionStatusResponse.observe(this) { response ->
+            response.info?.let {
+                if (token.isNotEmpty()) {
+                    invoiceViewModel.getTransactionById(token.tokenFormat(), getTransactionId)
+                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            response.message?.let {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -122,6 +147,19 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.iv_back -> finish()
+
+            R.id.checkout_layout -> {
+                if (token.isNotEmpty()) {
+                    invoiceViewModel.updateTransactionStatus(token.tokenFormat(), getTransactionId)
+                }
+            }
+
+            R.id.btn_home -> {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
         }
     }
 

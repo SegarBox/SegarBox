@@ -14,12 +14,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
+import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.FragmentTransactionBinding
+import com.example.segarbox.helper.tokenFormat
 import com.example.segarbox.ui.activity.CartActivity
 import com.example.segarbox.ui.activity.LoginActivity
 import com.example.segarbox.ui.adapter.TransactionPagerAdapter
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
+import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
+import com.example.segarbox.ui.viewmodel.TransactionViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
@@ -31,6 +35,9 @@ class TransactionFragment : Fragment(), View.OnClickListener {
     private var token = ""
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
+    }
+    private val transactionViewModel by viewModels<TransactionViewModel> {
+        RetrofitViewModelFactory.getInstance(RetrofitRepository())
     }
 
     override fun onCreateView(
@@ -74,12 +81,30 @@ class TransactionFragment : Fragment(), View.OnClickListener {
 
     private fun observeData() {
         prefViewModel.getToken().observe(viewLifecycleOwner) { token ->
+            this.token = token
             if (token.isEmpty()) {
                 startActivity(Intent(requireActivity(), LoginActivity::class.java))
                 requireActivity().onBackPressed()
-            } else {
-                Log.e("TRANSACTION TOKEN", token)
             }
+        }
+
+        transactionViewModel.userCart.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { userCartResponse ->
+                userCartResponse.meta?.let {
+                    binding.toolbar.ivCart.badgeValue = it.total
+                }
+            }
+
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Update Badge
+        if (token.isNotEmpty()) {
+            transactionViewModel.getUserCart(token.tokenFormat())
+        } else {
+            binding.toolbar.ivCart.badgeValue = 0
         }
     }
 

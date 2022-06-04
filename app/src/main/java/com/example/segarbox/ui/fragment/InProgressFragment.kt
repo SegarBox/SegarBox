@@ -30,6 +30,7 @@ class InProgressFragment : Fragment(), TransactionsAdapter.OnItemTransactionsCli
 
     private var _binding: FragmentInProgressBinding? = null
     private val binding get() = _binding!!
+    private var token = ""
     private val transactionsAdapter = TransactionsAdapter(this)
     private val transactionViewModel by viewModels<TransactionViewModel> {
         RetrofitViewModelFactory.getInstance(RetrofitRepository())
@@ -67,13 +68,12 @@ class InProgressFragment : Fragment(), TransactionsAdapter.OnItemTransactionsCli
     private fun observeData() {
 
         prefViewModel.getToken().observe(viewLifecycleOwner) { token ->
-            if (token.isNotEmpty()) {
-                transactionViewModel.getTransactions(token.tokenFormat(), "inprogress")
-            }
+            this.token = token
         }
 
 
         transactionViewModel.transactionsResponse.observe(viewLifecycleOwner) { event ->
+            Log.e("IN PROGRESS", "ON RESUME")
             event.getContentIfNotHandled()?.let { transactionsResponse ->
                 transactionsResponse.data?.let {
                     transactionsAdapter.submitList(it)
@@ -91,12 +91,25 @@ class InProgressFragment : Fragment(), TransactionsAdapter.OnItemTransactionsCli
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (token.isNotEmpty()) {
+            transactionViewModel.getTransactions(token.tokenFormat(), "inprogress")
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
 
     override fun onBtnClicked(transactionId: Int) {
+        val intent = Intent(requireContext(), InvoiceActivity::class.java)
+        intent.putExtra(Code.KEY_TRANSACTION_ID, transactionId)
+        startActivity(intent)
+    }
+
+    override fun onRootClicked(transactionId: Int) {
         val intent = Intent(requireContext(), InvoiceActivity::class.java)
         intent.putExtra(Code.KEY_TRANSACTION_ID, transactionId)
         startActivity(intent)

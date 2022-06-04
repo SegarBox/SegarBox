@@ -11,6 +11,9 @@ data class UserCartResponse(
 
 	@field:SerializedName("meta")
 	val meta: Meta? = null,
+
+	@field:SerializedName("message")
+	val message: String? = null,
 )
 
 @Parcelize

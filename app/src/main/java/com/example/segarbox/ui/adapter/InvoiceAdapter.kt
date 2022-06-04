@@ -41,6 +41,7 @@ class InvoiceAdapter :
             tvItemCount.text = item.productQty.toString()
             tvItemSize.text = item.size.formatProductSize(context)
             tvItemPrice.text = item.price.formatToRupiah()
+            divider.isVisible = position != itemCount - 1
 
         }
 

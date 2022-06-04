@@ -5,13 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <Space
-        android:id="@+id/space"
-        android:layout_width="match_parent"
-        android:layout_height="8dp"
-        app:layout_constraintBottom_toTopOf="@id/cv_image"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_image"
@@ -41,6 +34,7 @@
         android:textColor="?attr/colorOnSecondary"
         android:textSize="18sp"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cv_image"
         app:layout_constraintTop_toTopOf="@+id/cv_image"
@@ -50,7 +44,6 @@
         android:id="@+id/tv_item_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="?attr/colorOnSecondary"
@@ -62,7 +55,6 @@
         tools:text="Cauliflower" />
 
 
-<!--nanya carel-->
     <RatingBar
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
@@ -70,6 +62,7 @@
         android:numStars="5"
         android:scaleX="0.8"
         android:scaleY="0.8"
+        android:layout_marginStart="-4dp"
         android:transformPivotX="0dp"
         app:layout_constraintStart_toStartOf="@+id/tv_item_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,12 +81,8 @@ class HomeFragment : Fragment(), View.OnClickListener,
         setAdapter()
         observeData()
         scrollToTopListAdapter()
-//        binding.content.btnDetail.setOnClickListener(this)
         binding.toolbar.ivCart.setOnClickListener(this)
         binding.toolbar.etSearch.setOnClickListener(this)
-//        binding.content.btnCheckout.setOnClickListener(this)
-//        binding.content.btnInvoice.setOnClickListener(this)
-//        binding.content.btnRating.setOnClickListener(this)
         binding.content.tvSeeAll.setOnClickListener(this)
     }
 
@@ -246,9 +243,6 @@ class HomeFragment : Fragment(), View.OnClickListener,
         binding.toolbar.root.background.alpha = newAlpha
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -257,25 +251,10 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
     override fun onClick(v: View?) {
         when (v?.id) {
-//            R.id.btn_detail -> {
-//                startActivity(Intent(requireContext(), DetailActivity::class.java))
-//            }
 
             R.id.iv_cart -> {
                 startActivity(Intent(requireContext(), CartActivity::class.java))
             }
-
-//            R.id.btn_checkout -> {
-//                startActivity(Intent(requireContext(), CheckoutActivity::class.java))
-//            }
-//
-//            R.id.btn_invoice -> {
-//                startActivity(Intent(requireContext(), InvoiceActivity::class.java))
-//            }
-
-//            R.id.btn_rating -> {
-//                startActivity(Intent(requireContext(), RatingActivity::class.java))
-//            }
 
             R.id.tv_see_all -> {
                 val intent = Intent(requireContext(), PaginationActivity::class.java)

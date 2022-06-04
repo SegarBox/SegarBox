@@ -42,9 +42,14 @@ class TransactionsAdapter(private val onItemTransactionsClickCallback: OnItemTra
                 tvItemName.text = item.productTransactions[0].label
                 tvItemCount.text = item.productTransactions[0].productQty.formatItemCount(context)
                 tvPriceCountTotal.text = item.totalPrice.formatToRupiah()
+                btnCheck.isVisible = item.status == "inprogress"
 
                 btnCheck.setOnClickListener {
                     onItemTransactionsClickCallback.onBtnClicked(item.id)
+                }
+
+                root.setOnClickListener {
+                    onItemTransactionsClickCallback.onRootClicked(item.id)
                 }
             }
         }
@@ -53,5 +58,6 @@ class TransactionsAdapter(private val onItemTransactionsClickCallback: OnItemTra
 
     interface OnItemTransactionsClickCallback {
         fun onBtnClicked(transactionId: Int)
+        fun onRootClicked(transactionId: Int)
     }
 }
