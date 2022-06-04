@@ -41,7 +41,7 @@
     <string name="status_check">Status Check</string>
     <string name="checkout">Checkout</string>
     <string name="invoice">Invoice</string>
-    <string name="rate">RATE</string>
+    <string name="rate">Rate</string>
     <string name="add_address">Add Address</string>
     <string name="address">Address</string>
     <string name="title_activity_maps">MapsActivity</string>
@@ -66,6 +66,7 @@
     <string name="make_order">Make Order</string>
     <string name="transactions">Transactions</string>
     <string name="bthome">back to home</string>
+    <string name="check_status">Check Status</string>
     <plurals name="item_count_total">
         <item quantity="one">+ %d more product</item>
         <item quantity="other">+ %d more products</item>

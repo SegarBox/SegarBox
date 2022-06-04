@@ -282,10 +282,11 @@ class RetrofitRepository {
                     return it
                 }
             }
-            return UserCartResponse()
+            val result = Klaxon().parse<UserCartResponse>(request.errorBody()!!.string())
+            return result!!
 
         } catch (ex: Exception) {
-            return UserCartResponse()
+            return UserCartResponse(message = ex.message)
         }
     }
 

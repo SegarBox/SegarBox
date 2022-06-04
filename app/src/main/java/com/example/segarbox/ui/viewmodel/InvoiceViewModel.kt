@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.segarbox.data.remote.response.TransactionByIdResponse
+import com.example.segarbox.data.remote.response.TransactionsStatusResponse
 import com.example.segarbox.data.remote.response.UserResponse
 import com.example.segarbox.data.repository.RetrofitRepository
 import kotlinx.coroutines.launch
@@ -16,6 +17,9 @@ class InvoiceViewModel(private val retrofitRepository: RetrofitRepository): View
 
     private val _userResponse = MutableLiveData<UserResponse>()
     val userResponse: LiveData<UserResponse> = _userResponse
+
+    private val _updateTransactionStatusResponse = MutableLiveData<TransactionsStatusResponse>()
+    val updateTransactionStatusResponse: LiveData<TransactionsStatusResponse> = _updateTransactionStatusResponse
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -34,6 +38,15 @@ class InvoiceViewModel(private val retrofitRepository: RetrofitRepository): View
             _isLoading.postValue(true)
             val response = retrofitRepository.getUser(token)
             _userResponse.postValue(response)
+            _isLoading.postValue(false)
+        }
+    }
+
+    fun updateTransactionStatus(token: String, transactionId: Int) {
+        viewModelScope.launch {
+            _isLoading.postValue(true)
+            val response = retrofitRepository.updateTransactionStatus(token, transactionId)
+            _updateTransactionStatusResponse.postValue(response)
             _isLoading.postValue(false)
         }
     }
