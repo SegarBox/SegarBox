@@ -1,18 +1,46 @@
 package com.example.segarbox.ui.activity
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.segarbox.R
+import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.data.local.model.DummyModelCart
+import com.example.segarbox.data.local.static.Code
+import com.example.segarbox.data.remote.response.TransactionItem
+import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.ActivityInvoiceBinding
+import com.example.segarbox.helper.formatToRupiah
+import com.example.segarbox.helper.tokenFormat
+import com.example.segarbox.ui.adapter.InvoiceAdapter
+import com.example.segarbox.ui.viewmodel.InvoiceViewModel
+import com.example.segarbox.ui.viewmodel.PrefViewModel
+import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
+import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
+
+private val Context.dataStore by preferencesDataStore(name = "settings")
 
 class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
 
     private var _binding: ActivityInvoiceBinding? = null
     private val binding get() = _binding!!
+    private val invoiceAdapter = InvoiceAdapter()
+    private val prefViewModel by viewModels<PrefViewModel> {
+        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
+    }
+    private val invoiceViewModel by viewModels<InvoiceViewModel> {
+        RetrofitViewModelFactory.getInstance(RetrofitRepository())
+    }
+
+    private val getTransactionId
+        get(): Int {
+            return intent.getIntExtra(Code.KEY_TRANSACTION_ID, 0)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,10 +54,11 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
         setToolbar()
         setAdapter()
         setupView()
+        observeData()
         binding.toolbar.ivBack.setOnClickListener(this)
     }
 
-    private fun setupView(){
+    private fun setupView() {
         binding.bottomPaymentInfo.tvButton.text = "Received"
     }
 
@@ -41,23 +70,48 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setAdapter() {
-        val listItem = arrayListOf(
-            DummyModelCart(),
-            DummyModelCart(),
-            DummyModelCart(),
-            DummyModelCart(),
-            DummyModelCart(),
-            DummyModelCart(),
-            DummyModelCart()
-        )
-
-//        val adapterInvoice = DummyAdapterCheckout()
-//        adapterInvoice.submitList(listItem)
-
         binding.content.rvCheckoutItem.apply {
             layoutManager = LinearLayoutManager(this@InvoiceActivity)
-//            adapter = adapterInvoice
+            adapter = invoiceAdapter
         }
+    }
+
+    private fun observeData() {
+        prefViewModel.getToken().observe(this) { token ->
+            if (token.isNotEmpty()) {
+                if (getTransactionId != 0) {
+                    invoiceViewModel.getTransactionById(token.tokenFormat(), getTransactionId)
+                    invoiceViewModel.getUser(token.tokenFormat())
+                }
+            }
+        }
+
+        invoiceViewModel.transactionById.observe(this) { response ->
+            response.data?.let {
+                binding.content.apply {
+                    tvInv.text = it.invoiceNumber
+                    tvStatus.text = it.status
+                    tvAddress.text = it.address.street
+                    invoiceAdapter.submitList(it.productTransactions)
+                    tvProductsSubtotal.text = it.subtotalProducts.formatToRupiah()
+                    tvShippingCost.text = it.shippingCost.formatToRupiah()
+                    tvTotalPrice.text = it.totalPrice.formatToRupiah()
+                }
+                binding.bottomPaymentInfo.tvPrice.text = it.totalPrice.formatToRupiah()
+            }
+        }
+
+        invoiceViewModel.userResponse.observe(this) { userResponse ->
+            userResponse.data?.let {
+                binding.content.tvUserName.text = it.name
+            }
+        }
+
+        invoiceViewModel.isLoading.observe(this) { isLoading ->
+            binding.progressBar.isVisible = isLoading
+        }
+
+
     }
 
     override fun onDestroy() {
@@ -66,12 +120,10 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when(v?.id) {
+        when (v?.id) {
             R.id.iv_back -> finish()
         }
     }
-
-
 
 
 }

@@ -20,16 +20,29 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_inv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorOnPrimary"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="INV20220604" />
+
+        <TextView
+            android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="?attr/colorOnPrimary"
             android:textStyle="italic"
-            android:layout_marginTop="16dp"
+            style="@style/poppinsExtraBold"
             android:layout_marginStart="16dp"
-            android:textSize="16dp"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Pesanan anda sedang diproses" />
+            app:layout_constraintTop_toBottomOf="@id/tv_inv"
+            tools:text="inprogress" />
 
         <TextView
             android:id="@+id/tv_title_address"

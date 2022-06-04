@@ -9,10 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.segarbox.R
-import com.example.segarbox.data.local.model.AddressModel
 import com.example.segarbox.data.local.model.ShippingModel
 import com.example.segarbox.data.local.static.Code
-import com.example.segarbox.data.remote.response.AddressData
+import com.example.segarbox.data.remote.response.AddressItem
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.data.repository.RoomRepository
 import com.example.segarbox.databinding.ActivityShippingBinding
@@ -61,7 +60,7 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun getAddress() {
-        val address = intent.getParcelableExtra<AddressData>(Code.ADDRESS_VALUE)?.city
+        val address = intent.getParcelableExtra<AddressItem>(Code.ADDRESS_VALUE)?.city
 
         address?.let {
             val split = it.split(" ")

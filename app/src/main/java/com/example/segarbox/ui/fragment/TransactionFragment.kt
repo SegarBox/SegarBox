@@ -3,10 +3,10 @@ package com.example.segarbox.ui.fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
@@ -28,6 +28,7 @@ class TransactionFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentTransactionBinding? = null
     private val binding get() = _binding!!
+    private var token = ""
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
     }
@@ -46,21 +47,21 @@ class TransactionFragment : Fragment(), View.OnClickListener {
     }
 
     private fun init() {
-        setToolbar()
-        setTabWithViewPager()
         observeData()
+        setTabWithViewPager()
+        setToolbar()
         binding.toolbar.ivCart.setOnClickListener(this)
     }
 
     private fun setToolbar() {
         binding.toolbar.apply {
-            tvTitle.text = "Transaction"
+            tvTitle.text = getString(R.string.transactions)
             ivCart.isVisible = true
         }
     }
 
     private fun setTabWithViewPager() {
-        val sectionsPagerAdapter = TransactionPagerAdapter(requireActivity())
+        val sectionsPagerAdapter = TransactionPagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle)
         val viewPager = binding.content.viewPager
         val tabLayout = binding.content.tabLayout
 
@@ -73,11 +74,11 @@ class TransactionFragment : Fragment(), View.OnClickListener {
 
     private fun observeData() {
         prefViewModel.getToken().observe(viewLifecycleOwner) { token ->
-            Toast.makeText(requireContext(), "token : $token", Toast.LENGTH_SHORT).show()
-
             if (token.isEmpty()) {
                 startActivity(Intent(requireActivity(), LoginActivity::class.java))
                 requireActivity().onBackPressed()
+            } else {
+                Log.e("TRANSACTION TOKEN", token)
             }
         }
     }
