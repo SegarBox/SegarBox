@@ -2,12 +2,13 @@ package com.example.segarbox.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.segarbox.data.remote.response.AddressData
+import com.example.segarbox.data.remote.response.AddressItem
 import com.example.segarbox.databinding.ItemRowAddressBinding
 
-class AddressAdapter(private val onItemAddressClickCallback: OnItemAddressClickCallback): ListAdapter<AddressData, AddressAdapter.AddressViewHolder>(DiffCallbackAddress) {
+class AddressAdapter(private val onItemAddressClickCallback: OnItemAddressClickCallback): ListAdapter<AddressItem, AddressAdapter.AddressViewHolder>(DiffCallbackAddress) {
     inner class AddressViewHolder(var binding: ItemRowAddressBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddressViewHolder {
@@ -20,6 +21,7 @@ class AddressAdapter(private val onItemAddressClickCallback: OnItemAddressClickC
 
         holder.binding.apply {
             tvAddress.text = item.street
+            space.isVisible = position == itemCount - 1
             root.setOnClickListener {
                 onItemAddressClickCallback.onAddressClicked(item)
             }
@@ -30,7 +32,7 @@ class AddressAdapter(private val onItemAddressClickCallback: OnItemAddressClickC
     }
 
     interface OnItemAddressClickCallback {
-        fun onAddressClicked(addressData: AddressData)
-        fun onStashClicked(addressData: AddressData)
+        fun onAddressClicked(addressItem: AddressItem)
+        fun onStashClicked(addressItem: AddressItem)
     }
 }

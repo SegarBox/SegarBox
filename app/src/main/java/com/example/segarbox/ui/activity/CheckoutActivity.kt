@@ -3,6 +3,7 @@ package com.example.segarbox.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -10,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.segarbox.R
@@ -18,7 +20,7 @@ import com.example.segarbox.data.local.model.MakeOrderBody
 import com.example.segarbox.data.local.model.ProductTransactions
 import com.example.segarbox.data.local.model.ShippingModel
 import com.example.segarbox.data.local.static.Code
-import com.example.segarbox.data.remote.response.AddressData
+import com.example.segarbox.data.remote.response.AddressItem
 import com.example.segarbox.data.remote.response.CartDetailResponse
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.ActivityCheckoutBinding
@@ -29,6 +31,8 @@ import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
 
@@ -36,7 +40,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
 
     private var _binding: ActivityCheckoutBinding? = null
     private val binding get() = _binding!!
-    private var addressData: AddressData? = null
+    private var addressItem: AddressItem? = null
     private var costs: CartDetailResponse? = null
     private val listProductTransactions: ArrayList<ProductTransactions> = arrayListOf()
     private var token = ""
@@ -89,24 +93,35 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
             this.token = token
             if (token.isNotEmpty()) {
                 checkoutViewModel.getCheckoutDetails(token.tokenFormat())
-                checkoutViewModel.getCosts(token.tokenFormat(), 0)
+
+                if (costs != null) {
+                    costs?.let {
+                        checkoutViewModel.getCosts(token.tokenFormat(), it.shippingCost)
+                    }
+                }
+                else {
+                    checkoutViewModel.getCosts(token.tokenFormat(), 0)
+                }
             }
         }
 
         checkoutViewModel.checkoutDetails.observe(this) { userCartResponse ->
             userCartResponse.data?.let {
+                checkoutDetailsAdapter.submitList(it)
+
+                listProductTransactions.clear()
                 it.forEach { userCartItem ->
                     listProductTransactions.add(ProductTransactions(
                         userCartItem.product.id,
                         userCartItem.productQty
                     ))
                 }
-                checkoutDetailsAdapter.submitList(it)
             }
         }
 
         checkoutViewModel.costs.observe(this) { costs ->
             this.costs = costs
+
             binding.content.apply {
                 tvProductsSubtotal.text = costs.subtotalProducts.formatToRupiah()
                 tvShippingCost.text = costs.shippingCost.formatToRupiah()
@@ -116,13 +131,18 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         checkoutViewModel.makeOrderResponse.observe(this) { makeOrderResponse ->
-            makeOrderResponse.info?.let {
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, InvoiceActivity::class.java))
-                finish()
+            makeOrderResponse.info?.let { info ->
+                makeOrderResponse.data?.let { makeOrderResponse ->
+                    Toast.makeText(this, info, Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, InvoiceActivity::class.java)
+                    intent.putExtra(Code.KEY_TRANSACTION_ID, makeOrderResponse.id)
+                    startActivity(intent)
+                    finish()
+                }
             }
 
             makeOrderResponse.message?.let {
+                Log.e("ERROR", it)
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
@@ -137,10 +157,19 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             when {
                 result.resultCode == Code.RESULT_SAVE_ADDRESS && result.data != null -> {
-                    addressData =
+
+                    Log.e("RESULT", "ADDRESS")
+
+                    // Jika tambah address, otomatis shipping cost ke reset
+                    binding.content.contentShipping.root.isVisible = false
+                    if (token.isNotEmpty()) {
+                        checkoutViewModel.getCosts(token.tokenFormat(), 0)
+                    }
+
+                    addressItem =
                         result.data?.getParcelableExtra(Code.ADDRESS_VALUE)
 
-                    addressData?.let {
+                    addressItem?.let {
                         isShippingCostAdded = false
                         binding.content.tvAddress.apply {
                             isVisible = true
@@ -148,17 +177,24 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                         }
                     }
 
-                    // Jika tambah address, otomatis shipping cost ke reset
-                    binding.content.contentShipping.root.isVisible = false
-                    if (token.isNotEmpty()) {
-                        checkoutViewModel.getCosts(token.tokenFormat(), 0)
-                    }
                 }
 
                 result.resultCode == Code.RESULT_SAVE_SHIPPING && result.data != null -> {
+
+                    Log.e("RESULT", "SHIPPING")
+
                     val shippingModel =
                         result.data?.getParcelableExtra<ShippingModel>(Code.SHIPPING_VALUE)
                     shippingModel?.let {
+
+                        checkoutViewModel.viewModelScope.launch {
+                            delay(300L)
+                            if (token.isNotEmpty()) {
+                                checkoutViewModel.getCosts(token.tokenFormat(), it.price)
+                            }
+                        }
+
+
                         binding.content.contentShipping.apply {
                             isShippingCostAdded = true
                             root.isVisible = true
@@ -190,13 +226,12 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                             tvPrice.text = it.price.formatToRupiah()
                         }
 
-                        if (token.isNotEmpty()) {
-                            checkoutViewModel.getCosts(token.tokenFormat(), it.price)
-                        }
+
                     }
                 }
             }
         }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -212,9 +247,9 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.layout_shipping -> {
-                if (addressData != null) {
+                if (addressItem != null) {
                     val intent = Intent(this, ShippingActivity::class.java)
-                    intent.putExtra(Code.ADDRESS_VALUE, addressData)
+                    intent.putExtra(Code.ADDRESS_VALUE, addressItem)
                     resultLauncher.launch(intent)
                 } else {
                     Snackbar.make(binding.root,
@@ -225,11 +260,11 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.checkout_layout -> {
                 if (isShippingCostAdded) {
-                    if (token.isNotEmpty() && addressData != null && costs != null && listProductTransactions.isNotEmpty()) {
+                    if (token.isNotEmpty() && addressItem != null && costs != null && listProductTransactions.isNotEmpty()) {
 
                         val makeOrderBody = MakeOrderBody(
                             token.tokenFormat(),
-                            addressData!!.id,
+                            addressItem!!.id,
                             costs!!.qtyTransaction,
                             costs!!.subtotalProducts,
                             costs!!.totalPrice,

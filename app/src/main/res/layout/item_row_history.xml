@@ -21,7 +21,7 @@
             android:id="@+id/iv_item"
             android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@drawable/cauliflowers" />
 
     </androidx.cardview.widget.CardView>
@@ -88,7 +88,8 @@
         android:textColor="?attr/colorOnSecondary"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/tv_item_count_total"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_item_count_total"
         android:text="@string/grand_total" />
 
@@ -114,6 +115,7 @@
         android:layout_marginEnd="16dp"
         android:text="@string/status_check"
         android:textStyle="bold"
+        app:cornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_price_count_total"
         app:layout_constraintEnd_toEndOf="parent" />
 

@@ -183,4 +183,31 @@ interface ApiServices {
         @Body body: MakeOrderBody
     ): Response<MakeOrderResponse>
 
+    @GET("transactions/{id}")
+    @Headers("Accept: application/json")
+    suspend fun getTransactionById(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int,
+        @Query("page[size]") size: Int = 100,
+        @Query("sort") sort: String = "-id",
+        @Query("include") include: String = "productTransactions,address",
+    ): Response<TransactionByIdResponse>
+
+    @GET("transactions")
+    @Headers("Accept: application/json")
+    suspend fun getTransactions(
+        @Header("Authorization") token: String,
+        @Query("filter[status]") status: String,
+        @Query("page[size]") size: Int = 100,
+        @Query("sort") sort: String = "-id",
+        @Query("include") include: String = "productTransactions,address",
+    ): Response<TransactionsResponse>
+
+    @PUT("transactions/{id}")
+    @Headers("Accept: application/json")
+    suspend fun updateTransactionStatus(
+        @Header("Authorization") token: String,
+        @Path("id") transactionId: Int
+    ): Response<TransactionsStatusResponse>
+
 }
