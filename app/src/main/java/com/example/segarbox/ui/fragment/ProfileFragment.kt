@@ -19,6 +19,7 @@ import com.example.segarbox.databinding.FragmentProfileBinding
 import com.example.segarbox.helper.tokenFormat
 import com.example.segarbox.ui.activity.CartActivity
 import com.example.segarbox.ui.activity.LoginActivity
+import com.example.segarbox.ui.activity.RatingActivity
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.ProfileViewModel
@@ -54,6 +55,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         observeData()
         binding.toolbar.ivCart.setOnClickListener(this)
         binding.content.btnLogout.setOnClickListener(this)
+        binding.content.clRating.setOnClickListener(this)
     }
 
     private fun setToolbar() {
@@ -114,6 +116,9 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             R.id.btn_logout -> {
                 prefViewModel.deleteTokenAndUserId()
                 requireActivity().onBackPressed()
+            }
+            R.id.cl_rating -> {
+                startActivity(Intent(requireContext(), RatingActivity::class.java))
             }
         }
     }
