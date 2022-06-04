@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
@@ -34,13 +33,13 @@ import com.example.segarbox.ui.viewmodel.MainViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitRoomViewModelFactory
-import com.google.android.gms.dynamic.IFragmentWrapper
 import com.google.android.material.R.attr.colorPrimary
 import com.google.android.material.R.attr.colorSecondaryVariant
 import kotlin.math.max
 import kotlin.math.min
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
+
 class HomeFragment : Fragment(), View.OnClickListener,
     StartShoppingAdapter.OnItemStartShoppingClickCallback,
     AllProductAdapter.OnItemAllProductClickCallback {
@@ -202,10 +201,13 @@ class HomeFragment : Fragment(), View.OnClickListener,
             startShoppingAdapter.submitList(listProduct)
         }
 
-        mainViewModel.userCart.observe(viewLifecycleOwner) { userCartResponse ->
-            userCartResponse.meta?.let {
-                binding.toolbar.ivCart.badgeValue = it.total
+        mainViewModel.userCart.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { userCartResponse ->
+                userCartResponse.meta?.let {
+                    binding.toolbar.ivCart.badgeValue = it.total
+                }
             }
+
         }
 
         mainViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -241,6 +243,10 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
         val newAlpha = (ratio * 255).toInt()
         binding.toolbar.root.background.alpha = newAlpha
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
     }
 
     override fun onDestroy() {

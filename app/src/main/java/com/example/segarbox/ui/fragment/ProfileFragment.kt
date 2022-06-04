@@ -90,7 +90,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 requireActivity().onBackPressed()
             }
             else {
-                profileViewModel.user(token.tokenFormat())
+                profileViewModel.getUser(token.tokenFormat())
             }
         }
 

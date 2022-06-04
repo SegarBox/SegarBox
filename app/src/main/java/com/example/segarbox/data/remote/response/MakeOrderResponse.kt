@@ -1,11 +1,13 @@
 package com.example.segarbox.data.remote.response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class MakeOrderResponse(
 
     @field:SerializedName("data")
-    val data: TransactionData? = null,
+    val data: MakeOrderItem? = null,
 
     @field:SerializedName("info")
     val info: String? = null,
@@ -14,7 +16,8 @@ data class MakeOrderResponse(
     val message: String? = null,
 )
 
-data class TransactionData(
+@Parcelize
+data class MakeOrderItem(
 
     @field:SerializedName("qty_transaction")
     val qtyTransaction: Int,
@@ -48,4 +51,4 @@ data class TransactionData(
 
     @field:SerializedName("status")
     val status: String,
-)
+) : Parcelable

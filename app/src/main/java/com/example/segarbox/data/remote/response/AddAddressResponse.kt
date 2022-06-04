@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class AddAddressResponse(
 
 	@field:SerializedName("data")
-	val data: AddressData? = null,
+	val data: AddressItem? = null,
 
 	@field:SerializedName("message")
 	val message: String? = null,
@@ -17,7 +17,7 @@ data class AddAddressResponse(
 )
 
 @Parcelize
-data class AddressData(
+data class AddressItem(
 
 	@field:SerializedName("updated_at")
 	val updatedAt: String,

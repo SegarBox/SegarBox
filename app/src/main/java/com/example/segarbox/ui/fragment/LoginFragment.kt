@@ -3,6 +3,7 @@ package com.example.segarbox.ui.fragment
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -85,8 +86,6 @@ class LoginFragment : Fragment(), View.OnClickListener {
             // Jika Berhasil Login
             if (loginResponse.token != null) {
                 prefViewModel.saveToken(loginResponse.token)
-//                prefViewModel.saveUserId(loginResponse.user!!.id)
-//                Log.e("eeee login", loginResponse.user!!.id.toString())
                 requireActivity().finish()
             }
             // Jika tidak berhasil login

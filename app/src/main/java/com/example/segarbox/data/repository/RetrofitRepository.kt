@@ -414,7 +414,7 @@ class RetrofitRepository {
         }
     }
 
-    suspend fun makeOrderTransaction(token: String, makeOrderBody: MakeOrderBody, ): MakeOrderResponse {
+    suspend fun makeOrderTransaction(token: String, makeOrderBody: MakeOrderBody): MakeOrderResponse {
         try {
             val request = segarBoxApiServices.makeOrderTransaction(token, makeOrderBody)
 
@@ -428,6 +428,55 @@ class RetrofitRepository {
 
         } catch (ex: Exception) {
             return MakeOrderResponse(message = ex.message.toString())
+        }
+    }
+
+    suspend fun getTransactionById(token: String, transactionId :Int): TransactionByIdResponse {
+        try {
+            val request = segarBoxApiServices.getTransactionById(token, transactionId)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            val result = Klaxon().parse<TransactionByIdResponse>(request.errorBody()!!.string())
+            return result!!
+
+        } catch (ex: Exception) {
+            return TransactionByIdResponse(message = ex.message.toString())
+        }
+    }
+
+    suspend fun getTransactions(token: String, status: String): TransactionsResponse {
+        try {
+            val request = segarBoxApiServices.getTransactions(token, status)
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            val result = Klaxon().parse<TransactionsResponse>(request.errorBody()!!.string())
+            return result!!
+
+        } catch (ex: Exception) {
+            return TransactionsResponse(message = ex.message.toString())
+        }
+    }
+
+    suspend fun updateTransactionStatus(token: String, transactionId: Int): TransactionsStatusResponse {
+        try {
+            val request = segarBoxApiServices.updateTransactionStatus(token, transactionId)
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            val result = Klaxon().parse<TransactionsStatusResponse>(request.errorBody()!!.string())
+            return result!!
+
+        } catch (ex: Exception) {
+            return TransactionsStatusResponse(message = ex.message.toString())
         }
     }
 

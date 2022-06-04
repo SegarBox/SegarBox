@@ -8,17 +8,17 @@ data class LoginResponse(
 	val message: String? = null,
 
 	@field:SerializedName("user")
-	val user: UserLogin? = null,
+	val user: UserItem? = null,
 
 	@field:SerializedName("token")
 	val token: String? = null,
 
 	@field:SerializedName("errors")
-	val errors: ErrorsLogin? = null
+	val errors: ErrorsItem? = null
 )
 
 
-data class UserLogin(
+data class UserItem(
 
 	@field:SerializedName("updated_at")
 	val updatedAt: String,
@@ -39,7 +39,7 @@ data class UserLogin(
 	val email: String
 )
 
-data class ErrorsLogin(
+data class ErrorsItem(
 
 	@field:SerializedName("password")
 	val password: List<String>? = null,

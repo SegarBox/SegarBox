@@ -64,5 +64,14 @@
     <string name="update_cart">Update Cart</string>
     <string name="delete_from_cart">Delete From Cart</string>
     <string name="make_order">Make Order</string>
+    <string name="transactions">Transactions</string>
+    <plurals name="item_count_total">
+        <item quantity="one">+ %d more product</item>
+        <item quantity="other">+ %d more products</item>
+    </plurals>
+    <plurals name="item_count">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
 
 </resources>

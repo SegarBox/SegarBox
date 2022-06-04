@@ -132,3 +132,11 @@ fun Context.getColorStateListRed(): ColorStateList {
         )
     )
 }
+
+fun Int.formatTotalCountItem(context: Context): String {
+    return context.resources.getQuantityString(R.plurals.item_count_total, this, this)
+}
+
+fun Int.formatItemCount(context: Context): String {
+    return context.resources.getQuantityString(R.plurals.item_count, this, this)
+}

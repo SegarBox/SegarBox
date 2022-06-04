@@ -2,15 +2,12 @@ package com.example.segarbox.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class DeleteCartResponse(
+data class TransactionsResponse(
 
     @field:SerializedName("data")
-	val data: CartItem? = null,
+    val data: List<TransactionItem>? = null,
 
     @field:SerializedName("message")
-	val message: String? = null,
-
-    @field:SerializedName("info")
-	val info: String?= null
+    val message: String? = null,
 )
 

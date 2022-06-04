@@ -3,10 +3,8 @@ package com.example.segarbox.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -15,14 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
-import com.example.segarbox.data.local.model.AddressModel
 import com.example.segarbox.data.local.static.Code
-import com.example.segarbox.data.remote.response.AddressData
+import com.example.segarbox.data.remote.response.AddressItem
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.ActivityAddressBinding
 import com.example.segarbox.helper.tokenFormat
 import com.example.segarbox.ui.adapter.AddressAdapter
-import com.example.segarbox.ui.adapter.DummyAdapterAddress
 import com.example.segarbox.ui.viewmodel.AddressViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
@@ -145,16 +141,16 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun onAddressClicked(addressData: AddressData) {
+    override fun onAddressClicked(addressItem: AddressItem) {
         val intent = Intent()
-        intent.putExtra(Code.ADDRESS_VALUE, addressData)
+        intent.putExtra(Code.ADDRESS_VALUE, addressItem)
         setResult(Code.RESULT_SAVE_ADDRESS, intent)
         finish()
     }
 
-    override fun onStashClicked(addressData: AddressData) {
+    override fun onStashClicked(addressItem: AddressItem) {
         if (token.isNotEmpty()) {
-            addressViewModel.deleteAddress(token.tokenFormat(), addressData.id)
+            addressViewModel.deleteAddress(token.tokenFormat(), addressItem.id)
         }
     }
 }

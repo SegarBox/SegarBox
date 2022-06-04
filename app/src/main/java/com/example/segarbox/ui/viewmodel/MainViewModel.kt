@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.example.segarbox.data.local.database.MainDatabase
-import com.example.segarbox.data.remote.api.ApiServices
-import com.example.segarbox.data.remote.response.*
+import com.example.segarbox.data.remote.response.CityResponse
+import com.example.segarbox.data.remote.response.CityResults
+import com.example.segarbox.data.remote.response.ProductResponse
+import com.example.segarbox.data.remote.response.UserCartResponse
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.data.repository.RoomRepository
+import com.example.segarbox.helper.Event
 import kotlinx.coroutines.launch
 
 class MainViewModel(
@@ -30,8 +30,8 @@ class MainViewModel(
     private var _checkedChips = MutableLiveData<String>()
     val checkedChips: LiveData<String> = _checkedChips
 
-    private var _userCart = MutableLiveData<UserCartResponse>()
-    val userCart: LiveData<UserCartResponse> = _userCart
+    private var _userCart = MutableLiveData<Event<UserCartResponse>>()
+    val userCart: LiveData<Event<UserCartResponse>> = _userCart
 
     private var _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -98,7 +98,7 @@ class MainViewModel(
         viewModelScope.launch {
             _isLoading.postValue(true)
             val request = retrofitRepository.getUserCart(token)
-            _userCart.postValue(request)
+            _userCart.postValue(Event(request))
             _isLoading.postValue(false)
         }
     }
