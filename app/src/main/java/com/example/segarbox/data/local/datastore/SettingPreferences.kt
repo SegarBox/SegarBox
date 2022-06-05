@@ -35,7 +35,7 @@ class SettingPreferences private constructor(private val dataStore: DataStore<Pr
         }
     }
 
-    suspend fun deleteTokenAndUserId() {
+    suspend fun logout() {
         dataStore.edit {
             it[keyToken] = ""
         }

@@ -239,22 +239,20 @@ class RetrofitRepository {
 //        }
 //    }
 
-    //    suspend fun logout(): LogoutResponse {
-//
-//        try {
-//            val request = segarBoxApiServices.logout()
-//
-//            if (request.isSuccessful) {
-//                request.body()?.let {
-//                    return it
-//                }
-//            }
-//            return LogoutResponse()
-//
-//        } catch (ex: Exception) {
-//            return LogoutResponse()
-//        }
-//    }
+    suspend fun logout(token: String): LogoutResponse {
+        try {
+            val request = segarBoxApiServices.logout(token)
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            return LogoutResponse()
+        } catch (ex: Exception) {
+            return LogoutResponse()
+        }
+    }
+
     suspend fun addCart(token: String, productId: Int, productQty: Int): AddCartResponse {
         try {
             val request = segarBoxApiServices.addToCart(token, productId, productQty)

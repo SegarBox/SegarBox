@@ -29,10 +29,9 @@ class PrefViewModel(private val pref: SettingPreferences): ViewModel() {
         }
     }
 
-
-    fun deleteTokenAndUserId(){
+    fun logout(){
         viewModelScope.launch {
-            pref.deleteTokenAndUserId()
+            pref.logout()
         }
     }
 }
