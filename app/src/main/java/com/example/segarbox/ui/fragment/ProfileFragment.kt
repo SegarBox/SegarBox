@@ -71,13 +71,11 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 isDarkMode -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     binding.content.sDarkMode.isChecked = true
-//                    binding.content.pattern.setImageResource(R.drawable.pat_black)
                 }
 
                 else -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     binding.content.sDarkMode.isChecked = false
-//                    binding.content.pattern.setImageResource(R.drawable.pat_black)
                 }
             }
 
@@ -114,7 +112,10 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 startActivity(Intent(requireContext(), CartActivity::class.java))
             }
             R.id.btn_logout -> {
-                prefViewModel.deleteTokenAndUserId()
+                prefViewModel.logout()
+                prefViewModel.getToken().observe(viewLifecycleOwner) { token ->
+                    profileViewModel.logout(token)
+                }
                 requireActivity().onBackPressed()
             }
             R.id.cl_rating -> {
