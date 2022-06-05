@@ -223,11 +223,11 @@ interface ApiServices {
     @FormUrlEncoded
     @PUT("ratings")
     @Headers("Accept: application/json")
-    suspend fun getRatings(
+    suspend fun saveRating(
         @Header("Authorization") token: String,
         @Field("transactions_id") transactionId: Int,
-        @Field("transactions_id") transactionId: Int,
-        @Field("transactions_id") transactionId: Int,
+        @Field("product_id") productId: Int,
+        @Field("rating") rating: Int,
     ): Response<RatingResponse>
 
 }
