@@ -3,6 +3,7 @@ package com.example.segarbox.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,8 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
+import com.example.segarbox.data.local.model.ProductId
+import com.example.segarbox.data.local.model.UpdateStatusBody
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.ActivityInvoiceBinding
@@ -34,6 +37,7 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
     private val binding get() = _binding!!
     private val invoiceAdapter = InvoiceAdapter(this)
     private var token = ""
+    private val listProductId: ArrayList<ProductId> = arrayListOf()
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
     }
@@ -96,6 +100,10 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
 
         invoiceViewModel.transactionById.observe(this) { response ->
             response.data?.let {
+                listProductId.clear()
+                it.productTransactions.forEach { productTransactionItem ->
+                    listProductId.add(ProductId(productTransactionItem.productId))
+                }
                 binding.content.apply {
                     tvInv.text = it.invoiceNumber
                     tvStatus.text = it.status.formatStatus()
@@ -154,8 +162,9 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
             R.id.iv_back -> finish()
 
             R.id.checkout_layout -> {
-                if (token.isNotEmpty()) {
-                    invoiceViewModel.updateTransactionStatus(token.tokenFormat(), getTransactionId)
+                if (token.isNotEmpty() && listProductId.isNotEmpty()) {
+                    Log.e("LIST PRODUCT ID", listProductId.toString())
+                    invoiceViewModel.updateTransactionStatus(token.tokenFormat(), getTransactionId, UpdateStatusBody(listProductId))
                 }
             }
 

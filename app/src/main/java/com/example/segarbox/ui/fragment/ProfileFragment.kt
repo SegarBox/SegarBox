@@ -138,7 +138,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             }
             R.id.btn_logout -> {
                 prefViewModel.logout()
-                prefViewModel.getToken().observe(viewLifecycleOwner) { token ->
+                if (token.isNotEmpty()) {
                     profileViewModel.logout(token)
                 }
                 requireActivity().onBackPressed()

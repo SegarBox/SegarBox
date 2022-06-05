@@ -3,31 +3,26 @@ package com.example.segarbox.ui.fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
-import com.example.segarbox.data.local.model.DummyModelTransaction
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.FragmentHistoryBinding
-import com.example.segarbox.databinding.FragmentInProgressBinding
 import com.example.segarbox.helper.tokenFormat
 import com.example.segarbox.ui.activity.InvoiceActivity
-import com.example.segarbox.ui.adapter.DummyAdapterTransaction
 import com.example.segarbox.ui.adapter.TransactionsAdapter
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.example.segarbox.ui.viewmodel.TransactionViewModel
+import com.google.android.material.snackbar.Snackbar
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
 class HistoryFragment : Fragment(), TransactionsAdapter.OnItemTransactionsClickCallback {
@@ -82,7 +77,7 @@ class HistoryFragment : Fragment(), TransactionsAdapter.OnItemTransactionsClickC
                 }
 
                 transactionsResponse.message?.let {
-                    Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
                 }
             }
 

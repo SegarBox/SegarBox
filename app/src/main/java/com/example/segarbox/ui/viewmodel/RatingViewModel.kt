@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.segarbox.data.remote.response.DeleteAddressResponse
-import com.example.segarbox.data.remote.response.GetAddressResponse
-import com.example.segarbox.data.remote.response.RatingResponse
-import com.example.segarbox.data.remote.response.UserCartResponse
+import com.example.segarbox.data.remote.response.*
 import com.example.segarbox.data.repository.RetrofitRepository
 import kotlinx.coroutines.launch
 
@@ -15,6 +12,9 @@ class RatingViewModel(private val retrofitRepository: RetrofitRepository): ViewM
 
     private val _ratingResponse = MutableLiveData<RatingResponse>()
     val ratingResponse: LiveData<RatingResponse> = _ratingResponse
+
+    private val _saveRatingResponse = MutableLiveData<SaveRatingResponse>()
+    val saveRatingResponse: LiveData<SaveRatingResponse> = _saveRatingResponse
 
     private var _userCart = MutableLiveData<UserCartResponse>()
     val userCart: LiveData<UserCartResponse> = _userCart
@@ -36,6 +36,15 @@ class RatingViewModel(private val retrofitRepository: RetrofitRepository): ViewM
             _isLoading.postValue(true)
             val request = retrofitRepository.getUserCart(token)
             _userCart.postValue(request)
+            _isLoading.postValue(false)
+        }
+    }
+
+    fun saveRating(token: String, ratingId: Int, transactionId: Int, productId: Int, rating: Int) {
+        viewModelScope.launch {
+            _isLoading.postValue(true)
+            val request = retrofitRepository.saveRating(token, ratingId, transactionId, productId, rating)
+            _saveRatingResponse.postValue(request)
             _isLoading.postValue(false)
         }
     }

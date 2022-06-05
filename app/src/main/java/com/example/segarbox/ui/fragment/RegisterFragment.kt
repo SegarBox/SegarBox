@@ -111,7 +111,6 @@ class RegisterFragment : Fragment(), View.OnClickListener {
             when {
                 registerResponse.token != null -> {
                     prefViewModel.saveToken(registerResponse.token)
-//                    prefViewModel.saveUserId(registerResponse.user!!.id)
                     requireActivity().finish()
                 }
                 // Jika tidak berhasil register
@@ -145,7 +144,6 @@ class RegisterFragment : Fragment(), View.OnClickListener {
                         else -> {
                             registerResponse.message?.let {
                                 Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
-//                                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
                             }
                         }
                     }

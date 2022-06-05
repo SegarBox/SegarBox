@@ -1,15 +1,12 @@
 package com.example.segarbox.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.segarbox.data.remote.response.AddressItem
 import com.example.segarbox.data.remote.response.RatingItem
-import com.example.segarbox.databinding.ItemRowAddressBinding
 import com.example.segarbox.databinding.ItemRowRatingBinding
 import com.example.segarbox.helper.formatSimpleDate
 
@@ -37,15 +34,16 @@ class RatingAdapter(private val onItemRatingClickCallback: OnItemRatingClickCall
                 onItemRatingClickCallback.onRootClicked(item.transactionId)
             }
 
-            ratingBar.setOnRatingBarChangeListener { _, rate, _ ->
-                onItemRatingClickCallback.onRate(item.productId, rate.toDouble())
+            ratingBar.rating = 0F
+            ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
+                onItemRatingClickCallback.onRate(item.id, item.transactionId, item.productId, rating.toDouble())
             }
         }
 
     }
 
     interface OnItemRatingClickCallback {
-        fun onRate(productId: Int, rate: Double)
+        fun onRate(ratingId: Int, transactionId: Int, productId: Int, rating: Double)
         fun onRootClicked(transactionId: Int)
     }
 

@@ -9,6 +9,7 @@ import com.beust.klaxon.Klaxon
 import com.example.segarbox.BuildConfig
 import com.example.segarbox.data.local.model.MakeOrderBody
 import com.example.segarbox.data.local.model.ProductTransactions
+import com.example.segarbox.data.local.model.UpdateStatusBody
 import com.example.segarbox.data.remote.api.ApiConfig
 import com.example.segarbox.data.remote.api.ApiServices
 import com.example.segarbox.data.remote.response.*
@@ -463,9 +464,9 @@ class RetrofitRepository {
         }
     }
 
-    suspend fun updateTransactionStatus(token: String, transactionId: Int): TransactionsStatusResponse {
+    suspend fun updateTransactionStatus(token: String, transactionId: Int, updateStatusBody: UpdateStatusBody): TransactionsStatusResponse {
         try {
-            val request = segarBoxApiServices.updateTransactionStatus(token, transactionId)
+            val request = segarBoxApiServices.updateTransactionStatus(token, transactionId, updateStatusBody)
             if (request.isSuccessful) {
                 request.body()?.let {
                     return it
@@ -492,6 +493,22 @@ class RetrofitRepository {
 
         } catch (ex: Exception) {
             return RatingResponse(message = ex.message.toString())
+        }
+    }
+
+    suspend fun saveRating(token: String, ratingId: Int, transactionId: Int, productId: Int, rating: Int): SaveRatingResponse {
+        try {
+            val request = segarBoxApiServices.saveRating(token, ratingId, transactionId, productId, rating)
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            val result = Klaxon().parse<SaveRatingResponse>(request.errorBody()!!.string())
+            return result!!
+
+        } catch (ex: Exception) {
+            return SaveRatingResponse(message = ex.message.toString())
         }
     }
 
