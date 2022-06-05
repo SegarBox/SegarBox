@@ -1,6 +1,7 @@
 package com.example.segarbox.helper
 
 import android.R.attr.state_focused
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Resources
@@ -15,7 +16,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.R.attr.colorPrimary
 import com.google.android.material.R.attr.colorSecondaryVariant
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.*
+
+private const val DEFAULT_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+private const val DATE_TIME_PATTERN = "dd MMM yyyy, HH:mm"
+private const val DATE_SIMPLE_PATTERN = "dd MMM yyyy"
 
 fun Context.getHelperColor(color: Int): Int {
     return ContextCompat.getColor(this, color)
@@ -139,4 +145,33 @@ fun Int.formatTotalCountItem(context: Context): String {
 
 fun Int.formatItemCount(context: Context): String {
     return context.resources.getQuantityString(R.plurals.item_count, this, this)
+}
+
+@SuppressLint("SimpleDateFormat")
+fun String.formatDateTime(): String {
+    val defaultParser = SimpleDateFormat(DEFAULT_TIME_PATTERN)
+    val formatter = SimpleDateFormat(DATE_TIME_PATTERN)
+    defaultParser.timeZone = TimeZone.getTimeZone("GMT")
+
+    val time = defaultParser.parse(this)
+    return "${formatter.format(time!!)} WIB"
+}
+
+@SuppressLint("SimpleDateFormat")
+fun String.formatSimpleDate(): String {
+    val defaultParser = SimpleDateFormat(DEFAULT_TIME_PATTERN)
+    val formatter = SimpleDateFormat(DATE_SIMPLE_PATTERN)
+    defaultParser.timeZone = TimeZone.getTimeZone("GMT")
+
+    val time = defaultParser.parse(this)
+    return formatter.format(time!!)
+}
+
+fun String.formatStatus(): String {
+    return if (this == "inprogress") {
+        "In Progress"
+    }
+    else {
+        "Completed"
+    }
 }

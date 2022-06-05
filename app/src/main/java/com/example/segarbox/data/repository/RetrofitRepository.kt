@@ -479,5 +479,21 @@ class RetrofitRepository {
         }
     }
 
+    suspend fun getRatings(token: String): RatingResponse {
+        try {
+            val request = segarBoxApiServices.getRatings(token)
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+            val result = Klaxon().parse<RatingResponse>(request.errorBody()!!.string())
+            return result!!
+
+        } catch (ex: Exception) {
+            return RatingResponse(message = ex.message.toString())
+        }
+    }
+
 
 }

@@ -3,7 +3,6 @@ package com.example.segarbox.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -93,9 +92,6 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
                                 }
                                 else -> {
                                     Snackbar.make(binding.root, Code.LOCATION_CANT_BE_REACHED, Snackbar.LENGTH_SHORT).show()
-//                                    Toast.makeText(this,
-//                                        Code.LOCATION_CANT_BE_REACHED,
-//                                        Toast.LENGTH_SHORT).show()
                                 }
                             }
 
@@ -156,7 +152,7 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
 
             // Toast jika list shipment empty
             if (listShipment.isEmpty()) {
-                Toast.makeText(this, Code.LOCATION_CANT_BE_REACHED, Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, Code.LOCATION_CANT_BE_REACHED, Snackbar.LENGTH_SHORT).show()
             }
             shippingAdapter.submitList(listShipment)
         }

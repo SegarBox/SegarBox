@@ -3,6 +3,7 @@ package com.example.segarbox.ui.fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+    private var token = ""
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
     }
@@ -85,6 +87,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         }
 
         prefViewModel.getToken().observe(viewLifecycleOwner) { token ->
+            this.token = token
             if (token.isEmpty()) {
                 startActivity(Intent(requireActivity(), LoginActivity::class.java))
                 requireActivity().onBackPressed()
@@ -94,10 +97,32 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             }
         }
 
-        profileViewModel.userResponse.observe(viewLifecycleOwner){ user ->
-            binding.content.tvUserName.text = user.data?.name.toString()
-            binding.content.tvPhone.text = user.data?.phone.toString()
-            binding.content.tvEmail.text = user.data?.email.toString()
+        profileViewModel.userResponse.observe(viewLifecycleOwner){ event ->
+            event.getContentIfNotHandled()?.let { user ->
+                binding.content.tvUserName.text = user.data?.name.toString()
+                binding.content.tvPhone.text = user.data?.phone.toString()
+                binding.content.tvEmail.text = user.data?.email.toString()
+            }
+        }
+
+        profileViewModel.userCart.observe(viewLifecycleOwner){ event ->
+            event.getContentIfNotHandled()?.let { userCartResponse ->
+                userCartResponse.meta?.let {
+                    binding.toolbar.ivCart.badgeValue = it.total
+                }
+            }
+        }
+
+
+        profileViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBar.isVisible = isLoading
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (token.isNotEmpty()) {
+            profileViewModel.getUserCart(token.tokenFormat())
         }
     }
 

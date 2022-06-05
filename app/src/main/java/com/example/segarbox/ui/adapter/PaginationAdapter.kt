@@ -40,7 +40,7 @@ class PaginationAdapter(private val onItemPaginationClickCallback: OnItemPaginat
                 tvSize.text = item.size.formatProductSize(context)
 
                 root.setOnClickListener {
-                    onItemPaginationClickCallback.onItemPaginationClicked(item)
+                    onItemPaginationClickCallback.onItemPaginationClicked(item.id)
                 }
             }
 
@@ -48,7 +48,7 @@ class PaginationAdapter(private val onItemPaginationClickCallback: OnItemPaginat
     }
 
     interface OnItemPaginationClickCallback {
-        fun onItemPaginationClicked(item: ProductItem)
+        fun onItemPaginationClicked(productId: Int)
     }
 
 }

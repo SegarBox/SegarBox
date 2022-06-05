@@ -30,11 +30,5 @@ class DummyAdapterRating: ListAdapter<DummyModel, DummyAdapterRating.DummyViewHo
         holder.binding.tvItemName.text = "Cauliflower"
         holder.binding.tvDate.text = item.qty
 
-        holder.binding.ratingBar.setOnRatingBarChangeListener { _, _, _ ->
-            holder.binding.materialButton2.isVisible = true
-            holder.binding.materialButton2.setOnClickListener{
-                Log.e("aaaa", holder.binding.ratingBar.rating.toString())
-            }
-        }
     }
 }

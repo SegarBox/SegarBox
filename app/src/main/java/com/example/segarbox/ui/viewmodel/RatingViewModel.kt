@@ -4,30 +4,31 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.example.segarbox.data.local.database.MainDatabase
-import com.example.segarbox.data.remote.api.ApiServices
-import com.example.segarbox.data.remote.response.ProductItem
+import com.example.segarbox.data.remote.response.DeleteAddressResponse
+import com.example.segarbox.data.remote.response.GetAddressResponse
+import com.example.segarbox.data.remote.response.RatingResponse
 import com.example.segarbox.data.remote.response.UserCartResponse
 import com.example.segarbox.data.repository.RetrofitRepository
 import kotlinx.coroutines.launch
 
-class PaginationViewModel(private val retrofitRepository: RetrofitRepository) : ViewModel() {
+class RatingViewModel(private val retrofitRepository: RetrofitRepository): ViewModel() {
+
+    private val _ratingResponse = MutableLiveData<RatingResponse>()
+    val ratingResponse: LiveData<RatingResponse> = _ratingResponse
 
     private var _userCart = MutableLiveData<UserCartResponse>()
     val userCart: LiveData<UserCartResponse> = _userCart
 
-    private var _isLoading = MutableLiveData<Boolean>()
+    private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    fun getProductPaging(
-        apiServices: ApiServices,
-        filter: String,
-        filterValue: String,
-    ): LiveData<PagingData<ProductItem>> {
-        return retrofitRepository.getProductPaging(apiServices, filter, filterValue)
-            .cachedIn(viewModelScope)
+    fun getRatings(token: String) {
+        viewModelScope.launch {
+            _isLoading.postValue(true)
+            val request = retrofitRepository.getRatings(token)
+            _ratingResponse.postValue(request)
+            _isLoading.postValue(false)
+        }
     }
 
     fun getUserCart(token: String) {
@@ -38,4 +39,5 @@ class PaginationViewModel(private val retrofitRepository: RetrofitRepository) : 
             _isLoading.postValue(false)
         }
     }
+
 }

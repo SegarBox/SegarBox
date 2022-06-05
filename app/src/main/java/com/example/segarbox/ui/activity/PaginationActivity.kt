@@ -5,44 +5,54 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.segarbox.BuildConfig
 import com.example.segarbox.R
+import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.api.ApiConfig
 import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.ActivityPaginationBinding
-import com.example.segarbox.helper.getColorFromAttr
-import com.example.segarbox.helper.getColorStateListPrimary
-import com.example.segarbox.helper.getHelperDrawable
-import com.example.segarbox.helper.toPixel
+import com.example.segarbox.helper.*
 import com.example.segarbox.ui.adapter.LoadingStateAdapter
 import com.example.segarbox.ui.adapter.MarginGridItemDecoration
 import com.example.segarbox.ui.adapter.PaginationAdapter
 import com.example.segarbox.ui.viewmodel.PaginationViewModel
+import com.example.segarbox.ui.viewmodel.PrefViewModel
+import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.material.R.attr.colorPrimary
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginationClickCallback {
+private val Context.dataStore by preferencesDataStore(name = "settings")
+class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginationClickCallback,
+    View.OnClickListener {
 
     private var _binding: ActivityPaginationBinding? = null
     private val binding get() = _binding!!
+    private var token = ""
     private var filter: String? = null
     private var filterValue: String? = null
     private var isHomeSearchBarPressed: Boolean = false
     private val paginationAdapter = PaginationAdapter(this)
     private val paginationViewModel by viewModels<PaginationViewModel> {
         RetrofitViewModelFactory.getInstance(RetrofitRepository())
+    }
+    private val prefViewModel by viewModels<PrefViewModel> {
+        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +70,7 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
         setAdapter()
         observeData()
         scrollToTopListAdapter()
+        binding.toolbar.ivCart.setOnClickListener(this)
     }
 
     @Suppress("DEPRECATION")
@@ -184,7 +195,29 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
 
         }
 
+        prefViewModel.getToken().observe(this) { token ->
+            this.token = token
+        }
 
+        paginationViewModel.userCart.observe(this) { userCartResponse ->
+            Log.e("PAGINATION", "OBSERVE CART")
+            userCartResponse.meta?.let {
+                binding.toolbar.ivCart.badgeValue = it.total
+            }
+        }
+
+        paginationViewModel.isLoading.observe(this) { isLoading ->
+            binding.progressBar.isVisible = isLoading
+        }
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (token.isNotEmpty()) {
+            paginationViewModel.getUserCart(token.tokenFormat())
+        }
     }
 
 
@@ -193,10 +226,18 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
         _binding = null
     }
 
-    override fun onItemPaginationClicked(item: ProductItem) {
+    override fun onItemPaginationClicked(productId: Int) {
         val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra(Code.KEY_DETAIL_VALUE, item)
+        intent.putExtra(Code.KEY_DETAIL_VALUE, productId)
         startActivity(intent)
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id) {
+            R.id.iv_cart -> {
+                startActivity(Intent(this, CartActivity::class.java))
+            }
+        }
     }
 
 }

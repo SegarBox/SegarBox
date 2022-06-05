@@ -96,16 +96,17 @@
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/activity_main.xml" value="0.2421875" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/activity_maps.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/activity_pagination.xml" value="0.1987179487179487" />
-        <entry key="..\:/github/SegarBox/app/src/main/res/layout/activity_rating.xml" value="0.1987179487179487" />
+        <entry key="..\:/github/SegarBox/app/src/main/res/layout/activity_rating.xml" value="0.264" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/activity_shipping.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/bottom_payment_info.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/content_cart.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/content_checkout.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/content_detail.xml" value="0.2" />
-        <entry key="..\:/github/SegarBox/app/src/main/res/layout/content_invoice.xml" value="0.2" />
+        <entry key="..\:/github/SegarBox/app/src/main/res/layout/content_invoice.xml" value="0.264" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/content_main.xml" value="0.19199009083402147" />
-        <entry key="..\:/github/SegarBox/app/src/main/res/layout/content_rating.xml" value="0.1987179487179487" />
+        <entry key="..\:/github/SegarBox/app/src/main/res/layout/content_rating.xml" value="0.264" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/content_shipping_method.xml" value="0.1987179487179487" />
+        <entry key="..\:/github/SegarBox/app/src/main/res/layout/content_transaction.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/counter.xml" value="0.2421875" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/custom_toolbar.xml" value="0.72" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/custom_toolbar_main.xml" value="0.2421875" />
@@ -113,6 +114,7 @@
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/fragment_home.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/fragment_in_progress.xml" value="0.1962025316455696" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/fragment_login.xml" value="0.1987179487179487" />
+        <entry key="..\:/github/SegarBox/app/src/main/res/layout/fragment_profile.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/fragment_register.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/fragment_transaction.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_loading.xml" value="0.1987179487179487" />
@@ -121,7 +123,7 @@
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_row_checkout.xml" value="0.2" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_row_confirm.xml" value="0.2421875" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_row_feature.xml" value="0.2421875" />
-        <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_row_history.xml" value="0.2421875" />
+        <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_row_history.xml" value="0.4" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_row_main.xml" value="0.4" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_row_rating.xml" value="0.264" />
       </map>

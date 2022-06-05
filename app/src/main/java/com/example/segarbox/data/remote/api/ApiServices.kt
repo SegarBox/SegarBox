@@ -209,4 +209,25 @@ interface ApiServices {
         @Path("id") transactionId: Int
     ): Response<TransactionsStatusResponse>
 
+    @GET("ratings")
+    @Headers("Accept: application/json")
+    suspend fun getRatings(
+        @Header("Authorization") token: String,
+        @Query("page[size]") size: Int = 100,
+        @Query("sort") sort: String = "-id",
+        @Query("include") include: String = "product",
+        @Query("filter[is_rating]") filterIsRating: Int = 0,
+        @Query("is_rating") isRating: Int = 0,
+    ): Response<RatingResponse>
+
+    @FormUrlEncoded
+    @PUT("ratings")
+    @Headers("Accept: application/json")
+    suspend fun getRatings(
+        @Header("Authorization") token: String,
+        @Field("transactions_id") transactionId: Int,
+        @Field("transactions_id") transactionId: Int,
+        @Field("transactions_id") transactionId: Int,
+    ): Response<RatingResponse>
+
 }

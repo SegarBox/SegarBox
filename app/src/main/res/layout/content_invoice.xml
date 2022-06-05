@@ -9,59 +9,125 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@drawable/inner_shadow"
-            app:layout_constraintBottom_toBottomOf="@id/space_header"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_inv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:gravity="center"
-            android:textColor="?attr/colorOnPrimary"
-            android:textSize="20sp"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Order ID: INV20220604" />
-
-        <TextView
-            android:id="@+id/tv_status"
-            style="@style/poppinsExtraBold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:gravity="center"
-            android:textColor="?attr/colorOnPrimary"
-            android:textSize="18sp"
-            android:textStyle="italic"
-            app:layout_constraintTop_toBottomOf="@id/tv_inv"
-            tools:text="inprogress" />
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:text="@string/bthome"
-            app:cornerRadius="12dp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_status"
-            app:strokeColor="?attr/colorOnPrimary"
-            app:strokeWidth="1dp" />
+            android:textStyle="bold"
+            app:cornerRadius="16dp"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Space
-            android:id="@+id/space_header"
-            android:layout_width="match_parent"
-            android:layout_height="16dp"
+
+        <TextView
+            android:id="@+id/tv_title_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/order_details"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:theme="@style/poppinsMedium"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_home" />
+
+        <TextView
+            android:id="@+id/tv_title_order_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/order_id"
+            android:textColor="?attr/colorOnSecondary"
+            android:theme="@style/poppinsMedium"
+            app:layout_constraintStart_toStartOf="@id/tv_title_order"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_order" />
+
+        <TextView
+            android:id="@+id/tv_title_order_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/order_date"
+            android:textColor="?attr/colorOnSecondary"
+            android:theme="@style/poppinsMedium"
+            app:layout_constraintStart_toStartOf="@id/tv_title_order"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_order_id" />
+
+        <TextView
+            android:id="@+id/tv_title_order_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/order_status"
+            android:textColor="?attr/colorOnSecondary"
+            android:theme="@style/poppinsMedium"
+            app:layout_constraintStart_toStartOf="@id/tv_title_order"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_order_date" />
+
+
+        <TextView
+            android:id="@+id/tv_inv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="1"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:theme="@style/poppinsMedium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_status"
+            app:layout_constraintTop_toTopOf="@id/tv_title_order_id"
+            tools:text="INV20220604" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="1"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:theme="@style/poppinsMedium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_status"
+            app:layout_constraintTop_toTopOf="@id/tv_title_order_date"
+            tools:text="05/06/2022" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="1"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:theme="@style/poppinsMedium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_title_order_status"
+            app:layout_constraintTop_toTopOf="@id/tv_title_order_status"
+            tools:text="In Progress" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_order_status" />
+
 
         <TextView
             android:id="@+id/tv_title_address"
@@ -75,7 +141,7 @@
             android:textStyle="bold"
             android:theme="@style/poppinsMedium"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
+            app:layout_constraintTop_toBottomOf="@id/divider1" />
 
         <RelativeLayout
             android:id="@+id/address_layout"
@@ -131,9 +197,9 @@
 
 
         <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider1"
+            android:id="@+id/divider2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="6dp"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@+id/address_layout" />
 
@@ -149,7 +215,7 @@
             android:textStyle="bold"
             android:theme="@style/poppinsMedium"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider1" />
+            app:layout_constraintTop_toBottomOf="@id/divider2" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_checkout_item"
@@ -159,9 +225,9 @@
             tools:listitem="@layout/item_row_checkout" />
 
         <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider2"
+            android:id="@+id/divider3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="6dp"
             app:layout_constraintTop_toBottomOf="@id/rv_checkout_item" />
 
         <TextView
@@ -176,7 +242,7 @@
             android:textStyle="bold"
             android:theme="@style/poppinsMedium"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider2" />
+            app:layout_constraintTop_toBottomOf="@id/divider3" />
 
         <RelativeLayout
             android:id="@+id/payment_background"
@@ -276,8 +342,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="@string/rate"
-            android:textSize="20sp"
+            android:text="@string/rate_us"
+            android:textStyle="bold"
             android:visibility="gone"
             app:cornerRadius="16dp"
             app:layout_constraintTop_toBottomOf="@id/payment_background" />

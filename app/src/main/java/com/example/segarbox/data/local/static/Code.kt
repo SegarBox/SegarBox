@@ -28,9 +28,7 @@ object Code {
     const val KEY_DETAIL_VALUE = "key_detail_value"
     const val KEY_FROM_ACTIVITY = "key_from_activity"
     const val CART_ACTIVITY = "cart_activity"
-    const val CHECKOUT_ACTIVITY = "checkout_activity"
-    const val TRANSACTION_ACTIVITY = "transaction_activity"
     const val KEY_USERCART_VALUE = "key_usercart_value"
+    const val KEY_USERCART_QTY = "key_usercart_qty"
     const val KEY_TRANSACTION_ID = "key_transaction_id"
-    const val KEY_TOKEN = "key_token"
 }

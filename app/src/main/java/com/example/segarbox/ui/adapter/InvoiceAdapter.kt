@@ -6,17 +6,12 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.segarbox.R
 import com.example.segarbox.data.remote.response.ProductTransactionsItem
-import com.example.segarbox.data.remote.response.TransactionItem
 import com.example.segarbox.databinding.ItemRowCheckoutBinding
-import com.example.segarbox.databinding.ItemRowHistoryBinding
-import com.example.segarbox.helper.formatItemCount
 import com.example.segarbox.helper.formatProductSize
 import com.example.segarbox.helper.formatToRupiah
-import com.example.segarbox.helper.formatTotalCountItem
 
-class InvoiceAdapter :
+class InvoiceAdapter(private val onItemInvoiceClickCallback: OnItemInvoiceClickCallback) :
     ListAdapter<ProductTransactionsItem, InvoiceAdapter.InvoiceViewHolder>(
         DiffCallbackProductTransactions) {
     inner class InvoiceViewHolder(var binding: ItemRowCheckoutBinding) :
@@ -43,7 +38,15 @@ class InvoiceAdapter :
             tvItemPrice.text = item.price.formatToRupiah()
             divider.isVisible = position != itemCount - 1
 
+            root.setOnClickListener {
+                onItemInvoiceClickCallback.onItemClicked(item.productId)
+            }
+
         }
 
+    }
+
+    interface OnItemInvoiceClickCallback {
+        fun onItemClicked(productId: Int)
     }
 }

@@ -78,6 +78,9 @@ data class ProductTransactionsItem(
     @field:SerializedName("id")
     val id: Int,
 
+    @field:SerializedName("product_id")
+    val productId: Int,
+
     @field:SerializedName("label")
     val label: String,
 

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -15,6 +14,8 @@ import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.ActivityInvoiceBinding
+import com.example.segarbox.helper.formatDateTime
+import com.example.segarbox.helper.formatStatus
 import com.example.segarbox.helper.formatToRupiah
 import com.example.segarbox.helper.tokenFormat
 import com.example.segarbox.ui.adapter.InvoiceAdapter
@@ -22,14 +23,16 @@ import com.example.segarbox.ui.viewmodel.InvoiceViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
 
-class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
+class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
+    InvoiceAdapter.OnItemInvoiceClickCallback {
 
     private var _binding: ActivityInvoiceBinding? = null
     private val binding get() = _binding!!
-    private val invoiceAdapter = InvoiceAdapter()
+    private val invoiceAdapter = InvoiceAdapter(this)
     private var token = ""
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
@@ -59,10 +62,11 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
         binding.toolbar.ivBack.setOnClickListener(this)
         binding.bottomPaymentInfo.checkoutLayout.setOnClickListener(this)
         binding.content.btnHome.setOnClickListener(this)
+        binding.content.btnRating.setOnClickListener(this)
     }
 
     private fun setupView() {
-        binding.bottomPaymentInfo.tvButton.text = "Received"
+        binding.bottomPaymentInfo.tvButton.text = getString(R.string.complete)
     }
 
     private fun setToolbar() {
@@ -94,7 +98,8 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
             response.data?.let {
                 binding.content.apply {
                     tvInv.text = it.invoiceNumber
-                    tvStatus.text = it.status
+                    tvStatus.text = it.status.formatStatus()
+                    tvDate.text = it.createdAt.formatDateTime()
                     tvAddress.text = it.address.street
                     invoiceAdapter.submitList(it.productTransactions)
                     tvProductsSubtotal.text = it.subtotalProducts.formatToRupiah()
@@ -123,12 +128,12 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
             response.info?.let {
                 if (token.isNotEmpty()) {
                     invoiceViewModel.getTransactionById(token.tokenFormat(), getTransactionId)
-                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
                 }
             }
 
             response.message?.let {
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
             }
         }
 
@@ -160,7 +165,19 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener {
                 finish()
             }
 
+            R.id.btn_rating -> {
+                startActivity(Intent(this, RatingActivity::class.java))
+                finish()
+            }
+
         }
+    }
+
+    override fun onItemClicked(productId: Int) {
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra(Code.KEY_DETAIL_VALUE, productId)
+        startActivity(intent)
+        finish()
     }
 
 

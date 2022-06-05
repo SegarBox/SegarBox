@@ -15,4 +15,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_row_rating"/>
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>

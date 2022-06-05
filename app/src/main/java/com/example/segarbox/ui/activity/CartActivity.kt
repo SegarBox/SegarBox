@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -24,6 +23,7 @@ import com.example.segarbox.ui.viewmodel.CartViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
 
@@ -96,7 +96,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
             }
 
             deleteCartResponse.message?.let {
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
             }
         }
 
@@ -111,7 +111,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
                 if (token.isNotEmpty()) {
                     cartViewModel.getUserCart(token.tokenFormat())
                 }
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
             }
         }
 
@@ -133,9 +133,9 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
             isCheckedCartResponse.data?.let { listCart ->
                 when {
                     listCart.isEmpty() -> {
-                        Toast.makeText(this,
+                        Snackbar.make(binding.root,
                             "You haven't selected any items yet",
-                            Toast.LENGTH_SHORT)
+                            Snackbar.LENGTH_SHORT)
                             .show()
                     }
                     else -> {
@@ -143,9 +143,9 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
                         for (i in listCart.indices) {
                             if (listCart[i].productQty > listCart[i].product.qty) {
                                 passTest = false
-                                Toast.makeText(this,
+                                Snackbar.make(binding.root,
                                     "Some items are out of stocks, items will be automatically updated",
-                                    Toast.LENGTH_SHORT).show()
+                                    Snackbar.LENGTH_SHORT).show()
                                 break
                             }
                         }

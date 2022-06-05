@@ -76,7 +76,6 @@ class HistoryFragment : Fragment(), TransactionsAdapter.OnItemTransactionsClickC
         }
 
         transactionViewModel.transactionsResponse.observe(viewLifecycleOwner) { event ->
-            Log.e("HISTORY", "ON RESUME")
             event.getContentIfNotHandled()?.let { transactionsResponse ->
                 transactionsResponse.data?.let {
                     transactionsAdapter.submitList(it)

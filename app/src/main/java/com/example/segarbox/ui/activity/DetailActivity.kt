@@ -3,6 +3,7 @@ package com.example.segarbox.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -29,7 +30,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private var _binding: ActivityDetailBinding? = null
     private val binding get() = _binding!!
-    private var productItem: ProductItem? = null
+    private var productId: Int = 0
     private var userCartItem: UserCartItem? = null
     private var fromActivity: String? = null
     private var token = ""
@@ -50,64 +51,58 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun init() {
         getIntentDetail()
-        setToolbar()
-        setDetail(productItem)
         observeData()
         binding.toolbar.ivBack.setOnClickListener(this)
         binding.toolbar.ivCart.setOnClickListener(this)
         binding.content.counter.ivAdd.setOnClickListener(this)
         binding.content.counter.ivRemove.setOnClickListener(this)
+        binding.btnAddToCart.setOnClickListener(this)
     }
 
     private fun getIntentDetail() {
         // From Home
-        productItem = intent.getParcelableExtra(Code.KEY_DETAIL_VALUE)
+        productId = intent.getIntExtra(Code.KEY_DETAIL_VALUE, 0)
 
         // From Cart
         fromActivity = intent.getStringExtra(Code.KEY_FROM_ACTIVITY)
 
         fromActivity?.let {
             userCartItem = intent.getParcelableExtra(Code.KEY_USERCART_VALUE)
-            userCartItem?.let { userCartItem ->
-                productItem = userCartItem.product
-                detailViewModel.saveQuantity(userCartItem.productQty)
+            userCartItem?.let {
+                productId = it.product.id
+                detailViewModel.saveQuantity(it.productQty)
             }
         }
     }
 
-    private fun setToolbar() {
+
+    private fun setDetail(item: ProductItem) {
         binding.toolbar.apply {
             ivBack.isVisible = true
             ivCart.isVisible = true
-            tvTitle.text = productItem?.label ?: ""
+            tvTitle.text = item.label
         }
-    }
-
-    private fun setDetail(item: ProductItem?) {
         binding.content.apply {
-            item?.let { it ->
-                Glide.with(this@DetailActivity)
-                    .load(it.image)
-                    .into(ivItem)
-                tvItemName.text = it.label
-                tvSize.text = it.size.formatProductSize(this@DetailActivity)
-                tvPrice.text = it.price.formatToRupiah()
-                tvItemDescription.text = it.detail
-            }
+            Glide.with(this@DetailActivity)
+                .load(item.image)
+                .into(ivItem)
+            tvItemName.text = item.label
+            tvSize.text = item.size.formatProductSize(this@DetailActivity)
+            tvPrice.text = item.price.formatToRupiah()
+            tvItemDescription.text = item.detail
         }
     }
 
     private fun observeData() {
 
-        productItem?.let {
-            detailViewModel.getProductById(it.id)
-        }
+        detailViewModel.getProductById(productId)
 
         detailViewModel.productById.observe(this) { productById ->
             productById.data?.let {
                 if (it.qty < quantity) {
                     detailViewModel.saveQuantity(it.qty)
                 }
+                setDetail(it)
                 binding.content.tvStock.text = getString(R.string.stock, it.qty.toString())
                 binding.content.counter.ivAdd.isEnabled = quantity < it.qty
             }
@@ -143,39 +138,8 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             if (token.isNotEmpty()) {
                 detailViewModel.getUserCart(token.tokenFormat())
             }
-
-            // Saat menekan button addToCart
-            binding.btnAddToCart.setOnClickListener {
-                if (token.isEmpty()) {
-                    startActivity(Intent(this, LoginActivity::class.java))
-                } else {
-
-                    // Set Jika dari Cart atau tidak
-                    if (fromActivity != null && fromActivity == Code.CART_ACTIVITY) {
-                        // Jika quantity > 0
-                        userCartItem?.let { userCartItem ->
-                            if (quantity > 0) {
-                                detailViewModel.updateUserCart(token.tokenFormat(),
-                                    userCartItem.id,
-                                    userCartItem.product.id,
-                                    quantity,
-                                    userCartItem.isChecked)
-                            }
-                            else {
-                                detailViewModel.deleteUserCart(token.tokenFormat(), userCartItem.id)
-                            }
-                        }
-                    } else {
-                        productItem?.let {
-                            detailViewModel.addCart(token = token.tokenFormat(),
-                                productId = it.id,
-                                productQty = quantity)
-                        }
-                    }
-
-                }
-            }
         }
+
 
         detailViewModel.addCartResponse.observe(this) { addCartResponse ->
             if (addCartResponse.message != null) {
@@ -191,11 +155,9 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         detailViewModel.updateUserCartResponse.observe(this) { updateCartResponse ->
-            if (updateCartResponse.message != null ) {
+            if (updateCartResponse.message != null) {
                 Toast.makeText(this, updateCartResponse.message, Toast.LENGTH_SHORT).show()
-                productItem?.let {
-                    detailViewModel.getProductById(it.id)
-                }
+                detailViewModel.getProductById(productId)
             } else {
                 updateCartResponse.info?.let {
                     Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
@@ -206,7 +168,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         detailViewModel.deleteUserCartResponse.observe(this) { deleteCartResponse ->
-            if (deleteCartResponse.message != null ) {
+            if (deleteCartResponse.message != null) {
                 Toast.makeText(this, deleteCartResponse.message, Toast.LENGTH_SHORT).show()
             } else {
                 deleteCartResponse.info?.let {
@@ -251,14 +213,37 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.iv_add -> {
                 detailViewModel.saveQuantity(quantity + 1)
-                productItem?.let {
-                    detailViewModel.getProductById(it.id)
-                }
+                detailViewModel.getProductById(productId)
             }
             R.id.iv_remove -> {
                 detailViewModel.saveQuantity(quantity - 1)
-                productItem?.let {
-                    detailViewModel.getProductById(it.id)
+                detailViewModel.getProductById(productId)
+            }
+            R.id.btn_add_to_cart -> {
+                if (token.isEmpty()) {
+                    startActivity(Intent(this, LoginActivity::class.java))
+                } else {
+
+                    // Set Jika dari Cart atau tidak
+                    if (fromActivity != null && fromActivity == Code.CART_ACTIVITY) {
+                        // Jika quantity > 0
+                        userCartItem?.let { userCartItem ->
+                            if (quantity > 0) {
+                                detailViewModel.updateUserCart(token.tokenFormat(),
+                                    userCartItem.id,
+                                    userCartItem.product.id,
+                                    quantity,
+                                    userCartItem.isChecked)
+                            } else {
+                                detailViewModel.deleteUserCart(token.tokenFormat(), userCartItem.id)
+                            }
+                        }
+                    } else {
+                        detailViewModel.addCart(token = token.tokenFormat(),
+                            productId = productId,
+                            productQty = quantity)
+                    }
+
                 }
             }
         }

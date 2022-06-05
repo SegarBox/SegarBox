@@ -3,11 +3,9 @@ package com.example.segarbox.ui.fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
@@ -24,6 +22,7 @@ import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.example.segarbox.ui.viewmodel.TransactionViewModel
+import com.google.android.material.snackbar.Snackbar
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
 class InProgressFragment : Fragment(), TransactionsAdapter.OnItemTransactionsClickCallback {
@@ -73,14 +72,13 @@ class InProgressFragment : Fragment(), TransactionsAdapter.OnItemTransactionsCli
 
 
         transactionViewModel.transactionsResponse.observe(viewLifecycleOwner) { event ->
-            Log.e("IN PROGRESS", "ON RESUME")
             event.getContentIfNotHandled()?.let { transactionsResponse ->
                 transactionsResponse.data?.let {
                     transactionsAdapter.submitList(it)
                 }
 
                 transactionsResponse.message?.let {
-                    Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
                 }
             }
 

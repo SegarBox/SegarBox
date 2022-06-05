@@ -10,6 +10,7 @@ import com.example.segarbox.R
 import com.example.segarbox.data.remote.response.TransactionItem
 import com.example.segarbox.databinding.ItemRowHistoryBinding
 import com.example.segarbox.helper.formatItemCount
+import com.example.segarbox.helper.formatSimpleDate
 import com.example.segarbox.helper.formatToRupiah
 import com.example.segarbox.helper.formatTotalCountItem
 
@@ -40,6 +41,7 @@ class TransactionsAdapter(private val onItemTransactionsClickCallback: OnItemTra
                     tvItemCountTotal.text = (item.qtyTransaction - 1).formatTotalCountItem(context)
                 }
                 tvItemName.text = item.productTransactions[0].label
+                tvDate.text = item.createdAt.formatSimpleDate()
                 tvItemCount.text = item.productTransactions[0].productQty.formatItemCount(context)
                 tvPriceCountTotal.text = item.totalPrice.formatToRupiah()
                 btnCheck.isVisible = item.status == "inprogress"

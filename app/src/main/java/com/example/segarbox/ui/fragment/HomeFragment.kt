@@ -163,7 +163,6 @@ class HomeFragment : Fragment(), View.OnClickListener,
             allProductAdapter.submitList(it.data)
         }
 
-
         binding.content.chipMostPopular.setOnClickListener {
             mainViewModel.getLabelProduct(1, 10, "bayam")
             mainViewModel.saveCheckedChips(Code.MOST_POPULAR_CHIPS)
@@ -272,9 +271,9 @@ class HomeFragment : Fragment(), View.OnClickListener,
         }
     }
 
-    override fun onItemStartShoppingClicked(item: ProductItem) {
+    override fun onItemStartShoppingClicked(productId: Int) {
         val intent = Intent(requireContext(), DetailActivity::class.java)
-        intent.putExtra(Code.KEY_DETAIL_VALUE, item)
+        intent.putExtra(Code.KEY_DETAIL_VALUE, productId)
         startActivity(intent)
     }
 
@@ -294,9 +293,9 @@ class HomeFragment : Fragment(), View.OnClickListener,
         startActivity(intent)
     }
 
-    override fun onItemAllProductClicked(item: ProductItem) {
+    override fun onItemAllProductClicked(productId: Int) {
         val intent = Intent(requireContext(), DetailActivity::class.java)
-        intent.putExtra(Code.KEY_DETAIL_VALUE, item)
+        intent.putExtra(Code.KEY_DETAIL_VALUE, productId)
         startActivity(intent)
     }
 

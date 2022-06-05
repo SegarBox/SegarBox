@@ -39,13 +39,13 @@ class AllProductAdapter(private val onItemAllProductClickCallback: OnItemAllProd
             tvSize.text = item.size.formatProductSize(context)
 
             root.setOnClickListener {
-                onItemAllProductClickCallback.onItemAllProductClicked(item)
+                onItemAllProductClickCallback.onItemAllProductClicked(item.id)
             }
 
         }
     }
 
     interface OnItemAllProductClickCallback {
-        fun onItemAllProductClicked(item: ProductItem)
+        fun onItemAllProductClicked(productId: Int)
     }
 }
