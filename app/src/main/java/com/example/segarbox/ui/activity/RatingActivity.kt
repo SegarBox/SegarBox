@@ -12,19 +12,16 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
-import com.example.segarbox.data.local.model.DummyModel
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.ActivityRatingBinding
 import com.example.segarbox.helper.tokenFormat
-import com.example.segarbox.ui.adapter.DummyAdapterRating
 import com.example.segarbox.ui.adapter.RatingAdapter
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RatingViewModel
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
-import com.google.android.gms.dynamic.IFragmentWrapper
-import kotlin.math.ceil
+import com.google.android.material.snackbar.Snackbar
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
 class RatingActivity : AppCompatActivity(), View.OnClickListener,
@@ -92,6 +89,19 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
             }
         }
 
+        ratingViewModel.saveRatingResponse.observe(this) { saveRatingResponse ->
+            saveRatingResponse.info?.let {
+                if (token.isNotEmpty()) {
+                    ratingViewModel.getRatings(token.tokenFormat())
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                }
+            }
+
+            saveRatingResponse.message?.let {
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+            }
+        }
+
         ratingViewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar.isVisible = isLoading
         }
@@ -122,8 +132,11 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun onRate(productId: Int, rate: Double) {
-        Log.e("RATING", (rate + rate).toString())
+    override fun onRate(ratingId: Int, transactionId: Int, productId: Int, rating: Double) {
+        if (token.isNotEmpty()) {
+            val formattedRating = (rating + rating).toInt()
+            ratingViewModel.saveRating(token.tokenFormat(), ratingId, transactionId, productId, formattedRating)
+        }
     }
 
     override fun onRootClicked(transactionId: Int) {

@@ -5,16 +5,16 @@ import com.google.gson.annotations.SerializedName
 data class SaveRatingResponse(
 
 	@field:SerializedName("data")
-	val data: Data,
+	val data: SaveRatingItem? = null,
 
 	@field:SerializedName("message")
-	val message: String,
+	val message: String? = null,
 
 	@field:SerializedName("info")
-	val info: String
+	val info: String? = null
 )
 
-data class Data(
+data class SaveRatingItem(
 
 	@field:SerializedName("transaction_id")
 	val transactionId: Int,

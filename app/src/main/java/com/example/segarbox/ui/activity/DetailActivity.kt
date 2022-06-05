@@ -23,6 +23,7 @@ import com.example.segarbox.ui.viewmodel.DetailViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
 
@@ -143,20 +144,20 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
         detailViewModel.addCartResponse.observe(this) { addCartResponse ->
             if (addCartResponse.message != null) {
-                Toast.makeText(this, addCartResponse.message, Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, addCartResponse.message, Snackbar.LENGTH_SHORT).show()
             } else {
                 if (token.isNotEmpty()) {
                     detailViewModel.getUserCart(token.tokenFormat())
                 }
                 addCartResponse.info?.let {
-                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
                 }
             }
         }
 
         detailViewModel.updateUserCartResponse.observe(this) { updateCartResponse ->
             if (updateCartResponse.message != null) {
-                Toast.makeText(this, updateCartResponse.message, Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, updateCartResponse.message, Snackbar.LENGTH_SHORT).show()
                 detailViewModel.getProductById(productId)
             } else {
                 updateCartResponse.info?.let {
@@ -169,7 +170,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
         detailViewModel.deleteUserCartResponse.observe(this) { deleteCartResponse ->
             if (deleteCartResponse.message != null) {
-                Toast.makeText(this, deleteCartResponse.message, Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, deleteCartResponse.message, Snackbar.LENGTH_SHORT).show()
             } else {
                 deleteCartResponse.info?.let {
                     Toast.makeText(this, it, Toast.LENGTH_SHORT).show()

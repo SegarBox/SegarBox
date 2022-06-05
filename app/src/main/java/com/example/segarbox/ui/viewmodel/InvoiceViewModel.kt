@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.segarbox.data.local.model.UpdateStatusBody
 import com.example.segarbox.data.remote.response.TransactionByIdResponse
 import com.example.segarbox.data.remote.response.TransactionsStatusResponse
 import com.example.segarbox.data.remote.response.UserResponse
@@ -42,10 +43,10 @@ class InvoiceViewModel(private val retrofitRepository: RetrofitRepository): View
         }
     }
 
-    fun updateTransactionStatus(token: String, transactionId: Int) {
+    fun updateTransactionStatus(token: String, transactionId: Int, updateStatusBody: UpdateStatusBody) {
         viewModelScope.launch {
             _isLoading.postValue(true)
-            val response = retrofitRepository.updateTransactionStatus(token, transactionId)
+            val response = retrofitRepository.updateTransactionStatus(token, transactionId, updateStatusBody)
             _updateTransactionStatusResponse.postValue(response)
             _isLoading.postValue(false)
         }

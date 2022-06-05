@@ -142,7 +142,6 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             makeOrderResponse.message?.let {
-                Log.e("ERROR", it)
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
@@ -157,8 +156,6 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             when {
                 result.resultCode == Code.RESULT_SAVE_ADDRESS && result.data != null -> {
-
-                    Log.e("RESULT", "ADDRESS")
 
                     // Jika tambah address, otomatis shipping cost ke reset
                     binding.content.contentShipping.root.isVisible = false
@@ -180,8 +177,6 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                 }
 
                 result.resultCode == Code.RESULT_SAVE_SHIPPING && result.data != null -> {
-
-                    Log.e("RESULT", "SHIPPING")
 
                     val shippingModel =
                         result.data?.getParcelableExtra<ShippingModel>(Code.SHIPPING_VALUE)

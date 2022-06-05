@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -133,8 +132,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
 
         mapsViewModel.addressResponse.observe(this) { addressResponse ->
             if (addressResponse.message != null) {
-                Log.e("ERROR", addressResponse.message)
-                Toast.makeText(this, addressResponse.message, Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, addressResponse.message, Snackbar.LENGTH_SHORT).show()
             }
             else {
                 addressResponse.info?.let {
@@ -241,9 +239,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                 } else {
                     Snackbar.make(binding.root, Code.LOCATION_NOT_FOUND, Snackbar.LENGTH_SHORT)
                         .show()
-//                    Toast.makeText(this,
-//                        Code.LOCATION_NOT_FOUND,
-//                        Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -289,7 +284,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                     Snackbar.make(binding.root,
                         Code.LOCATION_CANT_BE_REACHED,
                         Snackbar.LENGTH_SHORT).show()
-//                    Toast.makeText(this, Code.LOCATION_CANT_BE_REACHED, Toast.LENGTH_SHORT).show()
                 }
             }
         }

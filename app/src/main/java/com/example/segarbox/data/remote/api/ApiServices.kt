@@ -2,6 +2,7 @@ package com.example.segarbox.data.remote.api
 
 import com.example.segarbox.BuildConfig
 import com.example.segarbox.data.local.model.MakeOrderBody
+import com.example.segarbox.data.local.model.UpdateStatusBody
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.response.*
 import retrofit2.Response
@@ -24,7 +25,7 @@ interface ApiServices {
     @POST("cost")
     suspend fun getShippingCosts(
         @Header("key") key: String = BuildConfig.RAJAONGKIR_KEY,
-        @Field("origin") origin: String = Code.SEMARANG_ID,
+        @Field("origin") origin: String = Code.JAKARTA_ID,
         @Field("destination") destination: String,
         @Field("weight") weight: String,
         @Field("courier") courier: String,
@@ -206,7 +207,8 @@ interface ApiServices {
     @Headers("Accept: application/json")
     suspend fun updateTransactionStatus(
         @Header("Authorization") token: String,
-        @Path("id") transactionId: Int
+        @Path("id") transactionId: Int,
+        @Body body: UpdateStatusBody
     ): Response<TransactionsStatusResponse>
 
     @GET("ratings")
@@ -221,13 +223,14 @@ interface ApiServices {
     ): Response<RatingResponse>
 
     @FormUrlEncoded
-    @PUT("ratings")
+    @PUT("ratings/{id}")
     @Headers("Accept: application/json")
     suspend fun saveRating(
         @Header("Authorization") token: String,
+        @Path("id") ratingId: Int,
         @Field("transactions_id") transactionId: Int,
         @Field("product_id") productId: Int,
         @Field("rating") rating: Int,
-    ): Response<RatingResponse>
+    ): Response<SaveRatingResponse>
 
 }
