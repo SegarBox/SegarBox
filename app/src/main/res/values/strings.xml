@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">SegarBox</string>
     <string name="search">Search</string>
-    <string name="harga">Harga</string>
-    <string name="_1_pack">/ 1 pack</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum vel sapien eget placerat. Maecenas dictum turpis in metus ornare efficitur. Vestibulum tristique diam eu iaculis laoreet. Quisque feugiat eros in ullamcorper pharetra.</string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="cart">Cart</string>
@@ -10,14 +8,10 @@
     <string name="transaction">Transaction</string>
     <string name="profile">Profile</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="forgot_password">Forgot Password</string>
     <string name="quantity">0</string>
-    <string name="iv_item">iv_item</string>
-    <string name="edit_profile">Edit Profile</string>
 
     <string name="tab_history_text_1">In Progress</string>
     <string name="tab_history_text_2">History</string>
@@ -27,9 +21,6 @@
     <string name="confirmation_password">Confirmation Password</string>
     <string name="register">Register</string>
 
-    <string name="firstItemCount">%s item</string>
-    <string name="totalMoreProductCount">+%s more products</string>
-    <string name="grandTotal">Rp %s</string>
     <string name="choose_address">Choose Address</string>
     <string name="delivery_address">Delivery Address</string>
     <string name="checkout_items">Checkout Items</string>
@@ -38,16 +29,13 @@
     <string name="shipping_cost">Shipping Cost</string>
     <string name="total_price">Total Price</string>
     <string name="grand_total">Grand Total</string>
-    <string name="status_check">Status Check</string>
     <string name="checkout">Checkout</string>
     <string name="invoice">Invoice</string>
-    <string name="rate">Rate</string>
     <string name="add_address">Add Address</string>
     <string name="address">Address</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="save_location">Save Location</string>
     <string name="no_location_permission">Sorry, we need to access your location to use maps</string>
-    <string name="location_not_found">Location not found</string>
     <string name="shipping_method">Shipping Method</string>
     <string name="choose">Choose</string>
     <string name="shipment_details">Shipment Details</string>

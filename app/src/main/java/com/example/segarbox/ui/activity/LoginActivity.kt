@@ -1,9 +1,7 @@
 package com.example.segarbox.ui.activity
 
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
@@ -38,7 +36,6 @@ class LoginActivity : AppCompatActivity() {
     private fun init() {
         observeData()
         setTabWithViewPager()
-        playAnimation()
     }
 
     private fun setTabWithViewPager() {
@@ -64,14 +61,6 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun playAnimation() {
-        ObjectAnimator.ofFloat(binding.logo, View.TRANSLATION_X, -30f, 30f).apply {
-            duration = 6000
-            repeatCount = ObjectAnimator.INFINITE
-            repeatMode = ObjectAnimator.REVERSE
-        }.start()
     }
 
     override fun onDestroy() {
