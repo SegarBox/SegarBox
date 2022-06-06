@@ -61,7 +61,6 @@ class LoginActivity : AppCompatActivity() {
             when {
                 isDarkMode -> {
                     binding.logo.setImageResource(R.drawable.logo_green)
-//                    binding.pat.setImageResource(R.drawable.pat_black)
                 }
             }
         }
