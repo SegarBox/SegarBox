@@ -3,12 +3,12 @@ package com.example.segarbox.ui.activity
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Location
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -132,11 +132,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
 
         mapsViewModel.addressResponse.observe(this) { addressResponse ->
             if (addressResponse.message != null) {
-                Snackbar.make(binding.root, addressResponse.message, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, addressResponse.message, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
             }
             else {
                 addressResponse.info?.let {
-                    Toast.makeText(this, addressResponse.info, Toast.LENGTH_SHORT).show()
+                    val intent = Intent()
+                    intent.putExtra(Code.SNACKBAR_VALUE, it)
+                    setResult(Code.RESULT_SNACKBAR, intent)
                     finish()
                 }
             }
@@ -213,9 +215,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                     getMyLocation()
                 }
                 else -> {
-                    Snackbar.make(binding.root,
-                        getString(R.string.no_location_permission),
-                        Snackbar.LENGTH_SHORT).show()
+                    val intent = Intent()
+                    intent.putExtra(Code.SNACKBAR_VALUE, getString(R.string.no_location_permission))
+                    setResult(Code.RESULT_SNACKBAR, intent)
                     finish()
                 }
             }
@@ -238,7 +240,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                         location.longitude).formatted())
                 } else {
                     Snackbar.make(binding.root, Code.LOCATION_NOT_FOUND, Snackbar.LENGTH_SHORT)
-                        .show()
+                        .setAction("OK"){}.show()
                 }
             }
 
@@ -283,7 +285,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                 } else {
                     Snackbar.make(binding.root,
                         Code.LOCATION_CANT_BE_REACHED,
-                        Snackbar.LENGTH_SHORT).show()
+                        Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
                 }
             }
         }

@@ -39,7 +39,7 @@ fun Context.getColorFromAttr(@AttrRes attrColor: Int): Int {
 }
 
 fun LatLng.formatted(): String {
-    return "${this.latitude.toString()},${this.longitude.toString()}"
+    return "${this.latitude},${this.longitude}"
 }
 
 fun String.tidyUpTikiEtd(context: Context): String {

@@ -91,7 +91,7 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
                                     shippingViewModel.setDestinationId(list[0].cityId)
                                 }
                                 else -> {
-                                    Snackbar.make(binding.root, Code.LOCATION_CANT_BE_REACHED, Snackbar.LENGTH_SHORT).show()
+                                    Snackbar.make(binding.root, Code.LOCATION_CANT_BE_REACHED, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
                                 }
                             }
 
@@ -152,7 +152,7 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
 
             // Toast jika list shipment empty
             if (listShipment.isEmpty()) {
-                Snackbar.make(binding.root, Code.LOCATION_CANT_BE_REACHED, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, Code.LOCATION_CANT_BE_REACHED, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
             }
             shippingAdapter.submitList(listShipment)
         }
