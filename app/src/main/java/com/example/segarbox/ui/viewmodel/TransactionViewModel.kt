@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.segarbox.data.remote.response.DeleteAddressResponse
 import com.example.segarbox.data.remote.response.TransactionsResponse
 import com.example.segarbox.data.remote.response.UserCartResponse
 import com.example.segarbox.data.repository.RetrofitRepository

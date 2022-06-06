@@ -2,11 +2,9 @@ package com.example.segarbox.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.data.remote.response.UserCartItem
 import com.example.segarbox.databinding.ItemRowCartBinding
 import com.example.segarbox.helper.formatProductSize

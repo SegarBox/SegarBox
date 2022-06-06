@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.segarbox.R
 import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.databinding.ItemRowMainBinding
-import com.example.segarbox.helper.*
+import com.example.segarbox.helper.formatProductSize
+import com.example.segarbox.helper.formatToRupiah
+import com.example.segarbox.helper.getCardResponsiveWidth
 
 class AllProductAdapter(private val onItemAllProductClickCallback: OnItemAllProductClickCallback) :
     ListAdapter<ProductItem, AllProductAdapter.AllProductViewHolder>(DiffCallbackProduct) {

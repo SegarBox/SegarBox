@@ -14,8 +14,6 @@ import com.example.segarbox.helper.formatToRupiah
 import com.example.segarbox.helper.tidyUpJneEtd
 import com.example.segarbox.helper.tidyUpPosEtd
 import com.example.segarbox.helper.tidyUpTikiEtd
-import java.text.NumberFormat
-import java.util.*
 
 class ShippingAdapter(private val onItemClickCallback: OnItemClickCallback): ListAdapter<ShippingModel, ShippingAdapter.ShippingViewHolder>(DiffCallbackShipping) {
     inner class ShippingViewHolder(var binding: ItemRowShippingBinding): RecyclerView.ViewHolder(binding.root)

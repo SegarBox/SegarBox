@@ -1,7 +1,6 @@
 package com.example.segarbox.ui.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.data.remote.response.ProductTransactionsItem
 
 object DiffCallbackProductTransactions : DiffUtil.ItemCallback<ProductTransactionsItem>() {

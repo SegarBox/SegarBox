@@ -12,7 +12,6 @@ data class ProductResponse(
 	val data: List<ProductItem> = listOf()
 )
 
-@Entity(tableName = "product")
 @Parcelize
 data class ProductItem(
 
@@ -28,7 +27,6 @@ data class ProductItem(
 	@field:SerializedName("qty")
 	val qty: Int,
 
-	@PrimaryKey
 	@field:SerializedName("id")
 	val id: Int,
 
