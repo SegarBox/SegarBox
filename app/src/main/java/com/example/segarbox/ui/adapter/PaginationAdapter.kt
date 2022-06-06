@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.segarbox.R
 import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.databinding.ItemRowMainBinding
 import com.example.segarbox.helper.formatProductSize

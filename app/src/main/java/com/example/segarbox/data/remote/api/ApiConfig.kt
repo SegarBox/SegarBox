@@ -1,6 +1,5 @@
 package com.example.segarbox.data.remote.api
 
-import com.example.segarbox.BuildConfig
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

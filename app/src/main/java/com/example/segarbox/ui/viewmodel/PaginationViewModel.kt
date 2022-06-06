@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.segarbox.data.local.database.MainDatabase
 import com.example.segarbox.data.remote.api.ApiServices
 import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.data.remote.response.UserCartResponse

@@ -7,11 +7,12 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.segarbox.R
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.databinding.ItemRowMainBinding
-import com.example.segarbox.helper.*
+import com.example.segarbox.helper.formatProductSize
+import com.example.segarbox.helper.formatToRupiah
+import com.example.segarbox.helper.getColorFromAttr
 import com.google.android.material.R.attr.colorSecondaryVariant
 
 class StartShoppingAdapter(private val onItemStartShoppingClickCallback: OnItemStartShoppingClickCallback): ListAdapter<ProductItem, StartShoppingAdapter.StartShoppingViewHolder>(DiffCallbackProduct) {

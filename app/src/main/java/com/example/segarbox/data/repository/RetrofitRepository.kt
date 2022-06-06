@@ -8,7 +8,6 @@ import androidx.paging.liveData
 import com.beust.klaxon.Klaxon
 import com.example.segarbox.BuildConfig
 import com.example.segarbox.data.local.model.MakeOrderBody
-import com.example.segarbox.data.local.model.ProductTransactions
 import com.example.segarbox.data.local.model.UpdateStatusBody
 import com.example.segarbox.data.remote.api.ApiConfig
 import com.example.segarbox.data.remote.api.ApiServices

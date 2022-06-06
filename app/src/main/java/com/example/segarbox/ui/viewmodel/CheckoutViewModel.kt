@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.segarbox.data.local.model.MakeOrderBody
-import com.example.segarbox.data.local.model.ProductTransactions
 import com.example.segarbox.data.remote.response.CartDetailResponse
 import com.example.segarbox.data.remote.response.MakeOrderResponse
 import com.example.segarbox.data.remote.response.UserCartResponse

@@ -7,7 +7,6 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -22,7 +21,6 @@ import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.api.ApiConfig
-import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.databinding.ActivityPaginationBinding
 import com.example.segarbox.helper.*

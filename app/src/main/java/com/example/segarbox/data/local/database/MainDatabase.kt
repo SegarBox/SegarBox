@@ -7,11 +7,9 @@ import androidx.room.RoomDatabase
 import com.example.segarbox.data.remote.response.CityResults
 import com.example.segarbox.data.remote.response.ProductItem
 
-@Database(entities = [CityResults::class, ProductItem::class, RemoteKeys::class], version = 6, exportSchema = false)
+@Database(entities = [CityResults::class], version = 7, exportSchema = false)
 abstract class MainDatabase: RoomDatabase() {
     abstract fun cityDao(): CityDao
-    abstract fun productDao(): ProductDao
-    abstract fun remoteKeysDao(): RemoteKeysDao
 
     companion object {
         @Volatile
