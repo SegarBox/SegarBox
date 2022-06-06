@@ -50,6 +50,10 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
             return intent.getIntExtra(Code.KEY_TRANSACTION_ID, 0)
         }
 
+    private val getSnackbarValue get(): String? {
+        return intent.getStringExtra(Code.SNACKBAR_VALUE)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityInvoiceBinding.inflate(layoutInflater)
@@ -63,6 +67,9 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
         setAdapter()
         setupView()
         observeData()
+        getSnackbarValue?.let {
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+        }
         binding.toolbar.ivBack.setOnClickListener(this)
         binding.bottomPaymentInfo.checkoutLayout.setOnClickListener(this)
         binding.content.btnHome.setOnClickListener(this)
@@ -136,12 +143,12 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
             response.info?.let {
                 if (token.isNotEmpty()) {
                     invoiceViewModel.getTransactionById(token.tokenFormat(), getTransactionId)
-                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
                 }
             }
 
             response.message?.let {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
             }
         }
 

@@ -3,9 +3,7 @@ package com.example.segarbox.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -144,25 +142,27 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
         detailViewModel.addCartResponse.observe(this) { addCartResponse ->
             if (addCartResponse.message != null) {
-                Snackbar.make(binding.root, addCartResponse.message, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, addCartResponse.message, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
             } else {
                 if (token.isNotEmpty()) {
                     detailViewModel.getUserCart(token.tokenFormat())
                 }
                 addCartResponse.info?.let {
-                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
                 }
             }
         }
 
         detailViewModel.updateUserCartResponse.observe(this) { updateCartResponse ->
             if (updateCartResponse.message != null) {
-                Snackbar.make(binding.root, updateCartResponse.message, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, updateCartResponse.message, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
                 detailViewModel.getProductById(productId)
             } else {
                 updateCartResponse.info?.let {
-                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, CartActivity::class.java))
+                    val intent = Intent(this, CartActivity::class.java)
+                    intent.putExtra(Code.SNACKBAR_VALUE, it)
+                    startActivity(intent)
+
                     finish()
                 }
             }
@@ -170,11 +170,13 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
         detailViewModel.deleteUserCartResponse.observe(this) { deleteCartResponse ->
             if (deleteCartResponse.message != null) {
-                Snackbar.make(binding.root, deleteCartResponse.message, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, deleteCartResponse.message, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
             } else {
                 deleteCartResponse.info?.let {
-                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, CartActivity::class.java))
+                    val intent = Intent(this, CartActivity::class.java)
+                    intent.putExtra(Code.SNACKBAR_VALUE, it)
+                    startActivity(intent)
+
                     finish()
                 }
             }

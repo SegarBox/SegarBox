@@ -3,7 +3,9 @@ package com.example.segarbox.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -105,11 +107,11 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
                 if (token.isNotEmpty()) {
                     addressViewModel.getUserAddresses(token.tokenFormat())
                 }
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
             }
 
             deleteAddressResponse.message?.let {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
             }
         }
 
@@ -131,12 +133,25 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
         _binding = null
     }
 
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            when {
+                result.resultCode == Code.RESULT_SNACKBAR && result.data != null -> {
+                    val snackbarValue = result.data?.getStringExtra(Code.SNACKBAR_VALUE)
+                    snackbarValue?.let {
+                        Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                    }
+                }
+            }
+        }
+
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.iv_back -> finish()
 
             R.id.btn_add_address -> {
-                startActivity(Intent(this, MapsActivity::class.java))
+                resultLauncher.launch(Intent(this, MapsActivity::class.java))
             }
         }
     }

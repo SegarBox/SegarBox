@@ -93,12 +93,12 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
             saveRatingResponse.info?.let {
                 if (token.isNotEmpty()) {
                     ratingViewModel.getRatings(token.tokenFormat())
-                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
                 }
             }
 
             saveRatingResponse.message?.let {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
             }
         }
 

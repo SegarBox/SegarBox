@@ -78,7 +78,7 @@ class InProgressFragment : Fragment(), TransactionsAdapter.OnItemTransactionsCli
                 }
 
                 transactionsResponse.message?.let {
-                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
                 }
             }
 

@@ -143,7 +143,7 @@ class RegisterFragment : Fragment(), View.OnClickListener {
                         // Jika error dari catch
                         else -> {
                             registerResponse.message?.let {
-                                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
                             }
                         }
                     }

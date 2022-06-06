@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -96,7 +97,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
             }
 
             deleteCartResponse.message?.let {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
             }
         }
 
@@ -111,7 +112,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
                 if (token.isNotEmpty()) {
                     cartViewModel.getUserCart(token.tokenFormat())
                 }
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
             }
         }
 
@@ -136,7 +137,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
                         Snackbar.make(binding.root,
                             "You haven't selected any items yet",
                             Snackbar.LENGTH_SHORT)
-                            .show()
+                            .setAction("OK"){}.show()
                     }
                     else -> {
                         var passTest = true
@@ -145,7 +146,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
                                 passTest = false
                                 Snackbar.make(binding.root,
                                     "Some items are out of stocks, items will be automatically updated",
-                                    Snackbar.LENGTH_SHORT).show()
+                                    Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
                                 break
                             }
                         }
@@ -190,6 +191,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
         })
     }
 
+
     override fun onResume() {
         super.onResume()
 
@@ -201,6 +203,14 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        val snackbarValue = intent?.getStringExtra(Code.SNACKBAR_VALUE)
+        snackbarValue?.let {
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+        }
     }
 
     override fun onClick(v: View?) {

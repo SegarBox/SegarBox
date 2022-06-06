@@ -3,9 +3,7 @@ package com.example.segarbox.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -133,16 +131,16 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
         checkoutViewModel.makeOrderResponse.observe(this) { makeOrderResponse ->
             makeOrderResponse.info?.let { info ->
                 makeOrderResponse.data?.let { makeOrderResponse ->
-                    Toast.makeText(this, info, Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, InvoiceActivity::class.java)
                     intent.putExtra(Code.KEY_TRANSACTION_ID, makeOrderResponse.id)
+                    intent.putExtra(Code.SNACKBAR_VALUE, info)
                     startActivity(intent)
                     finish()
                 }
             }
 
             makeOrderResponse.message?.let {
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
             }
         }
 
@@ -249,7 +247,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                 } else {
                     Snackbar.make(binding.root,
                         "Please add your delivery address first!",
-                        Snackbar.LENGTH_SHORT).show()
+                        Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
                 }
             }
 
@@ -276,7 +274,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                 } else {
                     Snackbar.make(binding.root,
                         "Please add your shipping method first",
-                        Snackbar.LENGTH_SHORT).show()
+                        Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
                 }
             }
         }

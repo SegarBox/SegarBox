@@ -11,7 +11,7 @@ import com.example.segarbox.databinding.ItemRowCheckoutBinding
 import com.example.segarbox.helper.formatProductSize
 import com.example.segarbox.helper.formatToRupiah
 
-class CheckoutDetailsAdapter(): ListAdapter<UserCartItem, CheckoutDetailsAdapter.CheckoutDetailsViewHolder>(DiffCallbackCart) {
+class CheckoutDetailsAdapter : ListAdapter<UserCartItem, CheckoutDetailsAdapter.CheckoutDetailsViewHolder>(DiffCallbackCart) {
     inner class CheckoutDetailsViewHolder(var binding: ItemRowCheckoutBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CheckoutDetailsViewHolder {
