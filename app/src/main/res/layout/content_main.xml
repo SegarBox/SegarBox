@@ -102,7 +102,7 @@
             android:layout_height="wrap_content"
             android:textColor="?attr/colorPrimary"
             android:drawablePadding="4dp"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:layout_marginEnd="16dp"
             app:layout_constraintTop_toTopOf="@id/tv_title_all_products"
             app:layout_constraintEnd_toEndOf="parent"
