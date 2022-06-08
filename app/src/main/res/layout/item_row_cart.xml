@@ -28,8 +28,9 @@
         <ImageView
             android:id="@+id/iv_item"
             android:layout_width="110dp"
-            android:scaleType="fitCenter"
             android:layout_height="match_parent"
+            android:contentDescription="@string/image"
+            android:scaleType="fitCenter"
             android:src="@drawable/cauliflowers" />
 
     </androidx.cardview.widget.CardView>
@@ -39,14 +40,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="?attr/colorOnSecondary"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/cv_image"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cv_image"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Cauliflower" />
 
@@ -81,6 +82,7 @@
         android:layout_height="28dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:contentDescription="@string/image"
         android:src="@drawable/ic_baseline_delete_24"
         app:layout_constraintEnd_toStartOf="@+id/counter"
         app:layout_constraintTop_toTopOf="@id/counter" />

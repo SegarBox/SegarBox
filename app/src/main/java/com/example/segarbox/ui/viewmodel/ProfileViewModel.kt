@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.segarbox.data.remote.response.LogoutResponse
 import com.example.segarbox.data.remote.response.UserCartResponse
 import com.example.segarbox.data.remote.response.UserResponse
 import com.example.segarbox.data.repository.RetrofitRepository
@@ -17,9 +16,6 @@ class ProfileViewModel (private val retrofitRepository: RetrofitRepository): Vie
 
     private var _userCart = MutableLiveData<Event<UserCartResponse>>()
     val userCart: LiveData<Event<UserCartResponse>> = _userCart
-
-    private val _logoutResponse = MutableLiveData<LogoutResponse>()
-    val logoutResponse: LiveData<LogoutResponse> = _logoutResponse
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -45,7 +41,6 @@ class ProfileViewModel (private val retrofitRepository: RetrofitRepository): Vie
     fun logout(token: String) {
         viewModelScope.launch {
             val response = retrofitRepository.logout(token)
-            _logoutResponse.postValue(response)
         }
     }
 }

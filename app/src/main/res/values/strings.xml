@@ -66,6 +66,9 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="phone">phone</string>
     <string name="enter">enter</string>
+    <string name="image">image</string>
+    <string name="logo">logo</string>
+    <string name="background">background</string>
     <plurals name="item_count_total">
         <item quantity="one">+ %d more product</item>
         <item quantity="other">+ %d more products</item>
