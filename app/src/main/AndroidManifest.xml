@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SegarBox">
         <activity
+            android:name=".IntroActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.SplashScreenActivity"
             android:exported="true"
             android:launchMode="singleTask"
@@ -88,9 +91,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
-            tools:ignore="LockedOrientationActivity">
-
-        </activity>
+            tools:ignore="LockedOrientationActivity"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

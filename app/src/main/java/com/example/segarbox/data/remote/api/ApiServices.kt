@@ -52,6 +52,13 @@ interface ApiServices {
 
     @GET("products")
     @Headers("Accept: application/json")
+    suspend fun getMostPopularProduct(
+        @Query("page[size]") size: Int = 10,
+        @Query("sort") sort: String = "-detail"
+    ): Response<ProductResponse>
+
+    @GET("products")
+    @Headers("Accept: application/json")
     suspend fun getAllProduct(
         @Query("page[number]") page: Int,
         @Query("page[size]") size: Int,

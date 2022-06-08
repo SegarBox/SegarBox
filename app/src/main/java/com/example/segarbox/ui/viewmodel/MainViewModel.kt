@@ -38,7 +38,7 @@ class MainViewModel(
 
     init {
         // Ceritanya ntar most popular dlu
-        getLabelProduct(1, 5, "bayam")
+        getMostPopularProduct()
         // All Products
         getAllProduct(1, 20)
     }
@@ -61,6 +61,15 @@ class MainViewModel(
     }
 
     fun getCityCount(): LiveData<Int> = roomRepository.getCityCount()
+
+    fun getMostPopularProduct() {
+        viewModelScope.launch {
+            _isLoading.postValue(true)
+            val request = retrofitRepository.getMostPopularProduct()
+            _productResponse.postValue(request)
+            _isLoading.postValue(false)
+        }
+    }
 
 
     fun getAllProduct(page: Int, size: Int) {

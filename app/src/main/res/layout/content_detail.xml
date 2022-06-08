@@ -29,7 +29,7 @@
             android:layout_marginTop="16dp"
             tools:text="Cauliflower"
             android:textColor="?attr/colorOnSecondary"
-            android:textSize="28sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_item" />
@@ -41,7 +41,7 @@
             android:fontFamily="@font/poppins_extrabold"
             tools:text="100g / pack"
             android:textColor="?attr/colorOnSecondary"
-            android:textSize="24sp"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/tv_item_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
 
@@ -52,7 +52,7 @@
             android:layout_marginTop="4dp"
             tools:text="Rp 4.000"
             android:textColor="?attr/colorOnSecondary"
-            android:textSize="24sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/tv_size"
             app:layout_constraintTop_toBottomOf="@+id/tv_size" />
@@ -68,7 +68,7 @@
             android:ellipsize="end"
             tools:text="@string/lorem"
             android:textColor="?attr/colorOnSecondary"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/tv_price"
             app:layout_constraintTop_toBottomOf="@+id/tv_price" />
 
@@ -80,10 +80,10 @@
             tools:text="Stock : 5"
             android:textColor="?attr/colorPrimary"
             android:textSize="14sp"
+            android:layout_marginBottom="4dp"
             app:layout_constraintEnd_toEndOf="@id/counter"
             app:layout_constraintStart_toStartOf="@id/counter"
-            app:layout_constraintTop_toTopOf="@id/tv_size"
-            app:layout_constraintBottom_toBottomOf="@id/tv_size"/>
+            app:layout_constraintBottom_toTopOf="@id/counter"/>
 
         <include
             android:id="@+id/counter"

@@ -34,7 +34,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="?attr/colorOnSecondary"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cv_image"
