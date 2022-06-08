@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/iv_remove"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:src="@drawable/ic_baseline_remove_circle_outline_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,14 +19,14 @@
         android:layout_marginStart="16dp"
         android:text="@string/quantity"
         android:textColor="?attr/colorOnSecondary"
-        android:textSize="26sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@id/iv_remove"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/iv_add"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:layout_marginStart="16dp"
         android:src="@drawable/ic_baseline_add_circle_outline_24"
         app:layout_constraintStart_toEndOf="@id/tv_count"

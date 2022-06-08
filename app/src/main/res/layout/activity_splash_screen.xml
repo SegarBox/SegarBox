@@ -18,19 +18,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-<!--    <ImageView-->
-<!--        android:id="@+id/pat"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="900dp"-->
-<!--        android:scaleType="centerCrop"-->
-<!--        android:src="@drawable/pat_white"-->
-<!--        android:alpha="0.04"-->
-<!--        app:flow_verticalBias="0"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"/>-->
-
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/splash"
         android:layout_height="match_parent"

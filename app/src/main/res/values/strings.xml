@@ -62,6 +62,10 @@
     <string name="rate_us">Rate Us</string>
     <string name="complete">Complete</string>
     <string name="rating">Rating</string>
+    <string name="all_products">All Products</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="phone">phone</string>
+    <string name="enter">enter</string>
     <plurals name="item_count_total">
         <item quantity="one">+ %d more product</item>
         <item quantity="other">+ %d more products</item>

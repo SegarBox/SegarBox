@@ -139,6 +139,23 @@ class RetrofitRepository {
 
     }
 
+    suspend fun getMostPopularProduct(): ProductResponse {
+        try {
+            val request = segarBoxApiServices.getMostPopularProduct()
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+
+            return ProductResponse()
+
+        } catch (ex: Exception) {
+            return ProductResponse()
+        }
+    }
+
     suspend fun getAllProduct(page: Int, size: Int): ProductResponse {
         try {
             val request = segarBoxApiServices.getAllProduct(page, size)
@@ -149,10 +166,10 @@ class RetrofitRepository {
                 }
             }
 
-            return ProductResponse(listOf())
+            return ProductResponse()
 
         } catch (ex: Exception) {
-            return ProductResponse(listOf())
+            return ProductResponse()
         }
     }
 

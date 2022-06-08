@@ -163,7 +163,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
         }
 
         binding.content.chipMostPopular.setOnClickListener {
-            mainViewModel.getLabelProduct(1, 10, "bayam")
+            mainViewModel.getMostPopularProduct()
             mainViewModel.saveCheckedChips(Code.MOST_POPULAR_CHIPS)
         }
 

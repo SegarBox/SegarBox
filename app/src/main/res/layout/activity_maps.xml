@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="@string/save_location"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:theme="@style/poppinsMedium"
         map:cornerRadius="16dp"
         map:layout_constraintBottom_toBottomOf="parent" />
