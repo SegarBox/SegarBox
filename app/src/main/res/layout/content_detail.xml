@@ -17,45 +17,46 @@
             android:layout_height="320dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            tools:src="@drawable/cauliflowers"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:contentDescription="@string/image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/cauliflowers" />
 
         <TextView
             android:id="@+id/tv_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
-            tools:text="Cauliflower"
+            android:layout_marginEnd="16dp"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_item" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_item"
+            tools:text="Cauliflower" />
 
         <TextView
             android:id="@+id/tv_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_extrabold"
-            tools:text="100g / pack"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/tv_item_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_item_name"
+            tools:text="100g / pack" />
 
         <TextView
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            tools:text="Rp 4.000"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/tv_size"
-            app:layout_constraintTop_toBottomOf="@+id/tv_size" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_size"
+            tools:text="Rp 4.000" />
 
         <TextView
             android:id="@+id/tv_item_description"
@@ -64,26 +65,26 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:lineSpacingExtra="4dp"
             android:ellipsize="end"
-            tools:text="@string/lorem"
+            android:lineSpacingExtra="4dp"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/tv_price"
-            app:layout_constraintTop_toBottomOf="@+id/tv_price" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_price"
+            tools:text="@string/lorem" />
 
         <TextView
             android:id="@+id/tv_stock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:fontFamily="@font/poppins_extrabold"
-            tools:text="Stock : 5"
             android:textColor="?attr/colorPrimary"
             android:textSize="14sp"
-            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toTopOf="@id/counter"
             app:layout_constraintEnd_toEndOf="@id/counter"
             app:layout_constraintStart_toStartOf="@id/counter"
-            app:layout_constraintBottom_toTopOf="@id/counter"/>
+            tools:text="Stock : 5" />
 
         <include
             android:id="@+id/counter"

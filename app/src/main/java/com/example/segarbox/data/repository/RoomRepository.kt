@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import com.example.segarbox.data.local.database.CityDao
 import com.example.segarbox.data.local.database.MainDatabase
 import com.example.segarbox.data.remote.response.CityResults
-import com.example.segarbox.data.remote.response.ProductItem
 
 class RoomRepository(application: Application) {
     private val mCityDao: CityDao

@@ -72,7 +72,7 @@ class MainViewModel(
     }
 
 
-    fun getAllProduct(page: Int, size: Int) {
+    private fun getAllProduct(page: Int, size: Int) {
         viewModelScope.launch {
             _isLoading.postValue(true)
             val request = retrofitRepository.getAllProduct(page, size)

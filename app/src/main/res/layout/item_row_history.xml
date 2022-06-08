@@ -21,6 +21,7 @@
             android:id="@+id/iv_item"
             android:layout_width="80dp"
             android:layout_height="match_parent"
+            android:contentDescription="@string/image"
             android:scaleType="fitCenter"
             android:src="@drawable/cauliflowers" />
 
@@ -28,13 +29,13 @@
 
     <TextView
         android:id="@+id/tv_item_name"
+        style="@style/poppinsMedium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:ellipsize="end"
-        style="@style/poppinsMedium"
         android:maxLines="1"
         android:textColor="?attr/colorOnSecondary"
         android:textSize="16sp"
@@ -57,9 +58,9 @@
         android:id="@+id/tv_item_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:textColor="?attr/colorOnSecondary"
         android:textSize="14sp"
-        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="@+id/tv_item_name"
         app:layout_constraintTop_toBottomOf="@id/tv_date"
         tools:text="1 item" />
@@ -92,16 +93,16 @@
         android:id="@+id/tv_text_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:text="@string/grand_total"
         android:textColor="?attr/colorOnSecondary"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_item_count_total"
-        android:text="@string/grand_total" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_count_total" />
 
     <TextView
         android:id="@+id/tv_price_count_total"
@@ -124,8 +125,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="@string/check_status"
-        android:textStyle="bold"
         android:textSize="12sp"
+        android:textStyle="bold"
         app:cornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_price_count_total"
         app:layout_constraintEnd_toEndOf="parent" />

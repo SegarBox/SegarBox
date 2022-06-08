@@ -5,7 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.segarbox.data.remote.response.CityResults
-import com.example.segarbox.data.remote.response.ProductItem
 
 @Database(entities = [CityResults::class], version = 7, exportSchema = false)
 abstract class MainDatabase: RoomDatabase() {

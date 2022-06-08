@@ -186,8 +186,8 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
                     apiServices = apiServices,
                     filter = Code.LABEL_FILTER,
                     filterValue = it.toString()
-                ).observe(this@PaginationActivity) {
-                    paginationAdapter.submitData(lifecycle, it)
+                ).observe(this@PaginationActivity) { data ->
+                    paginationAdapter.submitData(lifecycle, data)
                 }
             }
 

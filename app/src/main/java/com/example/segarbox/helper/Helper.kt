@@ -18,6 +18,7 @@ import com.google.android.material.R.attr.colorSecondaryVariant
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.floor
 
 private const val DEFAULT_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 private const val DATE_TIME_PATTERN = "dd MMM yyyy, HH:mm"
@@ -94,7 +95,7 @@ fun Int.toPixel(context: Context): Int {
 }
 
 fun getCardResponsiveWidth(): Int {
-    return Math.floor((getScreenWidthInPixel() * 0.425)).toInt()
+    return floor((getScreenWidthInPixel() * 0.425)).toInt()
 }
 
 fun Context.getColorStateListSecondaryVariant(): ColorStateList {

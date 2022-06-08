@@ -22,11 +22,12 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="130dp"
-            android:src="@drawable/cauliflowers"
-            android:layout_marginTop="12dp"
             android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
+            android:contentDescription="@string/image"
             android:scaleType="fitCenter"
+            android:src="@drawable/cauliflowers"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -41,48 +42,48 @@
             android:layout_marginEnd="12dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="Cabai Merah Keriting"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageView"/>
+            app:layout_constraintTop_toBottomOf="@id/imageView"
+            tools:text="Cabai Merah Keriting" />
 
         <TextView
             android:id="@+id/tv_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="100g"
             android:textColor="?attr/colorOnSecondary"
             app:layout_constraintStart_toStartOf="@+id/tv_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_name"
+            tools:text="100g" />
 
         <TextView
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="Rp4000,00"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/tv_size"
-            app:layout_constraintTop_toBottomOf="@+id/tv_size" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_size"
+            tools:text="Rp4000,00" />
 
         <TextView
             android:id="@+id/tv_see_all"
-            android:text="@string/see_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="?attr/colorPrimary"
-            android:visibility="gone"
             android:drawablePadding="4dp"
+            android:text="@string/see_all"
+            android:textColor="?attr/colorPrimary"
             android:textSize="14sp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            app:drawableEndCompat="@drawable/ic_baseline_arrow_forward_ios_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:drawableEndCompat="@drawable/ic_baseline_arrow_forward_ios_24" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
