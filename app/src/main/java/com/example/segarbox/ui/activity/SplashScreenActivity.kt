@@ -50,17 +50,16 @@ class SplashScreenActivity : AppCompatActivity() {
     private fun splashDelay(){
         val delay: Long = 4000
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this@SplashScreenActivity, MainActivity::class.java)
+            val intent = Intent(this@SplashScreenActivity, IntroActivity::class.java)
             startActivity(intent)
             finish()
         }, delay)
     }
 
     private fun setNavigationBar() {
-        val w: Window = window
-        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        w.navigationBarColor = Color.TRANSPARENT
+        window.navigationBarColor = Color.TRANSPARENT
     }
 
     private fun observeData() {
@@ -69,7 +68,6 @@ class SplashScreenActivity : AppCompatActivity() {
                 isDarkMode -> {
                     isThemeDarkMode = true
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-//                    binding.pat.setImageResource(R.drawable.pat_black)
                     binding.bg.setImageResource(R.color.brown_dark)
                     binding.splash.isVisible = false
                     binding.splashGreen.isVisible = true
