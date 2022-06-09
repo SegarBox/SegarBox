@@ -2,28 +2,225 @@
 <androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/pastel_green"
+    android:fitsSystemWindows="true"
     app:layoutDescription="@xml/activity_intro_scene"
     tools:context=".ui.activity.IntroActivity">
 
-    <ImageView
-        android:id="@+id/iv_logo"
-        android:layout_width="120dp"
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/menu1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/logo_green"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16sp"
+        android:alpha="0.3"
+        android:src="@drawable/ic_baseline_circle_24"
+        app:layout_constraintEnd_toStartOf="@id/menu2"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/menu2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.3"
+        android:src="@drawable/ic_baseline_circle_24"
+        app:layout_constraintEnd_toStartOf="@id/menu3"
+        app:layout_constraintStart_toEndOf="@id/menu1"
+        app:layout_constraintTop_toTopOf="@id/menu1" />
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/menu3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16sp"
+        android:alpha="0.3"
+        android:src="@drawable/ic_baseline_circle_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/menu2"
+        app:layout_constraintTop_toTopOf="@id/menu2" />
+
+    <ImageView
+        android:id="@+id/iv_skip1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+        app:drawableTint="@color/pastel_green_2"
+        app:layout_constraintBottom_toBottomOf="@id/menu1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/menu1"
+        app:tint="@color/pastel_green_2" />
+
+    <ImageView
+        android:id="@+id/iv_skip2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="-8dp"
+        android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+        app:drawableTint="@color/pastel_green_2"
+        app:layout_constraintBottom_toBottomOf="@id/iv_skip1"
+        app:layout_constraintEnd_toStartOf="@id/iv_skip1"
+        app:layout_constraintTop_toTopOf="@id/iv_skip1"
+        app:tint="@color/pastel_green_2" />
+
+    <RelativeLayout
+        android:id="@+id/skip_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_skip1"
+        app:layout_constraintEnd_toEndOf="@id/iv_skip1"
+        app:layout_constraintStart_toStartOf="@id/iv_skip2"
+        app:layout_constraintTop_toTopOf="@id/iv_skip1" />
+
+
+    <ImageView
+        android:id="@+id/image1"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:src="@drawable/grocery"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4" />
+
     <TextView
-        android:id="@+id/tv"
+        android:id="@+id/title1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/buy_groceries"
+        android:textColor="@color/pastel_green_2"
+        android:textSize="18sp"
+        android:theme="@style/poppinsExtraBold"
+        app:layout_constraintEnd_toEndOf="@id/image1"
+        app:layout_constraintStart_toStartOf="@id/image1"
+        app:layout_constraintTop_toBottomOf="@id/image1" />
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/intro1"
+        android:textColor="@color/pastel_green_2"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/image1"
+        app:layout_constraintStart_toStartOf="@id/image1"
+        app:layout_constraintTop_toBottomOf="@id/title1" />
+
+
+    <ImageView
+        android:id="@+id/image2"
+        android:layout_width="wrap_content"
+        android:layout_height="240dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:src="@drawable/savemoney"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <TextView
+        android:id="@+id/title2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/save_money"
+        android:textColor="@color/pastel_green_2"
+        android:textSize="18sp"
+        android:theme="@style/poppinsExtraBold"
+        app:layout_constraintEnd_toEndOf="@id/image2"
+        app:layout_constraintStart_toStartOf="@id/image2"
+        app:layout_constraintTop_toBottomOf="@id/image2" />
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/intro2"
+        android:textColor="@color/pastel_green_2"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/image2"
+        app:layout_constraintStart_toStartOf="@id/image2"
+        app:layout_constraintTop_toBottomOf="@id/title2" />
+
+    <ImageView
+        android:id="@+id/image3"
+        android:layout_width="wrap_content"
+        android:layout_height="240dp"
+        android:layout_marginStart="32dp"
+        android:src="@drawable/fresh"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="Iya ini aplikasi E-Commerce terbaik se Bangkit wadawwwwwwwwwwwwwwwwwww" />
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <TextView
+        android:id="@+id/title3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/stay_fresh"
+        android:textColor="@color/pastel_green_2"
+        android:textSize="18sp"
+        android:theme="@style/poppinsExtraBold"
+        app:layout_constraintEnd_toEndOf="@id/image3"
+        app:layout_constraintStart_toStartOf="@id/image3"
+        app:layout_constraintTop_toBottomOf="@id/image3" />
+
+    <TextView
+        android:id="@+id/text3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/intro3"
+        android:textColor="@color/pastel_green_2"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/image3"
+        app:layout_constraintStart_toStartOf="@id/image3"
+        app:layout_constraintTop_toBottomOf="@id/title3" />
+
+    <TextView
+        android:id="@+id/tv_get_started"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:drawablePadding="4dp"
+        android:text="@string/get_started"
+        android:textColor="@color/pastel_green_2"
+        android:textSize="16sp"
+        app:drawableEndCompat="@drawable/ic_baseline_arrow_forward_ios_24"
+        app:drawableTint="@color/pastel_green_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
+
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
