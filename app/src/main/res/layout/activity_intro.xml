@@ -5,7 +5,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pastel_green"
+    android:background="@color/grey"
     android:fitsSystemWindows="true"
     app:layoutDescription="@xml/activity_intro_scene"
     tools:context=".ui.activity.IntroActivity">
@@ -50,11 +50,11 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-        app:drawableTint="@color/pastel_green_2"
+        app:drawableTint="@color/brown_dark"
         app:layout_constraintBottom_toBottomOf="@id/menu1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/menu1"
-        app:tint="@color/pastel_green_2" />
+        app:tint="@color/brown_dark" />
 
     <ImageView
         android:id="@+id/iv_skip2"
@@ -62,11 +62,11 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="-8dp"
         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-        app:drawableTint="@color/pastel_green_2"
+        app:drawableTint="@color/brown_dark"
         app:layout_constraintBottom_toBottomOf="@id/iv_skip1"
         app:layout_constraintEnd_toStartOf="@id/iv_skip1"
         app:layout_constraintTop_toTopOf="@id/iv_skip1"
-        app:tint="@color/pastel_green_2" />
+        app:tint="@color/brown_dark" />
 
     <RelativeLayout
         android:id="@+id/skip_layout"
@@ -83,7 +83,6 @@
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
         android:src="@drawable/grocery"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +97,7 @@
         android:gravity="center"
         android:lineSpacingExtra="4dp"
         android:text="@string/buy_groceries"
-        android:textColor="@color/pastel_green_2"
+        android:textColor="@color/brown_dark"
         android:textSize="18sp"
         android:theme="@style/poppinsExtraBold"
         app:layout_constraintEnd_toEndOf="@id/image1"
@@ -115,7 +114,7 @@
         android:gravity="center"
         android:lineSpacingExtra="4dp"
         android:text="@string/intro1"
-        android:textColor="@color/pastel_green_2"
+        android:textColor="@color/brown_dark"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@id/image1"
         app:layout_constraintStart_toStartOf="@id/image1"
@@ -142,7 +141,7 @@
         android:gravity="center"
         android:lineSpacingExtra="4dp"
         android:text="@string/save_money"
-        android:textColor="@color/pastel_green_2"
+        android:textColor="@color/brown_dark"
         android:textSize="18sp"
         android:theme="@style/poppinsExtraBold"
         app:layout_constraintEnd_toEndOf="@id/image2"
@@ -159,7 +158,7 @@
         android:gravity="center"
         android:lineSpacingExtra="4dp"
         android:text="@string/intro2"
-        android:textColor="@color/pastel_green_2"
+        android:textColor="@color/brown_dark"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@id/image2"
         app:layout_constraintStart_toStartOf="@id/image2"
@@ -184,7 +183,7 @@
         android:gravity="center"
         android:lineSpacingExtra="4dp"
         android:text="@string/stay_fresh"
-        android:textColor="@color/pastel_green_2"
+        android:textColor="@color/brown_dark"
         android:textSize="18sp"
         android:theme="@style/poppinsExtraBold"
         app:layout_constraintEnd_toEndOf="@id/image3"
@@ -201,7 +200,7 @@
         android:gravity="center"
         android:lineSpacingExtra="4dp"
         android:text="@string/intro3"
-        android:textColor="@color/pastel_green_2"
+        android:textColor="@color/brown_dark"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@id/image3"
         app:layout_constraintStart_toStartOf="@id/image3"
@@ -211,15 +210,12 @@
         android:id="@+id/tv_get_started"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:drawablePadding="4dp"
         android:text="@string/get_started"
-        android:textColor="@color/pastel_green_2"
+        android:textColor="@color/brown_dark"
         android:textSize="16sp"
-        app:drawableEndCompat="@drawable/ic_baseline_arrow_forward_ios_24"
-        app:drawableTint="@color/pastel_green_2"
+        android:theme="@style/poppinsMedium"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="parent" />
 
 

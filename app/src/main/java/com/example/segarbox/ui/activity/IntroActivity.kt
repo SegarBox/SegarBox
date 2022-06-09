@@ -28,7 +28,7 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setNavigationBar() {
-        window.navigationBarColor = this.getHelperColor(R.color.pastel_green)
+        window.navigationBarColor = this.getHelperColor(R.color.grey)
     }
 
     override fun onDestroy() {

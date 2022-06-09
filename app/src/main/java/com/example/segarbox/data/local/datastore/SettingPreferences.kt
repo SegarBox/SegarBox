@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.map
 class SettingPreferences private constructor(private val dataStore: DataStore<Preferences>){
 
     private val keyTheme = booleanPreferencesKey("key_theme")
+    private val keyIntro = booleanPreferencesKey("key_intro")
     private val keyToken = stringPreferencesKey("key_token")
 
 

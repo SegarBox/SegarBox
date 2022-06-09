@@ -6,9 +6,8 @@
         motion:autoTransition="animateToEnd"
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@id/start"
-        motion:duration="1000">
-        <KeyFrameSet></KeyFrameSet>
-    </Transition>
+        motion:layoutDuringTransition="honorRequest"
+        motion:duration="1000" />
 
     <ConstraintSet android:id="@+id/start">
         <Constraint
@@ -91,6 +90,7 @@
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toEndOf="@id/menu2"
             motion:layout_constraintTop_toTopOf="@id/menu2" />
+
         <Constraint
             android:id="@+id/text1"
             android:layout_width="0dp"
@@ -178,6 +178,14 @@
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toEndOf="@id/menu2"
             motion:layout_constraintTop_toTopOf="@id/menu2" />
+        <Constraint
+            android:id="@+id/title1"
+            motion:layout_constraintEnd_toEndOf="@id/image1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            motion:layout_constraintStart_toStartOf="@id/image1"
+            android:layout_marginTop="16dp"
+            motion:layout_constraintTop_toBottomOf="@id/image1" />
     </ConstraintSet>
     <Transition
         motion:constraintSetEnd="@+id/page2"
@@ -268,10 +276,10 @@
             android:id="@+id/tv_get_started"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent" />
+            motion:layout_constraintStart_toStartOf="@id/text3"
+            motion:layout_constraintEnd_toEndOf="@id/text3"
+            motion:layout_constraintTop_toBottomOf="@id/text3"
+            android:layout_marginTop="16dp"/>
     </ConstraintSet>
     <Transition
         motion:constraintSetEnd="@+id/page3"
