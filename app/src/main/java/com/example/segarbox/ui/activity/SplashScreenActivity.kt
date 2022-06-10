@@ -1,12 +1,12 @@
 package com.example.segarbox.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.Window
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -21,8 +21,8 @@ import com.example.segarbox.databinding.ActivitySplashScreenBinding
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 
-
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+@SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {
 
     private var _binding: ActivitySplashScreenBinding? = null
@@ -42,15 +42,13 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun init(){
-        observeData()
         setNavigationBar()
-        splashDelay()
+        observeData()
     }
 
-    private fun splashDelay(){
+    private fun splashDelay(intent: Intent){
         val delay: Long = 4000
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this@SplashScreenActivity, IntroActivity::class.java)
             startActivity(intent)
             finish()
         }, delay)
@@ -77,6 +75,13 @@ class SplashScreenActivity : AppCompatActivity() {
                     isThemeDarkMode = false
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 }
+            }
+        }
+
+        prefViewModel.getIntro().observe(this) { isAlreadyIntro ->
+            when {
+                isAlreadyIntro -> splashDelay(Intent(this, MainActivity::class.java))
+                else -> splashDelay(Intent(this, IntroActivity::class.java))
             }
         }
     }

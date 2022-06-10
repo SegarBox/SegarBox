@@ -78,16 +78,29 @@
         app:layout_constraintTop_toTopOf="@id/iv_skip1" />
 
 
-    <ImageView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/image1"
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:layout_marginStart="32dp"
+        app:lottie_rawRes="@raw/grocery"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <ImageView
+        android:id="@+id/dummy_image"
+        android:layout_width="wrap_content"
+        android:layout_height="240dp"
+        android:layout_marginStart="32dp"
         android:src="@drawable/grocery"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <TextView
         android:id="@+id/title1"
@@ -121,13 +134,15 @@
         app:layout_constraintTop_toBottomOf="@id/title1" />
 
 
-    <ImageView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/image2"
         android:layout_width="wrap_content"
         android:layout_height="240dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:src="@drawable/savemoney"
+        app:lottie_rawRes="@raw/savemoney"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -164,12 +179,14 @@
         app:layout_constraintStart_toStartOf="@id/image2"
         app:layout_constraintTop_toBottomOf="@id/title2" />
 
-    <ImageView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/image3"
         android:layout_width="wrap_content"
         android:layout_height="240dp"
         android:layout_marginStart="32dp"
-        android:src="@drawable/fresh"
+        app:lottie_rawRes="@raw/fresh"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
