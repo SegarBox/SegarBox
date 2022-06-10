@@ -6,8 +6,8 @@
         motion:autoTransition="animateToEnd"
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@id/start"
-        motion:layoutDuringTransition="honorRequest"
-        motion:duration="1000" />
+        motion:duration="1000"
+        motion:layoutDuringTransition="honorRequest" />
 
     <ConstraintSet android:id="@+id/start">
         <Constraint
@@ -35,15 +35,32 @@
                 motion:customFloatValue="0.3" />
         </Constraint>
         <Constraint
+            android:id="@+id/title1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            motion:layout_constraintStart_toStartOf="@id/dummy_image"
+            motion:layout_constraintEnd_toEndOf="@id/dummy_image"
+            motion:layout_constraintTop_toBottomOf="@id/image1" />
+        <Constraint
             android:id="@+id/text1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
-            motion:layout_constraintEnd_toEndOf="@id/image1"
-            motion:layout_constraintStart_toStartOf="@id/image1"
+            motion:layout_constraintStart_toStartOf="@id/title1"
+            motion:layout_constraintEnd_toEndOf="@id/title1"
             motion:layout_constraintTop_toBottomOf="@id/title1" />
+        <Constraint
+            android:id="@+id/dummy_image"
+            motion:layout_constraintStart_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="240dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintVertical_bias="0.3"
+            android:layout_marginStart="32dp"
+            motion:layout_constraintTop_toTopOf="parent" />
 
     </ConstraintSet>
 
@@ -180,11 +197,11 @@
             motion:layout_constraintTop_toTopOf="@id/menu2" />
         <Constraint
             android:id="@+id/title1"
-            motion:layout_constraintEnd_toEndOf="@id/image1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            motion:layout_constraintStart_toStartOf="@id/image1"
             android:layout_marginTop="16dp"
+            motion:layout_constraintEnd_toEndOf="@id/image1"
+            motion:layout_constraintStart_toStartOf="@id/image1"
             motion:layout_constraintTop_toBottomOf="@id/image1" />
     </ConstraintSet>
     <Transition
@@ -276,10 +293,10 @@
             android:id="@+id/tv_get_started"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            motion:layout_constraintStart_toStartOf="@id/text3"
+            android:layout_marginTop="16dp"
             motion:layout_constraintEnd_toEndOf="@id/text3"
-            motion:layout_constraintTop_toBottomOf="@id/text3"
-            android:layout_marginTop="16dp"/>
+            motion:layout_constraintStart_toStartOf="@id/text3"
+            motion:layout_constraintTop_toBottomOf="@id/text3" />
     </ConstraintSet>
     <Transition
         motion:constraintSetEnd="@+id/page3"

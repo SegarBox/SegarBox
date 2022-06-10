@@ -69,9 +69,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:18.0.0'
     implementation 'androidx.test.espresso:espresso-idling-resource:3.4.0'
     implementation 'androidx.navigation:navigation-fragment:2.4.2'
-    implementation 'com.beust:klaxon:5.5'
     implementation 'io.github.nikartm:image-support:2.0.0'
-    implementation 'com.github.andremion:counterfab:1.2.2'
     kapt 'androidx.room:room-compiler:2.4.2'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
@@ -82,6 +80,4 @@ dependencies {
 
     //Lottie
     implementation 'com.airbnb.android:lottie:3.4.1'
-
-    implementation 'io.github.nikartm:image-support:2.0.0'
 }

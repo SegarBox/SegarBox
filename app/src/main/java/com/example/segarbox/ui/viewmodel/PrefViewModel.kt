@@ -29,6 +29,16 @@ class PrefViewModel(private val pref: SettingPreferences): ViewModel() {
         }
     }
 
+    fun getIntro(): LiveData<Boolean> {
+        return pref.getIntro().asLiveData()
+    }
+
+    fun saveIntro(isAlreadyIntro: Boolean) {
+        viewModelScope.launch {
+            pref.saveIntro(isAlreadyIntro)
+        }
+    }
+
     fun logout(){
         viewModelScope.launch {
             pref.logout()
