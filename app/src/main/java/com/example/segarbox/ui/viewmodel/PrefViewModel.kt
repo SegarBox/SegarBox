@@ -29,6 +29,16 @@ class PrefViewModel(private val pref: SettingPreferences): ViewModel() {
         }
     }
 
+    fun getUserId(): LiveData<Int> {
+        return pref.getUserId().asLiveData()
+    }
+
+    fun saveUserId(userId: Int) {
+        viewModelScope.launch {
+            pref.saveUserId(userId)
+        }
+    }
+
     fun getIntro(): LiveData<Boolean> {
         return pref.getIntro().asLiveData()
     }

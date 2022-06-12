@@ -20,6 +20,8 @@ class RetrofitRepository {
     private val mapsApiServices = ApiConfig.getApiServices(BuildConfig.BASE_URL_GOOGLE_MAPS)
     private val rajaOngkirApiServices = ApiConfig.getApiServices(BuildConfig.BASE_URL_RAJAONGKIR)
     private val segarBoxApiServices = ApiConfig.getApiServices(BuildConfig.BASE_URL_SEGARBOX)
+    private val segarBoxFlaskApiServices =
+        ApiConfig.getApiServices(BuildConfig.BASE_URL_SEGARBOX_FLASK)
 
     suspend fun getAddress(latLng: String): MapsResponse {
 
@@ -137,6 +139,23 @@ class RetrofitRepository {
             }
         ).liveData
 
+    }
+
+    suspend fun getRecommendationSystem(userId: Int): List<String> {
+        try {
+            val request = segarBoxFlaskApiServices.getRecommendationSystem(userId)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    return it
+                }
+            }
+
+            return arrayListOf("30", "4", "87", "28", "33", "38", "15", "19", "14", "12")
+
+        } catch (ex: Exception) {
+            return arrayListOf("30", "4", "87", "28", "33", "38", "15", "19", "14", "12")
+        }
     }
 
     suspend fun getMostPopularProduct(): ProductResponse {
@@ -430,7 +449,10 @@ class RetrofitRepository {
         }
     }
 
-    suspend fun makeOrderTransaction(token: String, makeOrderBody: MakeOrderBody): MakeOrderResponse {
+    suspend fun makeOrderTransaction(
+        token: String,
+        makeOrderBody: MakeOrderBody,
+    ): MakeOrderResponse {
         try {
             val request = segarBoxApiServices.makeOrderTransaction(token, makeOrderBody)
 
@@ -447,7 +469,7 @@ class RetrofitRepository {
         }
     }
 
-    suspend fun getTransactionById(token: String, transactionId :Int): TransactionByIdResponse {
+    suspend fun getTransactionById(token: String, transactionId: Int): TransactionByIdResponse {
         try {
             val request = segarBoxApiServices.getTransactionById(token, transactionId)
 
@@ -480,9 +502,14 @@ class RetrofitRepository {
         }
     }
 
-    suspend fun updateTransactionStatus(token: String, transactionId: Int, updateStatusBody: UpdateStatusBody): TransactionsStatusResponse {
+    suspend fun updateTransactionStatus(
+        token: String,
+        transactionId: Int,
+        updateStatusBody: UpdateStatusBody,
+    ): TransactionsStatusResponse {
         try {
-            val request = segarBoxApiServices.updateTransactionStatus(token, transactionId, updateStatusBody)
+            val request =
+                segarBoxApiServices.updateTransactionStatus(token, transactionId, updateStatusBody)
             if (request.isSuccessful) {
                 request.body()?.let {
                     return it
@@ -512,9 +539,16 @@ class RetrofitRepository {
         }
     }
 
-    suspend fun saveRating(token: String, ratingId: Int, transactionId: Int, productId: Int, rating: Int): SaveRatingResponse {
+    suspend fun saveRating(
+        token: String,
+        ratingId: Int,
+        transactionId: Int,
+        productId: Int,
+        rating: Int,
+    ): SaveRatingResponse {
         try {
-            val request = segarBoxApiServices.saveRating(token, ratingId, transactionId, productId, rating)
+            val request =
+                segarBoxApiServices.saveRating(token, ratingId, transactionId, productId, rating)
             if (request.isSuccessful) {
                 request.body()?.let {
                     return it

@@ -50,6 +50,12 @@ interface ApiServices {
         @Field("password") password: String
     ): Response<LoginResponse>
 
+    @GET("recommendation")
+    @Headers("Accept: application/json")
+    suspend fun getRecommendationSystem(
+        @Query("user_id") userId: Int = 0
+    ): Response<List<String>>
+
     @GET("products")
     @Headers("Accept: application/json")
     suspend fun getMostPopularProduct(

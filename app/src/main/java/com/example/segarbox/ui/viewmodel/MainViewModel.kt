@@ -21,6 +21,9 @@ class MainViewModel(
     private var _cityFromApi = MutableLiveData<CityResponse>()
     val cityFromApi: LiveData<CityResponse> = _cityFromApi
 
+    private var _recommendationSystem = MutableLiveData<Event<List<String>>>()
+    val recommendationSystem: LiveData<Event<List<String>>> = _recommendationSystem
+
     private var _allProductResponse = MutableLiveData<ProductResponse>()
     val allProductResponse: LiveData<ProductResponse> = _allProductResponse
 
@@ -61,6 +64,15 @@ class MainViewModel(
     }
 
     fun getCityCount(): LiveData<Int> = roomRepository.getCityCount()
+
+    fun getRecommendationSystem(userId: Int) {
+        viewModelScope.launch {
+            _isLoading.postValue(true)
+            val request = retrofitRepository.getRecommendationSystem(userId)
+            _recommendationSystem.postValue(Event(request))
+            _isLoading.postValue(false)
+        }
+    }
 
     fun getMostPopularProduct() {
         viewModelScope.launch {

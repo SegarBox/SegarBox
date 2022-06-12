@@ -85,6 +85,9 @@ class LoginFragment : Fragment(), View.OnClickListener {
             // Jika Berhasil Login
             if (loginResponse.token != null) {
                 prefViewModel.saveToken(loginResponse.token)
+                loginResponse.user?.let {
+                    prefViewModel.saveUserId(it.id)
+                }
                 requireActivity().finish()
             }
             // Jika tidak berhasil login
