@@ -117,6 +117,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
 
         cartViewModel.userCart.observe(this) { userCartResponse ->
             userCartResponse.data?.let {
+                binding.ivEmptycart.isVisible = it.isEmpty()
                 cartAdapter.submitList(it)
                 if (token.isNotEmpty()) {
                     cartViewModel.getCartDetail(token.tokenFormat(), 0)

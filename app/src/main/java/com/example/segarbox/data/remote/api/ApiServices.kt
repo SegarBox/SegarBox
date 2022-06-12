@@ -2,6 +2,7 @@ package com.example.segarbox.data.remote.api
 
 import com.example.segarbox.BuildConfig
 import com.example.segarbox.data.local.model.MakeOrderBody
+import com.example.segarbox.data.local.model.MostPopularBody
 import com.example.segarbox.data.local.model.UpdateStatusBody
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.response.*
@@ -56,11 +57,10 @@ interface ApiServices {
         @Query("user_id") userId: Int = 0
     ): Response<List<String>>
 
-    @GET("products")
+    @POST("show_recommendation")
     @Headers("Accept: application/json")
     suspend fun getMostPopularProduct(
-        @Query("page[size]") size: Int = 10,
-        @Query("sort") sort: String = "-detail"
+        @Body mostPopularBody: MostPopularBody
     ): Response<ProductResponse>
 
     @GET("products")

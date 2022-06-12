@@ -1,5 +1,6 @@
 package com.example.segarbox.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -8,6 +9,7 @@ import androidx.paging.liveData
 import com.beust.klaxon.Klaxon
 import com.example.segarbox.BuildConfig
 import com.example.segarbox.data.local.model.MakeOrderBody
+import com.example.segarbox.data.local.model.MostPopularBody
 import com.example.segarbox.data.local.model.UpdateStatusBody
 import com.example.segarbox.data.remote.api.ApiConfig
 import com.example.segarbox.data.remote.api.ApiServices
@@ -158,16 +160,15 @@ class RetrofitRepository {
         }
     }
 
-    suspend fun getMostPopularProduct(): ProductResponse {
+    suspend fun getMostPopularProduct(mostPopularBody: MostPopularBody): ProductResponse {
         try {
-            val request = segarBoxApiServices.getMostPopularProduct()
+            val request = segarBoxApiServices.getMostPopularProduct(mostPopularBody)
 
             if (request.isSuccessful) {
                 request.body()?.let {
                     return it
                 }
             }
-
             return ProductResponse()
 
         } catch (ex: Exception) {
