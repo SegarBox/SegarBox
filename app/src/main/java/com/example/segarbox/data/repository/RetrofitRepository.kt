@@ -1,6 +1,5 @@
 package com.example.segarbox.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -226,22 +225,6 @@ class RetrofitRepository {
         }
     }
 
-    suspend fun getLabelProduct(page: Int, size: Int, label: String): ProductResponse {
-        try {
-            val request = segarBoxApiServices.getLabelProduct(page, size, label)
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            return ProductResponse(listOf())
-
-        } catch (ex: Exception) {
-            return ProductResponse(listOf())
-        }
-    }
-
     suspend fun getUser(token: String): UserResponse {
 
         try {
@@ -259,22 +242,6 @@ class RetrofitRepository {
         }
     }
 
-//    suspend fun getUser(token: String, id: Int): UserResponse {
-//
-//        try {
-//            val request = segarBoxApiServices.getUser(token, id)
-//
-//            if (request.isSuccessful) {
-//                request.body()?.let {
-//                    return it
-//                }
-//            }
-//            return UserResponse()
-//
-//        } catch (ex: Exception) {
-//            return UserResponse()
-//        }
-//    }
 
     suspend fun logout(token: String): LogoutResponse {
         try {

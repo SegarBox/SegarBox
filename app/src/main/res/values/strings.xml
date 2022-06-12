@@ -77,6 +77,9 @@
     <string name="stay_fresh">Stay Fresh</string>
     <string name="intro3">We prioritize freshness, just wait in your place and we will bring your products as fast as we can!</string>
     <string name="get_started"><u>Get Started</u></string>
+    <string name="oh_no_your_cart_is_still_empty">Oh no.. Your cart is still empty</string>
+    <string name="please_add_an_address">Please add an address..</string>
+    <string name="no_product_to_be_rated_for_now">No product to be rated for now..</string>
     <plurals name="item_count_total">
         <item quantity="one">+ %d more product</item>
         <item quantity="other">+ %d more products</item>

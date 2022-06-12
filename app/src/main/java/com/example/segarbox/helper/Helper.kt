@@ -67,7 +67,9 @@ fun String.tidyUpPosEtd(context: Context): String {
 }
 
 fun Int.formatToRupiah(): String {
-    return NumberFormat.getCurrencyInstance(Locale("id", "ID")).format(this)
+    val string = NumberFormat.getCurrencyInstance(Locale("id", "ID")).format(this)
+    val formatted = string.split(",")
+    return formatted[0]
 }
 
 fun Int.formatProductSize(context: Context): String {

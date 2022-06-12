@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,8 +53,6 @@ class HomeFragment : Fragment(), View.OnClickListener,
     private val startShoppingAdapter = StartShoppingAdapter(this)
     private var checkedChips = ""
     private var token = ""
-    private var userId = 0
-    private var listProductId = arrayListOf<String>()
     private val mainViewModel by viewModels<MainViewModel> {
         RetrofitRoomViewModelFactory.getInstance(RoomRepository(requireActivity().application),
             RetrofitRepository())
@@ -150,7 +147,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
             override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {}
 
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                binding.content.rvStartShopping.scrollToPosition(0)
+                binding.content.rvStartShopping.smoothScrollToPosition( 0)
             }
 
             override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {}
@@ -167,31 +164,26 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
         prefViewModel.getUserId().getContentIfNotHandled()?.let {
             it.observe(viewLifecycleOwner) { userId ->
-                this.userId = userId
                 mainViewModel.getRecommendationSystem(userId)
             }
         }
 
         mainViewModel.recommendationSystem.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
+                mainViewModel.saveListProductId(it)
+            }
+        }
 
-                this.listProductId.clear()
-                this.listProductId.addAll(it)
-
-                // Refresh Recommendation System saat default chips di most popular
-                if (checkedChips == Code.MOST_POPULAR_CHIPS) {
-                    mainViewModel.saveCheckedChips(Code.MOST_POPULAR_CHIPS)
-                }
+        mainViewModel.listProductId.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { listProductId ->
 
                 mainViewModel.checkedChips.observe(viewLifecycleOwner) { checkedChips ->
-                    Log.e("CHIPS", "CHIPS")
-
                     this.checkedChips = checkedChips
 
                     when (checkedChips) {
                         Code.MOST_POPULAR_CHIPS -> {
-                            if (this.listProductId.isNotEmpty()) {
-                                mainViewModel.getMostPopularProduct(MostPopularBody(this.listProductId))
+                            if (listProductId.isNotEmpty()) {
+                                mainViewModel.getMostPopularProduct(MostPopularBody(listProductId))
                             }
                         }
                         Code.VEGGIES_CHIPS -> {
@@ -202,7 +194,6 @@ class HomeFragment : Fragment(), View.OnClickListener,
                         }
                     }
                 }
-
             }
         }
 
