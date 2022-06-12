@@ -21,7 +21,7 @@
     <ImageView
         android:id="@+id/iv_emptymap"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="260dp"
         android:layout_margin="36dp"
         android:src="@drawable/emptymap"
         android:visibility="gone"
@@ -38,7 +38,6 @@
         android:gravity="center"
         android:text="@string/please_add_an_address"
         android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
         android:theme="@style/poppinsMedium"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/iv_emptymap"

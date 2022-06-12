@@ -28,7 +28,7 @@
     <ImageView
         android:id="@+id/iv_emptycart"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="260dp"
         android:layout_margin="36dp"
         android:src="@drawable/emptycart"
         android:visibility="gone"
@@ -45,7 +45,6 @@
         android:gravity="center"
         android:text="@string/oh_no_your_cart_is_still_empty"
         android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
         android:theme="@style/poppinsMedium"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/iv_emptycart"
