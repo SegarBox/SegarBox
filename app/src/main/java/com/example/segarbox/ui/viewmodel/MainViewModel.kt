@@ -1,9 +1,12 @@
 package com.example.segarbox.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.segarbox.data.local.model.MostPopularBody
+import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.response.CityResponse
 import com.example.segarbox.data.remote.response.CityResults
 import com.example.segarbox.data.remote.response.ProductResponse
@@ -27,8 +30,8 @@ class MainViewModel(
     private var _allProductResponse = MutableLiveData<ProductResponse>()
     val allProductResponse: LiveData<ProductResponse> = _allProductResponse
 
-    private var _productResponse = MutableLiveData<ProductResponse>()
-    val productResponse: LiveData<ProductResponse> = _productResponse
+    private var _productResponse = MutableLiveData<Event<ProductResponse>>()
+    val productResponse: LiveData<Event<ProductResponse>> = _productResponse
 
     private var _checkedChips = MutableLiveData<String>()
     val checkedChips: LiveData<String> = _checkedChips
@@ -40,8 +43,8 @@ class MainViewModel(
     val isLoading: LiveData<Boolean> = _isLoading
 
     init {
-        // Ceritanya ntar most popular dlu
-        getMostPopularProduct()
+        // Most Popular
+        saveCheckedChips(Code.MOST_POPULAR_CHIPS)
         // All Products
         getAllProduct(1, 20)
     }
@@ -74,11 +77,12 @@ class MainViewModel(
         }
     }
 
-    fun getMostPopularProduct() {
+    fun getMostPopularProduct(mostPopularBody: MostPopularBody) {
+        Log.e("GET PRODUCT", "GET")
         viewModelScope.launch {
             _isLoading.postValue(true)
-            val request = retrofitRepository.getMostPopularProduct()
-            _productResponse.postValue(request)
+            val request = retrofitRepository.getMostPopularProduct(mostPopularBody)
+            _productResponse.postValue(Event(request))
             _isLoading.postValue(false)
         }
     }
@@ -97,19 +101,11 @@ class MainViewModel(
         viewModelScope.launch {
             _isLoading.postValue(true)
             val request = retrofitRepository.getCategoryProduct(page, size, category)
-            _productResponse.postValue(request)
+            _productResponse.postValue(Event(request))
             _isLoading.postValue(false)
         }
     }
 
-    fun getLabelProduct(page: Int, size: Int, label: String) {
-        viewModelScope.launch {
-            _isLoading.postValue(true)
-            val request = retrofitRepository.getLabelProduct(page, size, label)
-            _productResponse.postValue(request)
-            _isLoading.postValue(false)
-        }
-    }
 
     fun saveCheckedChips(chips: String) {
         _checkedChips.postValue(chips)

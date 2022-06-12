@@ -18,6 +18,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.segarbox.R
 import com.example.segarbox.data.local.datastore.SettingPreferences
+import com.example.segarbox.data.local.model.MostPopularBody
 import com.example.segarbox.data.local.static.Code
 import com.example.segarbox.data.remote.response.ProductItem
 import com.example.segarbox.data.repository.RetrofitRepository
@@ -53,6 +54,8 @@ class HomeFragment : Fragment(), View.OnClickListener,
     private val startShoppingAdapter = StartShoppingAdapter(this)
     private var checkedChips = ""
     private var token = ""
+    private var userId = 0
+    private var listProductId = arrayListOf<String>()
     private val mainViewModel by viewModels<MainViewModel> {
         RetrofitRoomViewModelFactory.getInstance(RoomRepository(requireActivity().application),
             RetrofitRepository())
@@ -84,6 +87,9 @@ class HomeFragment : Fragment(), View.OnClickListener,
         binding.toolbar.ivCart.setOnClickListener(this)
         binding.toolbar.etSearch.setOnClickListener(this)
         binding.content.tvSeeAll.setOnClickListener(this)
+        binding.content.chipMostPopular.setOnClickListener(this)
+        binding.content.chipVeggies.setOnClickListener(this)
+        binding.content.chipFruits.setOnClickListener(this)
     }
 
     private fun setToolbar() {
@@ -159,60 +165,73 @@ class HomeFragment : Fragment(), View.OnClickListener,
             this.token = token
         }
 
-//        prefViewModel.getUserId().observe(viewLifecycleOwner) { userId ->
-//            Log.e("HOME", "OBSERVE ID")
-//            mainViewModel.getRecommendationSystem(userId)
-//        }
-//
-//        mainViewModel.recommendationSystem.observe(viewLifecycleOwner) { event ->
-//            event.getContentIfNotHandled()?.let {
-//                Log.e("ID", it.toString())
-//            }
-//        }
+        prefViewModel.getUserId().getContentIfNotHandled()?.let {
+            it.observe(viewLifecycleOwner) { userId ->
+                this.userId = userId
+                mainViewModel.getRecommendationSystem(userId)
+            }
+        }
+
+        mainViewModel.recommendationSystem.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+
+                this.listProductId.clear()
+                this.listProductId.addAll(it)
+
+                // Refresh Recommendation System saat default chips di most popular
+                if (checkedChips == Code.MOST_POPULAR_CHIPS) {
+                    mainViewModel.saveCheckedChips(Code.MOST_POPULAR_CHIPS)
+                }
+
+                mainViewModel.checkedChips.observe(viewLifecycleOwner) { checkedChips ->
+                    Log.e("CHIPS", "CHIPS")
+
+                    this.checkedChips = checkedChips
+
+                    when (checkedChips) {
+                        Code.MOST_POPULAR_CHIPS -> {
+                            if (this.listProductId.isNotEmpty()) {
+                                mainViewModel.getMostPopularProduct(MostPopularBody(this.listProductId))
+                            }
+                        }
+                        Code.VEGGIES_CHIPS -> {
+                            mainViewModel.getCategoryProduct(1, 10, Code.VEGGIES_CATEGORY)
+                        }
+                        else -> {
+                            mainViewModel.getCategoryProduct(1, 10, Code.FRUITS_CATEGORY)
+                        }
+                    }
+                }
+
+            }
+        }
 
         mainViewModel.allProductResponse.observe(viewLifecycleOwner) {
             allProductAdapter.submitList(it.data)
         }
 
-        binding.content.chipMostPopular.setOnClickListener {
-            mainViewModel.getMostPopularProduct()
-            mainViewModel.saveCheckedChips(Code.MOST_POPULAR_CHIPS)
-        }
 
-        binding.content.chipVeggies.setOnClickListener {
-            mainViewModel.getCategoryProduct(1, 10, Code.VEGGIES_CATEGORY)
-            mainViewModel.saveCheckedChips(Code.VEGGIES_CHIPS)
-        }
-
-        binding.content.chipFruits.setOnClickListener {
-            mainViewModel.getCategoryProduct(1, 10, Code.FRUITS_CATEGORY)
-            mainViewModel.saveCheckedChips(Code.FRUITS_CHIPS)
-        }
-
-        mainViewModel.checkedChips.observe(viewLifecycleOwner) {
-            checkedChips = it
-        }
-
-        mainViewModel.productResponse.observe(viewLifecycleOwner) {
-            val listProduct = arrayListOf<ProductItem>()
-            var dummy: ProductItem? = null
-            if (checkedChips == Code.FRUITS_CHIPS) {
-                dummy = addDummyProduct(Code.DUMMY_FRUITS, it.data.size)
+        mainViewModel.productResponse.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                val listProduct = arrayListOf<ProductItem>()
+                var dummy: ProductItem? = null
+                if (checkedChips == Code.FRUITS_CHIPS) {
+                    dummy = addDummyProduct(Code.DUMMY_FRUITS, it.data.size)
+                }
+                if (checkedChips == Code.VEGGIES_CHIPS) {
+                    dummy = addDummyProduct(Code.DUMMY_VEGGIES, it.data.size)
+                }
+                listProduct.addAll(it.data)
+                dummy?.let {
+                    listProduct.add(dummy)
+                }
+                startShoppingAdapter.submitList(listProduct)
             }
-            if (checkedChips == Code.VEGGIES_CHIPS) {
-                dummy = addDummyProduct(Code.DUMMY_VEGGIES, it.data.size)
-            }
-            listProduct.addAll(it.data)
-            dummy?.let {
-                listProduct.add(dummy)
-            }
-            startShoppingAdapter.submitList(listProduct)
         }
 
         mainViewModel.userCart.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { userCartResponse ->
                 userCartResponse.meta?.let {
-                    Log.e("CART", "USER CART")
                     binding.toolbar.ivCart.badgeValue = it.total
                 }
             }
@@ -278,6 +297,18 @@ class HomeFragment : Fragment(), View.OnClickListener,
                 val intent = Intent(requireContext(), PaginationActivity::class.java)
                 intent.putExtra(Code.IS_SEARCH_BAR_PRESSED, true)
                 startActivity(intent)
+            }
+
+            R.id.chip_most_popular -> {
+                mainViewModel.saveCheckedChips(Code.MOST_POPULAR_CHIPS)
+            }
+
+            R.id.chip_veggies -> {
+                mainViewModel.saveCheckedChips(Code.VEGGIES_CHIPS)
+            }
+
+            R.id.chip_fruits -> {
+                mainViewModel.saveCheckedChips(Code.FRUITS_CHIPS)
             }
 
         }

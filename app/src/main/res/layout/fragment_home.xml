@@ -14,11 +14,14 @@
         android:id="@+id/toolbar"
         layout="@layout/custom_toolbar_main" />
 
-    <ProgressBar
+    <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="16dp"
         android:visibility="gone"
+        style="@style/SpinKitView.ThreeBounce"
+        app:SpinKit_Color="?attr/colorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

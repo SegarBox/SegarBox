@@ -3,6 +3,7 @@ package com.example.segarbox.ui.fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,7 +68,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     }
 
     private fun observeData() {
-        prefViewModel.getTheme().observe(viewLifecycleOwner) { isDarkMode:Boolean ->
+        prefViewModel.getTheme().observe(viewLifecycleOwner) { isDarkMode ->
             when {
                 isDarkMode -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)

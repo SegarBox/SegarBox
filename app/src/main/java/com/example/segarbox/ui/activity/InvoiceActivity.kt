@@ -170,7 +170,6 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
 
             R.id.checkout_layout -> {
                 if (token.isNotEmpty() && listProductId.isNotEmpty()) {
-                    Log.e("LIST PRODUCT ID", listProductId.toString())
                     invoiceViewModel.updateTransactionStatus(token.tokenFormat(), getTransactionId, UpdateStatusBody(listProductId))
                 }
             }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.segarbox.data.local.datastore.SettingPreferences
+import com.example.segarbox.helper.Event
 import kotlinx.coroutines.launch
 
 class PrefViewModel(private val pref: SettingPreferences): ViewModel() {
@@ -29,8 +30,8 @@ class PrefViewModel(private val pref: SettingPreferences): ViewModel() {
         }
     }
 
-    fun getUserId(): LiveData<Int> {
-        return pref.getUserId().asLiveData()
+    fun getUserId(): Event<LiveData<Int>> {
+        return Event(pref.getUserId().asLiveData())
     }
 
     fun saveUserId(userId: Int) {

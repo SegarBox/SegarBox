@@ -25,6 +25,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/iv_emptycart"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/bottom_payment_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/emptycart" />
+
     <include
         android:id="@+id/bottom_payment_info"
         layout="@layout/bottom_payment_info"
