@@ -97,6 +97,8 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
 
         addressViewModel.addressResponse.observe(this) { addressResponse ->
             addressResponse.data?.let {
+                binding.ivEmptymap.isVisible = it.isEmpty()
+                binding.tvEmptymap.isVisible = it.isEmpty()
                 addressAdapter.submitList(it)
             }
         }

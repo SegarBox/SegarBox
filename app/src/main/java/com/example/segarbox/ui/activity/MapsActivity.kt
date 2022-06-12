@@ -144,11 +144,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
             }
         }
 
-
         mapsViewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar.isVisible = isLoading
         }
-
 
     }
 

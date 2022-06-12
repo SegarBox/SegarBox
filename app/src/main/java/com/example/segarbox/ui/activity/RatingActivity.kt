@@ -78,6 +78,8 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
 
         ratingViewModel.ratingResponse.observe(this) { ratingResponse ->
             ratingResponse.data?.let {
+                binding.ivEmptyrating.isVisible = it.isEmpty()
+                binding.tvEmptyrating.isVisible = it.isEmpty()
                 ratingAdapter.submitList(it)
             }
         }

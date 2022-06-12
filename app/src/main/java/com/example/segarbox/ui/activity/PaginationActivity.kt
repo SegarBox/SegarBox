@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
@@ -162,7 +161,6 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
                     paginationAdapter.submitData(lifecycle, it)
                 }
             }
-
         }
 
         var initialSearch = ""

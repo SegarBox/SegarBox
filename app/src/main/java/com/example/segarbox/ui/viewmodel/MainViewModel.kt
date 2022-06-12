@@ -1,6 +1,5 @@
 package com.example.segarbox.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -35,6 +34,9 @@ class MainViewModel(
 
     private var _checkedChips = MutableLiveData<String>()
     val checkedChips: LiveData<String> = _checkedChips
+
+    private var _listProductId = MutableLiveData<Event<List<String>>>()
+    val listProductId: LiveData<Event<List<String>>> = _listProductId
 
     private var _userCart = MutableLiveData<Event<UserCartResponse>>()
     val userCart: LiveData<Event<UserCartResponse>> = _userCart
@@ -78,7 +80,6 @@ class MainViewModel(
     }
 
     fun getMostPopularProduct(mostPopularBody: MostPopularBody) {
-        Log.e("GET PRODUCT", "GET")
         viewModelScope.launch {
             _isLoading.postValue(true)
             val request = retrofitRepository.getMostPopularProduct(mostPopularBody)
@@ -109,6 +110,10 @@ class MainViewModel(
 
     fun saveCheckedChips(chips: String) {
         _checkedChips.postValue(chips)
+    }
+
+    fun saveListProductId(listProductId: List<String>) {
+        _listProductId.postValue(Event(listProductId))
     }
 
     fun getUserCart(token: String) {
