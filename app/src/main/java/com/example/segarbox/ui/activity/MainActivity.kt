@@ -1,28 +1,37 @@
 package com.example.segarbox.ui.activity
 
 import android.R.attr.state_checked
+import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.segarbox.R
+import com.example.segarbox.data.local.datastore.SettingPreferences
 import com.example.segarbox.data.repository.RetrofitRepository
 import com.example.segarbox.data.repository.RoomRepository
 import com.example.segarbox.databinding.ActivityMainBinding
 import com.example.segarbox.helper.getColorFromAttr
 import com.example.segarbox.helper.getHelperColor
 import com.example.segarbox.ui.viewmodel.MainViewModel
+import com.example.segarbox.ui.viewmodel.PrefViewModel
+import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitRoomViewModelFactory
 import com.google.android.material.R.attr.colorPrimary
 
+private val Context.dataStore by preferencesDataStore(name = "settings")
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     private val mainViewModel by viewModels<MainViewModel> {
         RetrofitRoomViewModelFactory.getInstance(RoomRepository(application), RetrofitRepository())
+    }
+    private val prefViewModel by viewModels<PrefViewModel> {
+        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +76,12 @@ class MainActivity : AppCompatActivity() {
         }
         mainViewModel.cityFromApi.observe(this) { cityResponse ->
             mainViewModel.insertCityToDB(cityResponse.rajaongkir.results)
+        }
+
+        prefViewModel.getIntro().observe(this) { isAlreadyIntro ->
+            if (!isAlreadyIntro) {
+                prefViewModel.saveIntro(true)
+            }
         }
 
     }

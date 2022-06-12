@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -158,6 +159,17 @@ class HomeFragment : Fragment(), View.OnClickListener,
             this.token = token
         }
 
+//        prefViewModel.getUserId().observe(viewLifecycleOwner) { userId ->
+//            Log.e("HOME", "OBSERVE ID")
+//            mainViewModel.getRecommendationSystem(userId)
+//        }
+//
+//        mainViewModel.recommendationSystem.observe(viewLifecycleOwner) { event ->
+//            event.getContentIfNotHandled()?.let {
+//                Log.e("ID", it.toString())
+//            }
+//        }
+
         mainViewModel.allProductResponse.observe(viewLifecycleOwner) {
             allProductAdapter.submitList(it.data)
         }
@@ -200,6 +212,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
         mainViewModel.userCart.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { userCartResponse ->
                 userCartResponse.meta?.let {
+                    Log.e("CART", "USER CART")
                     binding.toolbar.ivCart.badgeValue = it.total
                 }
             }

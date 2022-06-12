@@ -1,10 +1,7 @@
 package com.example.segarbox.data.local.datastore
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -13,6 +10,7 @@ class SettingPreferences private constructor(private val dataStore: DataStore<Pr
     private val keyTheme = booleanPreferencesKey("key_theme")
     private val keyIntro = booleanPreferencesKey("key_intro")
     private val keyToken = stringPreferencesKey("key_token")
+    private val keyUserId = intPreferencesKey("key_userid")
 
     fun getTheme(): Flow<Boolean> {
         return dataStore.data.map {
@@ -38,6 +36,18 @@ class SettingPreferences private constructor(private val dataStore: DataStore<Pr
         }
     }
 
+    fun getUserId(): Flow<Int> {
+        return dataStore.data.map {
+            it[keyUserId] ?: 0
+        }
+    }
+
+    suspend fun saveUserId(userId: Int) {
+        dataStore.edit {
+            it[keyUserId] = userId
+        }
+    }
+
     fun getIntro(): Flow<Boolean> {
         return dataStore.data.map {
             it[keyIntro] ?: false
@@ -53,6 +63,7 @@ class SettingPreferences private constructor(private val dataStore: DataStore<Pr
     suspend fun logout() {
         dataStore.edit {
             it.remove(keyToken)
+            it.remove(keyUserId)
         }
     }
 

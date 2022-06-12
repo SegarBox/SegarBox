@@ -33,7 +33,6 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun init() {
         setNavigationBar()
-        prefViewModel.saveIntro(true)
         binding.skipLayout.setOnClickListener(this)
         binding.tvGetStarted.setOnClickListener(this)
     }

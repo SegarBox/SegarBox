@@ -198,7 +198,6 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
         }
 
         paginationViewModel.userCart.observe(this) { userCartResponse ->
-            Log.e("PAGINATION", "OBSERVE CART")
             userCartResponse.meta?.let {
                 binding.toolbar.ivCart.badgeValue = it.total
             }
