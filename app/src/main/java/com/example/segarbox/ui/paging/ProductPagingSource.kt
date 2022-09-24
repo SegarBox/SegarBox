@@ -2,10 +2,10 @@ package com.example.segarbox.ui.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.segarbox.data.local.static.Code
-import com.example.segarbox.data.remote.api.ApiServices
-import com.example.segarbox.data.remote.response.ProductItem
-import com.example.segarbox.data.remote.response.ProductResponse
+import com.example.segarbox.core.utils.Code
+import com.example.segarbox.core.data.source.remote.network.ApiServices
+import com.example.segarbox.core.data.source.remote.response.ProductItem
+import com.example.segarbox.core.data.source.remote.response.ProductResponse
 import retrofit2.Response
 
 class ProductPagingSource(

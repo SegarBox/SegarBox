@@ -6,10 +6,10 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.segarbox.data.remote.response.UserCartItem
+import com.example.segarbox.core.data.source.remote.response.UserCartItem
 import com.example.segarbox.databinding.ItemRowCheckoutBinding
-import com.example.segarbox.helper.formatProductSize
-import com.example.segarbox.helper.formatToRupiah
+import com.example.segarbox.core.utils.formatProductSize
+import com.example.segarbox.core.utils.formatToRupiah
 
 class CheckoutDetailsAdapter : ListAdapter<UserCartItem, CheckoutDetailsAdapter.CheckoutDetailsViewHolder>(DiffCallbackCart) {
     inner class CheckoutDetailsViewHolder(var binding: ItemRowCheckoutBinding): RecyclerView.ViewHolder(binding.root)

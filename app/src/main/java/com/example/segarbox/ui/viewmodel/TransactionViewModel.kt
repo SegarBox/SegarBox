@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.segarbox.data.remote.response.TransactionsResponse
-import com.example.segarbox.data.remote.response.UserCartResponse
-import com.example.segarbox.data.repository.RetrofitRepository
-import com.example.segarbox.helper.Event
+import com.example.segarbox.core.data.source.remote.response.TransactionsResponse
+import com.example.segarbox.core.data.source.remote.response.UserCartResponse
+import com.example.segarbox.core.data.RetrofitRepository
+import com.example.segarbox.core.utils.Event
 import kotlinx.coroutines.launch
 
 class TransactionViewModel(private val retrofitRepository: RetrofitRepository): ViewModel() {

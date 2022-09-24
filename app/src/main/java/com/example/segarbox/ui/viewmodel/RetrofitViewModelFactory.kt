@@ -2,7 +2,7 @@ package com.example.segarbox.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.segarbox.data.repository.RetrofitRepository
+import com.example.segarbox.core.data.RetrofitRepository
 
 class RetrofitViewModelFactory private constructor(private val retrofitRepository: RetrofitRepository) : ViewModelProvider.NewInstanceFactory(){
 

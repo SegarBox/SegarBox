@@ -6,7 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.segarbox.R
 import com.example.segarbox.databinding.ActivityIntroBinding
-import com.example.segarbox.helper.getHelperColor
+import com.example.segarbox.core.utils.getHelperColor
 
 class IntroActivity : AppCompatActivity(), View.OnClickListener {
 

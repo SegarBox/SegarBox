@@ -10,12 +10,12 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.segarbox.R
-import com.example.segarbox.data.local.datastore.SettingPreferences
-import com.example.segarbox.data.repository.RetrofitRepository
-import com.example.segarbox.data.repository.RoomRepository
+import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
+import com.example.segarbox.core.data.RetrofitRepository
+import com.example.segarbox.core.data.RoomRepository
 import com.example.segarbox.databinding.ActivityMainBinding
-import com.example.segarbox.helper.getColorFromAttr
-import com.example.segarbox.helper.getHelperColor
+import com.example.segarbox.core.utils.getColorFromAttr
+import com.example.segarbox.core.utils.getHelperColor
 import com.example.segarbox.ui.viewmodel.MainViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory

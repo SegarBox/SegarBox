@@ -8,7 +8,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.segarbox.R
-import com.example.segarbox.data.local.datastore.SettingPreferences
+import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
 import com.example.segarbox.databinding.ActivityLoginBinding
 import com.example.segarbox.ui.adapter.LoginPagerAdapter
 import com.example.segarbox.ui.viewmodel.PrefViewModel

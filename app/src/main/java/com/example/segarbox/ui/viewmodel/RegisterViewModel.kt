@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.segarbox.data.remote.response.RegisterResponse
-import com.example.segarbox.data.repository.RetrofitRepository
+import com.example.segarbox.core.data.source.remote.response.RegisterResponse
+import com.example.segarbox.core.data.RetrofitRepository
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(private val retrofitRepository: RetrofitRepository) : ViewModel() {

@@ -1,7 +1,7 @@
 package com.example.segarbox.ui.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.segarbox.data.remote.response.ProductTransactionsItem
+import com.example.segarbox.core.data.source.remote.response.ProductTransactionsItem
 
 object DiffCallbackProductTransactions : DiffUtil.ItemCallback<ProductTransactionsItem>() {
     override fun areItemsTheSame(oldItem: ProductTransactionsItem, newItem: ProductTransactionsItem): Boolean {

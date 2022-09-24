@@ -12,12 +12,12 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.segarbox.R
-import com.example.segarbox.data.local.datastore.SettingPreferences
-import com.example.segarbox.data.local.static.Code
-import com.example.segarbox.data.remote.response.AddressItem
-import com.example.segarbox.data.repository.RetrofitRepository
+import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
+import com.example.segarbox.core.utils.Code
+import com.example.segarbox.core.data.source.remote.response.AddressItem
+import com.example.segarbox.core.data.RetrofitRepository
 import com.example.segarbox.databinding.ActivityAddressBinding
-import com.example.segarbox.helper.tokenFormat
+import com.example.segarbox.core.utils.tokenFormat
 import com.example.segarbox.ui.adapter.AddressAdapter
 import com.example.segarbox.ui.viewmodel.AddressViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModel

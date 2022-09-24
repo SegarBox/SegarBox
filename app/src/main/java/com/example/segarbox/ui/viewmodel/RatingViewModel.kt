@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.segarbox.data.remote.response.*
-import com.example.segarbox.data.repository.RetrofitRepository
+import com.example.segarbox.core.data.source.remote.response.RatingResponse
+import com.example.segarbox.core.data.source.remote.response.SaveRatingResponse
+import com.example.segarbox.core.data.source.remote.response.UserCartResponse
+import com.example.segarbox.core.data.RetrofitRepository
 import kotlinx.coroutines.launch
 
 class RatingViewModel(private val retrofitRepository: RetrofitRepository): ViewModel() {

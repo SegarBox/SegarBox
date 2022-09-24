@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.segarbox.data.local.model.UpdateStatusBody
-import com.example.segarbox.data.remote.response.TransactionByIdResponse
-import com.example.segarbox.data.remote.response.TransactionsStatusResponse
-import com.example.segarbox.data.remote.response.UserResponse
-import com.example.segarbox.data.repository.RetrofitRepository
+import com.example.segarbox.core.domain.model.UpdateStatusBody
+import com.example.segarbox.core.data.source.remote.response.TransactionByIdResponse
+import com.example.segarbox.core.data.source.remote.response.TransactionsStatusResponse
+import com.example.segarbox.core.data.source.remote.response.UserResponse
+import com.example.segarbox.core.data.RetrofitRepository
 import kotlinx.coroutines.launch
 
 class InvoiceViewModel(private val retrofitRepository: RetrofitRepository): ViewModel() {

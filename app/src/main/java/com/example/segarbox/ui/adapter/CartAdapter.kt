@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.segarbox.data.remote.response.UserCartItem
+import com.example.segarbox.core.data.source.remote.response.UserCartItem
 import com.example.segarbox.databinding.ItemRowCartBinding
-import com.example.segarbox.helper.formatProductSize
-import com.example.segarbox.helper.formatToRupiah
+import com.example.segarbox.core.utils.formatProductSize
+import com.example.segarbox.core.utils.formatToRupiah
 
 class CartAdapter(private val onItemCartClickCallback: OnItemCartClickCallback) :
     ListAdapter<UserCartItem, CartAdapter.CartViewHolder>(DiffCallbackCart) {

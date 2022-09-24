@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.segarbox.data.remote.api.ApiServices
-import com.example.segarbox.data.remote.response.ProductItem
-import com.example.segarbox.data.remote.response.UserCartResponse
-import com.example.segarbox.data.repository.RetrofitRepository
+import com.example.segarbox.core.data.source.remote.network.ApiServices
+import com.example.segarbox.core.data.source.remote.response.ProductItem
+import com.example.segarbox.core.data.source.remote.response.UserCartResponse
+import com.example.segarbox.core.data.RetrofitRepository
 import kotlinx.coroutines.launch
 
 class PaginationViewModel(private val retrofitRepository: RetrofitRepository) : ViewModel() {

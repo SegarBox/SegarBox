@@ -2,8 +2,8 @@ package com.example.segarbox.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.segarbox.data.repository.RetrofitRepository
-import com.example.segarbox.data.repository.RoomRepository
+import com.example.segarbox.core.data.RetrofitRepository
+import com.example.segarbox.core.data.RoomRepository
 
 class RetrofitRoomViewModelFactory private constructor(
     private val roomRepository: RoomRepository,
