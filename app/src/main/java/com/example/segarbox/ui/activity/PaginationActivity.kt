@@ -17,12 +17,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.segarbox.BuildConfig
 import com.example.segarbox.R
-import com.example.segarbox.data.local.datastore.SettingPreferences
-import com.example.segarbox.data.local.static.Code
-import com.example.segarbox.data.remote.api.ApiConfig
-import com.example.segarbox.data.repository.RetrofitRepository
+import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
+import com.example.segarbox.core.data.source.remote.network.ApiConfig
+import com.example.segarbox.core.utils.*
+import com.example.segarbox.core.data.RetrofitRepository
 import com.example.segarbox.databinding.ActivityPaginationBinding
-import com.example.segarbox.helper.*
 import com.example.segarbox.ui.adapter.LoadingStateAdapter
 import com.example.segarbox.ui.adapter.MarginGridItemDecoration
 import com.example.segarbox.ui.adapter.PaginationAdapter

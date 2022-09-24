@@ -1,7 +1,7 @@
 package com.example.segarbox.ui.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.segarbox.data.remote.response.AddressItem
+import com.example.segarbox.core.data.source.remote.response.AddressItem
 
 object DiffCallbackAddress : DiffUtil.ItemCallback<AddressItem>() {
     override fun areItemsTheSame(oldItem: AddressItem, newItem: AddressItem): Boolean {

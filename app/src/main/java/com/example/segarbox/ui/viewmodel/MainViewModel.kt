@@ -4,15 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.segarbox.data.local.model.MostPopularBody
-import com.example.segarbox.data.local.static.Code
-import com.example.segarbox.data.remote.response.CityResponse
-import com.example.segarbox.data.remote.response.CityResults
-import com.example.segarbox.data.remote.response.ProductResponse
-import com.example.segarbox.data.remote.response.UserCartResponse
-import com.example.segarbox.data.repository.RetrofitRepository
-import com.example.segarbox.data.repository.RoomRepository
-import com.example.segarbox.helper.Event
+import com.example.segarbox.core.domain.model.MostPopularBody
+import com.example.segarbox.core.utils.Code
+import com.example.segarbox.core.data.source.remote.response.CityResponse
+import com.example.segarbox.core.data.source.remote.response.CityResults
+import com.example.segarbox.core.data.source.remote.response.ProductResponse
+import com.example.segarbox.core.data.source.remote.response.UserCartResponse
+import com.example.segarbox.core.data.RetrofitRepository
+import com.example.segarbox.core.data.RoomRepository
+import com.example.segarbox.core.utils.Event
 import kotlinx.coroutines.launch
 
 class MainViewModel(

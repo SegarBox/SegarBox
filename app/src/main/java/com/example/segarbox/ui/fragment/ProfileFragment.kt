@@ -13,10 +13,10 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.segarbox.R
-import com.example.segarbox.data.local.datastore.SettingPreferences
-import com.example.segarbox.data.repository.RetrofitRepository
+import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
+import com.example.segarbox.core.data.RetrofitRepository
 import com.example.segarbox.databinding.FragmentProfileBinding
-import com.example.segarbox.helper.tokenFormat
+import com.example.segarbox.core.utils.tokenFormat
 import com.example.segarbox.ui.activity.CartActivity
 import com.example.segarbox.ui.activity.LoginActivity
 import com.example.segarbox.ui.activity.RatingActivity

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.segarbox.data.remote.response.AddressItem
+import com.example.segarbox.core.data.source.remote.response.AddressItem
 import com.example.segarbox.databinding.ItemRowAddressBinding
 
 class AddressAdapter(private val onItemAddressClickCallback: OnItemAddressClickCallback): ListAdapter<AddressItem, AddressAdapter.AddressViewHolder>(DiffCallbackAddress) {

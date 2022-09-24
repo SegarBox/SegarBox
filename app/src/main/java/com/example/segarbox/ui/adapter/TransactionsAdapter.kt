@@ -6,12 +6,12 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.segarbox.data.remote.response.TransactionItem
+import com.example.segarbox.core.data.source.remote.response.TransactionItem
 import com.example.segarbox.databinding.ItemRowHistoryBinding
-import com.example.segarbox.helper.formatItemCount
-import com.example.segarbox.helper.formatSimpleDate
-import com.example.segarbox.helper.formatToRupiah
-import com.example.segarbox.helper.formatTotalCountItem
+import com.example.segarbox.core.utils.formatItemCount
+import com.example.segarbox.core.utils.formatSimpleDate
+import com.example.segarbox.core.utils.formatToRupiah
+import com.example.segarbox.core.utils.formatTotalCountItem
 
 class TransactionsAdapter(private val onItemTransactionsClickCallback: OnItemTransactionsClickCallback) :
     ListAdapter<TransactionItem, TransactionsAdapter.TransactionsViewHolder>(DiffCallbackTransaction) {

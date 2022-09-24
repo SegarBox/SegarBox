@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.segarbox.R
-import com.example.segarbox.data.local.model.ShippingModel
-import com.example.segarbox.data.local.static.Code
+import com.example.segarbox.core.domain.model.ShippingModel
+import com.example.segarbox.core.utils.Code
 import com.example.segarbox.databinding.ItemRowShippingBinding
-import com.example.segarbox.helper.formatToRupiah
-import com.example.segarbox.helper.tidyUpJneEtd
-import com.example.segarbox.helper.tidyUpPosEtd
-import com.example.segarbox.helper.tidyUpTikiEtd
+import com.example.segarbox.core.utils.formatToRupiah
+import com.example.segarbox.core.utils.tidyUpJneEtd
+import com.example.segarbox.core.utils.tidyUpPosEtd
+import com.example.segarbox.core.utils.tidyUpTikiEtd
 
 class ShippingAdapter(private val onItemClickCallback: OnItemClickCallback): ListAdapter<ShippingModel, ShippingAdapter.ShippingViewHolder>(DiffCallbackShipping) {
     inner class ShippingViewHolder(var binding: ItemRowShippingBinding): RecyclerView.ViewHolder(binding.root)
