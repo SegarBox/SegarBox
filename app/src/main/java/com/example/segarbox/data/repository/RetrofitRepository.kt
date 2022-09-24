@@ -18,9 +18,9 @@ import com.example.segarbox.ui.paging.ProductPagingSource
 
 class RetrofitRepository {
 
+    private val segarBoxApiServices = ApiConfig.getApiServices(BuildConfig.BASE_URL_SEGARBOX)
     private val mapsApiServices = ApiConfig.getApiServices(BuildConfig.BASE_URL_GOOGLE_MAPS)
     private val rajaOngkirApiServices = ApiConfig.getApiServices(BuildConfig.BASE_URL_RAJAONGKIR)
-    private val segarBoxApiServices = ApiConfig.getApiServices(BuildConfig.BASE_URL_SEGARBOX)
     private val segarBoxFlaskApiServices =
         ApiConfig.getApiServices(BuildConfig.BASE_URL_SEGARBOX_FLASK)
 

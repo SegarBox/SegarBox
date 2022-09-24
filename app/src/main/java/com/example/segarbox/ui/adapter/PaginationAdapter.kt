@@ -11,8 +11,10 @@ import com.example.segarbox.helper.formatProductSize
 import com.example.segarbox.helper.formatToRupiah
 import com.example.segarbox.helper.getCardResponsiveWidth
 
-class PaginationAdapter(private val onItemPaginationClickCallback: OnItemPaginationClickCallback): PagingDataAdapter<ProductItem, PaginationAdapter.PaginationViewHolder>(DiffCallbackProduct) {
-    inner class PaginationViewHolder(var binding: ItemRowMainBinding): RecyclerView.ViewHolder(binding.root)
+class PaginationAdapter(private val onItemPaginationClickCallback: OnItemPaginationClickCallback) :
+    PagingDataAdapter<ProductItem, PaginationAdapter.PaginationViewHolder>(DiffCallbackProduct) {
+    inner class PaginationViewHolder(var binding: ItemRowMainBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PaginationViewHolder {
         val binding = ItemRowMainBinding.inflate(LayoutInflater.from(parent.context), parent, false)

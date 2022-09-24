@@ -48,7 +48,7 @@ class MainViewModel(
         // Most Popular
         saveCheckedChips(Code.MOST_POPULAR_CHIPS)
         // All Products
-        getAllProduct(1, 20)
+        getAllProduct()
     }
 
     fun getCityFromApi() {
@@ -89,10 +89,10 @@ class MainViewModel(
     }
 
 
-    private fun getAllProduct(page: Int, size: Int) {
+    private fun getAllProduct() {
         viewModelScope.launch {
             _isLoading.postValue(true)
-            val request = retrofitRepository.getAllProduct(page, size)
+            val request = retrofitRepository.getAllProduct(1, 20)
             _allProductResponse.postValue(request)
             _isLoading.postValue(false)
         }

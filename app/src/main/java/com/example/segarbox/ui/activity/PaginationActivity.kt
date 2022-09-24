@@ -37,7 +37,6 @@ import kotlinx.coroutines.launch
 private val Context.dataStore by preferencesDataStore(name = "settings")
 class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginationClickCallback,
     View.OnClickListener {
-
     private var _binding: ActivityPaginationBinding? = null
     private val binding get() = _binding!!
     private var token = ""
@@ -58,7 +57,6 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
         setContentView(binding.root)
 
         init()
-
     }
 
     private fun init() {
@@ -188,7 +186,6 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
                     paginationAdapter.submitData(lifecycle, data)
                 }
             }
-
         }
 
         prefViewModel.getToken().observe(this) { token ->

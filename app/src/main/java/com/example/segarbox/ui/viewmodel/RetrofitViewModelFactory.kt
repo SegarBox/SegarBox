@@ -32,7 +32,7 @@ class RetrofitViewModelFactory private constructor(private val retrofitRepositor
         @JvmStatic
         fun getInstance(retrofitRepository: RetrofitRepository): RetrofitViewModelFactory {
             if (INSTANCE == null) {
-                synchronized(PrefViewModelFactory::class.java) {
+                synchronized(RetrofitViewModelFactory::class.java) {
                     INSTANCE = RetrofitViewModelFactory(retrofitRepository)
                 }
             }
