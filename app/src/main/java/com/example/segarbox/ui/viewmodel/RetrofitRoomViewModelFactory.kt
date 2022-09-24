@@ -27,7 +27,7 @@ class RetrofitRoomViewModelFactory private constructor(
         @JvmStatic
         fun getInstance(roomRepository: RoomRepository, retrofitRepository: RetrofitRepository): RetrofitRoomViewModelFactory {
             if (INSTANCE == null) {
-                synchronized(PrefViewModelFactory::class.java) {
+                synchronized(RetrofitRoomViewModelFactory::class.java) {
                     INSTANCE = RetrofitRoomViewModelFactory(roomRepository, retrofitRepository)
                 }
             }

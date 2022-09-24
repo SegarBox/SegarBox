@@ -13,7 +13,6 @@ class MarginItemDecoration(private val margin: Int): RecyclerView.ItemDecoration
     ) {
 
         with(outRect) {
-
             if (parent.getChildAdapterPosition(view) == 0) {
                 left = margin
             }
