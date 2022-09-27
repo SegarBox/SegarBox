@@ -76,7 +76,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_ktx_version"
     kapt "androidx.room:room-compiler:$room_ktx_version"
 
-    implementation" com.beust:klaxon:$klaxon_version"
+    implementation "com.beust:klaxon:$klaxon_version"
 
     implementation "com.google.android.gms:play-services-maps:$maps_version"
     implementation "com.google.android.gms:play-services-location:$maps_version"

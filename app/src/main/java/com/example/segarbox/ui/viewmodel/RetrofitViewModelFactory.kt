@@ -3,6 +3,18 @@ package com.example.segarbox.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.segarbox.core.data.RetrofitRepository
+import com.example.segarbox.ui.address.AddressViewModel
+import com.example.segarbox.ui.cart.CartViewModel
+import com.example.segarbox.ui.checkout.CheckoutViewModel
+import com.example.segarbox.ui.detail.DetailViewModel
+import com.example.segarbox.ui.invoice.InvoiceViewModel
+import com.example.segarbox.ui.login.LoginViewModel
+import com.example.segarbox.ui.login.RegisterViewModel
+import com.example.segarbox.ui.maps.MapsViewModel
+import com.example.segarbox.ui.pagination.PaginationViewModel
+import com.example.segarbox.ui.profile.ProfileViewModel
+import com.example.segarbox.ui.rating.RatingViewModel
+import com.example.segarbox.ui.transaction.TransactionViewModel
 
 class RetrofitViewModelFactory private constructor(private val retrofitRepository: RetrofitRepository) : ViewModelProvider.NewInstanceFactory(){
 
