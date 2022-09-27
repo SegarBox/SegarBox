@@ -13,7 +13,7 @@ import com.example.segarbox.core.domain.model.UpdateStatusBody
 import com.example.segarbox.core.data.source.remote.network.ApiConfig
 import com.example.segarbox.core.data.source.remote.network.ApiServices
 import com.example.segarbox.core.data.source.remote.response.*
-import com.example.segarbox.ui.paging.ProductPagingSource
+import com.example.segarbox.core.data.paging.ProductPagingSource
 
 
 class RetrofitRepository {
