@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.segarbox.ui.fragment.HomeFragment"
+        android:name="com.example.segarbox.ui.home.HomeFragment"
         tools:layout="@layout/fragment_home"/>
 
     <fragment
         android:id="@+id/navigation_transaction"
-        android:name="com.example.segarbox.ui.fragment.TransactionFragment"
+        android:name="com.example.segarbox.ui.transaction.TransactionFragment"
         tools:layout="@layout/fragment_transaction"/>
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.segarbox.ui.fragment.ProfileFragment"
+        android:name="com.example.segarbox.ui.profile.ProfileFragment"
         tools:layout="@layout/fragment_profile"/>
 
 </navigation>

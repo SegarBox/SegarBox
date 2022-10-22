@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimaryVariant"
-    tools:context=".ui.activity.PaginationActivity">
+    tools:context=".ui.pagination.PaginationActivity">
 
     <include
         android:id="@+id/toolbar"
