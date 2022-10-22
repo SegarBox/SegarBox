@@ -87,6 +87,11 @@ dependencies {
     implementation "com.github.ybq:Android-SpinKit:$spinkit_version"
     implementation "com.airbnb.android:lottie:$lottie_version"
 
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    kapt "androidx.hilt:hilt-compiler:$hilt_jetpack_version"
+    kaptAndroidTest "androidx.hilt:hilt-compiler:$hilt_jetpack_version"
+
 
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     testImplementation "junit:junit:$junit_version"

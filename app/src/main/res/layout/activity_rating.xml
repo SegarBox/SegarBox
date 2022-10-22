@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimaryVariant"
     android:orientation="vertical"
-    tools:context=".ui.activity.RatingActivity">
+    tools:context=".ui.rating.RatingActivity">
 
 
     <include

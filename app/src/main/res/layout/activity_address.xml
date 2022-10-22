@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimaryVariant"
-    tools:context=".ui.activity.AddressActivity">
+    tools:context=".ui.address.AddressActivity">
 
     <include
         android:id="@+id/toolbar"
