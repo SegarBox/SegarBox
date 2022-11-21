@@ -14,9 +14,8 @@ import com.example.segarbox.core.data.source.remote.response.AddressItem
 import com.example.segarbox.core.data.RetrofitRepository
 import com.example.segarbox.core.data.RoomRepository
 import com.example.segarbox.databinding.ActivityShippingBinding
-import com.example.segarbox.core.utils.tidyUpJneEtd
+import com.example.segarbox.core.utils.tidyUpJneAndTikiEtd
 import com.example.segarbox.core.utils.tidyUpPosEtd
-import com.example.segarbox.core.utils.tidyUpTikiEtd
 import com.example.segarbox.ui.adapter.ShippingAdapter
 import com.example.segarbox.ui.viewmodel.RetrofitRoomViewModelFactory
 import com.google.android.material.snackbar.Snackbar
@@ -125,13 +124,13 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
                             // Cek Maksimal 1 Hari
                             when (shippingModel.code) {
                                 Code.TIKI.uppercase() -> {
-                                    val etd = shippingModel.etd.tidyUpTikiEtd(this).split(" ")[0].toInt()
+                                    val etd = shippingModel.etd.tidyUpJneAndTikiEtd(this).split(" ")[0].toInt()
                                     if (etd <= 1) {
                                         listShipment.add(shippingModel)
                                     }
                                 }
                                 Code.JNE.uppercase() -> {
-                                    val etd = shippingModel.etd.tidyUpJneEtd(this).split(" ")[0].toInt()
+                                    val etd = shippingModel.etd.tidyUpJneAndTikiEtd(this).split(" ")[0].toInt()
                                     if (etd <= 1) {
                                         listShipment.add(shippingModel)
                                     }
