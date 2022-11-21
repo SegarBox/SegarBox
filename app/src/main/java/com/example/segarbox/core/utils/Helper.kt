@@ -43,11 +43,7 @@ fun LatLng.formatted(): String {
     return "${this.latitude},${this.longitude}"
 }
 
-fun String.tidyUpTikiEtd(context: Context): String {
-    return context.getString(R.string.etd, this)
-}
-
-fun String.tidyUpJneEtd(context: Context): String {
+fun String.tidyUpJneAndTikiEtd(context: Context): String {
     val split = this.split("-")
     var etd = ""
 
@@ -55,7 +51,7 @@ fun String.tidyUpJneEtd(context: Context): String {
         etd += if (i == 0) {
             split[i]
         } else {
-            " -${split[i]}"
+            " - ${split[i]}"
         }
     }
     return context.getString(R.string.etd, etd)

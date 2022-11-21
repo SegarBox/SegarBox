@@ -11,9 +11,8 @@ import com.example.segarbox.core.domain.model.ShippingModel
 import com.example.segarbox.core.utils.Code
 import com.example.segarbox.databinding.ItemRowShippingBinding
 import com.example.segarbox.core.utils.formatToRupiah
-import com.example.segarbox.core.utils.tidyUpJneEtd
+import com.example.segarbox.core.utils.tidyUpJneAndTikiEtd
 import com.example.segarbox.core.utils.tidyUpPosEtd
-import com.example.segarbox.core.utils.tidyUpTikiEtd
 
 class ShippingAdapter(private val onItemClickCallback: OnItemClickCallback): ListAdapter<ShippingModel, ShippingAdapter.ShippingViewHolder>(DiffCallbackShipping) {
     inner class ShippingViewHolder(var binding: ItemRowShippingBinding): RecyclerView.ViewHolder(binding.root)
@@ -34,7 +33,7 @@ class ShippingAdapter(private val onItemClickCallback: OnItemClickCallback): Lis
                         .load(R.drawable.tiki)
                         .into(ivKurir)
 
-                    tvEtd.text = item.etd.tidyUpTikiEtd(context)
+                    tvEtd.text = item.etd.tidyUpJneAndTikiEtd(context)
                 }
 
                 Code.JNE.uppercase() -> {
@@ -42,7 +41,7 @@ class ShippingAdapter(private val onItemClickCallback: OnItemClickCallback): Lis
                         .load(R.drawable.jne)
                         .into(ivKurir)
 
-                    tvEtd.text = item.etd.tidyUpJneEtd(context)
+                    tvEtd.text = item.etd.tidyUpJneAndTikiEtd(context)
                 }
                 else -> {
                     Glide.with(context)

@@ -198,14 +198,14 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                                         .load(R.drawable.tiki)
                                         .into(ivKurir)
 
-                                    tvEtd.text = it.etd.tidyUpTikiEtd(this@CheckoutActivity)
+                                    tvEtd.text = it.etd.tidyUpJneAndTikiEtd(this@CheckoutActivity)
                                 }
                                 Code.JNE.uppercase() -> {
                                     Glide.with(this@CheckoutActivity)
                                         .load(R.drawable.jne)
                                         .into(ivKurir)
 
-                                    tvEtd.text = it.etd.tidyUpJneEtd(this@CheckoutActivity)
+                                    tvEtd.text = it.etd.tidyUpJneAndTikiEtd(this@CheckoutActivity)
                                 }
                                 else -> {
                                     Glide.with(this@CheckoutActivity)
