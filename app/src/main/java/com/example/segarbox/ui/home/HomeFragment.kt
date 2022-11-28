@@ -43,7 +43,6 @@ private val Context.dataStore by preferencesDataStore(name = "settings")
 class HomeFragment : Fragment(), View.OnClickListener,
     StartShoppingAdapter.OnItemStartShoppingClickCallback,
     AllProductAdapter.OnItemAllProductClickCallback {
-
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private var ratio = 0F
@@ -65,8 +64,6 @@ class HomeFragment : Fragment(), View.OnClickListener,
     ): View {
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return binding.root
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
