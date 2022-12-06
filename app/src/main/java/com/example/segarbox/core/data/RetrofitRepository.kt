@@ -1,6 +1,5 @@
 package com.example.segarbox.core.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -8,14 +7,13 @@ import androidx.paging.PagingData
 import androidx.paging.liveData
 import com.beust.klaxon.Klaxon
 import com.example.segarbox.BuildConfig
-import com.example.segarbox.core.domain.model.MakeOrderBody
-import com.example.segarbox.core.domain.model.MostPopularBody
-import com.example.segarbox.core.domain.model.UpdateStatusBody
+import com.example.segarbox.core.data.paging.ProductPagingSource
 import com.example.segarbox.core.data.source.remote.network.ApiConfig
 import com.example.segarbox.core.data.source.remote.network.ApiServices
 import com.example.segarbox.core.data.source.remote.response.*
-import com.example.segarbox.core.data.paging.ProductPagingSource
-
+import com.example.segarbox.core.domain.model.MakeOrderBody
+import com.example.segarbox.core.domain.model.MostPopularBody
+import com.example.segarbox.core.domain.model.UpdateStatusBody
 
 class RetrofitRepository {
 
@@ -26,7 +24,6 @@ class RetrofitRepository {
         ApiConfig.getApiServices(BuildConfig.BASE_URL_SEGARBOX_FLASK)
 
     suspend fun getAddress(latLng: String): MapsResponse {
-
         try {
             val request = mapsApiServices.getAddress(latLng)
 
