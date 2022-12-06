@@ -55,4 +55,16 @@ class PrefViewModel(private val pref: SettingPreferences): ViewModel() {
             pref.logout()
         }
     }
+
+    fun saveBaseUrl(baseUrl: String) {
+        viewModelScope.launch {
+            pref.saveBaseUrl(baseUrl)
+        }
+    }
+
+    fun getBaseUrl(): LiveData<String> {
+        return pref.getBaseUrl().asLiveData()
+    }
+
+
 }

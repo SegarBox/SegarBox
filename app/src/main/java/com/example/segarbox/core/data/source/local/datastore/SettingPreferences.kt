@@ -2,6 +2,7 @@ package com.example.segarbox.core.data.source.local.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
+import com.example.segarbox.BuildConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -11,6 +12,7 @@ class SettingPreferences private constructor(private val dataStore: DataStore<Pr
     private val keyIntro = booleanPreferencesKey("key_intro")
     private val keyToken = stringPreferencesKey("key_token")
     private val keyUserId = intPreferencesKey("key_userid")
+    private val keyBaseUrl = stringPreferencesKey("key_base_url")
 
     fun getTheme(): Flow<Boolean> {
         return dataStore.data.map {
@@ -64,6 +66,18 @@ class SettingPreferences private constructor(private val dataStore: DataStore<Pr
         dataStore.edit {
             it.remove(keyToken)
             it.remove(keyUserId)
+        }
+    }
+
+    suspend fun saveBaseUrl(baseUrl: String) {
+        dataStore.edit {
+            it[keyBaseUrl] = baseUrl
+        }
+    }
+
+    fun getBaseUrl(): Flow<String> {
+        return dataStore.data.map {
+            it[keyBaseUrl] ?: BuildConfig.BASE_URL_SEGARBOX
         }
     }
 

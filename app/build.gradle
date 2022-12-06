@@ -6,6 +6,8 @@ plugins {
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
+apply from: '../shared_dependencies.gradle'
+
 android {
     compileSdk 31
 
@@ -42,14 +44,6 @@ android {
 }
 
 dependencies {
-
-    implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "com.google.android.material:material:$material_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
-    implementation "androidx.activity:activity-ktx:$activity_version"
-    implementation "androidx.fragment:fragment-ktx:$fragment_version"
-
     implementation "androidx.navigation:navigation-fragment:$navigation_version"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
@@ -59,17 +53,14 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
-    implementation "androidx.datastore:datastore-preferences:$datastore_version"
 
-    implementation "com.github.bumptech.glide:glide:$glide_version"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-scalars:$retrofit_scalar_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
-    implementation "androidx.annotation:annotation:$annotation_version"
-    implementation "androidx.legacy:legacy-support-v4:$legacy_version"
+
 
     implementation "androidx.room:room-paging:$paging_version"
     implementation "androidx.paging:paging-runtime-ktx:$paging_ktx_version"
@@ -81,19 +72,13 @@ dependencies {
     implementation "com.google.android.gms:play-services-maps:$maps_version"
     implementation "com.google.android.gms:play-services-location:$maps_version"
 
-    implementation "androidx.test.espresso:espresso-idling-resource:$espresso_version"
 
     implementation "io.github.nikartm:image-support:$badge_version"
     implementation "com.github.ybq:Android-SpinKit:$spinkit_version"
     implementation "com.airbnb.android:lottie:$lottie_version"
 
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
-    kapt "androidx.hilt:hilt-compiler:$hilt_jetpack_version"
-    kaptAndroidTest "androidx.hilt:hilt-compiler:$hilt_jetpack_version"
 
 
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
-    testImplementation "junit:junit:$junit_version"
-    androidTestImplementation "androidx.test.ext:junit:$junit_test_version"
+
+
 }
