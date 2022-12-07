@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.segarbox.core.data.source.remote.response.DeleteAddressResponse
-import com.example.segarbox.core.data.source.remote.response.GetAddressResponse
-import com.example.segarbox.core.data.RetrofitRepository
+import com.example.core.data.RetrofitRepository
+import com.example.core.data.source.remote.response.DeleteAddressResponse
+import com.example.core.data.source.remote.response.GetAddressResponse
 import kotlinx.coroutines.launch
 
 class AddressViewModel(private val retrofitRepository: RetrofitRepository): ViewModel() {

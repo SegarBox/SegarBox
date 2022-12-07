@@ -12,20 +12,19 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.data.source.remote.response.AddressItem
+import com.example.core.data.source.remote.response.CartDetailResponse
+import com.example.core.domain.model.MakeOrderBody
+import com.example.core.domain.model.ProductTransactions
+import com.example.core.domain.model.ShippingModel
+import com.example.core.ui.CheckoutDetailsAdapter
+import com.example.core.utils.*
 import com.example.segarbox.R
-import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
-import com.example.segarbox.core.domain.model.MakeOrderBody
-import com.example.segarbox.core.domain.model.ProductTransactions
-import com.example.segarbox.core.domain.model.ShippingModel
-import com.example.segarbox.core.data.source.remote.response.AddressItem
-import com.example.segarbox.core.data.source.remote.response.CartDetailResponse
-import com.example.segarbox.core.utils.*
-import com.example.segarbox.core.data.RetrofitRepository
 import com.example.segarbox.databinding.ActivityCheckoutBinding
 import com.example.segarbox.ui.address.AddressActivity
 import com.example.segarbox.ui.invoice.InvoiceActivity
 import com.example.segarbox.ui.shipping.ShippingActivity
-import com.example.segarbox.ui.adapter.CheckoutDetailsAdapter
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
@@ -46,7 +45,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
     private var isShippingCostAdded = false
     private val checkoutDetailsAdapter = CheckoutDetailsAdapter()
     private val checkoutViewModel by viewModels<CheckoutViewModel> {
-        RetrofitViewModelFactory.getInstance(RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
     }
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))

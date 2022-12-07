@@ -9,12 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
 import com.bumptech.glide.Glide
+import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.data.source.remote.response.ProductItem
+import com.example.core.data.source.remote.response.UserCartItem
+import com.example.core.utils.*
 import com.example.segarbox.R
-import com.example.segarbox.core.data.RetrofitRepository
-import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
-import com.example.segarbox.core.data.source.remote.response.ProductItem
-import com.example.segarbox.core.data.source.remote.response.UserCartItem
-import com.example.segarbox.core.utils.*
 import com.example.segarbox.databinding.ActivityDetailBinding
 import com.example.segarbox.ui.cart.CartActivity
 import com.example.segarbox.ui.login.LoginActivity
@@ -35,7 +34,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     private var token = ""
     private var quantity = 0
     private val detailViewModel by viewModels<DetailViewModel> {
-        RetrofitViewModelFactory.getInstance(RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
     }
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
@@ -142,7 +141,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
         detailViewModel.addCartResponse.observe(this) { addCartResponse ->
             if (addCartResponse.message != null) {
-                Snackbar.make(binding.root, addCartResponse.message, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                Snackbar.make(binding.root, addCartResponse.message.toString(), Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
             } else {
                 if (token.isNotEmpty()) {
                     detailViewModel.getUserCart(token.tokenFormat())
@@ -155,7 +154,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
         detailViewModel.updateUserCartResponse.observe(this) { updateCartResponse ->
             if (updateCartResponse.message != null) {
-                Snackbar.make(binding.root, updateCartResponse.message, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                Snackbar.make(binding.root, updateCartResponse.message.toString(), Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
                 detailViewModel.getProductById(productId)
             } else {
                 updateCartResponse.info?.let {
@@ -170,7 +169,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
         detailViewModel.deleteUserCartResponse.observe(this) { deleteCartResponse ->
             if (deleteCartResponse.message != null) {
-                Snackbar.make(binding.root, deleteCartResponse.message, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                Snackbar.make(binding.root, deleteCartResponse.message.toString(), Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
             } else {
                 deleteCartResponse.info?.let {
                     val intent = Intent(this, CartActivity::class.java)

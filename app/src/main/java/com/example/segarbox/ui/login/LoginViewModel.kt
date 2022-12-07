@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.segarbox.core.data.source.remote.response.LoginResponse
-import com.example.segarbox.core.data.RetrofitRepository
+import com.example.core.data.RetrofitRepository
+import com.example.core.data.source.remote.response.LoginResponse
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val retrofitRepository: RetrofitRepository): ViewModel() {

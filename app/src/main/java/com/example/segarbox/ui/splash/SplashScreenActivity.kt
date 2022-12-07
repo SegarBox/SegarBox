@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -17,15 +16,14 @@ import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.core.data.source.local.datastore.SettingPreferences
 import com.example.segarbox.R
-import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
 import com.example.segarbox.databinding.ActivitySplashScreenBinding
 import com.example.segarbox.ui.dev.DevActivity
 import com.example.segarbox.ui.home.MainActivity
 import com.example.segarbox.ui.intro.IntroActivity
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
-import kotlinx.coroutines.Runnable
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 @SuppressLint("CustomSplashScreen")

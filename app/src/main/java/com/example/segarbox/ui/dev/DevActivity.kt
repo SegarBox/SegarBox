@@ -7,8 +7,8 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.core.data.source.local.datastore.SettingPreferences
 import com.example.segarbox.R
-import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
 import com.example.segarbox.databinding.ActivityDevBinding
 import com.example.segarbox.ui.home.MainActivity
 import com.example.segarbox.ui.viewmodel.PrefViewModel

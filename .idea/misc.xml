@@ -142,6 +142,21 @@
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_row_rating.xml" value="0.264" />
         <entry key="..\:/github/SegarBox/app/src/main/res/layout/item_row_shipping.xml" value="0.1987179487179487" />
         <entry key="..\:/github/SegarBox/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1987179487179487" />
+        <entry key="..\:/github/SegarBox/core/src/main/res/drawable/ic_baseline_add_circle_outline_24.xml" value="0.139" />
+        <entry key="..\:/github/SegarBox/core/src/main/res/drawable/ic_baseline_arrow_forward_ios_24.xml" value="0.139" />
+        <entry key="..\:/github/SegarBox/core/src/main/res/drawable/ic_baseline_close_24.xml" value="0.139" />
+        <entry key="..\:/github/SegarBox/core/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.139" />
+        <entry key="..\:/github/SegarBox/core/src/main/res/drawable/ic_baseline_remove_circle_outline_24.xml" value="0.139" />
+        <entry key="..\:/github/SegarBox/core/src/main/res/font/poppins.xml" value="0.22067510548523206" />
+        <entry key="..\:/github/SegarBox/core/src/main/res/layout/counter.xml" value="0.1987179487179487" />
+        <entry key="..\:/github/SegarBox/core/src/main/res/layout/item_loading.xml" value="0.1987179487179487" />
+        <entry key="..\:/github/SegarBox/core/src/main/res/layout/item_row_address.xml" value="0.1987179487179487" />
+        <entry key="..\:/github/SegarBox/core/src/main/res/layout/item_row_cart.xml" value="0.1987179487179487" />
+        <entry key="..\:/github/SegarBox/core/src/main/res/layout/item_row_checkout.xml" value="0.1987179487179487" />
+        <entry key="..\:/github/SegarBox/core/src/main/res/layout/item_row_history.xml" value="0.1987179487179487" />
+        <entry key="..\:/github/SegarBox/core/src/main/res/layout/item_row_main.xml" value="0.1987179487179487" />
+        <entry key="..\:/github/SegarBox/core/src/main/res/layout/item_row_rating.xml" value="0.1987179487179487" />
+        <entry key="..\:/github/SegarBox/core/src/main/res/layout/item_row_shipping.xml" value="0.1987179487179487" />
       </map>
     </option>
   </component>

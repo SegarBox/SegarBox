@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SplashViewModel(): ViewModel() {
+class SplashViewModel: ViewModel() {
     private val _clickCount = MutableLiveData(0)
     val clickCount: LiveData<Int> = _clickCount
 

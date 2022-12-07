@@ -10,11 +10,10 @@ import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.utils.getColorFromAttr
 import com.example.segarbox.R
-import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
-import com.example.segarbox.core.data.RetrofitRepository
 import com.example.segarbox.databinding.FragmentRegisterBinding
-import com.example.segarbox.core.utils.getColorFromAttr
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
@@ -32,7 +31,7 @@ class RegisterFragment : Fragment(), View.OnClickListener {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
     }
     private val registerViewModel by viewModels<RegisterViewModel> {
-        RetrofitViewModelFactory.getInstance(RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
     }
 
     override fun onCreateView(
@@ -109,7 +108,7 @@ class RegisterFragment : Fragment(), View.OnClickListener {
             // Jika berhasil register
             when {
                 registerResponse.token != null -> {
-                    prefViewModel.saveToken(registerResponse.token)
+                    prefViewModel.saveToken(registerResponse.token!!)
                     registerResponse.user?.let {
                         prefViewModel.saveUserId(it.id)
                     }
@@ -123,21 +122,22 @@ class RegisterFragment : Fragment(), View.OnClickListener {
                         registerResponse.errors != null -> {
 
                             registerResponse.errors.apply {
+                                this?.let {
+                                    if (!it.name.isNullOrEmpty()) {
+                                        binding.etName.error = it.name!![0]
+                                    }
 
-                                if (this.name != null && this.name.isNotEmpty()) {
-                                    binding.etName.error = this.name[0]
-                                }
+                                    if (!it.email.isNullOrEmpty()) {
+                                        binding.etEmail.error = it.email!![0]
+                                    }
 
-                                if (this.email != null && this.email.isNotEmpty()) {
-                                    binding.etEmail.error = this.email[0]
-                                }
+                                    if (!it.phone.isNullOrEmpty()) {
+                                        binding.etPhone.error = it.phone!![0]
+                                    }
 
-                                if (this.phone != null && this.phone.isNotEmpty()) {
-                                    binding.etPhone.error = this.phone[0]
-                                }
-
-                                if (this.password != null && this.password.isNotEmpty()) {
-                                    binding.etPassword.error = this.password[0]
+                                    if (!it.password.isNullOrEmpty()) {
+                                        binding.etPassword.error = it.password!![0]
+                                    }
                                 }
                             }
                         }

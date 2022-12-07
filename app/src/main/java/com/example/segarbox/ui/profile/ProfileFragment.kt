@@ -12,11 +12,10 @@ import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.utils.tokenFormat
 import com.example.segarbox.R
-import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
-import com.example.segarbox.core.data.RetrofitRepository
 import com.example.segarbox.databinding.FragmentProfileBinding
-import com.example.segarbox.core.utils.tokenFormat
 import com.example.segarbox.ui.cart.CartActivity
 import com.example.segarbox.ui.login.LoginActivity
 import com.example.segarbox.ui.rating.RatingActivity
@@ -34,7 +33,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
     }
     private val profileViewModel by viewModels<ProfileViewModel> {
-        RetrofitViewModelFactory.getInstance(RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
     }
 
     override fun onCreateView(

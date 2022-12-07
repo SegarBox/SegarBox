@@ -7,16 +7,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.core.data.RoomRepository
+import com.example.core.data.source.remote.response.AddressItem
+import com.example.core.domain.model.ShippingModel
+import com.example.core.ui.ShippingAdapter
+import com.example.core.utils.Code
+import com.example.core.utils.tidyUpJneAndTikiEtd
+import com.example.core.utils.tidyUpPosEtd
 import com.example.segarbox.R
-import com.example.segarbox.core.domain.model.ShippingModel
-import com.example.segarbox.core.utils.Code
-import com.example.segarbox.core.data.source.remote.response.AddressItem
-import com.example.segarbox.core.data.RetrofitRepository
-import com.example.segarbox.core.data.RoomRepository
 import com.example.segarbox.databinding.ActivityShippingBinding
-import com.example.segarbox.core.utils.tidyUpJneAndTikiEtd
-import com.example.segarbox.core.utils.tidyUpPosEtd
-import com.example.segarbox.ui.adapter.ShippingAdapter
 import com.example.segarbox.ui.viewmodel.RetrofitRoomViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
@@ -30,7 +29,8 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
     private val listShipment = arrayListOf<ShippingModel>()
     private val shippingAdapter = ShippingAdapter(this)
     private val shippingViewModel by viewModels<ShippingViewModel> {
-        RetrofitRoomViewModelFactory.getInstance(RoomRepository(application), RetrofitRepository())
+        RetrofitRoomViewModelFactory.getInstance(RoomRepository(application),
+            com.example.core.data.RetrofitRepository())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

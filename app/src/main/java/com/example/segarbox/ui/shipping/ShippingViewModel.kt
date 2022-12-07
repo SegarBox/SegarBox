@@ -4,16 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.segarbox.core.utils.Code
-import com.example.segarbox.core.data.source.remote.response.CityResults
-import com.example.segarbox.core.data.source.remote.response.ShippingResponse
-import com.example.segarbox.core.data.RetrofitRepository
-import com.example.segarbox.core.data.RoomRepository
+import com.example.core.data.RoomRepository
+import com.example.core.data.source.remote.response.CityResults
+import com.example.core.data.source.remote.response.ShippingResponse
+import com.example.core.utils.Code
 import kotlinx.coroutines.launch
 
 class ShippingViewModel(
     private val roomRepository: RoomRepository,
-    private val retrofitRepository: RetrofitRepository,
+    private val retrofitRepository: com.example.core.data.RetrofitRepository,
 ) : ViewModel() {
 
     private var _destinationId =  MutableLiveData<String>()

@@ -2,7 +2,7 @@ package com.example.segarbox.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
+import com.example.core.data.source.local.datastore.SettingPreferences
 
 class PrefViewModelFactory(private val pref: SettingPreferences) :
     ViewModelProvider.NewInstanceFactory() {

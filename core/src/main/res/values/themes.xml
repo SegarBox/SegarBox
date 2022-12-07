@@ -1,0 +1,36 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.SegarBox" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="android:windowDisablePreview">true</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/new_green</item>
+        <!-- Full Background -->
+        <item name="colorPrimaryVariant">@color/grey</item>
+        <item name="colorOnPrimary">@color/grey</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/new_green</item>
+        <!-- Toolbar -->
+        <item name="colorSecondaryVariant">@color/greyFake</item>
+        <item name="colorOnSecondary">@color/brown_dark_fake</item>
+        <!-- Status bar color. -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:navigationBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="poppinsExtraBold">
+        <item name="fontFamily">@font/poppins_extrabold</item>
+    </style>
+
+    <style name="poppinsMedium">
+        <item name="fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="chipText" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+</resources>

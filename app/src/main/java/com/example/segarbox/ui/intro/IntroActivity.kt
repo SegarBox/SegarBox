@@ -4,9 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.core.utils.getHelperColor
 import com.example.segarbox.R
 import com.example.segarbox.databinding.ActivityIntroBinding
-import com.example.segarbox.core.utils.getHelperColor
 import com.example.segarbox.ui.home.MainActivity
 
 class IntroActivity : AppCompatActivity(), View.OnClickListener {

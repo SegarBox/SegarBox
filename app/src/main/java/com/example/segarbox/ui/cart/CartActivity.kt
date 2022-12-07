@@ -10,16 +10,15 @@ import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.data.source.remote.response.UserCartItem
+import com.example.core.ui.CartAdapter
+import com.example.core.utils.Code
+import com.example.core.utils.formatToRupiah
+import com.example.core.utils.tokenFormat
 import com.example.segarbox.R
-import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
-import com.example.segarbox.core.utils.Code
-import com.example.segarbox.core.data.source.remote.response.UserCartItem
-import com.example.segarbox.core.data.RetrofitRepository
 import com.example.segarbox.databinding.ActivityCartBinding
-import com.example.segarbox.core.utils.formatToRupiah
-import com.example.segarbox.core.utils.tokenFormat
 import com.example.segarbox.ui.checkout.CheckoutActivity
-import com.example.segarbox.ui.adapter.CartAdapter
 import com.example.segarbox.ui.detail.DetailActivity
 import com.example.segarbox.ui.login.LoginActivity
 import com.example.segarbox.ui.viewmodel.PrefViewModel
@@ -40,7 +39,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
     }
     private val cartViewModel by viewModels<CartViewModel> {
-        RetrofitViewModelFactory.getInstance(RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
