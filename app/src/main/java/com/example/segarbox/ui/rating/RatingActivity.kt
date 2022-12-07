@@ -9,13 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.ui.RatingAdapter
+import com.example.core.utils.Code
+import com.example.core.utils.tokenFormat
 import com.example.segarbox.R
-import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
-import com.example.segarbox.core.utils.Code
-import com.example.segarbox.core.data.RetrofitRepository
 import com.example.segarbox.databinding.ActivityRatingBinding
-import com.example.segarbox.core.utils.tokenFormat
-import com.example.segarbox.ui.adapter.RatingAdapter
 import com.example.segarbox.ui.cart.CartActivity
 import com.example.segarbox.ui.invoice.InvoiceActivity
 import com.example.segarbox.ui.viewmodel.PrefViewModel
@@ -35,7 +34,7 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
     }
     private val ratingViewModel by viewModels<RatingViewModel> {
-        RetrofitViewModelFactory.getInstance(RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

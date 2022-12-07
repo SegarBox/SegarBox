@@ -1,0 +1,94 @@
+<resources>
+    <string name="app_name">SegarBox</string>
+    <string name="search">Search</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum vel sapien eget placerat. Maecenas dictum turpis in metus ornare efficitur. Vestibulum tristique diam eu iaculis laoreet. Quisque feugiat eros in ullamcorper pharetra.</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="cart">Cart</string>
+    <string name="home">Home</string>
+    <string name="transaction">Transaction</string>
+    <string name="profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="quantity">0</string>
+
+    <string name="tab_history_text_1">In Progress</string>
+    <string name="tab_history_text_2">History</string>
+
+    <string name="name">Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="confirmation_password">Confirmation Password</string>
+    <string name="register">Register</string>
+
+    <string name="choose_address">Choose Address</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="checkout_items">Checkout Items</string>
+    <string name="payment_details">Payment Details</string>
+    <string name="products_sub_total">Products Sub Total</string>
+    <string name="shipping_cost">Shipping Cost</string>
+    <string name="total_price">Total Price</string>
+    <string name="grand_total">Grand Total</string>
+    <string name="checkout">Checkout</string>
+    <string name="invoice">Invoice</string>
+    <string name="add_address">Add Address</string>
+    <string name="address">Address</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="save_location">Save Location</string>
+    <string name="no_location_permission">Sorry, we need to access your location to use maps</string>
+    <string name="shipping_method">Shipping Method</string>
+    <string name="choose">Choose</string>
+    <string name="shipment_details">Shipment Details</string>
+    <string name="etd">%s Hari</string>
+    <string name="gram">%s g</string>
+    <string name="see_all">See All</string>
+    <string name="retry">Retry</string>
+    <string name="rto">Request Timed Out</string>
+    <string name="fruits">Fruits</string>
+    <string name="veggies">Vegetables</string>
+    <string name="most_popular">Most Popular</string>
+    <string name="logout">Logout</string>
+    <string name="stock">Stock : %s</string>
+    <string name="update_cart">Update Cart</string>
+    <string name="delete_from_cart">Delete From Cart</string>
+    <string name="make_order">Make Order</string>
+    <string name="transactions">Transactions</string>
+    <string name="bthome">back to home</string>
+    <string name="check_status">Check Status</string>
+    <string name="order_details">Order Details</string>
+    <string name="order_id">Order ID</string>
+    <string name="order_date">Order Date</string>
+    <string name="order_status">Order Status</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="complete">Complete</string>
+    <string name="rating">Rating</string>
+    <string name="all_products">All Products</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="phone">phone</string>
+    <string name="enter">enter</string>
+    <string name="image">image</string>
+    <string name="logo">logo</string>
+    <string name="background">background</string>
+    <string name="intro1">Choose your meals, Plan your groceries, and pick the best products that suit you!</string>
+    <string name="skip">Skip</string>
+    <string name="buy_groceries">Buy Groceries</string>
+    <string name="save_money">Save Money</string>
+    <string name="intro2">Don\'t hesitate to buy our product. We give you the best price, we guarantee!</string>
+    <string name="stay_fresh">Stay Fresh</string>
+    <string name="intro3">We prioritize freshness, just wait in your place and we will bring your products as fast as we can!</string>
+    <string name="get_started"><u>Get Started</u></string>
+    <string name="oh_no_your_cart_is_still_empty">Oh no.. Your cart is still empty</string>
+    <string name="please_add_an_address">Please add an address..</string>
+    <string name="no_product_to_be_rated_for_now">No product to be rated for now..</string>
+    <string name="base_url_api">Base Url API</string>
+    <string name="save_base_url">Save Base Url</string>
+    <plurals name="item_count_total">
+        <item quantity="one">+ %d more product</item>
+        <item quantity="other">+ %d more products</item>
+    </plurals>
+    <plurals name="item_count">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
+
+</resources>

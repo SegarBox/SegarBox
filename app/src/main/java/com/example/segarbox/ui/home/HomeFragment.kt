@@ -15,21 +15,18 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.example.core.data.RoomRepository
+import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.data.source.remote.response.ProductItem
+import com.example.core.domain.model.MostPopularBody
+import com.example.core.ui.AllProductAdapter
+import com.example.core.ui.StartShoppingAdapter
+import com.example.core.utils.*
 import com.example.segarbox.R
-import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
-import com.example.segarbox.core.domain.model.MostPopularBody
-import com.example.segarbox.core.data.source.remote.response.ProductItem
-import com.example.segarbox.core.utils.*
-import com.example.segarbox.core.data.RetrofitRepository
-import com.example.segarbox.core.data.RoomRepository
 import com.example.segarbox.databinding.FragmentHomeBinding
 import com.example.segarbox.ui.cart.CartActivity
 import com.example.segarbox.ui.detail.DetailActivity
 import com.example.segarbox.ui.pagination.PaginationActivity
-import com.example.segarbox.ui.adapter.AllProductAdapter
-import com.example.segarbox.core.utils.MarginGridItemDecoration
-import com.example.segarbox.core.utils.MarginItemDecoration
-import com.example.segarbox.ui.adapter.StartShoppingAdapter
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitRoomViewModelFactory
@@ -52,7 +49,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
     private var token = ""
     private val mainViewModel by viewModels<MainViewModel> {
         RetrofitRoomViewModelFactory.getInstance(RoomRepository(requireActivity().application),
-            RetrofitRepository())
+            com.example.core.data.RetrofitRepository())
     }
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))

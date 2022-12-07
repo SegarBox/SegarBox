@@ -9,18 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.domain.model.ProductId
+import com.example.core.domain.model.UpdateStatusBody
+import com.example.core.ui.InvoiceAdapter
+import com.example.core.utils.*
 import com.example.segarbox.R
-import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
-import com.example.segarbox.core.domain.model.ProductId
-import com.example.segarbox.core.domain.model.UpdateStatusBody
-import com.example.segarbox.core.utils.Code
-import com.example.segarbox.core.data.RetrofitRepository
 import com.example.segarbox.databinding.ActivityInvoiceBinding
-import com.example.segarbox.core.utils.formatDateTime
-import com.example.segarbox.core.utils.formatStatus
-import com.example.segarbox.core.utils.formatToRupiah
-import com.example.segarbox.core.utils.tokenFormat
-import com.example.segarbox.ui.adapter.InvoiceAdapter
 import com.example.segarbox.ui.detail.DetailActivity
 import com.example.segarbox.ui.home.MainActivity
 import com.example.segarbox.ui.rating.RatingActivity
@@ -43,7 +38,7 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
     }
     private val invoiceViewModel by viewModels<InvoiceViewModel> {
-        RetrofitViewModelFactory.getInstance(RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
     }
 
     private val getTransactionId

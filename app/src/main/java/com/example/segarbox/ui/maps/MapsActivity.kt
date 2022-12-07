@@ -15,15 +15,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.data.source.remote.response.MapsResponse
+import com.example.core.domain.model.AddressModel
+import com.example.core.utils.Code
+import com.example.core.utils.formatted
+import com.example.core.utils.tokenFormat
 import com.example.segarbox.R
-import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
-import com.example.segarbox.core.domain.model.AddressModel
-import com.example.segarbox.core.utils.Code
-import com.example.segarbox.core.data.source.remote.response.MapsResponse
-import com.example.segarbox.core.data.RetrofitRepository
 import com.example.segarbox.databinding.ActivityMapsBinding
-import com.example.segarbox.core.utils.formatted
-import com.example.segarbox.core.utils.tokenFormat
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
@@ -51,7 +50,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
     private var addressModel = AddressModel()
     private var token = ""
     private val mapsViewModel by viewModels<MapsViewModel> {
-        RetrofitViewModelFactory.getInstance(RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
     }
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
@@ -131,7 +130,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
 
         mapsViewModel.addressResponse.observe(this) { addressResponse ->
             if (addressResponse.message != null) {
-                Snackbar.make(binding.root, addressResponse.message, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                Snackbar.make(binding.root, addressResponse.message!!, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
             }
             else {
                 addressResponse.info?.let {

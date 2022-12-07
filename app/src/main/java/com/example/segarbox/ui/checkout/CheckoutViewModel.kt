@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.segarbox.core.domain.model.MakeOrderBody
-import com.example.segarbox.core.data.source.remote.response.CartDetailResponse
-import com.example.segarbox.core.data.source.remote.response.MakeOrderResponse
-import com.example.segarbox.core.data.source.remote.response.UserCartResponse
-import com.example.segarbox.core.data.RetrofitRepository
+import com.example.core.data.RetrofitRepository
+import com.example.core.data.source.remote.response.CartDetailResponse
+import com.example.core.data.source.remote.response.MakeOrderResponse
+import com.example.core.data.source.remote.response.UserCartResponse
+import com.example.core.domain.model.MakeOrderBody
 import kotlinx.coroutines.launch
 
 class CheckoutViewModel(private val retrofitRepository: RetrofitRepository) : ViewModel() {

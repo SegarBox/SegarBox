@@ -2,7 +2,7 @@ package com.example.segarbox.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.segarbox.core.data.RetrofitRepository
+import com.example.core.data.RetrofitRepository
 import com.example.segarbox.ui.address.AddressViewModel
 import com.example.segarbox.ui.cart.CartViewModel
 import com.example.segarbox.ui.checkout.CheckoutViewModel

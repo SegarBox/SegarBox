@@ -4,20 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.segarbox.core.domain.model.MostPopularBody
-import com.example.segarbox.core.utils.Code
-import com.example.segarbox.core.data.source.remote.response.CityResponse
-import com.example.segarbox.core.data.source.remote.response.CityResults
-import com.example.segarbox.core.data.source.remote.response.ProductResponse
-import com.example.segarbox.core.data.source.remote.response.UserCartResponse
-import com.example.segarbox.core.data.RetrofitRepository
-import com.example.segarbox.core.data.RoomRepository
-import com.example.segarbox.core.utils.Event
+import com.example.core.data.RoomRepository
+import com.example.core.data.source.remote.response.CityResponse
+import com.example.core.data.source.remote.response.CityResults
+import com.example.core.data.source.remote.response.ProductResponse
+import com.example.core.data.source.remote.response.UserCartResponse
+import com.example.core.domain.model.MostPopularBody
+import com.example.core.utils.Code
+import com.example.core.utils.Event
 import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val roomRepository: RoomRepository,
-    private val retrofitRepository: RetrofitRepository,
+    private val retrofitRepository: com.example.core.data.RetrofitRepository,
 ) : ViewModel() {
 
     private var _cityFromApi = MutableLiveData<CityResponse>()

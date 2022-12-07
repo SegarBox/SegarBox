@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brown_dark">#0D0305</color>
+    <color name="brown_dark_fake">#0D0304</color>
+    <color name="brown_med">#473B42</color>
+    <color name="new_green">#02B80E</color>
+    <color name="grey">#FFFFFF</color>
+    <color name="greyFake">#FFFFFA</color>
+    <color name="whiteButtonColorDarkMode">#EBE5DE</color>
+    <color name="lightModeUnActiveButton">#959595</color>
+    <color name="lightModeRed">#D60000</color>
+    <color name="pastel_green">#A8CDAA</color>
+    <color name="pastel_green_2">#243532</color>
+</resources>

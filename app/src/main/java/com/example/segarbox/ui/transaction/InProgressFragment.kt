@@ -11,13 +11,12 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
-import com.example.segarbox.core.utils.Code
-import com.example.segarbox.core.data.RetrofitRepository
+import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.ui.TransactionsAdapter
+import com.example.core.utils.Code
+import com.example.core.utils.tokenFormat
 import com.example.segarbox.databinding.FragmentInProgressBinding
-import com.example.segarbox.core.utils.tokenFormat
 import com.example.segarbox.ui.invoice.InvoiceActivity
-import com.example.segarbox.ui.adapter.TransactionsAdapter
 import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
@@ -31,7 +30,7 @@ class InProgressFragment : Fragment(), TransactionsAdapter.OnItemTransactionsCli
     private var token = ""
     private val transactionsAdapter = TransactionsAdapter(this)
     private val transactionViewModel by viewModels<TransactionViewModel> {
-        RetrofitViewModelFactory.getInstance(RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
     }
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))

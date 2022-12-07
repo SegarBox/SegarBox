@@ -15,16 +15,13 @@ import androidx.core.widget.addTextChangedListener
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
+import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.data.source.remote.network.ApiConfig
+import com.example.core.ui.PaginationAdapter
+import com.example.core.utils.*
 import com.example.segarbox.BuildConfig
 import com.example.segarbox.R
-import com.example.segarbox.core.data.source.local.datastore.SettingPreferences
-import com.example.segarbox.core.data.source.remote.network.ApiConfig
-import com.example.segarbox.core.utils.*
-import com.example.segarbox.core.data.RetrofitRepository
 import com.example.segarbox.databinding.ActivityPaginationBinding
-import com.example.segarbox.core.utils.LoadingStateAdapter
-import com.example.segarbox.core.utils.MarginGridItemDecoration
-import com.example.segarbox.ui.adapter.PaginationAdapter
 import com.example.segarbox.ui.cart.CartActivity
 import com.example.segarbox.ui.detail.DetailActivity
 import com.example.segarbox.ui.viewmodel.PrefViewModel
@@ -45,7 +42,7 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
     private var isHomeSearchBarPressed: Boolean = false
     private val paginationAdapter = PaginationAdapter(this)
     private val paginationViewModel by viewModels<PaginationViewModel> {
-        RetrofitViewModelFactory.getInstance(RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
     }
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
