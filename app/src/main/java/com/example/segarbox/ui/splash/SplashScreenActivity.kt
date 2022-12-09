@@ -26,6 +26,7 @@ import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
 @SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -45,13 +46,13 @@ class SplashScreenActivity : AppCompatActivity(), View.OnClickListener {
         init()
     }
 
-    private fun init(){
+    private fun init() {
         setNavigationBar()
         observeData()
         binding.root.setOnClickListener(this)
     }
 
-    private fun splashDelay(intent: Intent){
+    private fun splashDelay(intent: Intent) {
         val handler = Handler(Looper.getMainLooper())
         val delay: Long = 4000
 
@@ -73,7 +74,6 @@ class SplashScreenActivity : AppCompatActivity(), View.OnClickListener {
                 finish()
             }
         }
-
     }
 
     private fun setNavigationBar() {

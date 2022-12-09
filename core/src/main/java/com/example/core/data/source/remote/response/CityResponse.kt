@@ -10,6 +10,18 @@ data class CityResponse(
 	val rajaongkir: Rajaongkir = Rajaongkir()
 )
 
+data class Rajaongkir(
+
+	@field:SerializedName("query")
+	val query: List<Any> = listOf(),
+
+	@field:SerializedName("results")
+	val results: List<CityResults> = listOf(),
+
+	@field:SerializedName("status")
+	val status: Status = Status()
+)
+
 @Entity(tableName = "city")
 data class CityResults(
 
@@ -40,16 +52,4 @@ data class Status(
 
 	@field:SerializedName("description")
 	val description: String = "City Not Found"
-)
-
-data class Rajaongkir(
-
-    @field:SerializedName("query")
-	val query: List<Any> = listOf(),
-
-    @field:SerializedName("results")
-	val results: List<CityResults> = listOf(),
-
-    @field:SerializedName("status")
-	val status: Status = Status()
 )

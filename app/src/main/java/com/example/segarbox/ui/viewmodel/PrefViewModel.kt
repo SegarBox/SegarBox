@@ -6,6 +6,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.core.data.source.local.datastore.SettingPreferences
 import com.example.core.utils.Event
+import com.example.segarbox.ui.home.MainActivity
 import kotlinx.coroutines.launch
 
 class PrefViewModel(private val pref: SettingPreferences): ViewModel() {

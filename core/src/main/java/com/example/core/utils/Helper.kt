@@ -10,6 +10,7 @@ import android.util.TypedValue
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
+import com.example.core.BuildConfig
 import com.example.core.R
 import com.example.core.data.source.remote.response.ProductItem
 import com.google.android.gms.maps.model.LatLng
@@ -19,6 +20,8 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.floor
+
+var BASE_URL = BuildConfig.BASE_URL_SEGARBOX
 
 private const val DEFAULT_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 private const val DATE_TIME_PATTERN = "dd MMM yyyy, HH:mm"
