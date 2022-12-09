@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.utils.BASE_URL
 import com.example.segarbox.R
 import com.example.segarbox.databinding.ActivityDevBinding
 import com.example.segarbox.ui.home.MainActivity
@@ -46,6 +47,7 @@ class DevActivity : AppCompatActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.btn_save_url -> {
                 prefViewModel.saveBaseUrl(binding.etBaseUrl.text.toString())
+                BASE_URL = binding.etBaseUrl.text.toString()
                 startActivity(Intent(this, MainActivity::class.java))
             }
         }

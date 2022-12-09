@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.data.RetrofitRepository
 import com.example.core.data.RoomRepository
 import com.example.core.data.source.remote.response.CityResponse
 import com.example.core.data.source.remote.response.CityResults
@@ -16,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val roomRepository: RoomRepository,
-    private val retrofitRepository: com.example.core.data.RetrofitRepository,
+    private val retrofitRepository: RetrofitRepository,
 ) : ViewModel() {
 
     private var _cityFromApi = MutableLiveData<CityResponse>()
