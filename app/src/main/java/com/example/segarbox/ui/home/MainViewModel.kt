@@ -10,7 +10,7 @@ import com.example.core.data.source.remote.response.CityResponse
 import com.example.core.data.source.remote.response.CityResults
 import com.example.core.data.source.remote.response.ProductResponse
 import com.example.core.data.source.remote.response.UserCartResponse
-import com.example.core.domain.model.MostPopularBody
+import com.example.core.domain.body.MostPopularBody
 import com.example.core.utils.Code
 import com.example.core.utils.Event
 import kotlinx.coroutines.launch

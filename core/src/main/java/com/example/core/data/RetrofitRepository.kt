@@ -1,6 +1,5 @@
 package com.example.core.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -12,10 +11,9 @@ import com.example.core.data.paging.ProductPagingSource
 import com.example.core.data.source.remote.network.ApiConfig
 import com.example.core.data.source.remote.network.ApiServices
 import com.example.core.data.source.remote.response.*
-import com.example.core.domain.model.MakeOrderBody
-import com.example.core.domain.model.MostPopularBody
-import com.example.core.domain.model.UpdateStatusBody
-import com.example.core.utils.BASE_URL
+import com.example.core.domain.body.MakeOrderBody
+import com.example.core.domain.body.MostPopularBody
+import com.example.core.domain.body.UpdateStatusBody
 
 class RetrofitRepository {
 
@@ -177,7 +175,6 @@ class RetrofitRepository {
 
     suspend fun getAllProduct(page: Int, size: Int): ProductResponse {
         try {
-            Log.e("BASE URL SUCCESS", BASE_URL)
             val request = segarBoxApiServices.getAllProduct(page, size)
 
             if (request.isSuccessful) {
@@ -189,7 +186,6 @@ class RetrofitRepository {
             return ProductResponse()
 
         } catch (ex: Exception) {
-            Log.e("BASE URL ERROR", BASE_URL)
             return ProductResponse()
         }
     }

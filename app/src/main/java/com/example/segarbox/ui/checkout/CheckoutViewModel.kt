@@ -8,7 +8,7 @@ import com.example.core.data.RetrofitRepository
 import com.example.core.data.source.remote.response.CartDetailResponse
 import com.example.core.data.source.remote.response.MakeOrderResponse
 import com.example.core.data.source.remote.response.UserCartResponse
-import com.example.core.domain.model.MakeOrderBody
+import com.example.core.domain.body.MakeOrderBody
 import kotlinx.coroutines.launch
 
 class CheckoutViewModel(private val retrofitRepository: RetrofitRepository) : ViewModel() {
