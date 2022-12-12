@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.core.data.RoomRepository
 import com.example.core.data.source.local.datastore.SettingPreferences
 import com.example.core.data.source.remote.response.ProductItem
-import com.example.core.domain.model.MostPopularBody
+import com.example.core.domain.body.MostPopularBody
 import com.example.core.ui.AllProductAdapter
 import com.example.core.ui.StartShoppingAdapter
 import com.example.core.utils.*

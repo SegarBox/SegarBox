@@ -2,9 +2,9 @@ package com.example.core.data.source.remote.network
 
 import com.example.core.BuildConfig
 import com.example.core.data.source.remote.response.*
-import com.example.core.domain.model.MakeOrderBody
-import com.example.core.domain.model.MostPopularBody
-import com.example.core.domain.model.UpdateStatusBody
+import com.example.core.domain.body.MakeOrderBody
+import com.example.core.domain.body.MostPopularBody
+import com.example.core.domain.body.UpdateStatusBody
 import com.example.core.utils.Code
 import retrofit2.Response
 import retrofit2.http.*

@@ -10,8 +10,8 @@ import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.core.data.source.local.datastore.SettingPreferences
-import com.example.core.domain.model.ProductId
-import com.example.core.domain.model.UpdateStatusBody
+import com.example.core.domain.body.ProductId
+import com.example.core.domain.body.UpdateStatusBody
 import com.example.core.ui.InvoiceAdapter
 import com.example.core.utils.*
 import com.example.segarbox.R

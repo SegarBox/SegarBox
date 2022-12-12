@@ -1,8 +1,8 @@
-package com.example.core.domain.model
+package com.example.core.domain.body
 
 import com.google.gson.annotations.SerializedName
 
 data class UpdateStatusBody(
     @field:SerializedName("product_transactions")
-    val productTransations: List<ProductId>
+    val productTransactions: List<ProductId>
 )

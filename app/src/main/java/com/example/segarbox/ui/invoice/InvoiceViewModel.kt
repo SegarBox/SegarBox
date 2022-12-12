@@ -8,7 +8,7 @@ import com.example.core.data.RetrofitRepository
 import com.example.core.data.source.remote.response.TransactionByIdResponse
 import com.example.core.data.source.remote.response.TransactionsStatusResponse
 import com.example.core.data.source.remote.response.UserResponse
-import com.example.core.domain.model.UpdateStatusBody
+import com.example.core.domain.body.UpdateStatusBody
 import kotlinx.coroutines.launch
 
 class InvoiceViewModel(private val retrofitRepository: RetrofitRepository): ViewModel() {

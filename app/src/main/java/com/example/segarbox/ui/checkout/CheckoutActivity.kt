@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide
 import com.example.core.data.source.local.datastore.SettingPreferences
 import com.example.core.data.source.remote.response.AddressItem
 import com.example.core.data.source.remote.response.CartDetailResponse
-import com.example.core.domain.model.MakeOrderBody
+import com.example.core.domain.body.MakeOrderBody
 import com.example.core.domain.model.ProductTransactions
 import com.example.core.domain.model.ShippingModel
 import com.example.core.ui.CheckoutDetailsAdapter
