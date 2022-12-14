@@ -1,5 +1,6 @@
 package com.example.core.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -14,10 +15,11 @@ import com.example.core.data.source.remote.response.*
 import com.example.core.domain.body.MakeOrderBody
 import com.example.core.domain.body.MostPopularBody
 import com.example.core.domain.body.UpdateStatusBody
+import com.example.core.utils.DYNAMIC_BASE_URL
 
 class RetrofitRepository {
 
-    private val segarBoxApiServices = ApiConfig.getApiServices(BuildConfig.BASE_URL_SEGARBOX)
+    private val segarBoxApiServices = ApiConfig.getApiServices(DYNAMIC_BASE_URL)
     private val mapsApiServices = ApiConfig.getApiServices(BuildConfig.BASE_URL_GOOGLE_MAPS)
     private val rajaOngkirApiServices = ApiConfig.getApiServices(BuildConfig.BASE_URL_RAJAONGKIR)
     private val segarBoxFlaskApiServices =
@@ -32,6 +34,7 @@ class RetrofitRepository {
                     return it
                 }
             }
+
             return MapsResponse(status = request.code().toString())
 
         } catch (ex: Exception) {
@@ -72,6 +75,7 @@ class RetrofitRepository {
                 }
             }
             return ShippingResponse()
+
         } catch (ex: Exception) {
             return ShippingResponse()
         }

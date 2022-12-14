@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.floor
 
-var BASE_URL = BuildConfig.BASE_URL_SEGARBOX
+var DYNAMIC_BASE_URL = BuildConfig.BASE_URL_SEGARBOX
 
 private const val DEFAULT_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 private const val DATE_TIME_PATTERN = "dd MMM yyyy, HH:mm"
@@ -47,14 +47,16 @@ fun LatLng.formatted(): String {
 }
 
 fun String.tidyUpJneAndTikiEtd(context: Context): String {
-    val split = this.split("-")
+    val split1 = this.split("-", " ")
     var etd = ""
 
-    for (i in split.indices) {
+    for (i in split1.indices) {
+        if (split1[i].contains("HARI")) break
+
         etd += if (i == 0) {
-            split[i]
+            split1[i]
         } else {
-            " - ${split[i]}"
+            " - ${split1[i]}"
         }
     }
     return context.getString(R.string.etd, etd)

@@ -3,13 +3,13 @@ package com.example.segarbox.ui.checkout
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.core.data.source.local.datastore.SettingPreferences
@@ -29,8 +29,6 @@ import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
 
@@ -44,6 +42,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
     private var token = ""
     private var isShippingCostAdded = false
     private val checkoutDetailsAdapter = CheckoutDetailsAdapter()
+    private var isGotToken = false
     private val checkoutViewModel by viewModels<CheckoutViewModel> {
         RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
     }
@@ -87,9 +86,13 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun observeData() {
 
+        // TOKEN DIAMBIL TERUS TIAP ONRESUME -_-
         prefViewModel.getToken().observe(this) { token ->
             this.token = token
-            if (token.isNotEmpty()) {
+
+            if (!this.isGotToken && token.isNotEmpty()) {
+                Log.e("TOKEN", "AMBIL TOKEN LAGI")
+                this.isGotToken = true
                 checkoutViewModel.getCheckoutDetails(token.tokenFormat())
 
                 if (costs != null) {
@@ -178,13 +181,17 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
 
                     val shippingModel =
                         result.data?.getParcelableExtra<ShippingModel>(Code.SHIPPING_VALUE)
-                    shippingModel?.let {
 
-                        checkoutViewModel.viewModelScope.launch {
-                            delay(300L)
-                            if (token.isNotEmpty()) {
-                                checkoutViewModel.getCosts(token.tokenFormat(), it.price)
-                            }
+                    shippingModel?.let {
+//                        checkoutViewModel.viewModelScope.launch {
+//                            delay(300L)
+//                            if (token.isNotEmpty()) {
+//                                checkoutViewModel.getCosts(token.tokenFormat(), it.price)
+//                            }
+//                        }
+
+                        if (token.isNotEmpty()) {
+                            checkoutViewModel.getCosts(token.tokenFormat(), it.price)
                         }
 
 

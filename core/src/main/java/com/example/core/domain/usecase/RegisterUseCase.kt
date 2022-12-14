@@ -5,6 +5,7 @@ import com.example.core.domain.model.Login
 import kotlinx.coroutines.flow.Flow
 
 interface RegisterUseCase {
+
     fun register(
         name: String,
         email: String,
@@ -12,4 +13,5 @@ interface RegisterUseCase {
         password: String,
         password_confirmation: String,
     ): Flow<Resource<Login>>
+
 }
