@@ -8,7 +8,8 @@ data class MapsResponse(
 	val results: List<ResultsItem>? = null,
 
     @field:SerializedName("status")
-	val status: String
+	val status: String,
+
 )
 
 data class AddressComponentsItem(

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -118,6 +119,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                 postalCode = getPostalCodeFromResponse(mapsResponse)
             )
 
+//            Log.e("ADDRESS", addressModel.toString())
+
             binding.toolbar.tvTitle.apply {
                 text = getAddressFromResponse(mapsResponse)
                 textSize = 14F
@@ -151,6 +154,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
     private fun getAddressFromResponse(mapsResponse: MapsResponse): String {
         val results = mapsResponse.results
 
+//        Log.e("ADDRESS", results.toString())
         return if (results != null && results.isNotEmpty()) {
             results[0].formattedAddress
         } else {

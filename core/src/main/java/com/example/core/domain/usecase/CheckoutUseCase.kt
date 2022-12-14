@@ -8,7 +8,11 @@ import com.example.core.domain.body.MakeOrderBody
 import kotlinx.coroutines.flow.Flow
 
 interface CheckoutUseCase {
+
     fun getCheckedCart(token: String): Flow<Resource<List<Cart>>>
+
     fun getCartDetail(token: String, shippingCost: Int): Flow<Resource<CartDetail>>
+
     fun makeOrder(token: String, makeOrderBody: MakeOrderBody): Flow<Resource<MakeOrder>>
+
 }

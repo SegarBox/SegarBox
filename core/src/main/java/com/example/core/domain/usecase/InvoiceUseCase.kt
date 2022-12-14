@@ -7,7 +7,15 @@ import com.example.core.domain.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface InvoiceUseCase {
+
     fun getTransactionById(token: String, transactionId: Int): Flow<Resource<Transaction>>
+
     fun getUser(token: String): Flow<Resource<User>>
-    fun updateTransactionStatus(token: String, transactionId: Int, updateStatusBody: UpdateStatusBody): Flow<Resource<String>>
+
+    fun updateTransactionStatus(
+        token: String,
+        transactionId: Int,
+        updateStatusBody: UpdateStatusBody,
+    ): Flow<Resource<String>>
+    
 }

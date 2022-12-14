@@ -136,7 +136,7 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
                                     }
                                 }
                                 else -> {
-                                    val etd = shippingModel.etd.tidyUpPosEtd(this).split(" ")[0].toInt()
+                                    val etd = shippingModel.etd.tidyUpJneAndTikiEtd(this).split(" ")[0].toInt()
                                     if (etd <= 1) {
                                         listShipment.add(shippingModel)
                                     }
