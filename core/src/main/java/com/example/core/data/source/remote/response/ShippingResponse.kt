@@ -8,6 +8,24 @@ data class ShippingResponse(
     val rajaongkir: Shipping? = null,
 )
 
+data class Shipping(
+
+    @field:SerializedName("results")
+    val results: List<ShippingResults>,
+)
+
+data class ShippingResults(
+
+    @field:SerializedName("costs")
+    val costs: List<CostsItem>,
+
+    @field:SerializedName("code")
+    val code: String,
+
+    @field:SerializedName("name")
+    val name: String,
+)
+
 data class CostsItem(
 
     @field:SerializedName("cost")
@@ -30,22 +48,4 @@ data class CostItem(
 
     @field:SerializedName("value")
     val value: Int,
-)
-
-data class ShippingResults(
-
-    @field:SerializedName("costs")
-    val costs: List<CostsItem>,
-
-    @field:SerializedName("code")
-    val code: String,
-
-    @field:SerializedName("name")
-    val name: String,
-)
-
-data class Shipping(
-
-    @field:SerializedName("results")
-    val results: List<ShippingResults>,
 )
