@@ -186,7 +186,6 @@ class RetrofitRepository {
                     return it
                 }
             }
-
             return ProductResponse()
 
         } catch (ex: Exception) {
