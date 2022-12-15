@@ -28,7 +28,7 @@
             android:id="@+id/et_base_url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="https://"
+            android:text="https://segarbox.bejjox.my.id/api/"
             android:inputType="textAutoComplete" />
 
     </com.google.android.material.textfield.TextInputLayout>

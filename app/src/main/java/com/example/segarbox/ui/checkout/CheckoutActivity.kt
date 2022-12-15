@@ -91,7 +91,6 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
             this.token = token
 
             if (!this.isGotToken && token.isNotEmpty()) {
-                Log.e("TOKEN", "AMBIL TOKEN LAGI")
                 this.isGotToken = true
                 checkoutViewModel.getCheckoutDetails(token.tokenFormat())
 
@@ -183,13 +182,6 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                         result.data?.getParcelableExtra<ShippingModel>(Code.SHIPPING_VALUE)
 
                     shippingModel?.let {
-//                        checkoutViewModel.viewModelScope.launch {
-//                            delay(300L)
-//                            if (token.isNotEmpty()) {
-//                                checkoutViewModel.getCosts(token.tokenFormat(), it.price)
-//                            }
-//                        }
-
                         if (token.isNotEmpty()) {
                             checkoutViewModel.getCosts(token.tokenFormat(), it.price)
                         }
