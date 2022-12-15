@@ -1,13 +1,10 @@
 package com.example.core.domain.interactor
 
-import androidx.paging.PagingData
 import com.example.core.data.Resource
-import com.example.core.data.source.remote.network.ApiServices
-import com.example.core.domain.body.MakeOrderBody
-import com.example.core.domain.body.UpdateStatusBody
-import com.example.core.domain.model.*
+import com.example.core.domain.model.Cart
+import com.example.core.domain.model.Transaction
 import com.example.core.domain.repository.IRepository
-import com.example.core.domain.usecase.*
+import com.example.core.domain.usecase.TransactionUseCase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
