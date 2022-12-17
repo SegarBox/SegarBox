@@ -14,7 +14,7 @@ data class Product(
 
     val size: Int,
 
-    val price: String,
+    val price: Int,
 
     val qty: Int,
 

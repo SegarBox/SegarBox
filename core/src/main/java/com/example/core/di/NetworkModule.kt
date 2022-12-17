@@ -1,7 +1,8 @@
 package com.example.core.di
 
 import com.example.core.BuildConfig
-import com.example.core.data.source.remote.network.ApiServices
+import com.example.core.data.source.remote.network.*
+import com.example.core.utils.DYNAMIC_BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,46 +36,46 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideSegarBoxApiService(client: OkHttpClient): ApiServices {
+    fun provideSegarBoxApiService(client: OkHttpClient): SegarBoxApiServices {
         val retrofit = Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL_SEGARBOX)
+            .baseUrl(DYNAMIC_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
-        return retrofit.create(ApiServices::class.java)
+        return retrofit.create(SegarBoxApiServices::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideMapsApiService(client: OkHttpClient): ApiServices {
+    fun provideMapsApiService(client: OkHttpClient): MapsApiServices {
         val retrofit = Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL_GOOGLE_MAPS)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
-        return retrofit.create(ApiServices::class.java)
+        return retrofit.create(MapsApiServices::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideRajaOngkirApiService(client: OkHttpClient): ApiServices {
+    fun provideRajaOngkirApiService(client: OkHttpClient): RajaOngkirApiServices {
         val retrofit = Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL_RAJAONGKIR)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
-        return retrofit.create(ApiServices::class.java)
+        return retrofit.create(RajaOngkirApiServices::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideFlaskApiService(client: OkHttpClient): ApiServices {
+    fun provideFlaskApiService(client: OkHttpClient): FlaskApiServices {
         val retrofit = Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL_SEGARBOX_FLASK)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
-        return retrofit.create(ApiServices::class.java)
+        return retrofit.create(FlaskApiServices::class.java)
     }
 
 }

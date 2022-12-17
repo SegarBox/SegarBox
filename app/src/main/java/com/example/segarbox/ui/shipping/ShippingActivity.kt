@@ -2,6 +2,7 @@ package com.example.segarbox.ui.shipping
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -78,26 +79,26 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun observeData() {
-        city?.let { city ->
-            type?.let { type ->
-                when {
-                    city.isNotEmpty() && type.isNotEmpty() -> {
-                        shippingViewModel.getCity(city, type).observe(this) { list ->
-
-                            when {
-                                list.isNotEmpty() -> {
-                                    shippingViewModel.setDestinationId(list[0].cityId)
-                                }
-                                else -> {
-                                    Snackbar.make(binding.root, Code.LOCATION_CANT_BE_REACHED, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
-                                }
-                            }
-
+        when {
+            !city.isNullOrEmpty() && !type.isNullOrEmpty() -> {
+                shippingViewModel.getCity(city.toString(), type.toString()).observe(this) { list ->
+                    when {
+                        list.isNotEmpty() -> {
+                            shippingViewModel.setDestinationId(list[0].cityId)
+                        }
+                        else -> {
+                            Snackbar.make(binding.root,
+                                Code.LOCATION_CANT_BE_REACHED,
+                                Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
                         }
                     }
                 }
             }
+            else -> Snackbar.make(binding.root,
+                Code.LOCATION_CANT_BE_REACHED,
+                Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
         }
+
 
         shippingViewModel.destinationId.observe(this) { destination ->
             shippingViewModel.getShippingCosts(destination, "1000")
@@ -124,19 +125,22 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
                             // Cek Maksimal 1 Hari
                             when (shippingModel.code) {
                                 Code.TIKI.uppercase() -> {
-                                    val etd = shippingModel.etd.tidyUpJneAndTikiEtd(this).split(" ")[0].toInt()
+                                    val etd = shippingModel.etd.tidyUpJneAndTikiEtd(this)
+                                        .split(" ")[0].toInt()
                                     if (etd <= 1) {
                                         listShipment.add(shippingModel)
                                     }
                                 }
                                 Code.JNE.uppercase() -> {
-                                    val etd = shippingModel.etd.tidyUpJneAndTikiEtd(this).split(" ")[0].toInt()
+                                    val etd = shippingModel.etd.tidyUpJneAndTikiEtd(this)
+                                        .split(" ")[0].toInt()
                                     if (etd <= 1) {
                                         listShipment.add(shippingModel)
                                     }
                                 }
                                 else -> {
-                                    val etd = shippingModel.etd.tidyUpJneAndTikiEtd(this).split(" ")[0].toInt()
+                                    val etd = shippingModel.etd.tidyUpJneAndTikiEtd(this)
+                                        .split(" ")[0].toInt()
                                     if (etd <= 1) {
                                         listShipment.add(shippingModel)
                                     }
@@ -150,7 +154,8 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
 
             // Toast jika list shipment empty
             if (listShipment.isEmpty()) {
-                Snackbar.make(binding.root, Code.LOCATION_CANT_BE_REACHED, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                Snackbar.make(binding.root, Code.LOCATION_CANT_BE_REACHED, Snackbar.LENGTH_SHORT)
+                    .setAction("OK") {}.show()
             }
             shippingAdapter.submitList(listShipment)
         }
