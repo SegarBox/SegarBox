@@ -20,7 +20,7 @@ class RegisterInteractor @Inject constructor(private val repository: IRepository
         phone: String,
         password: String,
         password_confirmation: String,
-    ): Flow<Resource<Login>> =
+    ): Flow<Resource<Register>> =
         repository.register(name, email, phone, password, password_confirmation)
 
 }

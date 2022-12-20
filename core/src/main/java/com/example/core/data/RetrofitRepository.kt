@@ -518,6 +518,7 @@ class RetrofitRepository {
         try {
             val request =
                 segarBoxApiServices.saveRating(token, ratingId, transactionId, productId, rating)
+
             if (request.isSuccessful) {
                 request.body()?.let {
                     return it

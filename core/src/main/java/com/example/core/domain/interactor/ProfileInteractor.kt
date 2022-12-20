@@ -17,6 +17,6 @@ class ProfileInteractor @Inject constructor(private val repository: IRepository)
 
     override fun getCart(token: String): Flow<Resource<List<Cart>>> = repository.getCart(token)
 
-    override fun logout(token: String) = repository.logout(token)
+    override fun logout(token: String): Flow<Resource<String>> = repository.logout(token)
 
 }

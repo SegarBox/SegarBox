@@ -12,6 +12,19 @@ data class MapsResponse(
 
 )
 
+data class ResultsItem(
+
+	@field:SerializedName("formatted_address")
+	val formattedAddress: String,
+
+	@field:SerializedName("geometry")
+	val geometry: Geometry,
+
+	@field:SerializedName("address_components")
+	val addressComponents: List<AddressComponentsItem>,
+
+	)
+
 data class AddressComponentsItem(
 
 	@field:SerializedName("types")
@@ -24,18 +37,6 @@ data class AddressComponentsItem(
 	val longName: String
 )
 
-data class ResultsItem(
-
-    @field:SerializedName("formatted_address")
-	val formattedAddress: String,
-
-    @field:SerializedName("geometry")
-	val geometry: Geometry,
-
-    @field:SerializedName("address_components")
-	val addressComponents: List<AddressComponentsItem>,
-
-    )
 
 data class Location(
 

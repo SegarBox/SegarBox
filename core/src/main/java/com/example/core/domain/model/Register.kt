@@ -1,25 +1,30 @@
 package com.example.core.domain.model
 
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Login(
+data class Register(
 
     val token: String?,
 
     val user: User?,
 
-    val loginError: LoginError?,
+    val registerError: RegisterError?,
 
     val message: String?
 
 ): Parcelable
 
 @Parcelize
-data class LoginError(
+data class RegisterError(
 
     val password: List<String>?,
+
+    val phone: List<String>?,
+
+    val name: List<String>?,
 
     val email: List<String>?
 

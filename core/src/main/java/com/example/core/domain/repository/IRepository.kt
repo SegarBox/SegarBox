@@ -56,7 +56,7 @@ interface IRepository {
 
     fun saveAddress(token: String, street: String, city: String, postalCode: String): Flow<Resource<String>>
 
-    fun logout(token: String)
+    fun logout(token: String): Flow<Resource<String>>
 
     fun getRatings(token: String): Flow<Resource<List<Rating>>>
 
@@ -68,7 +68,7 @@ interface IRepository {
         phone: String,
         password: String,
         password_confirmation: String,
-    ): Flow<Resource<Login>>
+    ): Flow<Resource<Register>>
 
     fun getProductPaging(
         apiServices: ApiServices,
@@ -78,7 +78,7 @@ interface IRepository {
 
     fun getCity(city: String, type: String): Flow<Resource<List<City>>>
 
-    fun getShippingCosts(destination: String, weight: String): Flow<Resource<List<Shipping>>>
+    fun getShippingCosts(destination: String, weight: String, courier: String): Flow<Resource<List<Shipping>>>
 
     fun getTransactions(token: String, status: String): Flow<Resource<List<Transaction>>>
 
