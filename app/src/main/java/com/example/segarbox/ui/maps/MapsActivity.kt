@@ -119,8 +119,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                 postalCode = getPostalCodeFromResponse(mapsResponse)
             )
 
-//            Log.e("ADDRESS", addressModel.toString())
-
             binding.toolbar.tvTitle.apply {
                 text = getAddressFromResponse(mapsResponse)
                 textSize = 14F

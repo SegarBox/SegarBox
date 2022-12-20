@@ -9,6 +9,6 @@ interface ShippingUseCase {
 
     fun getCity(city: String, type: String): Flow<Resource<List<City>>>
 
-    fun getShippingCosts(destination: String, weight: String): Flow<Resource<List<Shipping>>>
+    fun getShippingCosts(destination: String, weight: String, courier: String): Flow<Resource<List<Shipping>>>
 
 }

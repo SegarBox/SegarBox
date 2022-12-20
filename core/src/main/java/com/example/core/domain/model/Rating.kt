@@ -12,7 +12,7 @@ data class Rating(
 
     val image: String,
 
-    val product: ProductItem,
+    val product: Product,
 
     val rating: Int,
 

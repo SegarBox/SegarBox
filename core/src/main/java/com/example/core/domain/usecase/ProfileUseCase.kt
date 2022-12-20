@@ -11,6 +11,6 @@ interface ProfileUseCase {
 
     fun getCart(token: String): Flow<Resource<List<Cart>>>
 
-    fun logout(token: String)
+    fun logout(token: String): Flow<Resource<String>>
 
 }

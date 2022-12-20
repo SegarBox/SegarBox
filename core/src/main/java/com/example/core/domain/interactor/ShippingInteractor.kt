@@ -22,6 +22,7 @@ class ShippingInteractor @Inject constructor(private val repository: IRepository
     override fun getShippingCosts(
         destination: String,
         weight: String,
-    ): Flow<Resource<List<Shipping>>> = repository.getShippingCosts(destination, weight)
+        courier: String
+    ): Flow<Resource<List<Shipping>>> = repository.getShippingCosts(destination, weight, courier)
 
 }
