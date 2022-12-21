@@ -275,7 +275,7 @@ class RemoteDataSource @Inject constructor(
     ): Flow<Resource<List<Product>>> = flow {
         emit(Resource.Loading())
         try {
-            val request = segarBoxApiServices.getAllProduct(page, size)
+            val request = segarBoxApiServices.getCategoryProduct(page, size, category)
 
             if (request.isSuccessful) {
                 request.body()?.let { response ->
@@ -524,7 +524,11 @@ class RemoteDataSource @Inject constructor(
             }
         ).flow
 
-    fun getShippingCosts(destination: String, weight: String, courier: String): Flow<Resource<List<Shipping>>> = flow {
+    fun getShippingCosts(
+        destination: String,
+        weight: String,
+        courier: String,
+    ): Flow<Resource<List<Shipping>>> = flow {
         emit(Resource.Loading())
         try {
             val request = rajaOngkirApiServices.getShippingCosts(
