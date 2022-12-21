@@ -1,536 +1,193 @@
 package com.example.core.data
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.liveData
-import com.beust.klaxon.Klaxon
-import com.example.core.BuildConfig
-import com.example.core.data.paging.ProductPagingSource
-import com.example.core.data.source.remote.network.ApiConfig
+import androidx.paging.map
+import com.example.core.data.source.local.LocalDataSource
+import com.example.core.data.source.remote.RemoteDataSource
 import com.example.core.data.source.remote.network.ApiServices
-import com.example.core.data.source.remote.response.*
 import com.example.core.domain.body.MakeOrderBody
-import com.example.core.domain.body.MostPopularBody
 import com.example.core.domain.body.UpdateStatusBody
-import com.example.core.utils.DYNAMIC_BASE_URL
+import com.example.core.domain.model.*
+import com.example.core.domain.repository.IRepository
+import com.example.core.utils.DataMapper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RetrofitRepository {
+@Singleton
+class RetrofitRepository @Inject constructor(
+    private val localDataSource: LocalDataSource,
+    private val remoteDataSource: RemoteDataSource,
+    private val coroutineScope: CoroutineScope,
+) : IRepository {
 
-    private val segarBoxApiServices = ApiConfig.getApiServices(DYNAMIC_BASE_URL)
-    private val mapsApiServices = ApiConfig.getApiServices(BuildConfig.BASE_URL_GOOGLE_MAPS)
-    private val rajaOngkirApiServices = ApiConfig.getApiServices(BuildConfig.BASE_URL_RAJAONGKIR)
-    private val segarBoxFlaskApiServices =
-        ApiConfig.getApiServices(BuildConfig.BASE_URL_SEGARBOX_FLASK)
+    override fun getUserAddresses(token: String): Flow<Resource<List<Address>>> = flow {
+        emitAll(remoteDataSource.getUserAddresses(token))
+    }.flowOn(Dispatchers.IO)
 
-    suspend fun getAddress(latLng: String): MapsResponse {
-        try {
-            val request = mapsApiServices.getAddress(latLng)
+    override fun deleteAddress(token: String, addressId: Int): Flow<Resource<String>> = flow {
+        emitAll(remoteDataSource.deleteAddress(token, addressId))
+    }.flowOn(Dispatchers.IO)
 
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
+    override fun getCart(token: String): Flow<Resource<List<Cart>>> = flow {
+        emitAll(remoteDataSource.getCart(token))
+    }.flowOn(Dispatchers.IO)
 
-            return MapsResponse(status = request.code().toString())
+    override fun getCheckedCart(token: String): Flow<Resource<List<Cart>>> = flow {
+        emitAll(remoteDataSource.getCheckedCart(token))
+    }.flowOn(Dispatchers.IO)
 
-        } catch (ex: Exception) {
-            return MapsResponse(status = ex.message.toString())
-        }
-    }
+    override fun addCart(token: String, productId: Int, productQty: Int): Flow<Resource<String>> =
+        flow {
+            emitAll(remoteDataSource.addCart(token, productId, productQty))
+        }.flowOn(Dispatchers.IO)
 
-    suspend fun getCityFromApi(): CityResponse {
-        try {
-            val request = rajaOngkirApiServices.getCity()
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            return CityResponse(Rajaongkir(status = Status(request.code(), request.message())))
+    override fun deleteCart(token: String, cartId: Int): Flow<Resource<String>> = flow {
+        emitAll(remoteDataSource.deleteCart(token, cartId))
+    }.flowOn(Dispatchers.IO)
 
-        } catch (ex: Exception) {
-            return CityResponse(Rajaongkir(status = Status(description = ex.message.toString())))
-        }
-    }
-
-    suspend fun getShippingCosts(
-        destination: String,
-        weight: String,
-        courier: String,
-    ): ShippingResponse {
-        try {
-            val request = rajaOngkirApiServices.getShippingCosts(
-                destination = destination,
-                weight = weight,
-                courier = courier
-            )
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            return ShippingResponse()
-
-        } catch (ex: Exception) {
-            return ShippingResponse()
-        }
-    }
-
-    suspend fun register(
-        name: String,
-        email: String,
-        phone: String,
-        password: String,
-        password_confirmation: String,
-    ): RegisterResponse {
-        try {
-            val request =
-                segarBoxApiServices.register(name, email, phone, password, password_confirmation)
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-
-            val result = Klaxon().parse<RegisterResponse>(request.errorBody()!!.string())
-            return result!!
-
-        } catch (ex: Exception) {
-            return RegisterResponse(message = ex.message.toString())
-        }
-    }
-
-    suspend fun login(
-        email: String,
-        password: String,
-    ): LoginResponse {
-        try {
-            val request = segarBoxApiServices.login(email, password)
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-
-            val result = Klaxon().parse<LoginResponse>(request.errorBody()!!.string())
-            return result!!
-
-        } catch (ex: Exception) {
-            return LoginResponse(message = ex.message.toString())
-        }
-    }
-
-    fun getProductPaging(
-        apiServices: ApiServices,
-        filter: String,
-        filterValue: String,
-    ): LiveData<PagingData<ProductItem>> {
-
-        return Pager(
-            config = PagingConfig(
-                pageSize = 10
-            ),
-            pagingSourceFactory = {
-                ProductPagingSource(apiServices, filter, filterValue)
-            }
-        ).liveData
-
-    }
-
-    suspend fun getRecommendationSystem(userId: Int): List<String> {
-        try {
-            val request = segarBoxFlaskApiServices.getRecommendationSystem(userId)
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-
-            return arrayListOf("30", "4", "87", "28", "33", "38", "15", "19", "14", "12")
-
-        } catch (ex: Exception) {
-            return arrayListOf("30", "4", "87", "28", "33", "38", "15", "19", "14", "12")
-        }
-    }
-
-    suspend fun getMostPopularProduct(mostPopularBody: MostPopularBody): ProductResponse {
-        try {
-            val request = segarBoxApiServices.getMostPopularProduct(mostPopularBody)
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            return ProductResponse()
-
-        } catch (ex: Exception) {
-            return ProductResponse()
-        }
-    }
-
-    suspend fun getAllProduct(page: Int, size: Int): ProductResponse {
-        try {
-            val request = segarBoxApiServices.getAllProduct(page, size)
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            return ProductResponse()
-
-        } catch (ex: Exception) {
-            return ProductResponse()
-        }
-    }
-
-    suspend fun getProductById(id: Int): ProductByIdResponse {
-        try {
-            val request = segarBoxApiServices.getProductById(id)
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            return ProductByIdResponse()
-
-        } catch (ex: Exception) {
-            return ProductByIdResponse()
-        }
-    }
-
-    suspend fun getCategoryProduct(page: Int, size: Int, category: String): ProductResponse {
-        try {
-            val request = segarBoxApiServices.getCategoryProduct(page, size, category)
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-
-            return ProductResponse(listOf())
-
-        } catch (ex: Exception) {
-            return ProductResponse(listOf())
-        }
-    }
-
-    suspend fun getUser(token: String): UserResponse {
-
-        try {
-            val request = segarBoxApiServices.getUser(token)
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            return UserResponse()
-
-        } catch (ex: Exception) {
-            return UserResponse()
-        }
-    }
-
-
-    suspend fun logout(token: String): LogoutResponse {
-        try {
-            val request = segarBoxApiServices.logout(token)
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            return LogoutResponse()
-        } catch (ex: Exception) {
-            return LogoutResponse()
-        }
-    }
-
-    suspend fun addCart(token: String, productId: Int, productQty: Int): AddCartResponse {
-        try {
-            val request = segarBoxApiServices.addToCart(token, productId, productQty)
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-
-            val result = Klaxon().parse<AddCartResponse>(request.errorBody()!!.string())
-            return result!!
-
-        } catch (ex: Exception) {
-            return AddCartResponse()
-        }
-    }
-
-    suspend fun getUserCart(token: String): UserCartResponse {
-        try {
-            val request = segarBoxApiServices.getUserCart(token)
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            val result = Klaxon().parse<UserCartResponse>(request.errorBody()!!.string())
-            return result!!
-
-        } catch (ex: Exception) {
-            return UserCartResponse(message = ex.message)
-        }
-    }
-
-    suspend fun getIsCheckedUserCart(token: String): UserCartResponse {
-        try {
-            val request = segarBoxApiServices.getIsCheckedUserCart(token)
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            return UserCartResponse()
-
-        } catch (ex: Exception) {
-            return UserCartResponse()
-        }
-    }
-
-    suspend fun deleteUserCart(token: String, cartId: Int): DeleteCartResponse {
-        try {
-            val request = segarBoxApiServices.deleteUserCart(token, cartId)
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            return DeleteCartResponse()
-
-        } catch (ex: Exception) {
-            return DeleteCartResponse(message = ex.message.toString())
-        }
-    }
-
-    suspend fun updateUserCart(
+    override fun updateCart(
         token: String,
         cartId: Int,
         productId: Int,
         productQty: Int,
         isChecked: Int,
-    ): UpdateCartResponse {
-        try {
-            val request =
-                segarBoxApiServices.updateUserCart(token, cartId, productId, productQty, isChecked)
+    ): Flow<Resource<String>> = flow {
+        emitAll(remoteDataSource.updateCart(token, cartId, productId, productQty, isChecked))
+    }.flowOn(Dispatchers.IO)
 
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            val result = Klaxon().parse<UpdateCartResponse>(request.errorBody()!!.string())
-            return result!!
+    override fun getCartDetail(token: String, shippingCost: Int): Flow<Resource<CartDetail>> =
+        flow {
+            emitAll(remoteDataSource.getCartDetail(token, shippingCost))
+        }.flowOn(Dispatchers.IO)
 
-        } catch (ex: Exception) {
-            return UpdateCartResponse()
-        }
-    }
+    override fun makeOrder(token: String, makeOrderBody: MakeOrderBody): Flow<Resource<MakeOrder>> =
+        flow {
+            emitAll(remoteDataSource.makeOrder(token, makeOrderBody))
+        }.flowOn(Dispatchers.IO)
 
-    suspend fun getCartDetail(token: String, shippingCost: Int): CartDetailResponse {
-        try {
-            val request = segarBoxApiServices.getCartDetail(token, shippingCost)
+    override fun getProductById(id: Int): Flow<Resource<Product>> = flow {
+        emitAll(remoteDataSource.getProductById(id))
+    }.flowOn(Dispatchers.IO)
 
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            return CartDetailResponse()
+    override fun getCityFromApi(): Flow<Resource<List<City>>> = flow {
+        emitAll(remoteDataSource.getCityFromApi())
+    }.flowOn(Dispatchers.IO)
 
-        } catch (ex: Exception) {
-            return CartDetailResponse()
-        }
-    }
 
-    suspend fun saveAddress(
+    override fun getAllProducts(page: Int, size: Int): Flow<Resource<List<Product>>> = flow {
+        emitAll(remoteDataSource.getAllProducts(page, size))
+    }.flowOn(Dispatchers.IO)
+
+    override fun getProductByCategory(
+        page: Int,
+        size: Int,
+        category: String,
+    ): Flow<Resource<List<Product>>> = flow {
+        emitAll(remoteDataSource.getProductByCategory(page, size, category))
+    }.flowOn(Dispatchers.IO)
+
+    override fun getTransactionById(
+        token: String,
+        transactionId: Int,
+    ): Flow<Resource<Transaction>> = flow {
+        emitAll(remoteDataSource.getTransactionById(token, transactionId))
+    }.flowOn(Dispatchers.IO)
+
+    override fun getUser(token: String): Flow<Resource<User>> = flow {
+        emitAll(remoteDataSource.getUser(token))
+    }.flowOn(Dispatchers.IO)
+
+    override fun updateTransactionStatus(
+        token: String,
+        transactionId: Int,
+        updateStatusBody: UpdateStatusBody,
+    ): Flow<Resource<String>> = flow {
+        emitAll(remoteDataSource.updateTransactionStatus(token, transactionId, updateStatusBody))
+    }.flowOn(Dispatchers.IO)
+
+    override fun login(email: String, password: String): Flow<Resource<Login>> = flow {
+        emitAll(remoteDataSource.login(email, password))
+    }.flowOn(Dispatchers.IO)
+
+    override fun getAddress(latLng: String): Flow<Resource<List<Maps>>> = flow {
+        emitAll(remoteDataSource.getAddress(latLng))
+    }.flowOn(Dispatchers.IO)
+
+    override fun saveAddress(
         token: String,
         street: String,
         city: String,
         postalCode: String,
-    ): AddAddressResponse {
-        try {
-            val request = segarBoxApiServices.saveAddress(token, street, city, postalCode)
+    ): Flow<Resource<String>> = flow {
+        emitAll(remoteDataSource.saveAddress(token, street, city, postalCode))
+    }.flowOn(Dispatchers.IO)
 
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            return AddAddressResponse()
-
-        } catch (ex: Exception) {
-            return AddAddressResponse(message = ex.message.toString())
-        }
+    override fun logout(token: String): Flow<Resource<String>> {
+        TODO("Not yet implemented")
     }
 
-    suspend fun getUserAddresses(token: String): GetAddressResponse {
-        try {
-            val request = segarBoxApiServices.getUserAddresses(token)
+    override fun getRatings(token: String): Flow<Resource<List<Rating>>> = flow {
+        emitAll(remoteDataSource.getRatings(token))
+    }.flowOn(Dispatchers.IO)
 
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            return GetAddressResponse()
-
-        } catch (ex: Exception) {
-            return GetAddressResponse(message = ex.message.toString())
-        }
-    }
-
-    suspend fun deleteAddress(token: String, addressId: Int): DeleteAddressResponse {
-        try {
-            val request = segarBoxApiServices.deleteAddress(token, addressId)
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            return DeleteAddressResponse()
-
-        } catch (ex: Exception) {
-            return DeleteAddressResponse(message = ex.message.toString())
-        }
-    }
-
-    suspend fun makeOrderTransaction(
-        token: String,
-        makeOrderBody: MakeOrderBody,
-    ): MakeOrderResponse {
-        try {
-            val request = segarBoxApiServices.makeOrderTransaction(token, makeOrderBody)
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            val result = Klaxon().parse<MakeOrderResponse>(request.errorBody()!!.string())
-            return result!!
-
-        } catch (ex: Exception) {
-            return MakeOrderResponse(message = ex.message.toString())
-        }
-    }
-
-    suspend fun getTransactionById(token: String, transactionId: Int): TransactionByIdResponse {
-        try {
-            val request = segarBoxApiServices.getTransactionById(token, transactionId)
-
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            val result = Klaxon().parse<TransactionByIdResponse>(request.errorBody()!!.string())
-            return result!!
-
-        } catch (ex: Exception) {
-            return TransactionByIdResponse(message = ex.message.toString())
-        }
-    }
-
-    suspend fun getTransactions(token: String, status: String): TransactionsResponse {
-        try {
-            val request = segarBoxApiServices.getTransactions(token, status)
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            val result = Klaxon().parse<TransactionsResponse>(request.errorBody()!!.string())
-            return result!!
-
-        } catch (ex: Exception) {
-            return TransactionsResponse(message = ex.message.toString())
-        }
-    }
-
-    suspend fun updateTransactionStatus(
-        token: String,
-        transactionId: Int,
-        updateStatusBody: UpdateStatusBody,
-    ): TransactionsStatusResponse {
-        try {
-            val request =
-                segarBoxApiServices.updateTransactionStatus(token, transactionId, updateStatusBody)
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            val result = Klaxon().parse<TransactionsStatusResponse>(request.errorBody()!!.string())
-            return result!!
-
-        } catch (ex: Exception) {
-            return TransactionsStatusResponse(message = ex.message.toString())
-        }
-    }
-
-    suspend fun getRatings(token: String): RatingResponse {
-        try {
-            val request = segarBoxApiServices.getRatings(token)
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
-            }
-            val result = Klaxon().parse<RatingResponse>(request.errorBody()!!.string())
-            return result!!
-
-        } catch (ex: Exception) {
-            return RatingResponse(message = ex.message.toString())
-        }
-    }
-
-    suspend fun saveRating(
+    override fun saveRating(
         token: String,
         ratingId: Int,
         transactionId: Int,
         productId: Int,
         rating: Int,
-    ): SaveRatingResponse {
-        try {
-            val request =
-                segarBoxApiServices.saveRating(token, ratingId, transactionId, productId, rating)
+    ): Flow<Resource<String>> = flow {
+        emitAll(remoteDataSource.saveRating(token, ratingId, transactionId, productId, rating))
+    }.flowOn(Dispatchers.IO)
 
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    return it
-                }
+    override fun register(
+        name: String,
+        email: String,
+        phone: String,
+        password: String,
+        password_confirmation: String,
+    ): Flow<Resource<Register>> = flow {
+        emitAll(remoteDataSource.register(name, email, phone, password, password_confirmation))
+    }.flowOn(Dispatchers.IO)
+
+    override fun getProductPaging(
+        apiServices: ApiServices,
+        filter: String,
+        filterValue: String,
+    ): Flow<PagingData<Product>> =
+        remoteDataSource.getProductPaging(apiServices, filter, filterValue).map { pagingData ->
+            pagingData.map {
+                DataMapper.mapProductItemToProduct(it)
             }
-            val result = Klaxon().parse<SaveRatingResponse>(request.errorBody()!!.string())
-            return result!!
+        }
 
-        } catch (ex: Exception) {
-            return SaveRatingResponse(message = ex.message.toString())
+    override fun getShippingCosts(
+        destination: String,
+        weight: String,
+        courier: String,
+    ): Flow<Resource<List<Shipping>>> = flow {
+        emitAll(remoteDataSource.getShippingCosts(destination, weight, courier))
+    }.flowOn(Dispatchers.IO)
+
+    override fun getTransactions(token: String, status: String): Flow<Resource<List<Transaction>>> =
+        flow {
+            emitAll(remoteDataSource.getTransactions(token, status))
+        }.flowOn(Dispatchers.IO)
+
+    override fun getCity(city: String, type: String): Flow<Resource<List<City>>> =
+        localDataSource.getCity(city, type)
+
+    override fun insertCityToDb(listCity: List<City>) {
+        coroutineScope.launch {
+            localDataSource.insertCityToDb(listCity)
         }
     }
 
+    override fun getCityCount(): Flow<Resource<Int>> =
+        localDataSource.getCityCount()
 
 }

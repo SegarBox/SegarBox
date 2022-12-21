@@ -69,6 +69,30 @@ object DataMapper {
             )
         }
 
+    fun mapCityResultsToCities(cityResults: List<CityResults>): List<City> =
+        cityResults.map {
+            City(
+                cityId = it.cityId,
+                cityName = it.cityName,
+                province = it.province,
+                provinceId = it.provinceId,
+                type = it.type,
+                postalCode = it.postalCode
+            )
+        }
+
+    fun mapCitiesToCityResults(cities: List<City>): List<CityResults> =
+        cities.map {
+            CityResults(
+                cityId = it.cityId,
+                cityName = it.cityName,
+                province = it.province,
+                provinceId = it.provinceId,
+                type = it.type,
+                postalCode = it.postalCode
+            )
+        }
+
     fun mapCityResponseToCities(cityResponse: CityResponse): List<City> =
         cityResponse.rajaongkir.results.map {
             City(
