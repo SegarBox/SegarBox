@@ -111,6 +111,24 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
+    suspend fun addCart(token: String, productId: Int, productQty: Int): Flow<Resource<String>> = flow {
+        emit(Resource.Loading())
+        try {
+            val request = segarBoxApiServices.addToCart(token, productId, productQty)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    emit(Resource.Success("Add Cart Success"))
+                }
+            } else {
+                emit(Resource.Error(message = "Something went wrong, can't add cart"))
+            }
+
+        } catch (ex: Exception) {
+            emit(Resource.Error(message = "Something went wrong, can't add cart"))
+        }
+    }
+
     suspend fun deleteCart(token: String, cartId: Int): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
         try {
