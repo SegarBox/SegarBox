@@ -42,7 +42,7 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
     private var isHomeSearchBarPressed: Boolean = false
     private val paginationAdapter = PaginationAdapter(this)
     private val paginationViewModel by viewModels<PaginationViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
     }
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))

@@ -3,7 +3,6 @@ package com.example.segarbox.ui.checkout
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -44,7 +43,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
     private val checkoutDetailsAdapter = CheckoutDetailsAdapter()
     private var isGotToken = false
     private val checkoutViewModel by viewModels<CheckoutViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
     }
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))

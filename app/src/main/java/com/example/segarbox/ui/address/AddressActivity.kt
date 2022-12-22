@@ -11,7 +11,7 @@ import androidx.core.view.isVisible
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.core.data.RetrofitRepository
+import com.example.core.data.Repository
 import com.example.core.data.source.local.datastore.SettingPreferences
 import com.example.core.data.source.remote.response.AddressItem
 import com.example.core.ui.address.AddressAdapter
@@ -37,7 +37,7 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
     }
     private val addressViewModel by viewModels<AddressViewModel> {
-        RetrofitViewModelFactory.getInstance(RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(Repository())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -2,7 +2,6 @@ package com.example.segarbox.ui.shipping
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +13,6 @@ import com.example.core.domain.model.ShippingModel
 import com.example.core.ui.ShippingAdapter
 import com.example.core.utils.Code
 import com.example.core.utils.tidyUpJneAndTikiEtd
-import com.example.core.utils.tidyUpPosEtd
 import com.example.segarbox.R
 import com.example.segarbox.databinding.ActivityShippingBinding
 import com.example.segarbox.ui.viewmodel.RetrofitRoomViewModelFactory
@@ -31,7 +29,7 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
     private val shippingAdapter = ShippingAdapter(this)
     private val shippingViewModel by viewModels<ShippingViewModel> {
         RetrofitRoomViewModelFactory.getInstance(RoomRepository(application),
-            com.example.core.data.RetrofitRepository())
+            com.example.core.data.Repository())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

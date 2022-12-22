@@ -49,7 +49,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
     private var token = ""
     private val mainViewModel by viewModels<MainViewModel> {
         RetrofitRoomViewModelFactory.getInstance(RoomRepository(requireActivity().application),
-            com.example.core.data.RetrofitRepository())
+            com.example.core.data.Repository())
     }
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))

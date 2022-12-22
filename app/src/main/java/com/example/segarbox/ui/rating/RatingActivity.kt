@@ -34,7 +34,7 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
     }
     private val ratingViewModel by viewModels<RatingViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

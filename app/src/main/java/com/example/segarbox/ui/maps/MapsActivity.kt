@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -51,7 +50,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
     private var addressModel = AddressModel()
     private var token = ""
     private val mapsViewModel by viewModels<MapsViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
     }
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))

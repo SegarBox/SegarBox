@@ -3,7 +3,6 @@ package com.example.segarbox.ui.cart
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -40,7 +39,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
     }
     private val cartViewModel by viewModels<CartViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

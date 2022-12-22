@@ -33,7 +33,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
     }
     private val profileViewModel by viewModels<ProfileViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
     }
 
     override fun onCreateView(

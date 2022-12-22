@@ -2,7 +2,7 @@ package com.example.segarbox.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.core.data.RetrofitRepository
+import com.example.core.data.Repository
 import com.example.segarbox.ui.address.AddressViewModel
 import com.example.segarbox.ui.cart.CartViewModel
 import com.example.segarbox.ui.checkout.CheckoutViewModel
@@ -16,7 +16,7 @@ import com.example.segarbox.ui.profile.ProfileViewModel
 import com.example.segarbox.ui.rating.RatingViewModel
 import com.example.segarbox.ui.transaction.TransactionViewModel
 
-class RetrofitViewModelFactory private constructor(private val retrofitRepository: RetrofitRepository) : ViewModelProvider.NewInstanceFactory(){
+class RetrofitViewModelFactory private constructor(private val retrofitRepository: Repository) : ViewModelProvider.NewInstanceFactory(){
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -42,7 +42,7 @@ class RetrofitViewModelFactory private constructor(private val retrofitRepositor
         private var INSTANCE: RetrofitViewModelFactory? = null
 
         @JvmStatic
-        fun getInstance(retrofitRepository: RetrofitRepository): RetrofitViewModelFactory {
+        fun getInstance(retrofitRepository: Repository): RetrofitViewModelFactory {
             if (INSTANCE == null) {
                 synchronized(RetrofitViewModelFactory::class.java) {
                     INSTANCE = RetrofitViewModelFactory(retrofitRepository)

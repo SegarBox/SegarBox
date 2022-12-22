@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     private val binding get() = _binding!!
     private val mainViewModel by viewModels<MainViewModel> {
         RetrofitRoomViewModelFactory.getInstance(RoomRepository(application),
-            com.example.core.data.RetrofitRepository())
+            com.example.core.data.Repository())
     }
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))

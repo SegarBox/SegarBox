@@ -31,7 +31,7 @@ class RegisterFragment : Fragment(), View.OnClickListener {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
     }
     private val registerViewModel by viewModels<RegisterViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
     }
 
     override fun onCreateView(
