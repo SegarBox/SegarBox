@@ -8,7 +8,7 @@ import com.example.segarbox.ui.shipping.ShippingViewModel
 
 class RetrofitRoomViewModelFactory private constructor(
     private val roomRepository: RoomRepository,
-    private val retrofitRepository: com.example.core.data.RetrofitRepository,
+    private val retrofitRepository: com.example.core.data.Repository,
 ) :
     ViewModelProvider.NewInstanceFactory() {
 
@@ -26,7 +26,7 @@ class RetrofitRoomViewModelFactory private constructor(
         private var INSTANCE: RetrofitRoomViewModelFactory? = null
 
         @JvmStatic
-        fun getInstance(roomRepository: RoomRepository, retrofitRepository: com.example.core.data.RetrofitRepository): RetrofitRoomViewModelFactory {
+        fun getInstance(roomRepository: RoomRepository, retrofitRepository: com.example.core.data.Repository): RetrofitRoomViewModelFactory {
             if (INSTANCE == null) {
                 synchronized(RetrofitRoomViewModelFactory::class.java) {
                     INSTANCE = RetrofitRoomViewModelFactory(roomRepository, retrofitRepository)

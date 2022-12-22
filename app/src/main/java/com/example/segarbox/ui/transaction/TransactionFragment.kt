@@ -33,7 +33,7 @@ class TransactionFragment : Fragment(), View.OnClickListener {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
     }
     private val transactionViewModel by viewModels<TransactionViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
     }
 
     override fun onCreateView(

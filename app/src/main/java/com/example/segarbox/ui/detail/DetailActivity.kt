@@ -34,7 +34,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     private var token = ""
     private var quantity = 0
     private val detailViewModel by viewModels<DetailViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
     }
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))

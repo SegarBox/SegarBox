@@ -30,7 +30,7 @@ class HistoryFragment : Fragment(), TransactionsAdapter.OnItemTransactionsClickC
     private var token = ""
     private val transactionsAdapter = TransactionsAdapter(this)
     private val transactionViewModel by viewModels<TransactionViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.RetrofitRepository())
+        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
     }
     private val prefViewModel by viewModels<PrefViewModel> {
         PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
