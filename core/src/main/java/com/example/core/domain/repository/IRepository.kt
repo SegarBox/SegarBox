@@ -71,7 +71,6 @@ interface IRepository {
     ): Flow<Resource<Register>>
 
     fun getProductPaging(
-        apiServices: ApiServices,
         filter: String,
         filterValue: String,
     ): Flow<PagingData<Product>>

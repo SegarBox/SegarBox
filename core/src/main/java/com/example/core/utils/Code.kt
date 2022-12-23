@@ -32,4 +32,6 @@ object Code {
     const val KEY_TRANSACTION_ID = "key_transaction_id"
     const val SNACKBAR_VALUE = "snackbar_value"
     const val RESULT_SNACKBAR = 102
+
+    const val USER_PREF = "user_pref"
 }

@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 interface SearchUseCase {
 
     fun getProductPaging(
-        apiServices: ApiServices,
         filter: String,
         filterValue: String,
     ): Flow<PagingData<Product>>

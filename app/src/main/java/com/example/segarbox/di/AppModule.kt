@@ -7,65 +7,80 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import javax.inject.Singleton
 
 @Module
 @InstallIn(ViewModelComponent::class)
 abstract class AppModule {
 
+    @Singleton
     @Binds
     @ViewModelScoped
-    abstract fun provideAddressUseCase(addressInteractor: AddressInteractor): AddressUseCase
+    abstract fun provideAddressUseCase(interactor: Interactor): AddressUseCase
 
+    @Singleton
     @Binds
     @ViewModelScoped
-    abstract fun provideCartUseCase(cartInteractor: CartInteractor): CartUseCase
+    abstract fun provideCartUseCase(interactor: Interactor): CartUseCase
 
+    @Singleton
     @Binds
     @ViewModelScoped
-    abstract fun provideCheckoutUseCase(checkoutInteractor: CheckoutInteractor): CheckoutUseCase
+    abstract fun provideCheckoutUseCase(interactor: Interactor): CheckoutUseCase
 
+    @Singleton
     @Binds
     @ViewModelScoped
-    abstract fun provideDetailUseCase(detailInteractor: DetailInteractor): DetailUseCase
+    abstract fun provideDetailUseCase(interactor: Interactor): DetailUseCase
 
+    @Singleton
     @Binds
     @ViewModelScoped
-    abstract fun provideHomeUseCase(homeInteractor: HomeInteractor): HomeUseCase
+    abstract fun provideHomeUseCase(interactor: Interactor): HomeUseCase
 
+    @Singleton
     @Binds
     @ViewModelScoped
-    abstract fun provideInvoiceUseCase(invoiceInteractor: InvoiceInteractor): InvoiceUseCase
+    abstract fun provideInvoiceUseCase(interactor: Interactor): InvoiceUseCase
 
+    @Singleton
     @Binds
     @ViewModelScoped
-    abstract fun provideLoginUseCase(loginInteractor: LoginInteractor): LoginUseCase
+    abstract fun provideLoginUseCase(interactor: Interactor): LoginUseCase
 
+    @Singleton
     @Binds
     @ViewModelScoped
-    abstract fun provideMapsUseCase(mapsInteractor: MapsInteractor): MapsUseCase
+    abstract fun provideMapsUseCase(interactor: Interactor): MapsUseCase
 
+    @Singleton
     @Binds
     @ViewModelScoped
-    abstract fun provideProfileUseCase(profileInteractor: ProfileInteractor): ProfileUseCase
+    abstract fun provideProfileUseCase(interactor: Interactor): ProfileUseCase
 
+    @Singleton
     @Binds
     @ViewModelScoped
-    abstract fun provideRatingUseCase(ratingInteractor: RatingInteractor): RatingUseCase
+    abstract fun provideRatingUseCase(interactor: Interactor): RatingUseCase
 
+    @Singleton
     @Binds
     @ViewModelScoped
-    abstract fun provideRegisterUseCase(registerInteractor: RegisterInteractor): RegisterUseCase
+    abstract fun provideRegisterUseCase(interactor: Interactor): RegisterUseCase
 
+    @Singleton
     @Binds
     @ViewModelScoped
-    abstract fun provideSearchUseCase(searchInteractor: SearchInteractor): SearchUseCase
+    abstract fun provideSearchUseCase(interactor: Interactor): SearchUseCase
 
+    @Singleton
     @Binds
     @ViewModelScoped
-    abstract fun provideShippingUseCase(shippingInteractor: ShippingInteractor): ShippingUseCase
+    abstract fun provideShippingUseCase(interactor: Interactor): ShippingUseCase
 
+    @Singleton
     @Binds
     @ViewModelScoped
-    abstract fun provideTransactionUseCase(transactionInteractor: TransactionInteractor): TransactionUseCase
+    abstract fun provideTransactionUseCase(interactor: Interactor): TransactionUseCase
 
 }

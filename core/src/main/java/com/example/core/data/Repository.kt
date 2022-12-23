@@ -155,11 +155,10 @@ class Repository @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override fun getProductPaging(
-        apiServices: ApiServices,
         filter: String,
         filterValue: String,
     ): Flow<PagingData<Product>> =
-        remoteDataSource.getProductPaging(apiServices, filter, filterValue).map { pagingData ->
+        remoteDataSource.getProductPaging(filter, filterValue).map { pagingData ->
             pagingData.map {
                 DataMapper.mapProductItemToProduct(it)
             }

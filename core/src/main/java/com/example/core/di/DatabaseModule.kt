@@ -25,6 +25,7 @@ class DatabaseModule {
             .build()
     }
 
+    @Singleton
     @Provides
     fun provideCityDao(mainDatabase: MainDatabase): CityDao = mainDatabase.cityDao()
 
