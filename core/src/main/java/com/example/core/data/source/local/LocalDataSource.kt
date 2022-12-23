@@ -1,17 +1,89 @@
 package com.example.core.data.source.local
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.example.core.BuildConfig
 import com.example.core.data.Resource
 import com.example.core.data.source.local.room.CityDao
 import com.example.core.domain.model.City
 import com.example.core.utils.DataMapper
+import com.example.core.utils.Event
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LocalDataSource @Inject constructor(private val cityDao: CityDao) {
+class LocalDataSource @Inject constructor(
+    private val cityDao: CityDao,
+    private val dataStore: DataStore<Preferences>,
+) {
+
+    private val keyTheme = booleanPreferencesKey("key_theme")
+    private val keyIntro = booleanPreferencesKey("key_intro")
+    private val keyToken = stringPreferencesKey("key_token")
+    private val keyUserId = intPreferencesKey("key_userid")
+    private val keyBaseUrl = stringPreferencesKey("key_base_url")
+
+    fun getTheme(): Flow<Boolean> {
+        return dataStore.data.map {
+            it[keyTheme] ?: false
+        }
+    }
+
+    suspend fun saveTheme(isDarkMode: Boolean) {
+        dataStore.edit {
+            it[keyTheme] = isDarkMode
+        }
+    }
+
+    fun getToken(): Flow<String> {
+        return dataStore.data.map {
+            it[keyToken] ?: ""
+        }
+    }
+
+    suspend fun saveToken(token: String) {
+        dataStore.edit {
+            it[keyToken] = token
+        }
+    }
+
+    fun getUserId(): Flow<Int> {
+        return dataStore.data.map {
+            it[keyUserId] ?: 0
+        }
+    }
+
+    suspend fun saveUserId(userId: Int) {
+        dataStore.edit {
+            it[keyUserId] = userId
+        }
+    }
+
+    fun getIntro(): Flow<Boolean> {
+        return dataStore.data.map {
+            it[keyIntro] ?: false
+        }
+    }
+
+    suspend fun saveIntro(isAlreadyIntro: Boolean) {
+        dataStore.edit {
+            it[keyIntro] = isAlreadyIntro
+        }
+    }
+
+    suspend fun logout() {
+        dataStore.edit {
+            it.remove(keyToken)
+            it.remove(keyUserId)
+        }
+    }
 
     fun getCity(city: String, type: String): Flow<Resource<List<City>>> = flow {
         emit(Resource.Loading())

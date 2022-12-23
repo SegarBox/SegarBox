@@ -12,8 +12,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class ScopeModule {
 
-    @Provides
     @Singleton
+    @Provides
     fun provideCoroutineScope(): CoroutineScope = CoroutineScope(Dispatchers.IO)
 
 }

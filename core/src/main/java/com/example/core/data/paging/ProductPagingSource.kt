@@ -3,13 +3,14 @@ package com.example.core.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.core.data.source.remote.network.ApiServices
+import com.example.core.data.source.remote.network.SegarBoxApiServices
 import com.example.core.data.source.remote.response.ProductItem
 import com.example.core.data.source.remote.response.ProductResponse
 import com.example.core.utils.Code
 import retrofit2.Response
 
 class ProductPagingSource(
-    private val apiServices: ApiServices,
+    private val segarboxApiServices: SegarBoxApiServices,
     private val filter: String,
     private val filterValue: String,
 ) : PagingSource<Int, ProductItem>() {
@@ -19,25 +20,25 @@ class ProductPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductItem> {
         return try {
             val position = params.key ?: INITIAL_PAGE_INDEX
-            responseData = apiServices.getAllProduct(page = position, size = params.loadSize)
+            responseData = segarboxApiServices.getAllProduct(page = position, size = params.loadSize)
 
             when (filter) {
                 Code.CATEGORY_FILTER -> {
-                    responseData = apiServices.getCategoryProduct(
+                    responseData = segarboxApiServices.getCategoryProduct(
                         page = position,
                         size = params.loadSize,
                         category = filterValue
                     )
                 }
                 Code.LABEL_FILTER -> {
-                    responseData = apiServices.getLabelProduct(
+                    responseData = segarboxApiServices.getLabelProduct(
                         page = position,
                         size = params.loadSize,
                         label = filterValue
                     )
                 }
                 else -> {
-                    responseData = apiServices.getAllProduct(
+                    responseData = segarboxApiServices.getAllProduct(
                         page = position,
                         size = params.loadSize,
                     )

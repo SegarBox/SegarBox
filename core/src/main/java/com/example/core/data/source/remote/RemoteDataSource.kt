@@ -529,7 +529,6 @@ class RemoteDataSource @Inject constructor(
     }
 
     fun getProductPaging(
-        apiServices: ApiServices,
         filter: String,
         filterValue: String,
     ): Flow<PagingData<ProductItem>> =
@@ -538,7 +537,7 @@ class RemoteDataSource @Inject constructor(
                 pageSize = 10
             ),
             pagingSourceFactory = {
-                ProductPagingSource(apiServices, filter, filterValue)
+                ProductPagingSource(segarBoxApiServices, filter, filterValue)
             }
         ).flow
 
