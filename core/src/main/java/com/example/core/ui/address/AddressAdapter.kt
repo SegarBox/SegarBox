@@ -7,14 +7,18 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.core.data.source.remote.response.AddressItem
 import com.example.core.databinding.ItemRowAddressBinding
+import com.example.core.domain.model.Address
 import com.example.core.ui.DiffCallbackAddress
 
-class AddressAdapter(private val onItemAddressClickCallback: OnItemAddressClickCallback): ListAdapter<AddressItem, AddressAdapter.AddressViewHolder>(
-    DiffCallbackAddress) {
-    inner class AddressViewHolder(var binding: ItemRowAddressBinding): RecyclerView.ViewHolder(binding.root)
+class AddressAdapter(private val onItemAddressClickCallback: OnItemAddressClickCallback) :
+    ListAdapter<Address, AddressAdapter.AddressViewHolder>(DiffCallbackAddress) {
+
+    inner class AddressViewHolder(var binding: ItemRowAddressBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddressViewHolder {
-        val binding = ItemRowAddressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemRowAddressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AddressViewHolder(binding)
     }
 
@@ -34,7 +38,7 @@ class AddressAdapter(private val onItemAddressClickCallback: OnItemAddressClickC
     }
 
     interface OnItemAddressClickCallback {
-        fun onAddressClicked(addressItem: AddressItem)
-        fun onStashClicked(addressItem: AddressItem)
+        fun onAddressClicked(address: Address)
+        fun onStashClicked(address: Address)
     }
 }

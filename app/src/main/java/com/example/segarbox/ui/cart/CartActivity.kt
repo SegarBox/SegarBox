@@ -1,17 +1,15 @@
 package com.example.segarbox.ui.cart
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.core.data.source.local.datastore.SettingPreferences
-import com.example.core.data.source.remote.response.UserCartItem
+import com.example.core.data.Resource
+import com.example.core.domain.model.Cart
 import com.example.core.ui.CartAdapter
 import com.example.core.utils.Code
 import com.example.core.utils.formatToRupiah
@@ -21,26 +19,18 @@ import com.example.segarbox.databinding.ActivityCartBinding
 import com.example.segarbox.ui.checkout.CheckoutActivity
 import com.example.segarbox.ui.detail.DetailActivity
 import com.example.segarbox.ui.login.LoginActivity
-import com.example.segarbox.ui.viewmodel.PrefViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
-import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
-private val Context.dataStore by preferencesDataStore(name = "settings")
-
+@AndroidEntryPoint
 class CartActivity : AppCompatActivity(), View.OnClickListener,
     CartAdapter.OnItemCartClickCallback {
 
     private var _binding: ActivityCartBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: CartViewModel by viewModels()
     private val cartAdapter = CartAdapter(this)
     private var token = ""
-    private val prefViewModel by viewModels<PrefViewModel> {
-        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
-    }
-    private val cartViewModel by viewModels<CartViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,88 +71,102 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun observeData() {
-        prefViewModel.getToken().observe(this) { token ->
-            this.token = token
-            if (token.isEmpty()) {
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-            }
-        }
-
-        cartViewModel.deleteUserCartResponse.observe(this) { deleteCartResponse ->
-            deleteCartResponse.data?.let {
-                if (token.isNotEmpty()) {
-                    cartViewModel.getUserCart(token.tokenFormat())
-                }
-            }
-
-            deleteCartResponse.message?.let {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
-            }
-        }
-
-        cartViewModel.updateUserCartResponse.observe(this) { updateCartResponse ->
-            updateCartResponse.data?.let {
-                if (token.isNotEmpty()) {
-                    cartViewModel.getUserCart(token.tokenFormat())
-                }
-            }
-
-            updateCartResponse.message?.let {
-                if (token.isNotEmpty()) {
-                    cartViewModel.getUserCart(token.tokenFormat())
-                }
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
-            }
-        }
-
-        cartViewModel.userCart.observe(this) { userCartResponse ->
-            userCartResponse.data?.let {
-                binding.ivEmptycart.isVisible = it.isEmpty()
-                binding.tvEmptycart.isVisible = it.isEmpty()
-                binding.bottomPaymentInfo.root.isVisible = it.isNotEmpty()
-
-                cartAdapter.submitList(it)
-                if (token.isNotEmpty()) {
-                    cartViewModel.getCartDetail(token.tokenFormat(), 0)
+        viewModel.getToken().observe(this) { event ->
+            event.getContentIfNotHandled()?.let {
+                this.token = it
+                if (token.isEmpty()) {
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
                 }
             }
         }
 
-        cartViewModel.cartDetailResponse.observe(this) { cartDetailResponse ->
-            binding.bottomPaymentInfo.tvPrice.text =
-                cartDetailResponse.subtotalProducts.formatToRupiah()
-        }
-
-        cartViewModel.isCheckedUserCart.observe(this) { isCheckedCartResponse ->
-            isCheckedCartResponse.data?.let { listCart ->
-                when {
-                    listCart.isEmpty() -> {
-                        Snackbar.make(binding.root,
-                            "You haven't selected any items yet",
-                            Snackbar.LENGTH_SHORT)
-                            .setAction("OK"){}.show()
+        viewModel.getCartResponse.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
                     }
+
+                    is Resource.Success -> {
+                        resource.data?.let {
+                            viewModel.setLoading(false)
+                            binding.ivEmptycart.isVisible = false
+                            binding.tvEmptycart.isVisible = false
+                            binding.bottomPaymentInfo.root.isVisible = true
+
+                            cartAdapter.submitList(it)
+                            viewModel.getCartDetail(token.tokenFormat(), 0)
+                        }
+                    }
+
+                    is Resource.Empty -> {
+                        viewModel.setLoading(false)
+                        binding.ivEmptycart.isVisible = true
+                        binding.tvEmptycart.isVisible = true
+                        binding.bottomPaymentInfo.root.isVisible = false
+                    }
+
                     else -> {
-                        var passTest = true
-                        for (i in listCart.indices) {
-                            if (listCart[i].productQty > listCart[i].product.qty) {
-                                passTest = false
-                                Snackbar.make(binding.root,
-                                    "Some items are out of stocks, items will be automatically updated",
-                                    Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
-                                break
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                .setAction("OK") {}.show()
+                        }
+                    }
+                }
+            }
+        }
+
+        viewModel.getCartDetailResponse.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
+
+                    is Resource.Success -> {
+                        resource.data?.let {
+                            viewModel.setLoading(false)
+                            binding.bottomPaymentInfo.tvPrice.text =
+                                it.subtotalProducts.formatToRupiah()
+                        }
+                    }
+
+                    else -> {
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                .setAction("OK") {}.show()
+                        }
+                    }
+                }
+            }
+        }
+
+        viewModel.updateCartResponse.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
+
+                    is Resource.Success -> {
+                        resource.data?.let {
+                            viewModel.setLoading(false)
+                            if (token.isNotEmpty()) {
+                                viewModel.getCart(token.tokenFormat())
                             }
                         }
+                    }
 
-                        when {
-                            passTest -> {
-                                startActivity(Intent(this, CheckoutActivity::class.java))
-                            }
-                            else -> {
-                                if (token.isNotEmpty()) {
-                                    cartViewModel.getUserCart(token.tokenFormat())
-                                }
+                    else -> {
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                .setAction("OK") {}.show()
+                            if (token.isNotEmpty()) {
+                                viewModel.getCart(token.tokenFormat())
                             }
                         }
                     }
@@ -170,8 +174,10 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
             }
         }
 
-        cartViewModel.isLoading.observe(this) { isLoading ->
-            binding.progressBar.isVisible = isLoading
+        viewModel.isLoading.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { isLoading ->
+                binding.progressBar.isVisible = isLoading
+            }
         }
 
     }
@@ -200,7 +206,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
         super.onResume()
 
         if (token.isNotEmpty()) {
-            cartViewModel.getUserCart(token.tokenFormat())
+            viewModel.getCart(token.tokenFormat())
         }
     }
 
@@ -213,7 +219,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
         super.onNewIntent(intent)
         val snackbarValue = intent?.getStringExtra(Code.SNACKBAR_VALUE)
         snackbarValue?.let {
-            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
         }
     }
 
@@ -224,16 +230,67 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
             }
             R.id.checkout_layout -> {
                 if (token.isNotEmpty()) {
-                    cartViewModel.getIsCheckedUserCart(token.tokenFormat())
+                    viewModel.getCheckedCart(token.tokenFormat()).observe(this) { event ->
+                        event.getContentIfNotHandled()?.let { resource ->
+                            when (resource) {
+                                is Resource.Loading -> {
+                                    viewModel.setLoading(true)
+                                }
+
+                                is Resource.Success -> {
+                                    resource.data?.let {
+                                        viewModel.setLoading(false)
+                                        var passTest = true
+                                        for (i in it.indices) {
+                                            if (it[i].productQty > it[i].product.qty) {
+                                                passTest = false
+                                                Snackbar.make(binding.root,
+                                                    "Some items are out of stocks, items will be automatically updated",
+                                                    Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
+                                                break
+                                            }
+                                        }
+
+                                        when {
+                                            passTest -> {
+                                                startActivity(Intent(this,
+                                                    CheckoutActivity::class.java))
+                                            }
+                                            else -> {
+                                                if (token.isNotEmpty()) {
+                                                    viewModel.getCart(token.tokenFormat())
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                is Resource.Empty -> {
+                                    viewModel.setLoading(false)
+                                    Snackbar.make(binding.root,
+                                        "You haven't selected any items yet", Snackbar.LENGTH_SHORT)
+                                        .setAction("OK") {}.show()
+                                }
+
+                                else -> {
+                                    resource.message?.let {
+                                        viewModel.setLoading(false)
+                                        Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                            .setAction("OK") {}.show()
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 
-    override fun onCheckboxClicked(item: UserCartItem) {
+    override fun onCheckboxClicked(item: Cart) {
         if (token.isNotEmpty()) {
             val newIsChecked = if (item.isChecked == 1) 0 else 1
-            cartViewModel.updateUserCart(token.tokenFormat(),
+            viewModel.updateCart(token.tokenFormat(),
                 item.id,
                 item.productId,
                 item.productQty,
@@ -241,10 +298,10 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun onRemoveClicked(item: UserCartItem) {
+    override fun onRemoveClicked(item: Cart) {
         if (token.isNotEmpty()) {
             val newProductQty = item.productQty - 1
-            cartViewModel.updateUserCart(token.tokenFormat(),
+            viewModel.updateCart(token.tokenFormat(),
                 item.id,
                 item.productId,
                 newProductQty,
@@ -252,10 +309,10 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun onAddClicked(item: UserCartItem) {
+    override fun onAddClicked(item: Cart) {
         if (token.isNotEmpty()) {
             val newProductQty = item.productQty + 1
-            cartViewModel.updateUserCart(token.tokenFormat(),
+            viewModel.updateCart(token.tokenFormat(),
                 item.id,
                 item.productId,
                 newProductQty,
@@ -263,15 +320,39 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun onStashClicked(item: UserCartItem) {
+    override fun onStashClicked(item: Cart) {
         if (token.isNotEmpty()) {
-            cartViewModel.deleteUserCart(token.tokenFormat(), item.id)
+            viewModel.deleteCart(token.tokenFormat(), item.id).observe(this) { event ->
+                event.getContentIfNotHandled()?.let { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {
+                            viewModel.setLoading(true)
+                        }
+
+                        is Resource.Success -> {
+                            resource.data?.let {
+                                viewModel.setLoading(false)
+                                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                    .setAction("OK") {}.show()
+                            }
+                        }
+
+                        else -> {
+                            resource.message?.let {
+                                viewModel.setLoading(false)
+                                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                    .setAction("OK") {}.show()
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
-    override fun onItemProductQtyChanged(item: UserCartItem) {
+    override fun onItemProductQtyChanged(item: Cart) {
         if (token.isNotEmpty()) {
-            cartViewModel.updateUserCart(token.tokenFormat(),
+            viewModel.updateCart(token.tokenFormat(),
                 item.id,
                 item.productId,
                 item.productQty,
@@ -279,7 +360,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun onRootClicked(item: UserCartItem) {
+    override fun onRootClicked(item: Cart) {
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra(Code.KEY_FROM_ACTIVITY, Code.CART_ACTIVITY)
         intent.putExtra(Code.KEY_USERCART_VALUE, item)

@@ -24,6 +24,9 @@ class Interactor @Inject constructor(private val repository: IRepository) : Addr
     override fun deleteAddress(token: String, addressId: Int): Flow<Resource<String>> =
         repository.deleteAddress(token, addressId)
 
+    override fun getToken(): Flow<String> =
+        repository.getToken()
+
     override fun getCityFromApi(): Flow<Resource<List<City>>> =
         repository.getCityFromApi()
 

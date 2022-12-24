@@ -1,6 +1,5 @@
 package com.example.segarbox.ui.checkout
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -8,7 +7,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.core.data.source.local.datastore.SettingPreferences
@@ -28,13 +26,14 @@ import com.example.segarbox.ui.viewmodel.PrefViewModel
 import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
-private val Context.dataStore by preferencesDataStore(name = "settings")
-
+@AndroidEntryPoint
 class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
 
     private var _binding: ActivityCheckoutBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: CheckoutViewModel by viewModels()
     private var addressItem: AddressItem? = null
     private var costs: CartDetailResponse? = null
     private val listProductTransactions: ArrayList<ProductTransactions> = arrayListOf()
@@ -42,12 +41,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
     private var isShippingCostAdded = false
     private val checkoutDetailsAdapter = CheckoutDetailsAdapter()
     private var isGotToken = false
-    private val checkoutViewModel by viewModels<CheckoutViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
-    }
-    private val prefViewModel by viewModels<PrefViewModel> {
-        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,20 +85,20 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
 
             if (!this.isGotToken && token.isNotEmpty()) {
                 this.isGotToken = true
-                checkoutViewModel.getCheckoutDetails(token.tokenFormat())
+                viewModel.getCheckoutDetails(token.tokenFormat())
 
                 if (costs != null) {
                     costs?.let {
-                        checkoutViewModel.getCosts(token.tokenFormat(), it.shippingCost)
+                        viewModel.getCosts(token.tokenFormat(), it.shippingCost)
                     }
                 }
                 else {
-                    checkoutViewModel.getCosts(token.tokenFormat(), 0)
+                    viewModel.getCosts(token.tokenFormat(), 0)
                 }
             }
         }
 
-        checkoutViewModel.checkoutDetails.observe(this) { userCartResponse ->
+        viewModel.checkoutDetails.observe(this) { userCartResponse ->
             userCartResponse.data?.let {
                 checkoutDetailsAdapter.submitList(it)
 
@@ -118,7 +112,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        checkoutViewModel.costs.observe(this) { costs ->
+        viewModel.costs.observe(this) { costs ->
             this.costs = costs
 
             binding.content.apply {
@@ -129,7 +123,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
             binding.bottomPaymentInfo.tvPrice.text = costs.totalPrice.formatToRupiah()
         }
 
-        checkoutViewModel.makeOrderResponse.observe(this) { makeOrderResponse ->
+        viewModel.makeOrderResponse.observe(this) { makeOrderResponse ->
             makeOrderResponse.info?.let { info ->
                 makeOrderResponse.data?.let { makeOrderResponse ->
                     val intent = Intent(this, InvoiceActivity::class.java)
@@ -145,7 +139,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        checkoutViewModel.isLoading.observe(this) { isLoading ->
+        viewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar.isVisible = isLoading
         }
 
@@ -159,7 +153,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                     // Jika tambah address, otomatis shipping cost ke reset
                     binding.content.contentShipping.root.isVisible = false
                     if (token.isNotEmpty()) {
-                        checkoutViewModel.getCosts(token.tokenFormat(), 0)
+                        viewModel.getCosts(token.tokenFormat(), 0)
                     }
 
                     addressItem =
@@ -182,7 +176,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
 
                     shippingModel?.let {
                         if (token.isNotEmpty()) {
-                            checkoutViewModel.getCosts(token.tokenFormat(), it.price)
+                            viewModel.getCosts(token.tokenFormat(), it.price)
                         }
 
 
@@ -263,7 +257,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                             listProductTransactions
                         )
 
-                        checkoutViewModel.makeOrderTransaction(
+                        viewModel.makeOrderTransaction(
                             token.tokenFormat(),
                             makeOrderBody
                         )

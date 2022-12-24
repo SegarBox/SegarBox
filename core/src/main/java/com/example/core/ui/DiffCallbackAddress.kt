@@ -2,13 +2,14 @@ package com.example.core.ui
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.core.data.source.remote.response.AddressItem
+import com.example.core.domain.model.Address
 
-object DiffCallbackAddress : DiffUtil.ItemCallback<AddressItem>() {
-    override fun areItemsTheSame(oldItem: AddressItem, newItem: AddressItem): Boolean {
+object DiffCallbackAddress : DiffUtil.ItemCallback<Address>() {
+    override fun areItemsTheSame(oldItem: Address, newItem: Address): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: AddressItem, newItem: AddressItem): Boolean {
+    override fun areContentsTheSame(oldItem: Address, newItem: Address): Boolean {
         return oldItem == newItem
     }
 }

@@ -42,11 +42,10 @@ class LocalDataSource @Inject constructor(
         }
     }
 
-    fun getToken(): Flow<String> {
-        return dataStore.data.map {
-            it[keyToken] ?: ""
+    fun getToken(): Flow<String> =
+        dataStore.data.map { pref ->
+            pref[keyToken] ?: ""
         }
-    }
 
     suspend fun saveToken(token: String) {
         dataStore.edit {

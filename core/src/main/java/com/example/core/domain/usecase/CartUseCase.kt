@@ -17,4 +17,6 @@ interface CartUseCase {
 
     fun getCartDetail(token: String, shippingCost: Int): Flow<Resource<CartDetail>>
 
+    fun getToken(): Flow<String>
+
 }

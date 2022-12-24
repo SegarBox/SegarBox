@@ -81,4 +81,6 @@ interface IRepository {
 
     fun getTransactions(token: String, status: String): Flow<Resource<List<Transaction>>>
 
+    fun getToken(): Flow<String>
+
 }
