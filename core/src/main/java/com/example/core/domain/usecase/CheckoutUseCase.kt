@@ -15,4 +15,6 @@ interface CheckoutUseCase {
 
     fun makeOrder(token: String, makeOrderBody: MakeOrderBody): Flow<Resource<MakeOrder>>
 
+    fun getToken(): Flow<String>
+
 }

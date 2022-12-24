@@ -14,6 +14,14 @@ import javax.inject.Inject
 @HiltViewModel
 class CheckoutViewModel @Inject constructor(private val checkoutUseCase: CheckoutUseCase) : ViewModel() {
 
+    private val _getCheckedCartResponse = MutableLiveData<Event<Resource<List<Cart>>>>()
+    val getCheckedCartResponse: LiveData<Event<Resource<List<Cart>>>> = _getCheckedCartResponse
+
+    fun getToken(): LiveData<Event<String>> =
+        checkoutUseCase.getToken().asLiveData().map {
+            Event(it)
+        }
+
     fun getCheckedCart(token: String): LiveData<Event<Resource<List<Cart>>>> =
         checkoutUseCase.getCheckedCart(token).asLiveData().map {
             Event(it)

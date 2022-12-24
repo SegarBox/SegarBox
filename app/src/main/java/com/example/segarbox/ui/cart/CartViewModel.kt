@@ -12,9 +12,31 @@ import javax.inject.Inject
 @HiltViewModel
 class CartViewModel @Inject constructor(private val cartUseCase: CartUseCase) : ViewModel() {
 
-    fun getCart(token: String): LiveData<Event<Resource<List<Cart>>>> =
-        cartUseCase.getCart(token).asLiveData().map {
+    private val _getCartResponse = MutableLiveData<Event<Resource<List<Cart>>>>()
+    val getCartResponse: LiveData<Event<Resource<List<Cart>>>> = _getCartResponse
+
+    private val _getCartDetailResponse = MutableLiveData<Event<Resource<CartDetail>>>()
+    val getCartDetailResponse: LiveData<Event<Resource<CartDetail>>> = _getCartDetailResponse
+
+    private val _updateCartResponse = MutableLiveData<Event<Resource<String>>>()
+    val updateCartResponse: LiveData<Event<Resource<String>>> = _updateCartResponse
+
+    private val _isLoading = MutableLiveData<Event<Boolean>>()
+    val isLoading: LiveData<Event<Boolean>> = _isLoading
+
+    fun getToken(): LiveData<Event<String>> =
+        cartUseCase.getToken().asLiveData().map {
             Event(it)
+        }
+
+    fun getCart(token: String) =
+        cartUseCase.getCart(token).asLiveData().map {
+            _getCartResponse.postValue(Event(it))
+        }
+
+    fun getCartDetail(token: String, shippingCost: Int) =
+        cartUseCase.getCartDetail(token, shippingCost).asLiveData().map {
+            _getCartDetailResponse.postValue(Event(it))
         }
 
     fun getCheckedCart(token: String): LiveData<Event<Resource<List<Cart>>>> =
@@ -33,15 +55,12 @@ class CartViewModel @Inject constructor(private val cartUseCase: CartUseCase) : 
         productId: Int,
         productQty: Int,
         isChecked: Int,
-    ): LiveData<Event<Resource<String>>> =
-        cartUseCase.updateCart(token, cartId, productId, productQty, isChecked).asLiveData().map {
-            Event(it)
+    ) = cartUseCase.updateCart(token, cartId, productId, productQty, isChecked).asLiveData().map {
+            _updateCartResponse.postValue(Event(it))
         }
 
-    fun getCartDetail(token: String, shippingCost: Int): LiveData<Event<Resource<CartDetail>>> =
-        cartUseCase.getCartDetail(token, shippingCost).asLiveData().map {
-            Event(it)
-        }
+    fun setLoading(isLoading: Boolean) =
+        _isLoading.postValue(Event(isLoading))
 
 //    private var _userCart = MutableLiveData<UserCartResponse>()
 //    val userCart: LiveData<UserCartResponse> = _userCart

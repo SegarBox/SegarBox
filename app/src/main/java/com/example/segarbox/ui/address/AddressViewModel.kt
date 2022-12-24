@@ -14,15 +14,29 @@ import javax.inject.Inject
 @HiltViewModel
 class AddressViewModel @Inject constructor(private val addressUseCase: AddressUseCase): ViewModel() {
 
-    fun getUserAddresses(token: String): LiveData<Event<Resource<List<Address>>>> =
+    private val _getUserAddressesResponse = MutableLiveData<Event<Resource<List<Address>>>>()
+    val getUserAddressesResponse: LiveData<Event<Resource<List<Address>>>> = _getUserAddressesResponse
+
+    private val _isLoading = MutableLiveData<Event<Boolean>>()
+    val isLoading: LiveData<Event<Boolean>> = _isLoading
+
+    fun getUserAddresses(token: String) =
         addressUseCase.getUserAddresses(token).asLiveData().map {
-            Event(it)
+            _getUserAddressesResponse.postValue(Event(it))
         }
 
     fun deleteAddress(token: String, addressId: Int): LiveData<Event<Resource<String>>> =
         addressUseCase.deleteAddress(token, addressId).asLiveData().map {
             Event(it)
         }
+
+    fun getToken(): LiveData<Event<String>> =
+        addressUseCase.getToken().asLiveData().map {
+            Event(it)
+        }
+
+    fun setLoading(isLoading: Boolean) =
+        _isLoading.postValue(Event(isLoading))
 
 //    private val _addressResponse = MutableLiveData<GetAddressResponse>()
 //    val addressResponse: LiveData<GetAddressResponse> = _addressResponse

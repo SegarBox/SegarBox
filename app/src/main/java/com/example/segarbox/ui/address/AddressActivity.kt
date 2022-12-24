@@ -1,6 +1,5 @@
 package com.example.segarbox.ui.address
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -8,37 +7,28 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.core.data.Repository
-import com.example.core.data.source.local.datastore.SettingPreferences
-import com.example.core.data.source.remote.response.AddressItem
+import com.example.core.data.Resource
+import com.example.core.domain.model.Address
 import com.example.core.ui.address.AddressAdapter
 import com.example.core.utils.Code
 import com.example.core.utils.tokenFormat
 import com.example.segarbox.R
 import com.example.segarbox.databinding.ActivityAddressBinding
 import com.example.segarbox.ui.maps.MapsActivity
-import com.example.segarbox.ui.viewmodel.PrefViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
-import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
-private val Context.dataStore by preferencesDataStore(name = "settings")
+@AndroidEntryPoint
 class AddressActivity : AppCompatActivity(), View.OnClickListener,
     AddressAdapter.OnItemAddressClickCallback {
 
     private var _binding: ActivityAddressBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: AddressViewModel by viewModels()
     private val addressAdapter = AddressAdapter(this)
     private var token = ""
-    private val prefViewModel by viewModels<PrefViewModel> {
-        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
-    }
-    private val addressViewModel by viewModels<AddressViewModel> {
-        RetrofitViewModelFactory.getInstance(Repository())
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,33 +81,50 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun observeData() {
-        prefViewModel.getToken().observe(this) { token ->
-            this.token = token
-        }
-
-        addressViewModel.addressResponse.observe(this) { addressResponse ->
-            addressResponse.data?.let {
-                binding.ivEmptymap.isVisible = it.isEmpty()
-                binding.tvEmptymap.isVisible = it.isEmpty()
-                addressAdapter.submitList(it)
+        viewModel.getToken().observe(this) { event ->
+            event.getContentIfNotHandled()?.let {
+                this.token = it
             }
         }
 
-        addressViewModel.deleteAddressResponse.observe(this) { deleteAddressResponse ->
-            deleteAddressResponse.info?.let {
-                if (token.isNotEmpty()) {
-                    addressViewModel.getUserAddresses(token.tokenFormat())
+        if (token.isNotEmpty()) {
+            viewModel.getUserAddressesResponse.observe(this) { event ->
+                event.getContentIfNotHandled()?.let { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {
+                            viewModel.setLoading(true)
+                        }
+
+                        is Resource.Success -> {
+                            resource.data?.let {
+                                viewModel.setLoading(false)
+                                binding.ivEmptymap.isVisible = false
+                                binding.tvEmptymap.isVisible = false
+                                addressAdapter.submitList(it)
+                            }
+                        }
+                        is Resource.Empty -> {
+                            viewModel.setLoading(false)
+                            binding.ivEmptymap.isVisible = true
+                            binding.tvEmptymap.isVisible = true
+                        }
+
+                        else -> {
+                            resource.message?.let {
+                                viewModel.setLoading(false)
+                                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                    .setAction("OK") {}.show()
+                            }
+                        }
+                    }
                 }
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
-            }
-
-            deleteAddressResponse.message?.let {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
             }
         }
 
-        addressViewModel.isLoading.observe(this) { isLoading ->
-            binding.progressBar.isVisible = isLoading
+        viewModel.isLoading.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { isLoading ->
+                binding.progressBar.isVisible = isLoading
+            }
         }
 
     }
@@ -125,7 +132,7 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
     override fun onResume() {
         super.onResume()
         if (token.isNotEmpty()) {
-            addressViewModel.getUserAddresses(token.tokenFormat())
+            viewModel.getUserAddresses(token.tokenFormat())
         }
     }
 
@@ -140,7 +147,8 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
                 result.resultCode == Code.RESULT_SNACKBAR && result.data != null -> {
                     val snackbarValue = result.data?.getStringExtra(Code.SNACKBAR_VALUE)
                     snackbarValue?.let {
-                        Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                        Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK") {}
+                            .show()
                     }
                 }
             }
@@ -157,16 +165,41 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun onAddressClicked(addressItem: AddressItem) {
+    override fun onAddressClicked(address: Address) {
         val intent = Intent()
-        intent.putExtra(Code.ADDRESS_VALUE, addressItem)
+        intent.putExtra(Code.ADDRESS_VALUE, address)
         setResult(Code.RESULT_SAVE_ADDRESS, intent)
         finish()
     }
 
-    override fun onStashClicked(addressItem: AddressItem) {
+    override fun onStashClicked(address: Address) {
         if (token.isNotEmpty()) {
-            addressViewModel.deleteAddress(token.tokenFormat(), addressItem.id)
+            viewModel.deleteAddress(token.tokenFormat(), address.id).observe(this) { event ->
+                event.getContentIfNotHandled()?.let { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {
+                            viewModel.setLoading(true)
+                        }
+
+                        is Resource.Success -> {
+                            resource.data?.let {
+                                viewModel.setLoading(false)
+                                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                    .setAction("OK") {}.show()
+                            }
+                            viewModel.getUserAddresses(token.tokenFormat())
+                        }
+
+                        else -> {
+                            resource.message?.let {
+                                viewModel.setLoading(false)
+                                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                    .setAction("OK") {}.show()
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

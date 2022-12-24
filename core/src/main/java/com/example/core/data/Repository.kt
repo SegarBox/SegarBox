@@ -177,6 +177,9 @@ class Repository @Inject constructor(
             emitAll(remoteDataSource.getTransactions(token, status))
         }.flowOn(Dispatchers.IO)
 
+    override fun getToken(): Flow<String> =
+        localDataSource.getToken()
+
     override fun getCity(city: String, type: String): Flow<Resource<List<City>>> =
         localDataSource.getCity(city, type)
 

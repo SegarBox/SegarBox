@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.core.data.source.remote.response.UserCartItem
 import com.example.core.databinding.ItemRowCartBinding
+import com.example.core.domain.model.Cart
 import com.example.core.utils.formatProductSize
 import com.example.core.utils.formatToRupiah
 
 class CartAdapter(private val onItemCartClickCallback: OnItemCartClickCallback) :
-    ListAdapter<UserCartItem, CartAdapter.CartViewHolder>(DiffCallbackCart) {
+    ListAdapter<Cart, CartAdapter.CartViewHolder>(DiffCallbackCart) {
     inner class CartViewHolder(var binding: ItemRowCartBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -42,15 +42,10 @@ class CartAdapter(private val onItemCartClickCallback: OnItemCartClickCallback) 
 
             // Jika permintaan > stok dan stok != 0, maka counter qty lgsg convert ke stok
             if ((item.productQty > item.product.qty) && item.product.qty != 0) {
-                val userCartItem = UserCartItem(item.product,
-                    item.updatedAt,
-                    item.userId,
-                    item.productId,
-                    item.createdAt,
-                    item.isChecked,
-                    item.product.qty,
-                    item.id)
-                onItemCartClickCallback.onItemProductQtyChanged(userCartItem)
+                val newCart = item.copy(
+                    productQty = item.product.qty
+                )
+                onItemCartClickCallback.onItemProductQtyChanged(newCart)
             }
 
             root.setOnClickListener {
@@ -82,12 +77,12 @@ class CartAdapter(private val onItemCartClickCallback: OnItemCartClickCallback) 
     }
 
     interface OnItemCartClickCallback {
-        fun onCheckboxClicked(item: UserCartItem)
-        fun onRemoveClicked(item: UserCartItem)
-        fun onAddClicked(item: UserCartItem)
-        fun onStashClicked(item: UserCartItem)
-        fun onRootClicked(item: UserCartItem)
-        fun onItemProductQtyChanged(item: UserCartItem)
+        fun onCheckboxClicked(item: Cart)
+        fun onRemoveClicked(item: Cart)
+        fun onAddClicked(item: Cart)
+        fun onStashClicked(item: Cart)
+        fun onRootClicked(item: Cart)
+        fun onItemProductQtyChanged(item: Cart)
     }
 
 }
