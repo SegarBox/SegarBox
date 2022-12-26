@@ -17,25 +17,34 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
     private val _getCheckedCartResponse = MutableLiveData<Event<Resource<List<Cart>>>>()
     val getCheckedCartResponse: LiveData<Event<Resource<List<Cart>>>> = _getCheckedCartResponse
 
+    private val _getCartDetailResponse = MutableLiveData<Event<Resource<CartDetail>>>()
+    val getCartDetailResponse: LiveData<Event<Resource<CartDetail>>> = _getCartDetailResponse
+
+    private val _isLoading = MutableLiveData<Event<Boolean>>()
+    val isLoading: LiveData<Event<Boolean>> = _isLoading
+
     fun getToken(): LiveData<Event<String>> =
         checkoutUseCase.getToken().asLiveData().map {
             Event(it)
         }
 
-    fun getCheckedCart(token: String): LiveData<Event<Resource<List<Cart>>>> =
+    fun getCheckedCart(token: String) =
         checkoutUseCase.getCheckedCart(token).asLiveData().map {
-            Event(it)
+            _getCheckedCartResponse.postValue(Event(it))
         }
 
-    fun getCartDetail(token: String, shippingCost: Int): LiveData<Event<Resource<CartDetail>>> =
+    fun getCartDetail(token: String, shippingCost: Int) =
         checkoutUseCase.getCartDetail(token, shippingCost).asLiveData().map {
-            Event(it)
+            _getCartDetailResponse.postValue(Event(it))
         }
 
     fun makeOrder(token: String, makeOrderBody: MakeOrderBody): LiveData<Event<Resource<MakeOrder>>> =
         checkoutUseCase.makeOrder(token, makeOrderBody).asLiveData().map {
             Event(it)
         }
+
+    fun setLoading(isLoading: Boolean) =
+        _isLoading.postValue(Event(isLoading))
 
 //    private val _checkoutDetails = MutableLiveData<UserCartResponse>()
 //    val checkoutDetails: LiveData<UserCartResponse> = _checkoutDetails

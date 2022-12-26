@@ -23,4 +23,6 @@ interface DetailUseCase {
 
     fun deleteCart(token: String, cartId: Int): Flow<Resource<String>>
 
+    fun getToken(): Flow<String>
+
 }

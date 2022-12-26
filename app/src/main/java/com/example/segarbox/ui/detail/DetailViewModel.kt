@@ -14,14 +14,39 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(private val detailUseCase: DetailUseCase): ViewModel() {
 
-    fun getProductById(id: Int): LiveData<Event<Resource<Product>>> =
-        detailUseCase.getProductById(id).asLiveData().map {
+    private val _isLoading = MutableLiveData<Event<Boolean>>()
+    val isLoading: LiveData<Event<Boolean>> = _isLoading
+
+    private val _quantity = MutableLiveData<Int>()
+    val quantity: LiveData<Int> = _quantity
+
+    private val _getProductByIdResponse = MutableLiveData<Event<Resource<Product>>>()
+    val getProductByIdResponse: LiveData<Event<Resource<Product>>> = _getProductByIdResponse
+
+    private val _getCartResponse = MutableLiveData<Event<Resource<List<Cart>>>>()
+    val getCartResponse: LiveData<Event<Resource<List<Cart>>>> = _getCartResponse
+
+    init {
+        saveQuantity(0)
+    }
+
+    fun saveQuantity(qty: Int) {
+        _quantity.postValue(qty)
+    }
+
+    fun getToken(): LiveData<Event<String>> =
+        detailUseCase.getToken().asLiveData().map {
             Event(it)
         }
 
-    fun getCart(token: String): LiveData<Event<Resource<List<Cart>>>> =
+    fun getProductById(id: Int) =
+        detailUseCase.getProductById(id).asLiveData().map {
+            _getProductByIdResponse.postValue(Event(it))
+        }
+
+    fun getCart(token: String) =
         detailUseCase.getCart(token).asLiveData().map {
-            Event(it)
+            _getCartResponse.postValue(Event(it))
         }
 
     fun addCart(token: String, productId: Int, productQty: Int): LiveData<Event<Resource<String>>> =
@@ -45,8 +70,8 @@ class DetailViewModel @Inject constructor(private val detailUseCase: DetailUseCa
             Event(it)
         }
 
-    private var _quantity = MutableLiveData<Int>()
-    val quantity: LiveData<Int> = _quantity
+    fun setLoading(isLoading: Boolean) =
+        _isLoading.postValue(Event(isLoading))
 
 //    private var _productById = MutableLiveData<ProductByIdResponse>()
 //    val productById: LiveData<ProductByIdResponse> = _productById
@@ -66,13 +91,7 @@ class DetailViewModel @Inject constructor(private val detailUseCase: DetailUseCa
 //    private var _isLoading = MutableLiveData<Boolean>()
 //    val isLoading: LiveData<Boolean> = _isLoading
 
-    init {
-        saveQuantity(0)
-    }
 
-    fun saveQuantity(qty: Int) {
-        _quantity.postValue(qty)
-    }
 
 //    fun getProductById(id: Int) {
 //        viewModelScope.launch {
