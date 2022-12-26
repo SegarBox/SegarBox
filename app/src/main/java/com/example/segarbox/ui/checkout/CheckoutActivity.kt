@@ -9,11 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.core.data.source.local.datastore.SettingPreferences
-import com.example.core.data.source.remote.response.AddressItem
-import com.example.core.data.source.remote.response.CartDetailResponse
+import com.example.core.data.Resource
 import com.example.core.domain.body.MakeOrderBody
-import com.example.core.domain.model.ProductTransactions
+import com.example.core.domain.body.ProductTransactions
+import com.example.core.domain.model.Address
+import com.example.core.domain.model.CartDetail
 import com.example.core.domain.model.ShippingModel
 import com.example.core.ui.CheckoutDetailsAdapter
 import com.example.core.utils.*
@@ -22,9 +22,6 @@ import com.example.segarbox.databinding.ActivityCheckoutBinding
 import com.example.segarbox.ui.address.AddressActivity
 import com.example.segarbox.ui.invoice.InvoiceActivity
 import com.example.segarbox.ui.shipping.ShippingActivity
-import com.example.segarbox.ui.viewmodel.PrefViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
-import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,8 +31,8 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
     private var _binding: ActivityCheckoutBinding? = null
     private val binding get() = _binding!!
     private val viewModel: CheckoutViewModel by viewModels()
-    private var addressItem: AddressItem? = null
-    private var costs: CartDetailResponse? = null
+    private var addressItem: Address? = null
+    private var costs: CartDetail? = null
     private val listProductTransactions: ArrayList<ProductTransactions> = arrayListOf()
     private var token = ""
     private var isShippingCostAdded = false
@@ -80,67 +77,97 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
     private fun observeData() {
 
         // TOKEN DIAMBIL TERUS TIAP ONRESUME -_-
-        prefViewModel.getToken().observe(this) { token ->
-            this.token = token
+        viewModel.getToken().observe(this) { event ->
+            event.getContentIfNotHandled()?.let {
+                this.token = it
+            }
+        }
 
-            if (!this.isGotToken && token.isNotEmpty()) {
-                this.isGotToken = true
-                viewModel.getCheckoutDetails(token.tokenFormat())
+        if (token.isNotEmpty()) {
+            viewModel.getCheckedCart(token.tokenFormat())
 
-                if (costs != null) {
-                    costs?.let {
-                        viewModel.getCosts(token.tokenFormat(), it.shippingCost)
+            if (costs != null) {
+                costs?.let {
+                    viewModel.getCartDetail(
+                        token = token.tokenFormat(),
+                        shippingCost = it.shippingCost
+                    )
+                }
+            } else {
+                viewModel.getCartDetail(
+                    token = token.tokenFormat(),
+                    shippingCost = 0
+                )
+            }
+        }
+
+        viewModel.getCheckedCartResponse.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
+
+                    is Resource.Success -> {
+                        resource.data?.let {
+                            viewModel.setLoading(false)
+                            checkoutDetailsAdapter.submitList(it)
+
+                            listProductTransactions.clear()
+                            it.forEach { userCartItem ->
+                                listProductTransactions.add(ProductTransactions(
+                                    userCartItem.product.id,
+                                    userCartItem.productQty
+                                ))
+                            }
+                        }
+                    }
+
+                    else -> {
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                .setAction("OK") {}.show()
+                        }
                     }
                 }
-                else {
-                    viewModel.getCosts(token.tokenFormat(), 0)
+            }
+        }
+
+        viewModel.getCartDetailResponse.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
+
+                    is Resource.Success -> {
+                        resource.data?.let {
+                            viewModel.setLoading(false)
+                            this.costs = it
+                            binding.content.apply {
+                                tvProductsSubtotal.text = it.subtotalProducts.formatToRupiah()
+                                tvShippingCost.text = it.shippingCost.formatToRupiah()
+                                tvTotalPrice.text = it.totalPrice.formatToRupiah()
+                            }
+                            binding.bottomPaymentInfo.tvPrice.text = it.totalPrice.formatToRupiah()
+                        }
+                    }
+
+                    else -> {
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                        }
+                    }
                 }
             }
         }
 
-        viewModel.checkoutDetails.observe(this) { userCartResponse ->
-            userCartResponse.data?.let {
-                checkoutDetailsAdapter.submitList(it)
-
-                listProductTransactions.clear()
-                it.forEach { userCartItem ->
-                    listProductTransactions.add(ProductTransactions(
-                        userCartItem.product.id,
-                        userCartItem.productQty
-                    ))
-                }
+        viewModel.isLoading.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { isLoading ->
+                binding.progressBar.isVisible = isLoading
             }
-        }
-
-        viewModel.costs.observe(this) { costs ->
-            this.costs = costs
-
-            binding.content.apply {
-                tvProductsSubtotal.text = costs.subtotalProducts.formatToRupiah()
-                tvShippingCost.text = costs.shippingCost.formatToRupiah()
-                tvTotalPrice.text = costs.totalPrice.formatToRupiah()
-            }
-            binding.bottomPaymentInfo.tvPrice.text = costs.totalPrice.formatToRupiah()
-        }
-
-        viewModel.makeOrderResponse.observe(this) { makeOrderResponse ->
-            makeOrderResponse.info?.let { info ->
-                makeOrderResponse.data?.let { makeOrderResponse ->
-                    val intent = Intent(this, InvoiceActivity::class.java)
-                    intent.putExtra(Code.KEY_TRANSACTION_ID, makeOrderResponse.id)
-                    intent.putExtra(Code.SNACKBAR_VALUE, info)
-                    startActivity(intent)
-                    finish()
-                }
-            }
-
-            makeOrderResponse.message?.let {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
-            }
-        }
-
-        viewModel.isLoading.observe(this) { isLoading ->
-            binding.progressBar.isVisible = isLoading
         }
 
     }
@@ -153,7 +180,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                     // Jika tambah address, otomatis shipping cost ke reset
                     binding.content.contentShipping.root.isVisible = false
                     if (token.isNotEmpty()) {
-                        viewModel.getCosts(token.tokenFormat(), 0)
+                        viewModel.getCartDetail(token.tokenFormat(), 0)
                     }
 
                     addressItem =
@@ -176,7 +203,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
 
                     shippingModel?.let {
                         if (token.isNotEmpty()) {
-                            viewModel.getCosts(token.tokenFormat(), it.price)
+                            viewModel.getCartDetail(token.tokenFormat(), it.price)
                         }
 
 
@@ -239,7 +266,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                 } else {
                     Snackbar.make(binding.root,
                         "Please add your delivery address first!",
-                        Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                        Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
                 }
             }
 
@@ -257,16 +284,44 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                             listProductTransactions
                         )
 
-                        viewModel.makeOrderTransaction(
-                            token.tokenFormat(),
-                            makeOrderBody
-                        )
+                        viewModel.makeOrder(token.tokenFormat(), makeOrderBody)
+                            .observe(this) { event ->
+                                event.getContentIfNotHandled()?.let { resource ->
+                                    when (resource) {
+                                        is Resource.Loading -> {
+                                            viewModel.setLoading(true)
+                                        }
+
+                                        is Resource.Success -> {
+                                            resource.data?.let {
+                                                viewModel.setLoading(false)
+                                                val intent =
+                                                    Intent(this, InvoiceActivity::class.java)
+                                                intent.putExtra(Code.KEY_TRANSACTION_ID, it.id)
+                                                intent.putExtra(Code.SNACKBAR_VALUE,
+                                                    "Successfully making order!")
+                                                startActivity(intent)
+                                                finish()
+                                            }
+                                        }
+
+                                        else -> {
+                                            resource.message?.let {
+                                                viewModel.setLoading(false)
+                                                Snackbar.make(binding.root,
+                                                    it,
+                                                    Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                     }
 
                 } else {
                     Snackbar.make(binding.root,
                         "Please add your shipping method first",
-                        Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                        Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
                 }
             }
         }

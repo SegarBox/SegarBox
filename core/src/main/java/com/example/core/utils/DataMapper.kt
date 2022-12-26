@@ -30,17 +30,20 @@ object DataMapper {
             category = productItem.category
         )
 
-    fun mapCartResponseToCarts(userCartResponse: UserCartResponse): List<Cart>? =
-        userCartResponse.data?.map {
+    fun mapCartResponseToCarts(userCartResponse: UserCartResponse): List<Cart>? {
+        return userCartResponse.data?.map {
             Cart(
                 id = it.id,
                 userId = it.userId,
                 productId = it.productId,
                 productQty = it.productQty,
                 product = mapProductItemToProduct(it.product),
-                isChecked = it.isChecked
+                isChecked = it.isChecked,
+                total = userCartResponse.meta?.total
             )
         }
+    }
+
 
     fun mapCartDetailResponseToCartDetail(cartDetailResponse: CartDetailResponse): CartDetail =
         CartDetail(

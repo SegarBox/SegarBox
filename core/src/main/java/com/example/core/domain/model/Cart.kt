@@ -16,6 +16,8 @@ data class Cart(
 
     val productQty: Int,
 
-    val isChecked: Int
+    val isChecked: Int,
+
+    val total: Int?
 
 ): Parcelable

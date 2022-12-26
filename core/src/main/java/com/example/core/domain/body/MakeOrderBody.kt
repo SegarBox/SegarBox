@@ -1,6 +1,5 @@
 package com.example.core.domain.body
 
-import com.example.core.domain.model.ProductTransactions
 import com.google.gson.annotations.SerializedName
 
 data class MakeOrderBody(
