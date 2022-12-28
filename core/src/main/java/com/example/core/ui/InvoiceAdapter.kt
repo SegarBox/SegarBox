@@ -6,14 +6,14 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.core.data.source.remote.response.ProductTransactionsItem
 import com.example.core.databinding.ItemRowCheckoutBinding
+import com.example.core.domain.model.TransactionProduct
 import com.example.core.utils.formatProductSize
 import com.example.core.utils.formatToRupiah
 
 class InvoiceAdapter(private val onItemInvoiceClickCallback: OnItemInvoiceClickCallback) :
-    ListAdapter<ProductTransactionsItem, InvoiceAdapter.InvoiceViewHolder>(
-        DiffCallbackProductTransactions) {
+    ListAdapter<TransactionProduct, InvoiceAdapter.InvoiceViewHolder>(
+        DiffCallbackTransactionProduct) {
     inner class InvoiceViewHolder(var binding: ItemRowCheckoutBinding) :
         RecyclerView.ViewHolder(binding.root)
 

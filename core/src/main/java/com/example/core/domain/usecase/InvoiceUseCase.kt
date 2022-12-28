@@ -17,5 +17,7 @@ interface InvoiceUseCase {
         transactionId: Int,
         updateStatusBody: UpdateStatusBody,
     ): Flow<Resource<String>>
+
+    fun getToken(): Flow<String>
     
 }

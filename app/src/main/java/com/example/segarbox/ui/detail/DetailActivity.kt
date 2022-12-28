@@ -102,12 +102,17 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
                     }
 
                     is Resource.Success -> {
-                        viewModel.setLoading(false)
                         resource.data?.let { listCart ->
+                            viewModel.setLoading(false)
                             listCart[0].total?.let { total ->
                                 binding.toolbar.ivCart.badgeValue = total
                             }
                         }
+                    }
+
+                    is Resource.Empty -> {
+                        viewModel.setLoading(false)
+                        binding.toolbar.ivCart.badgeValue = 0
                     }
 
                     else -> {

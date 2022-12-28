@@ -1,13 +1,7 @@
 package com.example.segarbox.ui.home
 
 import androidx.lifecycle.*
-import com.example.core.data.Repository
 import com.example.core.data.Resource
-import com.example.core.data.RoomRepository
-import com.example.core.data.source.remote.response.CityResponse
-import com.example.core.data.source.remote.response.CityResults
-import com.example.core.data.source.remote.response.ProductResponse
-import com.example.core.data.source.remote.response.UserCartResponse
 import com.example.core.domain.body.MostPopularBody
 import com.example.core.domain.model.Cart
 import com.example.core.domain.model.City
@@ -16,16 +10,50 @@ import com.example.core.domain.usecase.HomeUseCase
 import com.example.core.utils.Code
 import com.example.core.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : ViewModel() {
 
-    fun getCityFromApi(): LiveData<Event<Resource<List<City>>>> =
+    private val _checkedChips = MutableLiveData<String>()
+    val checkedChips: LiveData<String> = _checkedChips
+
+    private val _mostPopularProductIds = MutableLiveData<Event<List<String>>>()
+    val mostPopularProductIds: LiveData<Event<List<String>>> = _mostPopularProductIds
+
+    private val _getCityFromApiResponse = MutableLiveData<Event<Resource<List<City>>>>()
+    val getCityFromApiResponse: LiveData<Event<Resource<List<City>>>> = _getCityFromApiResponse
+
+    private val _getProductResponse = MutableLiveData<Event<Resource<List<Product>>>>()
+    val getProductResponse: LiveData<Event<Resource<List<Product>>>> = _getProductResponse
+
+    private val _getAllProductsResponse = MutableLiveData<Event<Resource<List<Product>>>>()
+    val getAllProductsResponse: LiveData<Event<Resource<List<Product>>>> = _getAllProductsResponse
+
+    private val _getCartResponse = MutableLiveData<Event<Resource<List<Cart>>>>()
+    val getCartResponse: LiveData<Event<Resource<List<Cart>>>> = _getCartResponse
+
+    private val _isLoading = MutableLiveData<Event<Boolean>>()
+    val isLoading: LiveData<Event<Boolean>> = _isLoading
+
+    init {
+        // Most Popular
+        saveCheckedChips(Code.MOST_POPULAR_CHIPS)
+        // All Products
+        getAllProducts(1, 20)
+    }
+
+    fun saveCheckedChips(chips: String) {
+        _checkedChips.postValue(chips)
+    }
+
+    fun saveMostPopularProductIds(listProductId: List<String>) {
+        _mostPopularProductIds.postValue(Event(listProductId))
+    }
+
+    fun getCityFromApi() =
         homeUseCase.getCityFromApi().asLiveData().map {
-            Event(it)
+            _getCityFromApiResponse.postValue(Event(it))
         }
 
     fun insertCityToDb(listCity: List<City>) =
@@ -36,9 +64,9 @@ class MainViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
             Event(it)
         }
 
-    fun getAllProducts(page: Int, size: Int): LiveData<Event<Resource<List<Product>>>> =
+    fun getAllProducts(page: Int, size: Int) =
         homeUseCase.getAllProducts(page, size).asLiveData().map {
-            Event(it)
+            _getAllProductsResponse.postValue(Event(it))
         }
 
     fun getProductById(id: Int): LiveData<Event<Resource<Product>>> =
@@ -50,15 +78,36 @@ class MainViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
         page: Int,
         size: Int,
         category: String,
-    ): LiveData<Event<Resource<List<Product>>>> =
-        homeUseCase.getProductByCategory(page, size, category).asLiveData().map {
+    ) = homeUseCase.getProductByCategory(page, size, category).asLiveData().map {
+            _getProductResponse.postValue(Event(it))
+        }
+
+    fun getProductByMostPopular(mostPopularBody: MostPopularBody) =
+        homeUseCase.getProductByMostPopular(mostPopularBody).asLiveData().map {
+            _getProductResponse.postValue(Event(it))
+        }
+
+    fun getCart(token: String) =
+        homeUseCase.getCart(token).asLiveData().map {
+            _getCartResponse.postValue(Event(it))
+        }
+
+    fun getIntro(): LiveData<Event<Boolean>> =
+        homeUseCase.getIntro().asLiveData().map {
             Event(it)
         }
 
-    fun getCart(token: String): LiveData<Event<Resource<List<Cart>>>> =
-        homeUseCase.getCart(token).asLiveData().map {
+    fun getToken(): LiveData<Event<String>> =
+        homeUseCase.getToken().asLiveData().map {
             Event(it)
         }
+
+    fun saveIntro(isAlreadyIntro: Boolean) =
+        homeUseCase.saveIntro(isAlreadyIntro)
+
+    fun setLoading(isLoading: Boolean) {
+        _isLoading.postValue(Event(isLoading))
+    }
 
 //    private var _cityFromApi = MutableLiveData<CityResponse>()
 //    val cityFromApi: LiveData<CityResponse> = _cityFromApi
@@ -72,24 +121,11 @@ class MainViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
 //    private var _productResponse = MutableLiveData<Event<ProductResponse>>()
 //    val productResponse: LiveData<Event<ProductResponse>> = _productResponse
 
-    private var _checkedChips = MutableLiveData<String>()
-    val checkedChips: LiveData<String> = _checkedChips
-
-    private var _listProductId = MutableLiveData<Event<List<String>>>()
-    val listProductId: LiveData<Event<List<String>>> = _listProductId
-
 //    private var _userCart = MutableLiveData<Event<UserCartResponse>>()
 //    val userCart: LiveData<Event<UserCartResponse>> = _userCart
 //
 //    private var _isLoading = MutableLiveData<Boolean>()
 //    val isLoading: LiveData<Boolean> = _isLoading
-
-    init {
-        // Most Popular
-        saveCheckedChips(Code.MOST_POPULAR_CHIPS)
-        // All Products
-        getAllProducts(1, 20)
-    }
 
 //    fun getCityFromApi() {
 //        viewModelScope.launch {
@@ -146,15 +182,6 @@ class MainViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
 //            _isLoading.postValue(false)
 //        }
 //    }
-
-
-    fun saveCheckedChips(chips: String) {
-        _checkedChips.postValue(chips)
-    }
-
-    fun saveListProductId(listProductId: List<String>) {
-        _listProductId.postValue(Event(listProductId))
-    }
 
 //    fun getUserCart(token: String) {
 //        viewModelScope.launch {

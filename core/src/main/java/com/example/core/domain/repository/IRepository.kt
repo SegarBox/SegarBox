@@ -1,12 +1,17 @@
 package com.example.core.domain.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.example.core.data.Resource
 import com.example.core.data.source.remote.network.ApiServices
 import com.example.core.domain.body.MakeOrderBody
+import com.example.core.domain.body.MostPopularBody
 import com.example.core.domain.body.UpdateStatusBody
 import com.example.core.domain.model.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 interface IRepository {
 
@@ -31,6 +36,8 @@ interface IRepository {
     fun getProductById(id: Int): Flow<Resource<Product>>
 
     fun getCityFromApi(): Flow<Resource<List<City>>>
+
+    fun getProductByMostPopular(mostPopularBody: MostPopularBody): Flow<Resource<List<Product>>>
 
     fun insertCityToDb(listCity: List<City>)
 
@@ -82,5 +89,9 @@ interface IRepository {
     fun getTransactions(token: String, status: String): Flow<Resource<List<Transaction>>>
 
     fun getToken(): Flow<String>
+
+    fun getIntro(): Flow<Boolean>
+
+    fun saveIntro(isAlreadyIntro: Boolean)
 
 }

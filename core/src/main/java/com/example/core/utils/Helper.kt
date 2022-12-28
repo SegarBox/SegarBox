@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import com.example.core.BuildConfig
 import com.example.core.R
 import com.example.core.data.source.remote.response.ProductItem
+import com.example.core.domain.model.Product
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.R.attr.colorPrimary
 import com.google.android.material.R.attr.colorSecondaryVariant
@@ -77,8 +78,17 @@ fun Int.formatProductSize(context: Context): String {
     return context.getString(R.string.gram, this.toString())
 }
 
-fun addDummyProduct(dummyCategoryName: String, listSize: Int): ProductItem {
-    return ProductItem("dummy", 1, 1, 1, listSize, "dummy", "dummy", dummyCategoryName)
+fun addDummyProduct(dummyCategoryName: String): Product {
+    return Product(
+        id = 999,
+        image = "dummy",
+        label = "dummy",
+        size = 1,
+        price = 1,
+        qty = 1,
+        detail = "dummy",
+        category = dummyCategoryName
+    )
 }
 
 fun String.tokenFormat(): String {

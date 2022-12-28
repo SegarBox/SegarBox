@@ -1,6 +1,5 @@
 package com.example.segarbox.ui.home
 
-import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
@@ -11,14 +10,12 @@ import android.view.ViewGroup
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
-import com.example.core.data.RoomRepository
-import com.example.core.data.source.local.datastore.SettingPreferences
-import com.example.core.data.source.remote.response.ProductItem
+import com.example.core.data.Resource
 import com.example.core.domain.body.MostPopularBody
+import com.example.core.domain.model.Product
 import com.example.core.ui.AllProductAdapter
 import com.example.core.ui.StartShoppingAdapter
 import com.example.core.utils.*
@@ -27,16 +24,14 @@ import com.example.segarbox.databinding.FragmentHomeBinding
 import com.example.segarbox.ui.cart.CartActivity
 import com.example.segarbox.ui.detail.DetailActivity
 import com.example.segarbox.ui.pagination.PaginationActivity
-import com.example.segarbox.ui.viewmodel.PrefViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
-import com.example.segarbox.ui.viewmodel.RetrofitRoomViewModelFactory
 import com.google.android.material.R.attr.colorPrimary
 import com.google.android.material.R.attr.colorSecondaryVariant
+import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.max
 import kotlin.math.min
 
-private val Context.dataStore by preferencesDataStore(name = "settings")
-
+@AndroidEntryPoint
 class HomeFragment : Fragment(), View.OnClickListener,
     StartShoppingAdapter.OnItemStartShoppingClickCallback,
     AllProductAdapter.OnItemAllProductClickCallback {
@@ -46,14 +41,9 @@ class HomeFragment : Fragment(), View.OnClickListener,
     private val allProductAdapter = AllProductAdapter(this)
     private val startShoppingAdapter = StartShoppingAdapter(this)
     private var checkedChips = ""
+    private val mostPopularProductIds = arrayListOf<String>()
     private var token = ""
-    private val mainViewModel by viewModels<MainViewModel> {
-        RetrofitRoomViewModelFactory.getInstance(RoomRepository(requireActivity().application),
-            com.example.core.data.Repository())
-    }
-    private val prefViewModel by viewModels<PrefViewModel> {
-        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
-    }
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -149,79 +139,154 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
     private fun observeData() {
 
-        prefViewModel.getToken().observe(viewLifecycleOwner) { token ->
-            this.token = token
-        }
-
-        prefViewModel.getUserId().getContentIfNotHandled()?.let {
-            it.observe(viewLifecycleOwner) { userId ->
-                mainViewModel.getRecommendationSystem(userId)
-            }
-        }
-
-        mainViewModel.recommendationSystem.observe(viewLifecycleOwner) { event ->
+        viewModel.getToken().observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
-                mainViewModel.saveListProductId(it)
+                this.token = it
             }
         }
 
-        mainViewModel.listProductId.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let { listProductId ->
+//        prefViewModel.getUserId().getContentIfNotHandled()?.let {
+//            it.observe(viewLifecycleOwner) { userId ->
+//                viewModel.getRecommendationSystem(userId)
+//            }
+//        }
 
-                mainViewModel.checkedChips.observe(viewLifecycleOwner) { checkedChips ->
-                    this.checkedChips = checkedChips
+//        viewModel.recommendationSystem.observe(viewLifecycleOwner) { event ->
+//            event.getContentIfNotHandled()?.let {
+//                viewModel.saveMostPopularProductIds(it)
+//            }
+//        }
 
-                    when (checkedChips) {
-                        Code.MOST_POPULAR_CHIPS -> {
-                            if (listProductId.isNotEmpty()) {
-                                mainViewModel.getMostPopularProduct(MostPopularBody(listProductId))
-                            }
+//        viewModel.mostPopularProductIds.observe(viewLifecycleOwner) { event ->
+//            event.getContentIfNotHandled()?.let {
+//
+//            }
+//        }
+
+        viewModel.checkedChips.observe(viewLifecycleOwner) { checkedChips ->
+            this.checkedChips = checkedChips
+
+            when (checkedChips) {
+                Code.MOST_POPULAR_CHIPS -> {
+                    if (mostPopularProductIds.isNotEmpty()) {
+                        viewModel.getProductByMostPopular(MostPopularBody(mostPopularProductIds))
+                    }
+                }
+                Code.VEGGIES_CHIPS -> {
+                    viewModel.getProductByCategory(1, 10, Code.VEGGIES_CATEGORY)
+                }
+                else -> {
+                    viewModel.getProductByCategory(1, 10, Code.FRUITS_CATEGORY)
+                }
+            }
+        }
+
+        viewModel.getAllProductsResponse.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when(resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
+
+                    is Resource.Success -> {
+                        resource.data?.let {
+                            viewModel.setLoading(false)
+                            allProductAdapter.submitList(it)
                         }
-                        Code.VEGGIES_CHIPS -> {
-                            mainViewModel.getCategoryProduct(1, 10, Code.VEGGIES_CATEGORY)
-                        }
-                        else -> {
-                            mainViewModel.getCategoryProduct(1, 10, Code.FRUITS_CATEGORY)
+                    }
+
+                    is Resource.Empty -> {
+                        viewModel.setLoading(false)
+                    }
+
+                    else -> {
+                        resource.message?.let {
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
                         }
                     }
                 }
             }
         }
 
-        mainViewModel.allProductResponse.observe(viewLifecycleOwner) {
-            allProductAdapter.submitList(it.data)
-        }
 
+        viewModel.getProductResponse.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when(resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
 
-        mainViewModel.productResponse.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let {
-                val listProduct = arrayListOf<ProductItem>()
-                var dummy: ProductItem? = null
-                if (checkedChips == Code.FRUITS_CHIPS) {
-                    dummy = addDummyProduct(Code.DUMMY_FRUITS, it.data.size)
+                    is Resource.Success -> {
+                        resource.data?.let {
+                            viewModel.setLoading(false)
+
+                            val listProduct = arrayListOf<Product>()
+                            var dummy: Product? = null
+                            if (checkedChips == Code.FRUITS_CHIPS) {
+                                dummy = addDummyProduct(Code.DUMMY_FRUITS)
+                            }
+                            if (checkedChips == Code.VEGGIES_CHIPS) {
+                                dummy = addDummyProduct(Code.DUMMY_VEGGIES)
+                            }
+                            listProduct.addAll(it)
+                            dummy?.let {
+                                listProduct.add(dummy)
+                            }
+                            startShoppingAdapter.submitList(listProduct)
+                        }
+                    }
+
+                    is Resource.Empty -> {
+                        viewModel.setLoading(false)
+                    }
+
+                    else -> {
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                        }
+                    }
                 }
-                if (checkedChips == Code.VEGGIES_CHIPS) {
-                    dummy = addDummyProduct(Code.DUMMY_VEGGIES, it.data.size)
-                }
-                listProduct.addAll(it.data)
-                dummy?.let {
-                    listProduct.add(dummy)
-                }
-                startShoppingAdapter.submitList(listProduct)
+
             }
         }
 
-        mainViewModel.userCart.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let { userCartResponse ->
-                userCartResponse.meta?.let {
-                    binding.toolbar.ivCart.badgeValue = it.total
+        viewModel.getCartResponse.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when(resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
+
+                    is Resource.Success -> {
+                        resource.data?.let { listCart ->
+                            viewModel.setLoading(false)
+                            listCart[0].total?.let { total ->
+                                binding.toolbar.ivCart.badgeValue = total
+                            }
+                        }
+                    }
+
+                    is Resource.Empty -> {
+                        viewModel.setLoading(false)
+                        binding.toolbar.ivCart.badgeValue = 0
+                    }
+
+                    else -> {
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                        }
+                    }
                 }
             }
 
         }
 
-        mainViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            binding.progressBar.isVisible = isLoading
+        viewModel.isLoading.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { isLoading ->
+                binding.progressBar.isVisible = isLoading
+            }
         }
 
     }
@@ -246,7 +311,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
         super.onResume()
         // Update Badge
         if (token.isNotEmpty()) {
-            mainViewModel.getUserCart(token.tokenFormat())
+            viewModel.getCart(token.tokenFormat())
         } else {
             binding.toolbar.ivCart.badgeValue = 0
         }
@@ -282,15 +347,15 @@ class HomeFragment : Fragment(), View.OnClickListener,
             }
 
             R.id.chip_most_popular -> {
-                mainViewModel.saveCheckedChips(Code.MOST_POPULAR_CHIPS)
+                viewModel.saveCheckedChips(Code.MOST_POPULAR_CHIPS)
             }
 
             R.id.chip_veggies -> {
-                mainViewModel.saveCheckedChips(Code.VEGGIES_CHIPS)
+                viewModel.saveCheckedChips(Code.VEGGIES_CHIPS)
             }
 
             R.id.chip_fruits -> {
-                mainViewModel.saveCheckedChips(Code.FRUITS_CHIPS)
+                viewModel.saveCheckedChips(Code.FRUITS_CHIPS)
             }
 
         }
@@ -302,7 +367,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
         startActivity(intent)
     }
 
-    override fun onStartShoppingSeeAllClicked(item: ProductItem) {
+    override fun onStartShoppingSeeAllClicked(item: Product) {
         val intent = Intent(requireContext(), PaginationActivity::class.java)
 
         if (item.category == Code.DUMMY_VEGGIES) {

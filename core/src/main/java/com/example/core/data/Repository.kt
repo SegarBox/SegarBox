@@ -6,6 +6,7 @@ import com.example.core.data.source.local.LocalDataSource
 import com.example.core.data.source.remote.RemoteDataSource
 import com.example.core.data.source.remote.network.ApiServices
 import com.example.core.domain.body.MakeOrderBody
+import com.example.core.domain.body.MostPopularBody
 import com.example.core.domain.body.UpdateStatusBody
 import com.example.core.domain.model.*
 import com.example.core.domain.repository.IRepository
@@ -77,6 +78,9 @@ class Repository @Inject constructor(
         emitAll(remoteDataSource.getCityFromApi())
     }.flowOn(Dispatchers.IO)
 
+    override fun getProductByMostPopular(mostPopularBody: MostPopularBody): Flow<Resource<List<Product>>> = flow {
+        emitAll(remoteDataSource.getProductByMostPopular(mostPopularBody))
+    }.flowOn(Dispatchers.IO)
 
     override fun getAllProducts(page: Int, size: Int): Flow<Resource<List<Product>>> = flow {
         emitAll(remoteDataSource.getAllProducts(page, size))
@@ -179,6 +183,15 @@ class Repository @Inject constructor(
 
     override fun getToken(): Flow<String> =
         localDataSource.getToken()
+
+    override fun getIntro(): Flow<Boolean> =
+        localDataSource.getIntro()
+
+    override fun saveIntro(isAlreadyIntro: Boolean) {
+        coroutineScope.launch {
+            localDataSource.saveIntro(isAlreadyIntro)
+        }
+    }
 
     override fun getCity(city: String, type: String): Flow<Resource<List<City>>> =
         localDataSource.getCity(city, type)

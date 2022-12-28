@@ -1,14 +1,14 @@
 package com.example.core.ui
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.core.data.source.remote.response.ProductItem
+import com.example.core.domain.model.Product
 
-object DiffCallbackProduct : DiffUtil.ItemCallback<ProductItem>() {
-    override fun areItemsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
+object DiffCallbackProduct : DiffUtil.ItemCallback<Product>() {
+    override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
+    override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
         return oldItem == newItem
     }
 }

@@ -122,7 +122,7 @@ object DataMapper {
             )
         }
 
-    fun mapProductTransactionItemToTransactionProduct(productTransactionsItem: ProductTransactionsItem): TransactionProduct =
+    private fun mapProductTransactionItemToTransactionProduct(productTransactionsItem: ProductTransactionsItem): TransactionProduct =
         TransactionProduct(
             image = productTransactionsItem.image,
             size = productTransactionsItem.size,
@@ -151,7 +151,8 @@ object DataMapper {
                 userId = it.userId,
                 id = it.id,
                 invoiceNumber = it.invoiceNumber,
-                status = it.status
+                status = it.status,
+                createdAt = it.createdAt
             )
         }
 
@@ -283,7 +284,8 @@ object DataMapper {
                 userId = results.userId,
                 id = results.id,
                 invoiceNumber = results.invoiceNumber,
-                status = results.status
+                status = results.status,
+                createdAt = results.createdAt
             )
         }
 }
