@@ -15,4 +15,7 @@ interface RegisterUseCase {
         password_confirmation: String,
     ): Flow<Resource<Register>>
 
+    fun saveToken(token: String)
+
+    fun saveUserId(userId: Int)
 }

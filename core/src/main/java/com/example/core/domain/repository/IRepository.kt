@@ -94,4 +94,10 @@ interface IRepository {
 
     fun saveIntro(isAlreadyIntro: Boolean)
 
+    fun getTheme(): Flow<Boolean>
+
+    fun saveToken(token: String)
+
+    fun saveUserId(userId: Int)
+
 }

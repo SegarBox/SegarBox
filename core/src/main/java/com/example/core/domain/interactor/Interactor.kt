@@ -120,6 +120,15 @@ class Interactor @Inject constructor(private val repository: IRepository) : Addr
     override fun login(email: String, password: String): Flow<Resource<Login>> =
         repository.login(email, password)
 
+    override fun getTheme(): Flow<Boolean> =
+        repository.getTheme()
+
+    override fun saveToken(token: String) =
+        repository.saveToken(token)
+
+    override fun saveUserId(userId: Int) =
+        repository.saveUserId(userId)
+
     override fun getAddress(latLng: String): Flow<Resource<List<Maps>>> =
         repository.getAddress(latLng)
 

@@ -15,6 +15,9 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(private val registerUseCase: RegisterUseCase) : ViewModel() {
 
+    private val _isLoading = MutableLiveData<Event<Boolean>>()
+    val isLoading: LiveData<Event<Boolean>> = _isLoading
+
     fun register(
         name: String,
         email: String,
@@ -25,6 +28,15 @@ class RegisterViewModel @Inject constructor(private val registerUseCase: Registe
         registerUseCase.register(name, email, phone, password, password_confirmation).asLiveData().map {
             Event(it)
         }
+
+    fun saveToken(token: String) =
+        registerUseCase.saveToken(token)
+
+    fun saveUserId(userId: Int) =
+        registerUseCase.saveUserId(userId)
+
+    fun setLoading(isLoading: Boolean) =
+        _isLoading.postValue(Event(isLoading))
 
 //    private val _registerResponse = MutableLiveData<RegisterResponse>()
 //    val registerResponse: LiveData<RegisterResponse> = _registerResponse

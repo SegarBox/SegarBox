@@ -15,10 +15,27 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase): ViewModel() {
 
+    private val _isLoading = MutableLiveData<Event<Boolean>>()
+    val isLoading: LiveData<Event<Boolean>> = _isLoading
+
     fun login(email: String, password: String): LiveData<Event<Resource<Login>>> =
         loginUseCase.login(email, password).asLiveData().map {
             Event(it)
         }
+
+    fun getTheme(): LiveData<Event<Boolean>> =
+        loginUseCase.getTheme().asLiveData().map {
+            Event(it)
+        }
+
+    fun saveToken(token: String) =
+        loginUseCase.saveToken(token)
+
+    fun saveUserId(userId: Int) =
+        loginUseCase.saveUserId(userId)
+
+    fun setLoading(isLoading: Boolean) =
+        _isLoading.postValue(Event(isLoading))
 
 //    private val _loginResponse = MutableLiveData<LoginResponse>()
 //    val loginResponse: LiveData<LoginResponse> = _loginResponse
