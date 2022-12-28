@@ -20,12 +20,17 @@ import javax.inject.Inject
 class InvoiceViewModel @Inject constructor(private val invoiceUseCase: InvoiceUseCase) :
     ViewModel() {
 
+    private val _isLoading = MutableLiveData<Event<Boolean>>()
+    val isLoading: LiveData<Event<Boolean>> = _isLoading
+
+    private val _getTransactionByIdResponse = MutableLiveData<Event<Resource<Transaction>>>()
+    val getTransactionByIdResponse: LiveData<Event<Resource<Transaction>>> = _getTransactionByIdResponse
+
     fun getTransactionById(
         token: String,
         transactionId: Int,
-    ): LiveData<Event<Resource<Transaction>>> =
-        invoiceUseCase.getTransactionById(token, transactionId).asLiveData().map {
-            Event(it)
+    ) = invoiceUseCase.getTransactionById(token, transactionId).asLiveData().map {
+            _getTransactionByIdResponse.postValue(Event(it))
         }
 
     fun getUser(token: String): LiveData<Event<Resource<User>>> =
@@ -42,6 +47,14 @@ class InvoiceViewModel @Inject constructor(private val invoiceUseCase: InvoiceUs
             .map {
                 Event(it)
             }
+
+    fun getToken(): LiveData<Event<String>> =
+        invoiceUseCase.getToken().asLiveData().map {
+            Event(it)
+        }
+
+    fun setLoading(isLoading: Boolean) =
+        _isLoading.postValue(Event(isLoading))
 
 //    private val _transactionById = MutableLiveData<TransactionByIdResponse>()
 //    val transactionById: LiveData<TransactionByIdResponse> = _transactionById

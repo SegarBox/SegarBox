@@ -4,6 +4,7 @@ import androidx.paging.PagingData
 import com.example.core.data.Resource
 import com.example.core.data.source.remote.network.ApiServices
 import com.example.core.domain.body.MakeOrderBody
+import com.example.core.domain.body.MostPopularBody
 import com.example.core.domain.body.UpdateStatusBody
 import com.example.core.domain.model.*
 import com.example.core.domain.repository.IRepository
@@ -48,6 +49,9 @@ class Interactor @Inject constructor(private val repository: IRepository) : Addr
         category: String,
     ): Flow<Resource<List<Product>>> =
         repository.getProductByCategory(page, size, category)
+
+    override fun getProductByMostPopular(mostPopularBody: MostPopularBody): Flow<Resource<List<Product>>> =
+        repository.getProductByMostPopular(mostPopularBody)
 
     override fun getRatings(token: String): Flow<Resource<List<Rating>>> =
         repository.getRatings(token)
@@ -148,5 +152,11 @@ class Interactor @Inject constructor(private val repository: IRepository) : Addr
 
     override fun getCart(token: String): Flow<Resource<List<Cart>>> =
         repository.getCart(token)
+
+    override fun getIntro(): Flow<Boolean> =
+        repository.getIntro()
+
+    override fun saveIntro(isAlreadyIntro: Boolean) =
+        repository.saveIntro(isAlreadyIntro)
 
 }

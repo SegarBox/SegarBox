@@ -9,6 +9,7 @@ import com.example.core.data.paging.ProductPagingSource
 import com.example.core.data.source.remote.network.*
 import com.example.core.data.source.remote.response.*
 import com.example.core.domain.body.MakeOrderBody
+import com.example.core.domain.body.MostPopularBody
 import com.example.core.domain.body.UpdateStatusBody
 import com.example.core.domain.model.*
 import com.example.core.domain.model.Shipping
@@ -111,23 +112,24 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun addCart(token: String, productId: Int, productQty: Int): Flow<Resource<String>> = flow {
-        emit(Resource.Loading())
-        try {
-            val request = segarBoxApiServices.addToCart(token, productId, productQty)
+    suspend fun addCart(token: String, productId: Int, productQty: Int): Flow<Resource<String>> =
+        flow {
+            emit(Resource.Loading())
+            try {
+                val request = segarBoxApiServices.addToCart(token, productId, productQty)
 
-            if (request.isSuccessful) {
-                request.body()?.let {
-                    emit(Resource.Success("Add Cart Success"))
+                if (request.isSuccessful) {
+                    request.body()?.let {
+                        emit(Resource.Success("Add Cart Success"))
+                    }
+                } else {
+                    emit(Resource.Error(message = "Something went wrong, can't add cart"))
                 }
-            } else {
+
+            } catch (ex: Exception) {
                 emit(Resource.Error(message = "Something went wrong, can't add cart"))
             }
-
-        } catch (ex: Exception) {
-            emit(Resource.Error(message = "Something went wrong, can't add cart"))
         }
-    }
 
     suspend fun deleteCart(token: String, cartId: Int): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
@@ -263,7 +265,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    fun getAllProducts(page: Int, size: Int): Flow<Resource<List<Product>>> = flow {
+    suspend fun getAllProducts(page: Int, size: Int): Flow<Resource<List<Product>>> = flow {
         emit(Resource.Loading())
         try {
             val request = segarBoxApiServices.getAllProduct(page, size)
@@ -286,7 +288,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    fun getProductByCategory(
+    suspend fun getProductByCategory(
         page: Int,
         size: Int,
         category: String,
@@ -313,30 +315,55 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    fun getTransactionById(token: String, transactionId: Int): Flow<Resource<Transaction>> = flow {
-        emit(Resource.Loading())
-        try {
-            val request = segarBoxApiServices.getTransactionById(token, transactionId)
+    suspend fun getProductByMostPopular(mostPopularBody: MostPopularBody): Flow<Resource<List<Product>>> =
+        flow {
+            emit(Resource.Loading())
+            try {
+                val request = segarBoxApiServices.getMostPopularProduct(mostPopularBody)
 
-            if (request.isSuccessful) {
-                request.body()?.let { response ->
-                    val data = DataMapper.mapTransactionByIdResponseToTransaction(response)
-                    if (data != null) {
-                        emit(Resource.Success(data))
-                    } else {
-                        emit(Resource.Error(message = "Something went wrong, can't access your transaction"))
+                if (request.isSuccessful) {
+                    request.body()?.let { response ->
+                        val data = DataMapper.mapProductResponseToProducts(response)
+                        if (data.isNotEmpty()) {
+                            emit(Resource.Success(data))
+                        } else {
+                            emit(Resource.Empty())
+                        }
                     }
+                } else {
+                    emit(Resource.Error(message = "Something went wrong, can't get most popular products"))
                 }
-            } else {
+
+            } catch (ex: Exception) {
+                emit(Resource.Error(message = "Something went wrong, can't get most popular products"))
+            }
+        }
+
+    suspend fun getTransactionById(token: String, transactionId: Int): Flow<Resource<Transaction>> =
+        flow {
+            emit(Resource.Loading())
+            try {
+                val request = segarBoxApiServices.getTransactionById(token, transactionId)
+
+                if (request.isSuccessful) {
+                    request.body()?.let { response ->
+                        val data = DataMapper.mapTransactionByIdResponseToTransaction(response)
+                        if (data != null) {
+                            emit(Resource.Success(data))
+                        } else {
+                            emit(Resource.Error(message = "Something went wrong, can't access your transaction"))
+                        }
+                    }
+                } else {
+                    emit(Resource.Error(message = "Something went wrong, can't access your transaction"))
+                }
+
+            } catch (ex: Exception) {
                 emit(Resource.Error(message = "Something went wrong, can't access your transaction"))
             }
-
-        } catch (ex: Exception) {
-            emit(Resource.Error(message = "Something went wrong, can't access your transaction"))
         }
-    }
 
-    fun getUser(token: String): Flow<Resource<User>> = flow {
+    suspend fun getUser(token: String): Flow<Resource<User>> = flow {
         emit(Resource.Loading())
         try {
             val request = segarBoxApiServices.getUser(token)
@@ -359,7 +386,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    fun updateTransactionStatus(
+    suspend fun updateTransactionStatus(
         token: String,
         transactionId: Int,
         updateStatusBody: UpdateStatusBody,
@@ -383,7 +410,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    fun login(email: String, password: String): Flow<Resource<Login>> = flow {
+    suspend fun login(email: String, password: String): Flow<Resource<Login>> = flow {
         emit(Resource.Loading())
         try {
             val request = segarBoxApiServices.login(email, password)
@@ -405,7 +432,7 @@ class RemoteDataSource @Inject constructor(
     }
 
 
-    fun getAddress(latLng: String): Flow<Resource<List<Maps>>> = flow {
+    suspend fun getAddress(latLng: String): Flow<Resource<List<Maps>>> = flow {
         emit(Resource.Loading())
         try {
             val request = mapsApiServices.getAddress(latLng)
@@ -428,7 +455,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    fun saveAddress(
+    suspend fun saveAddress(
         token: String,
         street: String,
         city: String,
@@ -453,7 +480,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    fun getRatings(token: String): Flow<Resource<List<Rating>>> = flow {
+    suspend fun getRatings(token: String): Flow<Resource<List<Rating>>> = flow {
         emit(Resource.Loading())
         try {
             val request = segarBoxApiServices.getRatings(token)
@@ -475,7 +502,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    fun saveRating(
+    suspend fun saveRating(
         token: String,
         ratingId: Int,
         transactionId: Int,
@@ -500,7 +527,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    fun register(
+    suspend fun register(
         name: String,
         email: String,
         phone: String,
@@ -541,7 +568,7 @@ class RemoteDataSource @Inject constructor(
             }
         ).flow
 
-    fun getShippingCosts(
+    suspend fun getShippingCosts(
         destination: String,
         weight: String,
         courier: String,
@@ -572,26 +599,27 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    fun getTransactions(token: String, status: String): Flow<Resource<List<Transaction>>> = flow {
-        emit(Resource.Loading())
-        try {
-            val request = segarBoxApiServices.getTransactions(token, status)
-            if (request.isSuccessful) {
-                request.body()?.let { response ->
-                    val data = DataMapper.mapTransactionsResponseToTransactions(response)
-                    if (!data.isNullOrEmpty()) {
-                        emit(Resource.Success(data))
-                    } else {
-                        emit(Resource.Empty())
+    suspend fun getTransactions(token: String, status: String): Flow<Resource<List<Transaction>>> =
+        flow {
+            emit(Resource.Loading())
+            try {
+                val request = segarBoxApiServices.getTransactions(token, status)
+                if (request.isSuccessful) {
+                    request.body()?.let { response ->
+                        val data = DataMapper.mapTransactionsResponseToTransactions(response)
+                        if (!data.isNullOrEmpty()) {
+                            emit(Resource.Success(data))
+                        } else {
+                            emit(Resource.Empty())
+                        }
                     }
+                } else {
+                    emit(Resource.Error(message = "Something went wrong, can't get your transactions"))
                 }
-            } else {
+
+            } catch (ex: Exception) {
                 emit(Resource.Error(message = "Something went wrong, can't get your transactions"))
             }
-
-        } catch (ex: Exception) {
-            emit(Resource.Error(message = "Something went wrong, can't get your transactions"))
         }
-    }
 
 }

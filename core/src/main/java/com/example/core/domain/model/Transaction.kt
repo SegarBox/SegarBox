@@ -29,4 +29,6 @@ data class Transaction(
 
     val status: String,
 
+    val createdAt: String
+
     ): Parcelable

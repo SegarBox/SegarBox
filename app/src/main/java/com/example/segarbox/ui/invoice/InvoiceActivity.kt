@@ -1,15 +1,13 @@
 package com.example.segarbox.ui.invoice
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.data.Resource
 import com.example.core.domain.body.ProductId
 import com.example.core.domain.body.UpdateStatusBody
 import com.example.core.ui.InvoiceAdapter
@@ -19,13 +17,10 @@ import com.example.segarbox.databinding.ActivityInvoiceBinding
 import com.example.segarbox.ui.detail.DetailActivity
 import com.example.segarbox.ui.home.MainActivity
 import com.example.segarbox.ui.rating.RatingActivity
-import com.example.segarbox.ui.viewmodel.PrefViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
-import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
-private val Context.dataStore by preferencesDataStore(name = "settings")
-
+@AndroidEntryPoint
 class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
     InvoiceAdapter.OnItemInvoiceClickCallback {
 
@@ -34,21 +29,17 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
     private val invoiceAdapter = InvoiceAdapter(this)
     private var token = ""
     private val listProductId: ArrayList<ProductId> = arrayListOf()
-    private val prefViewModel by viewModels<PrefViewModel> {
-        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
-    }
-    private val invoiceViewModel by viewModels<InvoiceViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
-    }
+    private val viewModel: InvoiceViewModel by viewModels()
 
     private val getTransactionId
         get(): Int {
             return intent.getIntExtra(Code.KEY_TRANSACTION_ID, 0)
         }
 
-    private val getSnackbarValue get(): String? {
-        return intent.getStringExtra(Code.SNACKBAR_VALUE)
-    }
+    private val getSnackbarValue
+        get(): String? {
+            return intent.getStringExtra(Code.SNACKBAR_VALUE)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +55,7 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
         setupView()
         observeData()
         getSnackbarValue?.let {
-            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
         }
         binding.toolbar.ivBack.setOnClickListener(this)
         binding.bottomPaymentInfo.checkoutLayout.setOnClickListener(this)
@@ -91,65 +82,96 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun observeData() {
-        prefViewModel.getToken().observe(this) { token ->
-            this.token = token
-            if (token.isNotEmpty()) {
-                if (getTransactionId != 0) {
-                    invoiceViewModel.getTransactionById(token.tokenFormat(), getTransactionId)
-                    invoiceViewModel.getUser(token.tokenFormat())
+        viewModel.getToken().observe(this) { event ->
+            event.getContentIfNotHandled()?.let {
+                this.token = it
+            }
+        }
+
+        if (token.isNotEmpty()) {
+            if (getTransactionId != 0) {
+                viewModel.getTransactionById(token.tokenFormat(), getTransactionId)
+
+                viewModel.getUser(token.tokenFormat()).observe(this) { event ->
+                    event.getContentIfNotHandled()?.let { resource ->
+                        when (resource) {
+                            is Resource.Loading -> {
+                                viewModel.setLoading(true)
+                            }
+
+                            is Resource.Success -> {
+                                resource.data?.let {
+                                    viewModel.setLoading(false)
+                                    binding.content.tvUserName.text = it.name
+                                }
+                            }
+
+                            else -> {
+                                resource.message?.let {
+                                    viewModel.setLoading(false)
+                                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                        .setAction("OK") {}.show()
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        invoiceViewModel.transactionById.observe(this) { response ->
-            response.data?.let {
-                listProductId.clear()
-                it.productTransactions.forEach { productTransactionItem ->
-                    listProductId.add(ProductId(productTransactionItem.productId))
+        viewModel.getTransactionByIdResponse.observe(this) { event ->
+                event.getContentIfNotHandled()?.let { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {
+                            viewModel.setLoading(true)
+                        }
+
+                        is Resource.Success -> {
+                            resource.data?.let {
+                                viewModel.setLoading(false)
+                                listProductId.clear()
+                                it.productTransactions.forEach { productTransactionItem ->
+                                    listProductId.add(ProductId(productTransactionItem.productId))
+                                }
+                                binding.content.apply {
+                                    tvInv.text = it.invoiceNumber
+                                    tvStatus.text = it.status.formatStatus()
+                                    tvDate.text = it.createdAt.formatDateTime()
+                                    tvAddress.text = it.address.street
+                                    invoiceAdapter.submitList(it.productTransactions)
+                                    tvProductsSubtotal.text =
+                                        it.subtotalProducts.formatToRupiah()
+                                    tvShippingCost.text = it.shippingCost.formatToRupiah()
+                                    tvTotalPrice.text = it.totalPrice.formatToRupiah()
+
+                                }
+                                if (it.status == "inprogress") {
+                                    binding.bottomPaymentInfo.root.isVisible = true
+                                    binding.content.btnRating.isVisible = false
+                                } else {
+                                    binding.bottomPaymentInfo.root.isVisible = false
+                                    binding.content.btnRating.isVisible = true
+                                }
+                                binding.bottomPaymentInfo.tvPrice.text =
+                                    it.totalPrice.formatToRupiah()
+                            }
+                        }
+
+                        else -> {
+                            resource.message?.let {
+                                viewModel.setLoading(false)
+                                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                    .setAction("OK") {}.show()
+                            }
+                        }
+                    }
                 }
-                binding.content.apply {
-                    tvInv.text = it.invoiceNumber
-                    tvStatus.text = it.status.formatStatus()
-                    tvDate.text = it.createdAt.formatDateTime()
-                    tvAddress.text = it.address.street
-                    invoiceAdapter.submitList(it.productTransactions)
-                    tvProductsSubtotal.text = it.subtotalProducts.formatToRupiah()
-                    tvShippingCost.text = it.shippingCost.formatToRupiah()
-                    tvTotalPrice.text = it.totalPrice.formatToRupiah()
-
-                }
-                if (it.status == "inprogress") {
-                    binding.bottomPaymentInfo.root.isVisible = true
-                    binding.content.btnRating.isVisible = false
-                } else {
-                    binding.bottomPaymentInfo.root.isVisible = false
-                    binding.content.btnRating.isVisible = true
-                }
-                binding.bottomPaymentInfo.tvPrice.text = it.totalPrice.formatToRupiah()
-            }
-        }
-
-        invoiceViewModel.userResponse.observe(this) { userResponse ->
-            userResponse.data?.let {
-                binding.content.tvUserName.text = it.name
-            }
-        }
-
-        invoiceViewModel.updateTransactionStatusResponse.observe(this) { response ->
-            response.info?.let {
-                if (token.isNotEmpty()) {
-                    invoiceViewModel.getTransactionById(token.tokenFormat(), getTransactionId)
-                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
-                }
             }
 
-            response.message?.let {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+        viewModel.isLoading.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { isLoading ->
+                binding.progressBar.isVisible = isLoading
             }
-        }
-
-        invoiceViewModel.isLoading.observe(this) { isLoading ->
-            binding.progressBar.isVisible = isLoading
         }
 
 
@@ -166,7 +188,31 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
 
             R.id.checkout_layout -> {
                 if (token.isNotEmpty() && listProductId.isNotEmpty()) {
-                    invoiceViewModel.updateTransactionStatus(token.tokenFormat(), getTransactionId, UpdateStatusBody(listProductId))
+                    viewModel.updateTransactionStatus(token.tokenFormat(),
+                        getTransactionId,
+                        UpdateStatusBody(listProductId)).observe(this) { event ->
+                        event.getContentIfNotHandled()?.let { resource ->
+                            when(resource) {
+                                is Resource.Loading -> {
+                                    viewModel.setLoading(true)
+                                }
+
+                                is Resource.Success -> {
+                                    resource.data?.let {
+                                        viewModel.setLoading(false)
+                                        viewModel.getTransactionById(token.tokenFormat(), getTransactionId)
+                                    }
+                                }
+
+                                else -> {
+                                    resource.message?.let {
+                                        viewModel.setLoading(false)
+                                        Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
