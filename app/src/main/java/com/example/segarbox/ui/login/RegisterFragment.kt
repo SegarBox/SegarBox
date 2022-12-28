@@ -1,38 +1,28 @@
 package com.example.segarbox.ui.login
 
-import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.data.Resource
 import com.example.core.utils.getColorFromAttr
 import com.example.segarbox.R
 import com.example.segarbox.databinding.FragmentRegisterBinding
-import com.example.segarbox.ui.viewmodel.PrefViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
-import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.material.R.attr.colorOnSecondary
 import com.google.android.material.R.attr.colorPrimary
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
-private val Context.dataStore by preferencesDataStore(name = "settings")
-
+@AndroidEntryPoint
 class RegisterFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-    private val prefViewModel by viewModels<PrefViewModel> {
-        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
-    }
-    private val registerViewModel by viewModels<RegisterViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
-    }
+    private val viewModel: RegisterViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -104,71 +94,71 @@ class RegisterFragment : Fragment(), View.OnClickListener {
     }
 
     private fun observeData() {
-        registerViewModel.registerResponse.observe(viewLifecycleOwner) { registerResponse ->
-            // Jika berhasil register
-            when {
-                registerResponse.token != null -> {
-                    prefViewModel.saveToken(registerResponse.token!!)
-                    registerResponse.user?.let {
-                        prefViewModel.saveUserId(it.id)
-                    }
-                    requireActivity().finish()
-                }
-                // Jika tidak berhasil register
-                else -> {
-
-                    // Jika error input
-                    when {
-                        registerResponse.errors != null -> {
-
-                            registerResponse.errors.apply {
-                                this?.let {
-                                    if (!it.name.isNullOrEmpty()) {
-                                        binding.etName.error = it.name!![0]
-                                    }
-
-                                    if (!it.email.isNullOrEmpty()) {
-                                        binding.etEmail.error = it.email!![0]
-                                    }
-
-                                    if (!it.phone.isNullOrEmpty()) {
-                                        binding.etPhone.error = it.phone!![0]
-                                    }
-
-                                    if (!it.password.isNullOrEmpty()) {
-                                        binding.etPassword.error = it.password!![0]
-                                    }
-                                }
-                            }
-                        }
-
-                        // Jika error dari catch
-                        else -> {
-                            registerResponse.message?.let {
-                                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        registerViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+        viewModel.isLoading.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { isLoading ->
                 binding.progressBar.isVisible = isLoading
-            binding.btnRegister.isEnabled = !isLoading
+                binding.btnRegister.isEnabled = !isLoading
+            }
         }
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_register -> {
-                registerViewModel.register(
+                viewModel.register(
                     name = binding.etName.text.toString(),
                     email = binding.etEmail.text.toString(),
                     phone = binding.etPhone.text.toString(),
                     password = binding.etPassword.text.toString(),
                     password_confirmation = binding.etConPassword.text.toString()
-                )
+                ).observe(viewLifecycleOwner) { event ->
+                    event.getContentIfNotHandled()?.let { resource ->
+                        when (resource) {
+                            is Resource.Loading -> {
+                                viewModel.setLoading(true)
+                            }
+
+                            is Resource.Success -> {
+                                viewModel.setLoading(false)
+                                resource.data?.let { register ->
+                                    register.token?.let { token ->
+                                        viewModel.saveToken(token)
+                                        register.user?.let { user ->
+                                            viewModel.saveUserId(user.id)
+                                        }
+                                        requireActivity().finish()
+                                    }
+                                }
+                            }
+
+                            else -> {
+                                viewModel.setLoading(false)
+                                resource.data?.let { register ->
+                                    register.registerError?.let { registerError ->
+                                        if (!registerError.name.isNullOrEmpty()) {
+                                            binding.etName.error = registerError.name!![0]
+                                        }
+
+                                        if (!registerError.email.isNullOrEmpty()) {
+                                            binding.etEmail.error = registerError.email!![0]
+                                        }
+
+                                        if (!registerError.phone.isNullOrEmpty()) {
+                                            binding.etPhone.error = registerError.phone!![0]
+                                        }
+
+                                        if (!registerError.password.isNullOrEmpty()) {
+                                            binding.etPassword.error = registerError.password!![0]
+                                        }
+                                    }
+                                }
+                                resource.message?.let {
+                                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

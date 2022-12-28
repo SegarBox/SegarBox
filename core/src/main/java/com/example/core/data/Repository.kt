@@ -4,7 +4,6 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.example.core.data.source.local.LocalDataSource
 import com.example.core.data.source.remote.RemoteDataSource
-import com.example.core.data.source.remote.network.ApiServices
 import com.example.core.domain.body.MakeOrderBody
 import com.example.core.domain.body.MostPopularBody
 import com.example.core.domain.body.UpdateStatusBody
@@ -190,6 +189,21 @@ class Repository @Inject constructor(
     override fun saveIntro(isAlreadyIntro: Boolean) {
         coroutineScope.launch {
             localDataSource.saveIntro(isAlreadyIntro)
+        }
+    }
+
+    override fun getTheme(): Flow<Boolean> =
+        localDataSource.getTheme()
+
+    override fun saveToken(token: String) {
+        coroutineScope.launch {
+            localDataSource.saveToken(token)
+        }
+    }
+
+    override fun saveUserId(userId: Int) {
+        coroutineScope.launch {
+            localDataSource.saveUserId(userId)
         }
     }
 

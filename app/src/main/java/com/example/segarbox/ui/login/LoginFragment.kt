@@ -1,36 +1,28 @@
 package com.example.segarbox.ui.login
 
-import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.data.Resource
 import com.example.core.utils.getColorFromAttr
 import com.example.segarbox.R
 import com.example.segarbox.databinding.FragmentLoginBinding
-import com.example.segarbox.ui.viewmodel.PrefViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
-import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.material.R.attr.colorOnSecondary
 import com.google.android.material.R.attr.colorPrimary
+import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
-private val Context.dataStore by preferencesDataStore(name = "settings")
+@AndroidEntryPoint
 class LoginFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private val loginViewModel by viewModels<LoginViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
-    }
-    private val prefViewModel by viewModels<PrefViewModel> {
-        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
-    }
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,57 +70,61 @@ class LoginFragment : Fragment(), View.OnClickListener {
     }
 
     private fun observeData() {
-        loginViewModel.loginResponse.observe(viewLifecycleOwner) { loginResponse ->
-            // Jika Berhasil Login
-            if (loginResponse.token != null) {
-                prefViewModel.saveToken(loginResponse.token!!)
-                loginResponse.user?.let {
-                    prefViewModel.saveUserId(it.id)
-                }
-                requireActivity().finish()
+        viewModel.isLoading.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { isLoading ->
+                binding.progressBar.isVisible = isLoading
+                binding.btnLogin.isEnabled = !isLoading
             }
-            // Jika tidak berhasil login
-            else {
-
-                // Jika error input
-                if (loginResponse.errors != null) {
-
-                    loginResponse.errors.apply {
-                        this?.let {
-                            if (!it.email.isNullOrEmpty()) {
-                                binding.etEmail.error = it.email!![0]
-                            }
-
-                            if (!it.password.isNullOrEmpty()) {
-                                binding.etPassword.error = it.password!![0]
-                            }
-                        }
-
-                    }
-                }
-                // Jika error dari catch
-                else {
-                    loginResponse.message?.let {
-                        binding.etPassword.error = it
-                    }
-                }
-
-            }
-        }
-
-        loginViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            binding.progressBar.isVisible = isLoading
-            binding.btnLogin.isEnabled = !isLoading
         }
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_login -> {
-                loginViewModel.login(
+                viewModel.login(
                     email = binding.etEmail.text.toString(),
                     password = binding.etPassword.text.toString()
-                )
+                ).observe(viewLifecycleOwner) { event ->
+                    event.getContentIfNotHandled()?.let { resource ->
+                        when(resource) {
+                            is Resource.Loading -> {
+                                viewModel.setLoading(true)
+                            }
+
+                            is Resource.Success -> {
+                                resource.data?.let { login ->
+                                    viewModel.setLoading(false)
+                                    login.token?.let { token ->
+                                        viewModel.saveToken(token)
+                                        login.user?.let { user ->
+                                            viewModel.saveUserId(user.id)
+                                        }
+                                        requireActivity().finish()
+                                    }
+                                }
+                            }
+
+                            else -> {
+                                viewModel.setLoading(false)
+                                resource.data?.let { login ->
+                                    login.loginError?.let { loginError ->
+                                        if (!loginError.email.isNullOrEmpty()) {
+                                            binding.etEmail.error = loginError.email!![0]
+                                        }
+
+                                        if (!loginError.password.isNullOrEmpty()) {
+                                            binding.etPassword.error = loginError.password!![0]
+                                        }
+                                    }
+                                }
+
+                                resource.message?.let {
+                                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

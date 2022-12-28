@@ -1,28 +1,19 @@
 package com.example.segarbox.ui.login
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import com.example.core.data.source.local.datastore.SettingPreferences
 import com.example.segarbox.R
 import com.example.segarbox.databinding.ActivityLoginBinding
-import com.example.segarbox.ui.viewmodel.PrefViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
     private var _binding: ActivityLoginBinding? = null
     private val binding get() = _binding!!
-    private val prefViewModel by viewModels<PrefViewModel> {
-        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
-    }
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,10 +44,12 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        prefViewModel.getTheme().observe(this) { isDarkMode ->
-            when {
-                isDarkMode -> {
-                    binding.logo.setImageResource(R.drawable.logo_green)
+        viewModel.getTheme().observe(this) { event ->
+            event.getContentIfNotHandled()?.let { isDarkMode ->
+                when {
+                    isDarkMode -> {
+                        binding.logo.setImageResource(R.drawable.logo_green)
+                    }
                 }
             }
         }

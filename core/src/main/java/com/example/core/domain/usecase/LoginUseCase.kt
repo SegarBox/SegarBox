@@ -8,4 +8,10 @@ interface LoginUseCase {
 
     fun login(email: String, password: String): Flow<Resource<Login>>
 
+    fun getTheme(): Flow<Boolean>
+
+    fun saveToken(token: String)
+
+    fun saveUserId(userId: Int)
+
 }
