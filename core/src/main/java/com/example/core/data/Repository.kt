@@ -170,9 +170,8 @@ class Repository @Inject constructor(
     override fun getShippingCosts(
         destination: String,
         weight: String,
-        courier: String,
     ): Flow<Resource<List<Shipping>>> = flow {
-        emitAll(remoteDataSource.getShippingCosts(destination, weight, courier))
+        emitAll(remoteDataSource.getShippingCosts(destination, weight))
     }.flowOn(Dispatchers.IO)
 
     override fun getTransactions(token: String, status: String): Flow<Resource<List<Transaction>>> =

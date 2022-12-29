@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.core.data.RoomRepository
+import com.example.core.data.Resource
 import com.example.core.data.source.remote.response.AddressItem
 import com.example.core.domain.model.ShippingModel
 import com.example.core.ui.ShippingAdapter
@@ -15,9 +15,10 @@ import com.example.core.utils.Code
 import com.example.core.utils.tidyUpJneAndTikiEtd
 import com.example.segarbox.R
 import com.example.segarbox.databinding.ActivityShippingBinding
-import com.example.segarbox.ui.viewmodel.RetrofitRoomViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ShippingActivity : AppCompatActivity(), View.OnClickListener,
     ShippingAdapter.OnItemClickCallback {
 
@@ -27,10 +28,7 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
     private var type: String? = null
     private val listShipment = arrayListOf<ShippingModel>()
     private val shippingAdapter = ShippingAdapter(this)
-    private val shippingViewModel by viewModels<ShippingViewModel> {
-        RetrofitRoomViewModelFactory.getInstance(RoomRepository(application),
-            com.example.core.data.Repository())
-    }
+    private val viewModel: ShippingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,88 +77,122 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
     private fun observeData() {
         when {
             !city.isNullOrEmpty() && !type.isNullOrEmpty() -> {
-                shippingViewModel.getCity(city.toString(), type.toString()).observe(this) { list ->
-                    when {
-                        list.isNotEmpty() -> {
-                            shippingViewModel.setDestinationId(list[0].cityId)
-                        }
-                        else -> {
-                            Snackbar.make(binding.root,
-                                Code.LOCATION_CANT_BE_REACHED,
-                                Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
+                viewModel.getCity(city.toString(), type.toString()).observe(this) { event ->
+                    event.getContentIfNotHandled()?.let { resource ->
+                        when (resource) {
+                            is Resource.Loading -> {
+                                viewModel.setLoading(true)
+                            }
+
+                            is Resource.Success -> {
+                                resource.data?.let {
+                                    viewModel.setLoading(false)
+                                    viewModel.setDestinationId(it[0].cityId)
+                                }
+                            }
+
+                            is Resource.Empty -> {
+                                viewModel.setLoading(false)
+                                Snackbar.make(binding.root,
+                                    Code.LOCATION_CANT_BE_REACHED,
+                                    Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
+                            }
+
+                            else -> {
+                                resource.message?.let {
+                                    viewModel.setLoading(false)
+                                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                        .setAction("OK") {}.show()
+                                }
+                            }
                         }
                     }
                 }
             }
+
             else -> Snackbar.make(binding.root,
                 Code.LOCATION_CANT_BE_REACHED,
                 Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
         }
 
 
-        shippingViewModel.destinationId.observe(this) { destination ->
-            shippingViewModel.getShippingCosts(destination, "1000")
+        viewModel.destinationId.observe(this) { event ->
+            event.getContentIfNotHandled()?.let {
+                viewModel.getShippingCosts(it, "1000")
+            }
         }
 
-        shippingViewModel.shippingCosts.observe(this) { listShipping ->
-            listShipping.forEach { shippingResponse ->
+        viewModel.getShippingCostsResponse.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when(resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
 
-                shippingResponse.rajaongkir?.let { shipping ->
+                    is Resource.Success -> {
+                        resource.data?.let { listShipping ->
+                            viewModel.setLoading(false)
+                            listShipping.forEach { shipping ->
+                                shipping.costs.forEach { costs ->
+                                    val shippingModel = ShippingModel()
+                                    shippingModel.code = shipping.code.uppercase()
+                                    shippingModel.service = costs.service
 
-                    shipping.results.forEach { shippingResults ->
+                                    costs.cost.forEach { cost ->
+                                        shippingModel.price = cost.value
+                                        shippingModel.etd = cost.etd
+                                    }
 
-                        shippingResults.costs.forEach { costs ->
-                            val shippingModel = ShippingModel()
-                            shippingModel.code = shippingResults.code.uppercase()
-                            shippingModel.service = costs.service
-
-                            costs.cost.forEach { cost ->
-
-                                shippingModel.price = cost.value
-                                shippingModel.etd = cost.etd
+                                    // Cek Maksimal 1 Hari
+                                    when (shippingModel.code) {
+                                        Code.TIKI.uppercase() -> {
+                                            val etd = shippingModel.etd.tidyUpJneAndTikiEtd(this)
+                                                .split(" ")[0].toInt()
+                                            if (etd <= 1) {
+                                                listShipment.add(shippingModel)
+                                            }
+                                        }
+                                        Code.JNE.uppercase() -> {
+                                            val etd = shippingModel.etd.tidyUpJneAndTikiEtd(this)
+                                                .split(" ")[0].toInt()
+                                            if (etd <= 1) {
+                                                listShipment.add(shippingModel)
+                                            }
+                                        }
+                                        else -> {
+                                            val etd = shippingModel.etd.tidyUpJneAndTikiEtd(this)
+                                                .split(" ")[0].toInt()
+                                            if (etd <= 1) {
+                                                listShipment.add(shippingModel)
+                                            }
+                                        }
+                                    }
+                                    shippingAdapter.submitList(listShipment)
+                                }
                             }
+                        }
+                    }
 
-                            // Cek Maksimal 1 Hari
-                            when (shippingModel.code) {
-                                Code.TIKI.uppercase() -> {
-                                    val etd = shippingModel.etd.tidyUpJneAndTikiEtd(this)
-                                        .split(" ")[0].toInt()
-                                    if (etd <= 1) {
-                                        listShipment.add(shippingModel)
-                                    }
-                                }
-                                Code.JNE.uppercase() -> {
-                                    val etd = shippingModel.etd.tidyUpJneAndTikiEtd(this)
-                                        .split(" ")[0].toInt()
-                                    if (etd <= 1) {
-                                        listShipment.add(shippingModel)
-                                    }
-                                }
-                                else -> {
-                                    val etd = shippingModel.etd.tidyUpJneAndTikiEtd(this)
-                                        .split(" ")[0].toInt()
-                                    if (etd <= 1) {
-                                        listShipment.add(shippingModel)
-                                    }
-                                }
-                            }
+                    is Resource.Empty -> {
+                        viewModel.setLoading(false)
+                        Snackbar.make(binding.root, Code.LOCATION_CANT_BE_REACHED, Snackbar.LENGTH_SHORT)
+                            .setAction("OK") {}.show()
+                    }
 
+                    else -> {
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
                         }
                     }
                 }
             }
-
-            // Toast jika list shipment empty
-            if (listShipment.isEmpty()) {
-                Snackbar.make(binding.root, Code.LOCATION_CANT_BE_REACHED, Snackbar.LENGTH_SHORT)
-                    .setAction("OK") {}.show()
-            }
-            shippingAdapter.submitList(listShipment)
         }
 
-
-        shippingViewModel.isLoading.observe(this) { isLoading ->
-            binding.progressBar.isVisible = isLoading
+        viewModel.isLoading.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { isLoading ->
+                binding.progressBar.isVisible = isLoading
+            }
         }
     }
 
