@@ -5,14 +5,14 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.core.data.source.remote.response.ProductItem
 import com.example.core.databinding.ItemRowMainBinding
+import com.example.core.domain.model.Product
 import com.example.core.utils.formatProductSize
 import com.example.core.utils.formatToRupiah
 import com.example.core.utils.getCardResponsiveWidth
 
 class PaginationAdapter(private val onItemPaginationClickCallback: OnItemPaginationClickCallback) :
-    PagingDataAdapter<ProductItem, PaginationAdapter.PaginationViewHolder>(DiffCallbackProduct) {
+    PagingDataAdapter<Product, PaginationAdapter.PaginationViewHolder>(DiffCallbackProduct) {
     inner class PaginationViewHolder(var binding: ItemRowMainBinding) :
         RecyclerView.ViewHolder(binding.root)
 

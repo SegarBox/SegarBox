@@ -20,19 +20,35 @@ import javax.inject.Inject
 @HiltViewModel
 class PaginationViewModel @Inject constructor(private val searchUseCase: SearchUseCase) : ViewModel() {
 
+    private val _getProductPagingResponse = MutableLiveData<Event<PagingData<Product>>>()
+    val getProductPagingResponse: LiveData<Event<PagingData<Product>>> = _getProductPagingResponse
+
+    private val _isLoading = MutableLiveData<Event<Boolean>>()
+    val isLoading: LiveData<Event<Boolean>> = _isLoading
+
     fun getProductPaging(
-        apiServices: ApiServices,
         filter: String,
         filterValue: String,
-    ): LiveData<Event<PagingData<Product>>> =
-        searchUseCase.getProductPaging(apiServices, filter, filterValue).asLiveData().map {
-            Event(it)
+    ) {
+        setLoading(true)
+        searchUseCase.getProductPaging(filter, filterValue).asLiveData().map {
+            _getProductPagingResponse.postValue(Event(it))
         }
+        setLoading(false)
+    }
 
     fun getCart(token: String): LiveData<Event<Resource<List<Cart>>>> =
         searchUseCase.getCart(token).asLiveData().map {
             Event(it)
         }
+
+    fun getToken(): LiveData<Event<String>> =
+        searchUseCase.getToken().asLiveData().map {
+            Event(it)
+        }
+
+    fun setLoading(isLoading: Boolean) =
+        _isLoading.postValue(Event(isLoading))
 
 //    private var _userCart = MutableLiveData<UserCartResponse>()
 //    val userCart: LiveData<UserCartResponse> = _userCart

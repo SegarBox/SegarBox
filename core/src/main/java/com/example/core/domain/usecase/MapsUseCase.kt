@@ -10,4 +10,6 @@ interface MapsUseCase {
 
     fun saveAddress(token: String, street: String, city: String, postalCode: String): Flow<Resource<String>>
 
+    fun getToken(): Flow<String>
+
 }

@@ -12,26 +12,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
-import com.example.core.data.source.local.datastore.SettingPreferences
-import com.example.core.data.source.remote.network.ApiConfig
+import com.example.core.data.Resource
 import com.example.core.ui.PaginationAdapter
 import com.example.core.utils.*
-import com.example.segarbox.BuildConfig
 import com.example.segarbox.R
 import com.example.segarbox.databinding.ActivityPaginationBinding
 import com.example.segarbox.ui.cart.CartActivity
 import com.example.segarbox.ui.detail.DetailActivity
-import com.example.segarbox.ui.viewmodel.PrefViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
-import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.material.R.attr.colorPrimary
+import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-private val Context.dataStore by preferencesDataStore(name = "settings")
+@AndroidEntryPoint
 class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginationClickCallback,
     View.OnClickListener {
     private var _binding: ActivityPaginationBinding? = null
@@ -41,12 +37,7 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
     private var filterValue: String? = null
     private var isHomeSearchBarPressed: Boolean = false
     private val paginationAdapter = PaginationAdapter(this)
-    private val paginationViewModel by viewModels<PaginationViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
-    }
-    private val prefViewModel by viewModels<PrefViewModel> {
-        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
-    }
+    private val viewModel: PaginationViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,17 +135,9 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
 
 
     private fun observeData() {
-        val apiServices = ApiConfig.getApiServices(BuildConfig.BASE_URL_SEGARBOX)
-
         filter?.let { filter ->
             filterValue?.let { filterValue ->
-                paginationViewModel.getProductPaging(
-                    apiServices = apiServices,
-                    filter = filter,
-                    filterValue = filterValue
-                ).observe(this) {
-                    paginationAdapter.submitData(lifecycle, it)
-                }
+                viewModel.getProductPaging(filter = filter, filterValue = filterValue)
             }
         }
 
@@ -169,34 +152,31 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
 
             initialSearch = searchText
 
-            paginationViewModel.viewModelScope.launch {
+            viewModel.viewModelScope.launch {
                 delay(300L)
                 if (searchText != initialSearch || searchText.isEmpty()) {
                     return@launch
                 }
-
-                paginationViewModel.getProductPaging(
-                    apiServices = apiServices,
-                    filter = Code.LABEL_FILTER,
-                    filterValue = it.toString()
-                ).observe(this@PaginationActivity) { data ->
-                    paginationAdapter.submitData(lifecycle, data)
-                }
+                viewModel.getProductPaging(filter = Code.LABEL_FILTER, filterValue = it.toString())
             }
         }
 
-        prefViewModel.getToken().observe(this) { token ->
-            this.token = token
-        }
-
-        paginationViewModel.userCart.observe(this) { userCartResponse ->
-            userCartResponse.meta?.let {
-                binding.toolbar.ivCart.badgeValue = it.total
+        viewModel.getProductPagingResponse.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { data ->
+                paginationAdapter.submitData(lifecycle, data)
             }
         }
 
-        paginationViewModel.isLoading.observe(this) { isLoading ->
-            binding.progressBar.isVisible = isLoading
+        viewModel.getToken().observe(this) { event ->
+            event.getContentIfNotHandled()?.let {
+                this.token = it
+            }
+        }
+
+        viewModel.isLoading.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { isLoading ->
+                binding.progressBar.isVisible = isLoading
+            }
         }
 
 
@@ -205,7 +185,36 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
     override fun onResume() {
         super.onResume()
         if (token.isNotEmpty()) {
-            paginationViewModel.getUserCart(token.tokenFormat())
+            viewModel.getCart(token.tokenFormat()).observe(this){ event ->
+                event.getContentIfNotHandled()?.let { resource ->
+                    when(resource) {
+                        is Resource.Loading -> {
+                            viewModel.setLoading(true)
+                        }
+
+                        is Resource.Success -> {
+                            resource.data?.let { listData ->
+                                viewModel.setLoading(false)
+                                listData[0].total?.let { total ->
+                                    binding.toolbar.ivCart.badgeValue = total
+                                }
+                            }
+                        }
+
+                        is Resource.Empty -> {
+                            viewModel.setLoading(false)
+                            binding.toolbar.ivCart.badgeValue = 0
+                        }
+
+                        else -> {
+                            resource.message?.let {
+                                viewModel.setLoading(false)
+                                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
