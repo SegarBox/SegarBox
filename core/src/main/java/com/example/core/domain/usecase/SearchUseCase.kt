@@ -16,4 +16,6 @@ interface SearchUseCase {
 
     fun getCart(token: String): Flow<Resource<List<Cart>>>
 
+    fun getToken(): Flow<String>
+
 }

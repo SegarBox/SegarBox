@@ -2,7 +2,6 @@ package com.example.segarbox.ui.maps
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
@@ -14,18 +13,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.datastore.preferences.preferencesDataStore
-import com.example.core.data.source.local.datastore.SettingPreferences
-import com.example.core.data.source.remote.response.MapsResponse
+import com.example.core.data.Resource
 import com.example.core.domain.model.AddressModel
+import com.example.core.domain.model.Maps
 import com.example.core.utils.Code
 import com.example.core.utils.formatted
 import com.example.core.utils.tokenFormat
 import com.example.segarbox.R
 import com.example.segarbox.databinding.ActivityMapsBinding
-import com.example.segarbox.ui.viewmodel.PrefViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
-import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -37,9 +32,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
-private val Context.dataStore by preferencesDataStore(name = "settings")
-
+@AndroidEntryPoint
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListener {
 
     private lateinit var mMap: GoogleMap
@@ -49,12 +44,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var addressModel = AddressModel()
     private var token = ""
-    private val mapsViewModel by viewModels<MapsViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
-    }
-    private val prefViewModel by viewModels<PrefViewModel> {
-        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
-    }
+    private val viewModel: MapsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,95 +95,83 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
 
     private fun observeData() {
 
-        mapsViewModel.getLatLng.observe(this) {
-            placeMarker(it)
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(it, 15F))
-        }
-
-        mapsViewModel.address.observe(this) { mapsResponse ->
-
-            addressModel = AddressModel(
-                street = getAddressFromResponse(mapsResponse),
-                city = getCityFromResponse(mapsResponse),
-                postalCode = getPostalCodeFromResponse(mapsResponse)
-            )
-
-            binding.toolbar.tvTitle.apply {
-                text = getAddressFromResponse(mapsResponse)
-                textSize = 14F
+        viewModel.getLatLng.observe(this) { event ->
+            event.getContentIfNotHandled()?.let {
+                placeMarker(it)
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(it, 15F))
             }
         }
 
-        prefViewModel.getToken().observe(this) { token ->
-            this.token = token
-        }
+        viewModel.getAddressResponse.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
 
-        mapsViewModel.addressResponse.observe(this) { addressResponse ->
-            if (addressResponse.message != null) {
-                Snackbar.make(binding.root, addressResponse.message!!, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
-            }
-            else {
-                addressResponse.info?.let {
-                    val intent = Intent()
-                    intent.putExtra(Code.SNACKBAR_VALUE, it)
-                    setResult(Code.RESULT_SNACKBAR, intent)
-                    finish()
-                }
-            }
-        }
+                    is Resource.Success -> {
+                        resource.data?.let {
+                            viewModel.setLoading(false)
+                            addressModel = AddressModel(
+                                street = getAddressFromResponse(it),
+                                city = getCityFromResponse(it),
+                                postalCode = getPostalCodeFromResponse(it)
+                            )
+                            binding.toolbar.tvTitle.apply {
+                                text = getAddressFromResponse(it)
+                                textSize = 14F
+                            }
+                        }
+                    }
 
-        mapsViewModel.isLoading.observe(this) { isLoading ->
-            binding.progressBar.isVisible = isLoading
-        }
-
-    }
-
-    private fun getAddressFromResponse(mapsResponse: MapsResponse): String {
-        val results = mapsResponse.results
-
-//        Log.e("ADDRESS", results.toString())
-        return if (results != null && results.isNotEmpty()) {
-            results[0].formattedAddress
-        } else {
-            Code.LOCATION_NOT_FOUND
-        }
-    }
-
-    private fun getCityFromResponse(mapsResponse: MapsResponse): String {
-        val results = mapsResponse.results
-
-        if (results != null && results.isNotEmpty()) {
-            for (result in results) {
-                for (addressComponent in result.addressComponents) {
-                    if (addressComponent.types.contains("administrative_area_level_2") &&
-                        (addressComponent.shortName.contains("Kota") ||
-                                addressComponent.shortName.contains("Kabupaten"))
-                    ) {
-                        return addressComponent.shortName
+                    else -> {
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                        }
                     }
                 }
             }
+        }
 
-        } else {
-            return Code.LOCATION_NOT_FOUND
+        viewModel.getToken().observe(this) { event ->
+            event.getContentIfNotHandled()?.let {
+                this.token = it
+            }
+        }
+
+        viewModel.isLoading.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { isLoading ->
+                binding.progressBar.isVisible = isLoading
+            }
+        }
+
+    }
+
+    private fun getAddressFromResponse(maps: List<Maps>): String =
+        maps[0].formattedAddress
+
+    private fun getCityFromResponse(maps: List<Maps>): String {
+        for (result in maps) {
+            for (addressComponent in result.addressComponents) {
+                if (addressComponent.types.contains("administrative_area_level_2") &&
+                    (addressComponent.shortName.contains("Kota") ||
+                            addressComponent.shortName.contains("Kabupaten"))
+                ) {
+                    return addressComponent.shortName
+                }
+            }
         }
         return Code.LOCATION_NOT_FOUND
     }
 
-    private fun getPostalCodeFromResponse(mapsResponse: MapsResponse): String {
-        val results = mapsResponse.results
-
-        if (results != null && results.isNotEmpty()) {
-            for (result in results) {
-                for (addressComponent in result.addressComponents) {
-                    if (addressComponent.types.contains("postal_code")) {
-                        return addressComponent.shortName
-                    }
+    private fun getPostalCodeFromResponse(maps: List<Maps>): String {
+        for (result in maps) {
+            for (addressComponent in result.addressComponents) {
+                if (addressComponent.types.contains("postal_code")) {
+                    return addressComponent.shortName
                 }
             }
-
-        } else {
-            return Code.LOCATION_NOT_FOUND
         }
         return Code.LOCATION_NOT_FOUND
     }
@@ -232,25 +210,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
 
                 if (location != null) {
-                    mapsViewModel.setLatLng(LatLng(location.latitude, location.longitude))
-                    mapsViewModel.getAddress(LatLng(location.latitude,
+                    viewModel.setLatLng(LatLng(location.latitude, location.longitude))
+                    viewModel.getAddress(LatLng(location.latitude,
                         location.longitude).formatted())
                 } else {
                     Snackbar.make(binding.root, Code.LOCATION_NOT_FOUND, Snackbar.LENGTH_SHORT)
-                        .setAction("OK"){}.show()
+                        .setAction("OK") {}.show()
                 }
             }
 
             mMap.setOnMapClickListener { latLng ->
-                mapsViewModel.setLatLng(latLng)
-                mapsViewModel.getAddress(latLng.formatted())
+                viewModel.setLatLng(latLng)
+                viewModel.getAddress(latLng.formatted())
             }
 
         } else {
             requestPermissionLauncher.launch(
                 arrayOf(
                     ACCESS_FINE_LOCATION,
-                    ACCESS_COARSE_LOCATION
+                    ACCESS_COARSE_LOCATION,
                 )
             )
         }
@@ -272,17 +250,42 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                 ) {
 
                     if (token.isNotEmpty()) {
-                        mapsViewModel.saveAddress(token.tokenFormat(),
+                        viewModel.saveAddress(token.tokenFormat(),
                             addressModel.street,
                             addressModel.city,
-                            addressModel.postalCode)
+                            addressModel.postalCode).observe(this) { event ->
+                            event.getContentIfNotHandled()?.let { resource ->
+                                when(resource) {
+                                    is Resource.Loading -> {
+                                        viewModel.setLoading(true)
+                                    }
+
+                                    is Resource.Success -> {
+                                        resource.data?.let {
+                                            viewModel.setLoading(false)
+                                            val intent = Intent()
+                                            intent.putExtra(Code.SNACKBAR_VALUE, it)
+                                            setResult(Code.RESULT_SNACKBAR, intent)
+                                            finish()
+                                        }
+                                    }
+
+                                    else -> {
+                                        resource.message?.let {
+                                            viewModel.setLoading(false)
+                                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
 
 
                 } else {
                     Snackbar.make(binding.root,
                         Code.LOCATION_CANT_BE_REACHED,
-                        Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                        Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
                 }
             }
         }
