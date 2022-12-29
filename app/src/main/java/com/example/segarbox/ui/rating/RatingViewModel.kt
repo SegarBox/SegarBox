@@ -1,31 +1,34 @@
 package com.example.segarbox.ui.rating
 
 import androidx.lifecycle.*
-import com.example.core.data.Repository
 import com.example.core.data.Resource
-import com.example.core.data.source.remote.response.RatingResponse
-import com.example.core.data.source.remote.response.SaveRatingResponse
-import com.example.core.data.source.remote.response.UserCartResponse
 import com.example.core.domain.model.Cart
 import com.example.core.domain.model.Rating
 import com.example.core.domain.usecase.RatingUseCase
 import com.example.core.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RatingViewModel @Inject constructor(private val ratingUseCase: RatingUseCase) : ViewModel() {
 
-    fun getRatings(token: String): LiveData<Event<Resource<List<Rating>>>> =
+    private val _getRatingsResponse = MutableLiveData<Event<Resource<List<Rating>>>>()
+    val getRatingResponse: LiveData<Event<Resource<List<Rating>>>> = _getRatingsResponse
+
+    private val _getCartResponse = MutableLiveData<Event<Resource<List<Cart>>>>()
+    val getCartResponse: LiveData<Event<Resource<List<Cart>>>> = _getCartResponse
+
+    private val _isLoading = MutableLiveData<Event<Boolean>>()
+    val isLoading: LiveData<Event<Boolean>> = _isLoading
+
+    fun getRatings(token: String) =
         ratingUseCase.getRatings(token).asLiveData().map {
-            Event(it)
+            _getRatingsResponse.postValue(Event(it))
         }
 
-    fun getCart(token: String): LiveData<Event<Resource<List<Cart>>>> =
+    fun getCart(token: String) =
         ratingUseCase.getCart(token).asLiveData().map {
-            Event(it)
+            _getCartResponse.postValue(Event(it))
         }
 
     fun saveRating(
@@ -39,6 +42,14 @@ class RatingViewModel @Inject constructor(private val ratingUseCase: RatingUseCa
             .map {
                 Event(it)
             }
+
+    fun getToken(): LiveData<Event<String>> =
+        ratingUseCase.getToken().asLiveData().map {
+            Event(it)
+        }
+
+    fun setLoading(isLoading: Boolean) =
+        _isLoading.postValue(Event(isLoading))
 
 //    private val _ratingResponse = MutableLiveData<RatingResponse>()
 //    val ratingResponse: LiveData<RatingResponse> = _ratingResponse

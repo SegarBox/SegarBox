@@ -2,7 +2,6 @@ package com.example.core.domain.interactor
 
 import androidx.paging.PagingData
 import com.example.core.data.Resource
-import com.example.core.data.source.remote.network.ApiServices
 import com.example.core.domain.body.MakeOrderBody
 import com.example.core.domain.body.MostPopularBody
 import com.example.core.domain.body.UpdateStatusBody
@@ -27,6 +26,9 @@ class Interactor @Inject constructor(private val repository: IRepository) : Addr
 
     override fun getToken(): Flow<String> =
         repository.getToken()
+
+    override fun deleteToken() =
+        repository.deleteToken()
 
     override fun getCityFromApi(): Flow<Resource<List<City>>> =
         repository.getCityFromApi()
@@ -122,6 +124,9 @@ class Interactor @Inject constructor(private val repository: IRepository) : Addr
 
     override fun getTheme(): Flow<Boolean> =
         repository.getTheme()
+
+    override fun saveTheme(isDarkMode: Boolean) =
+        repository.saveTheme(isDarkMode)
 
     override fun saveToken(token: String) =
         repository.saveToken(token)

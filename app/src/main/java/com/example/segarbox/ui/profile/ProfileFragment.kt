@@ -1,6 +1,5 @@
 package com.example.segarbox.ui.profile
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,32 +8,25 @@ import android.view.ViewGroup
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.data.Resource
 import com.example.core.utils.tokenFormat
 import com.example.segarbox.R
 import com.example.segarbox.databinding.FragmentProfileBinding
 import com.example.segarbox.ui.cart.CartActivity
 import com.example.segarbox.ui.login.LoginActivity
 import com.example.segarbox.ui.rating.RatingActivity
-import com.example.segarbox.ui.viewmodel.PrefViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
-import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
+import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
-private val Context.dataStore by preferencesDataStore(name = "settings")
+@AndroidEntryPoint
 class ProfileFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private var token = ""
-    private val prefViewModel by viewModels<PrefViewModel> {
-        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(requireActivity().dataStore))
-    }
-    private val profileViewModel by viewModels<ProfileViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
-    }
+    private val viewModel: ProfileViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,66 +52,109 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     private fun setToolbar() {
         binding.toolbar.apply {
             ivCart.isVisible = true
-            tvTitle.text = "Profile"
+            tvTitle.text = getString(R.string.profile_title)
         }
     }
 
     private fun observeData() {
-        prefViewModel.getTheme().observe(viewLifecycleOwner) { isDarkMode ->
-            when {
-                isDarkMode -> {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    binding.content.sDarkMode.isChecked = true
-                }
-
-                else -> {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    binding.content.sDarkMode.isChecked = false
-                }
-            }
-
-            binding.content.sDarkMode.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                prefViewModel.saveTheme(isChecked)
-            }
-        }
-
-        prefViewModel.getToken().observe(viewLifecycleOwner) { token ->
-            this.token = token
-            if (token.isEmpty()) {
-                startActivity(Intent(requireActivity(), LoginActivity::class.java))
-                requireActivity().onBackPressed()
-            }
-            else {
-                profileViewModel.getUser(token.tokenFormat())
-            }
-        }
-
-        profileViewModel.userResponse.observe(viewLifecycleOwner){ event ->
-            event.getContentIfNotHandled()?.let { user ->
-                binding.content.tvUserName.text = user.data?.name.toString()
-                binding.content.tvPhone.text = user.data?.phone.toString()
-                binding.content.tvEmail.text = user.data?.email.toString()
-            }
-        }
-
-        profileViewModel.userCart.observe(viewLifecycleOwner){ event ->
-            event.getContentIfNotHandled()?.let { userCartResponse ->
-                userCartResponse.meta?.let {
-                    binding.toolbar.ivCart.badgeValue = it.total
+        viewModel.getToken().observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                this.token = it
+                if (token.isNotEmpty()) {
+                    viewModel.getUser(token.tokenFormat())
+                } else {
+                    startActivity(Intent(requireActivity(), LoginActivity::class.java))
+                    requireActivity().onBackPressed()
                 }
             }
         }
 
+        viewModel.getTheme().observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { isDarkMode ->
+                when {
+                    isDarkMode -> {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                        binding.content.sDarkMode.isChecked = true
+                    }
 
-        profileViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            binding.progressBar.isVisible = isLoading
+                    else -> {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                        binding.content.sDarkMode.isChecked = false
+                    }
+                }
+            }
+        }
+
+        binding.content.sDarkMode.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+            viewModel.saveTheme(isChecked)
+        }
+
+        viewModel.getUserResponse.observe(viewLifecycleOwner){ event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when(resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
+
+                    is Resource.Success -> {
+                        resource.data?.let {
+                            viewModel.setLoading(false)
+                            binding.content.apply {
+                                tvUserName.text = it.name
+                                tvPhone.text = it.phone
+                                tvEmail.text = it.email
+                            }
+                        }
+                    }
+
+                    else -> {
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                        }
+                    }
+                }
+            }
+        }
+
+        viewModel.getCartResponse.observe(viewLifecycleOwner){ event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when(resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
+
+                    is Resource.Success -> {
+                        resource.data?.let { listData ->
+                            viewModel.setLoading(false)
+                            listData[0].total?.let { total ->
+                                binding.toolbar.ivCart.badgeValue = total
+                            }
+                        }
+                    }
+
+                    else -> {
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                        }
+                    }
+                }
+            }
+        }
+
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { isLoading ->
+                binding.progressBar.isVisible = isLoading
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
         if (token.isNotEmpty()) {
-            profileViewModel.getUserCart(token.tokenFormat())
+            viewModel.getCart(token.tokenFormat())
         }
     }
 
@@ -134,9 +169,9 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 startActivity(Intent(requireContext(), CartActivity::class.java))
             }
             R.id.btn_logout -> {
-                prefViewModel.logout()
+                viewModel.deleteToken()
                 if (token.isNotEmpty()) {
-                    profileViewModel.logout(token)
+                    viewModel.logout(token)
                 }
                 requireActivity().onBackPressed()
             }

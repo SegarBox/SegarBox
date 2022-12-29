@@ -1,15 +1,13 @@
 package com.example.segarbox.ui.rating
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.core.data.source.local.datastore.SettingPreferences
+import com.example.core.data.Resource
 import com.example.core.ui.RatingAdapter
 import com.example.core.utils.Code
 import com.example.core.utils.tokenFormat
@@ -17,12 +15,10 @@ import com.example.segarbox.R
 import com.example.segarbox.databinding.ActivityRatingBinding
 import com.example.segarbox.ui.cart.CartActivity
 import com.example.segarbox.ui.invoice.InvoiceActivity
-import com.example.segarbox.ui.viewmodel.PrefViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
-import com.example.segarbox.ui.viewmodel.RetrofitViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
-private val Context.dataStore by preferencesDataStore(name = "settings")
+@AndroidEntryPoint
 class RatingActivity : AppCompatActivity(), View.OnClickListener,
     RatingAdapter.OnItemRatingClickCallback {
 
@@ -30,12 +26,7 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
     private val binding get() = _binding!!
     private var token = ""
     private val ratingAdapter = RatingAdapter(this)
-    private val prefViewModel by viewModels<PrefViewModel> {
-        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
-    }
-    private val ratingViewModel by viewModels<RatingViewModel> {
-        RetrofitViewModelFactory.getInstance(com.example.core.data.Repository())
-    }
+    private val viewModel: RatingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +54,8 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
 
     private fun setAdapter() {
         binding.content.rvCart.apply {
-            layoutManager = LinearLayoutManager(this@RatingActivity, LinearLayoutManager.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(this@RatingActivity, LinearLayoutManager.VERTICAL, false)
             adapter = ratingAdapter
         }
 
@@ -71,40 +63,81 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
 
     private fun observeData() {
 
-        prefViewModel.getToken().observe(this) { token ->
-            this.token = token
-
-        }
-
-        ratingViewModel.ratingResponse.observe(this) { ratingResponse ->
-            ratingResponse.data?.let {
-                binding.ivEmptyrating.isVisible = it.isEmpty()
-                binding.tvEmptyrating.isVisible = it.isEmpty()
-                ratingAdapter.submitList(it)
+        viewModel.getToken().observe(this) { event ->
+            event.getContentIfNotHandled()?.let {
+                this.token = it
             }
         }
 
-        ratingViewModel.userCart.observe(this) { userCartResponse ->
-            userCartResponse.meta?.let {
-                binding.toolbar.ivCart.badgeValue = it.total
-            }
-        }
+        viewModel.getRatingResponse.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
 
-        ratingViewModel.saveRatingResponse.observe(this) { saveRatingResponse ->
-            saveRatingResponse.info?.let {
-                if (token.isNotEmpty()) {
-                    ratingViewModel.getRatings(token.tokenFormat())
-                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                    is Resource.Success -> {
+                        resource.data?.let {
+                            viewModel.setLoading(false)
+                            binding.ivEmptyrating.isVisible = false
+                            binding.tvEmptyrating.isVisible = false
+                            ratingAdapter.submitList(it)
+                        }
+                    }
+
+                    is Resource.Empty -> {
+                        viewModel.setLoading(false)
+                        binding.ivEmptyrating.isVisible = true
+                        binding.tvEmptyrating.isVisible = true
+                    }
+
+                    else -> {
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                .setAction("OK") {}.show()
+                        }
+                    }
                 }
             }
+        }
 
-            saveRatingResponse.message?.let {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+        viewModel.getCartResponse.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
+
+                    is Resource.Success -> {
+                        resource.data?.let { listData ->
+                            viewModel.setLoading(false)
+                            listData[0].total?.let { total ->
+                                binding.toolbar.ivCart.badgeValue = total
+                            }
+                        }
+                    }
+
+                    is Resource.Empty -> {
+                        viewModel.setLoading(false)
+                        binding.toolbar.ivCart.badgeValue = 0
+                    }
+
+                    else -> {
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                .setAction("OK") {}.show()
+                        }
+                    }
+                }
             }
         }
 
-        ratingViewModel.isLoading.observe(this) { isLoading ->
-            binding.progressBar.isVisible = isLoading
+        viewModel.isLoading.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { isLoading ->
+                binding.progressBar.isVisible = isLoading
+            }
         }
     }
 
@@ -116,13 +149,13 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
     override fun onResume() {
         super.onResume()
         if (token.isNotEmpty()) {
-            ratingViewModel.getRatings(token.tokenFormat())
-            ratingViewModel.getUserCart(token.tokenFormat())
+            viewModel.getRatings(token.tokenFormat())
+            viewModel.getCart(token.tokenFormat())
         }
     }
 
     override fun onClick(v: View?) {
-        when(v?.id){
+        when (v?.id) {
             R.id.iv_back -> {
                 finish()
             }
@@ -136,7 +169,37 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
     override fun onRate(ratingId: Int, transactionId: Int, productId: Int, rating: Double) {
         if (token.isNotEmpty()) {
             val formattedRating = (rating + rating).toInt()
-            ratingViewModel.saveRating(token.tokenFormat(), ratingId, transactionId, productId, formattedRating)
+            viewModel.saveRating(token.tokenFormat(),
+                ratingId,
+                transactionId,
+                productId,
+                formattedRating).observe(this) { event ->
+                event.getContentIfNotHandled()?.let { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {
+                            viewModel.setLoading(true)
+                        }
+
+                        is Resource.Success -> {
+                            resource.data?.let {
+                                viewModel.setLoading(false)
+                                if (token.isNotEmpty()) {
+                                    viewModel.getRatings(token.tokenFormat())
+                                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                        .setAction("OK") {}.show()
+                                }
+                            }
+                        }
+
+                        else -> {
+                            resource.message?.let {
+                                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                    .setAction("OK") {}.show()
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -13,4 +13,12 @@ interface ProfileUseCase {
 
     fun logout(token: String): Flow<Resource<String>>
 
+    fun getToken(): Flow<String>
+
+    fun deleteToken()
+
+    fun getTheme(): Flow<Boolean>
+
+    fun saveTheme(isDarkMode: Boolean)
+
 }
