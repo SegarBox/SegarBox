@@ -6,13 +6,17 @@ import androidx.paging.PagingData
 import com.beust.klaxon.Klaxon
 import com.example.core.data.Resource
 import com.example.core.data.paging.ProductPagingSource
-import com.example.core.data.source.remote.network.*
+import com.example.core.data.source.remote.network.FlaskApiServices
+import com.example.core.data.source.remote.network.MapsApiServices
+import com.example.core.data.source.remote.network.RajaOngkirApiServices
+import com.example.core.data.source.remote.network.SegarBoxApiServices
 import com.example.core.data.source.remote.response.*
 import com.example.core.domain.body.MakeOrderBody
 import com.example.core.domain.body.MostPopularBody
 import com.example.core.domain.body.UpdateStatusBody
 import com.example.core.domain.model.*
 import com.example.core.domain.model.Shipping
+import com.example.core.utils.Code
 import com.example.core.utils.DataMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -589,25 +593,57 @@ class RemoteDataSource @Inject constructor(
     suspend fun getShippingCosts(
         destination: String,
         weight: String,
-        courier: String,
     ): Flow<Resource<List<Shipping>>> = flow {
         emit(Resource.Loading())
         try {
-            val request = rajaOngkirApiServices.getShippingCosts(
+            val requestTiki = rajaOngkirApiServices.getShippingCosts(
                 destination = destination,
                 weight = weight,
-                courier = courier
+                courier = Code.TIKI
             )
 
-            if (request.isSuccessful) {
-                request.body()?.let { response ->
+            val requestJne = rajaOngkirApiServices.getShippingCosts(
+                destination = destination,
+                weight = weight,
+                courier = Code.JNE
+            )
+
+            val requestPos = rajaOngkirApiServices.getShippingCosts(
+                destination = destination,
+                weight = weight,
+                courier = Code.POS
+            )
+
+            if (requestTiki.isSuccessful && requestJne.isSuccessful && requestPos.isSuccessful) {
+                val listShipping = arrayListOf<Shipping>()
+
+                requestTiki.body()?.let { response ->
                     val data = DataMapper.mapShippingResponseToShipping(response)
                     if (!data.isNullOrEmpty()) {
-                        emit(Resource.Success(data))
-                    } else {
-                        emit(Resource.Empty())
+                        data.map { listShipping.add(it) }
                     }
                 }
+
+                requestJne.body()?.let { response ->
+                    val data = DataMapper.mapShippingResponseToShipping(response)
+                    if (!data.isNullOrEmpty()) {
+                        data.map { listShipping.add(it) }
+                    }
+                }
+
+                requestPos.body()?.let { response ->
+                    val data = DataMapper.mapShippingResponseToShipping(response)
+                    if (!data.isNullOrEmpty()) {
+                        data.map { listShipping.add(it) }
+                    }
+                }
+
+                if (listShipping.isNotEmpty()) {
+                    emit(Resource.Success(listShipping))
+                } else {
+                    emit(Resource.Empty())
+                }
+
             } else {
                 emit(Resource.Error(message = "Something went wrong, can't get shipping costs"))
             }

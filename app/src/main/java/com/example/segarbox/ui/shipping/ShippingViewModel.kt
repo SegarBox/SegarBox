@@ -18,18 +18,31 @@ import javax.inject.Inject
 @HiltViewModel
 class ShippingViewModel @Inject constructor(private val shippingUseCase: ShippingUseCase) : ViewModel() {
 
+    private val _destinationId =  MutableLiveData<Event<String>>()
+    val destinationId: LiveData<Event<String>> = _destinationId
+
+    private val _getShippingCostsResponse = MutableLiveData<Event<Resource<List<Shipping>>>>()
+    val getShippingCostsResponse: LiveData<Event<Resource<List<Shipping>>>> = _getShippingCostsResponse
+
+    private val _isLoading = MutableLiveData<Event<Boolean>>()
+    val isLoading: LiveData<Event<Boolean>> = _isLoading
+
     fun getCity(city: String, type: String): LiveData<Event<Resource<List<City>>>> =
         shippingUseCase.getCity(city, type).asLiveData().map {
             Event(it)
         }
 
-    fun getShippingCosts(destination: String, weight: String, courier: String): LiveData<Event<Resource<List<Shipping>>>> =
-        shippingUseCase.getShippingCosts(destination, weight, courier).asLiveData().map {
-            Event(it)
+    fun getShippingCosts(destination: String, weight: String) =
+        shippingUseCase.getShippingCosts(destination, weight).asLiveData().map {
+            _getShippingCostsResponse.postValue(Event(it))
         }
 
-    private var _destinationId =  MutableLiveData<String>()
-    val destinationId: LiveData<String> = _destinationId
+    fun setDestinationId(id: String) {
+        _destinationId.postValue(Event(id))
+    }
+
+    fun setLoading(isLoading: Boolean) =
+        _isLoading.postValue(Event(isLoading))
 
 //    private var _shippingCosts = MutableLiveData<List<ShippingResponse>>()
 //    val shippingCosts: LiveData<List<ShippingResponse>> = _shippingCosts
@@ -39,10 +52,6 @@ class ShippingViewModel @Inject constructor(private val shippingUseCase: Shippin
 //
 //    fun getCity(city: String, type: String): LiveData<List<CityResults>> =
 //        roomRepository.getCity(city, type)
-
-    fun setDestinationId(id: String) {
-        _destinationId.postValue(id)
-    }
 
 //    fun getShippingCosts(
 //        destination: String,
