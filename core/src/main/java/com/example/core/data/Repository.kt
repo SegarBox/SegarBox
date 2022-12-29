@@ -129,9 +129,9 @@ class Repository @Inject constructor(
         emitAll(remoteDataSource.saveAddress(token, street, city, postalCode))
     }.flowOn(Dispatchers.IO)
 
-    override fun logout(token: String): Flow<Resource<String>> {
-        TODO("Not yet implemented")
-    }
+    override fun logout(token: String): Flow<Resource<String>> = flow {
+        emitAll(remoteDataSource.logout(token))
+    }.flowOn(Dispatchers.IO)
 
     override fun getRatings(token: String): Flow<Resource<List<Rating>>> = flow {
         emitAll(remoteDataSource.getRatings(token))
@@ -183,6 +183,12 @@ class Repository @Inject constructor(
     override fun getToken(): Flow<String> =
         localDataSource.getToken()
 
+    override fun deleteToken() {
+        coroutineScope.launch {
+            localDataSource.deleteToken()
+        }
+    }
+
     override fun getIntro(): Flow<Boolean> =
         localDataSource.getIntro()
 
@@ -194,6 +200,12 @@ class Repository @Inject constructor(
 
     override fun getTheme(): Flow<Boolean> =
         localDataSource.getTheme()
+
+    override fun saveTheme(isDarkMode: Boolean) {
+        coroutineScope.launch {
+            localDataSource.saveTheme(isDarkMode)
+        }
+    }
 
     override fun saveToken(token: String) {
         coroutineScope.launch {

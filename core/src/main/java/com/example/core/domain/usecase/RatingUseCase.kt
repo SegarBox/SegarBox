@@ -13,4 +13,6 @@ interface RatingUseCase {
 
     fun saveRating(token: String, ratingId: Int, transactionId: Int, productId: Int, rating: Int): Flow<Resource<String>>
 
+    fun getToken(): Flow<String>
+
 }

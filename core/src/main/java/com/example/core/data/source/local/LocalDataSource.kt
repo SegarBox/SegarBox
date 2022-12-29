@@ -77,7 +77,7 @@ class LocalDataSource @Inject constructor(
         }
     }
 
-    suspend fun logout() {
+    suspend fun deleteToken() {
         dataStore.edit {
             it.remove(keyToken)
             it.remove(keyUserId)

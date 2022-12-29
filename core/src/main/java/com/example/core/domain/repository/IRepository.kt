@@ -90,11 +90,15 @@ interface IRepository {
 
     fun getToken(): Flow<String>
 
+    fun deleteToken()
+
     fun getIntro(): Flow<Boolean>
 
     fun saveIntro(isAlreadyIntro: Boolean)
 
     fun getTheme(): Flow<Boolean>
+
+    fun saveTheme(isDarkMode: Boolean)
 
     fun saveToken(token: String)
 

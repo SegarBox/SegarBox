@@ -431,6 +431,24 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
+    suspend fun logout(token: String): Flow<Resource<String>> = flow {
+        emit(Resource.Loading())
+        try {
+            val request = segarBoxApiServices.logout(token)
+
+            if (request.isSuccessful) {
+                request.body()?.let {
+                    emit(Resource.Success("Logout Success"))
+                }
+            } else {
+                emit(Resource.Error(message = "Something went wrong, can't logout"))
+            }
+
+        } catch (ex: Exception) {
+            emit(Resource.Error(message = "Something went wrong, can't logout"))
+        }
+    }
+
 
     suspend fun getAddress(latLng: String): Flow<Resource<List<Maps>>> = flow {
         emit(Resource.Loading())

@@ -82,6 +82,7 @@
     <string name="no_product_to_be_rated_for_now">No product to be rated for now..</string>
     <string name="base_url_api">Base Url API</string>
     <string name="save_base_url">Save Base Url</string>
+    <string name="profile_title">Profile</string>
     <plurals name="item_count_total">
         <item quantity="one">+ %d more product</item>
         <item quantity="other">+ %d more products</item>
