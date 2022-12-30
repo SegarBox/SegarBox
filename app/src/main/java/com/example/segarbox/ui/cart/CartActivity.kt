@@ -204,7 +204,6 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
 
     override fun onResume() {
         super.onResume()
-
         if (token.isNotEmpty()) {
             viewModel.getCart(token.tokenFormat())
         }

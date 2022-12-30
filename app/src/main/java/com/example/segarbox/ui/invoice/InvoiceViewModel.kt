@@ -23,6 +23,9 @@ class InvoiceViewModel @Inject constructor(private val invoiceUseCase: InvoiceUs
     private val _isLoading = MutableLiveData<Event<Boolean>>()
     val isLoading: LiveData<Event<Boolean>> = _isLoading
 
+    private val _getUserResponse = MutableLiveData<Event<Resource<User>>>()
+    val getUserResponse: LiveData<Event<Resource<User>>> = _getUserResponse
+
     private val _getTransactionByIdResponse = MutableLiveData<Event<Resource<Transaction>>>()
     val getTransactionByIdResponse: LiveData<Event<Resource<Transaction>>> = _getTransactionByIdResponse
 
@@ -33,9 +36,9 @@ class InvoiceViewModel @Inject constructor(private val invoiceUseCase: InvoiceUs
             _getTransactionByIdResponse.postValue(Event(it))
         }
 
-    fun getUser(token: String): LiveData<Event<Resource<User>>> =
+    fun getUser(token: String) =
         invoiceUseCase.getUser(token).asLiveData().map {
-            Event(it)
+            _getUserResponse.postValue(Event(it))
         }
 
     fun updateTransactionStatus(

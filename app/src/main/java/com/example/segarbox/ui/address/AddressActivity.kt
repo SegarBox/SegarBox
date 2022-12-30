@@ -87,34 +87,32 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
             }
         }
 
-        if (token.isNotEmpty()) {
-            viewModel.getUserAddressesResponse.observe(this) { event ->
-                event.getContentIfNotHandled()?.let { resource ->
-                    when (resource) {
-                        is Resource.Loading -> {
-                            viewModel.setLoading(true)
-                        }
+        viewModel.getUserAddressesResponse.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
 
-                        is Resource.Success -> {
-                            resource.data?.let {
-                                viewModel.setLoading(false)
-                                binding.ivEmptymap.isVisible = false
-                                binding.tvEmptymap.isVisible = false
-                                addressAdapter.submitList(it)
-                            }
-                        }
-                        is Resource.Empty -> {
+                    is Resource.Success -> {
+                        resource.data?.let {
                             viewModel.setLoading(false)
-                            binding.ivEmptymap.isVisible = true
-                            binding.tvEmptymap.isVisible = true
+                            binding.ivEmptymap.isVisible = false
+                            binding.tvEmptymap.isVisible = false
+                            addressAdapter.submitList(it)
                         }
+                    }
+                    is Resource.Empty -> {
+                        viewModel.setLoading(false)
+                        binding.ivEmptymap.isVisible = true
+                        binding.tvEmptymap.isVisible = true
+                    }
 
-                        else -> {
-                            resource.message?.let {
-                                viewModel.setLoading(false)
-                                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
-                                    .setAction("OK") {}.show()
-                            }
+                    else -> {
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                .setAction("OK") {}.show()
                         }
                     }
                 }

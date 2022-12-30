@@ -61,6 +61,34 @@ class HistoryFragment : Fragment(), TransactionsAdapter.OnItemTransactionsClickC
             }
         }
 
+        viewModel.getTransactionsResponse.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when(resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
+
+                    is Resource.Success -> {
+                        resource.data?.let {
+                            viewModel.setLoading(false)
+                            transactionsAdapter.submitList(it)
+                        }
+                    }
+
+                    is Resource.Empty -> {
+                        viewModel.setLoading(false)
+                    }
+
+                    else -> {
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                        }
+                    }
+                }
+            }
+        }
+
         viewModel.isLoading.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { isLoading ->
                 binding.progressBar.isVisible = isLoading
@@ -71,33 +99,7 @@ class HistoryFragment : Fragment(), TransactionsAdapter.OnItemTransactionsClickC
     override fun onResume() {
         super.onResume()
         if (token.isNotEmpty()) {
-            viewModel.getTransactions(token.tokenFormat(), "complete").observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let { resource ->
-                    when(resource) {
-                        is Resource.Loading -> {
-                            viewModel.setLoading(true)
-                        }
-
-                        is Resource.Success -> {
-                            resource.data?.let {
-                                viewModel.setLoading(false)
-                                transactionsAdapter.submitList(it)
-                            }
-                        }
-
-                        is Resource.Empty -> {
-                            viewModel.setLoading(false)
-                        }
-
-                        else -> {
-                            resource.message?.let {
-                                viewModel.setLoading(false)
-                                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
-                            }
-                        }
-                    }
-                }
-            }
+            viewModel.getTransactions(token.tokenFormat(), "complete")
         }
     }
 

@@ -155,6 +155,8 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         super.onResume()
         if (token.isNotEmpty()) {
             viewModel.getCart(token.tokenFormat())
+        } else {
+            binding.toolbar.ivCart.badgeValue = 0
         }
     }
 

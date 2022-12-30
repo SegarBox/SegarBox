@@ -85,34 +85,34 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
         viewModel.getToken().observe(this) { event ->
             event.getContentIfNotHandled()?.let {
                 this.token = it
+                if (token.isNotEmpty()) {
+                    if (getTransactionId != 0) {
+                        viewModel.getTransactionById(token.tokenFormat(), getTransactionId)
+                        viewModel.getUser(token.tokenFormat())
+                    }
+                }
             }
         }
 
-        if (token.isNotEmpty()) {
-            if (getTransactionId != 0) {
-                viewModel.getTransactionById(token.tokenFormat(), getTransactionId)
+        viewModel.getUserResponse.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
 
-                viewModel.getUser(token.tokenFormat()).observe(this) { event ->
-                    event.getContentIfNotHandled()?.let { resource ->
-                        when (resource) {
-                            is Resource.Loading -> {
-                                viewModel.setLoading(true)
-                            }
+                    is Resource.Success -> {
+                        resource.data?.let {
+                            viewModel.setLoading(false)
+                            binding.content.tvUserName.text = it.name
+                        }
+                    }
 
-                            is Resource.Success -> {
-                                resource.data?.let {
-                                    viewModel.setLoading(false)
-                                    binding.content.tvUserName.text = it.name
-                                }
-                            }
-
-                            else -> {
-                                resource.message?.let {
-                                    viewModel.setLoading(false)
-                                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
-                                        .setAction("OK") {}.show()
-                                }
-                            }
+                    else -> {
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                .setAction("OK") {}.show()
                         }
                     }
                 }
