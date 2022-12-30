@@ -2,13 +2,11 @@ package com.example.segarbox.ui.detail
 
 import androidx.lifecycle.*
 import com.example.core.data.Resource
-import com.example.core.data.Repository
 import com.example.core.domain.model.Cart
 import com.example.core.domain.model.Product
 import com.example.core.domain.usecase.DetailUseCase
 import com.example.core.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel

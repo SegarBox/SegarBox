@@ -1,15 +1,11 @@
 package com.example.segarbox.ui.login
 
 import androidx.lifecycle.*
-import com.example.core.data.Repository
 import com.example.core.data.Resource
-import com.example.core.data.source.remote.response.LoginResponse
 import com.example.core.domain.model.Login
 import com.example.core.domain.usecase.LoginUseCase
 import com.example.core.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
