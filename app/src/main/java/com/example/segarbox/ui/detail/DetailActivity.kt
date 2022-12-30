@@ -86,12 +86,11 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         viewModel.getToken().observe(this) { event ->
             event.getContentIfNotHandled()?.let {
                 this.token = it
+                // Menampilkan Badge
+                if (token.isNotEmpty()) {
+                    viewModel.getCart(token.tokenFormat())
+                }
             }
-        }
-
-        // Menampilkan Badge
-        if (token.isNotEmpty()) {
-            viewModel.getCart(token.tokenFormat())
         }
 
         viewModel.getCartResponse.observe(this) { event ->
@@ -225,7 +224,6 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
                 if (token.isEmpty()) {
                     startActivity(Intent(this, LoginActivity::class.java))
                 } else {
-
                     // Set Jika dari Cart atau tidak
                     if (fromActivity != null && fromActivity == Code.CART_ACTIVITY) {
 

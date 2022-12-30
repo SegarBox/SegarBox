@@ -151,6 +151,8 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
         if (token.isNotEmpty()) {
             viewModel.getRatings(token.tokenFormat())
             viewModel.getCart(token.tokenFormat())
+        } else {
+            binding.toolbar.ivCart.badgeValue = 0
         }
     }
 

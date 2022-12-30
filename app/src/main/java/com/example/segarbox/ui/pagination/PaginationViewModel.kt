@@ -23,6 +23,9 @@ class PaginationViewModel @Inject constructor(private val searchUseCase: SearchU
     private val _getProductPagingResponse = MutableLiveData<Event<PagingData<Product>>>()
     val getProductPagingResponse: LiveData<Event<PagingData<Product>>> = _getProductPagingResponse
 
+    private val _getCartResponse = MutableLiveData<Event<Resource<List<Cart>>>>()
+    val getCartResponse: LiveData<Event<Resource<List<Cart>>>> = _getCartResponse
+
     private val _isLoading = MutableLiveData<Event<Boolean>>()
     val isLoading: LiveData<Event<Boolean>> = _isLoading
 
@@ -37,9 +40,9 @@ class PaginationViewModel @Inject constructor(private val searchUseCase: SearchU
         setLoading(false)
     }
 
-    fun getCart(token: String): LiveData<Event<Resource<List<Cart>>>> =
+    fun getCart(token: String) =
         searchUseCase.getCart(token).asLiveData().map {
-            Event(it)
+            _getCartResponse.postValue(Event(it))
         }
 
     fun getToken(): LiveData<Event<String>> =

@@ -20,14 +20,20 @@ class TransactionViewModel @Inject constructor(private val transactionUseCase: T
     private val _isLoading = MutableLiveData<Event<Boolean>>()
     val isLoading: LiveData<Event<Boolean>> = _isLoading
 
-    fun getCart(token: String): LiveData<Event<Resource<List<Cart>>>> =
+    private val _getCartResponse = MutableLiveData<Event<Resource<List<Cart>>>>()
+    val getCartResponse: LiveData<Event<Resource<List<Cart>>>> = _getCartResponse
+
+    private val _getTransactionsResponse = MutableLiveData<Event<Resource<List<Transaction>>>>()
+    val getTransactionsResponse: LiveData<Event<Resource<List<Transaction>>>> = _getTransactionsResponse
+
+    fun getCart(token: String) =
         transactionUseCase.getCart(token).asLiveData().map {
-            Event(it)
+            _getCartResponse.postValue(Event(it))
         }
 
-    fun getTransactions(token: String, status: String): LiveData<Event<Resource<List<Transaction>>>> =
+    fun getTransactions(token: String, status: String) =
         transactionUseCase.getTransactions(token, status).asLiveData().map {
-            Event(it)
+            _getTransactionsResponse.postValue(Event(it))
         }
 
     fun getToken(): LiveData<Event<String>> =

@@ -173,6 +173,37 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
             }
         }
 
+        viewModel.getCartResponse.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when(resource) {
+                    is Resource.Loading -> {
+                        viewModel.setLoading(true)
+                    }
+
+                    is Resource.Success -> {
+                        resource.data?.let { listData ->
+                            viewModel.setLoading(false)
+                            listData[0].total?.let { total ->
+                                binding.toolbar.ivCart.badgeValue = total
+                            }
+                        }
+                    }
+
+                    is Resource.Empty -> {
+                        viewModel.setLoading(false)
+                        binding.toolbar.ivCart.badgeValue = 0
+                    }
+
+                    else -> {
+                        resource.message?.let {
+                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                        }
+                    }
+                }
+            }
+        }
+
         viewModel.isLoading.observe(this) { event ->
             event.getContentIfNotHandled()?.let { isLoading ->
                 binding.progressBar.isVisible = isLoading
@@ -185,36 +216,9 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
     override fun onResume() {
         super.onResume()
         if (token.isNotEmpty()) {
-            viewModel.getCart(token.tokenFormat()).observe(this){ event ->
-                event.getContentIfNotHandled()?.let { resource ->
-                    when(resource) {
-                        is Resource.Loading -> {
-                            viewModel.setLoading(true)
-                        }
-
-                        is Resource.Success -> {
-                            resource.data?.let { listData ->
-                                viewModel.setLoading(false)
-                                listData[0].total?.let { total ->
-                                    binding.toolbar.ivCart.badgeValue = total
-                                }
-                            }
-                        }
-
-                        is Resource.Empty -> {
-                            viewModel.setLoading(false)
-                            binding.toolbar.ivCart.badgeValue = 0
-                        }
-
-                        else -> {
-                            resource.message?.let {
-                                viewModel.setLoading(false)
-                                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
-                            }
-                        }
-                    }
-                }
-            }
+            viewModel.getCart(token.tokenFormat())
+        } else {
+            binding.toolbar.ivCart.badgeValue = 0
         }
     }
 

@@ -80,24 +80,23 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
         viewModel.getToken().observe(this) { event ->
             event.getContentIfNotHandled()?.let {
                 this.token = it
-            }
-        }
+                if (token.isNotEmpty()) {
+                    viewModel.getCheckedCart(token.tokenFormat())
 
-        if (token.isNotEmpty()) {
-            viewModel.getCheckedCart(token.tokenFormat())
-
-            if (costs != null) {
-                costs?.let {
-                    viewModel.getCartDetail(
-                        token = token.tokenFormat(),
-                        shippingCost = it.shippingCost
-                    )
+                    if (costs != null) {
+                        costs?.let {
+                            viewModel.getCartDetail(
+                                token = token.tokenFormat(),
+                                shippingCost = it.shippingCost
+                            )
+                        }
+                    } else {
+                        viewModel.getCartDetail(
+                            token = token.tokenFormat(),
+                            shippingCost = 0
+                        )
+                    }
                 }
-            } else {
-                viewModel.getCartDetail(
-                    token = token.tokenFormat(),
-                    shippingCost = 0
-                )
             }
         }
 
