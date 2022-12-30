@@ -6,15 +6,15 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.core.data.source.remote.response.TransactionItem
 import com.example.core.databinding.ItemRowHistoryBinding
+import com.example.core.domain.model.Transaction
 import com.example.core.utils.formatItemCount
 import com.example.core.utils.formatSimpleDate
 import com.example.core.utils.formatToRupiah
 import com.example.core.utils.formatTotalCountItem
 
 class TransactionsAdapter(private val onItemTransactionsClickCallback: OnItemTransactionsClickCallback) :
-    ListAdapter<TransactionItem, TransactionsAdapter.TransactionsViewHolder>(DiffCallbackTransaction) {
+    ListAdapter<Transaction, TransactionsAdapter.TransactionsViewHolder>(DiffCallbackTransaction) {
     inner class TransactionsViewHolder(var binding: ItemRowHistoryBinding) :
         RecyclerView.ViewHolder(binding.root)
 

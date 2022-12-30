@@ -1,7 +1,6 @@
 package com.example.segarbox.ui.splash
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -13,30 +12,21 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import com.example.core.data.source.local.datastore.SettingPreferences
 import com.example.segarbox.R
 import com.example.segarbox.databinding.ActivitySplashScreenBinding
 import com.example.segarbox.ui.dev.DevActivity
 import com.example.segarbox.ui.home.MainActivity
 import com.example.segarbox.ui.intro.IntroActivity
-import com.example.segarbox.ui.viewmodel.PrefViewModel
-import com.example.segarbox.ui.viewmodel.PrefViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-
+@AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity(), View.OnClickListener {
 
     private var _binding: ActivitySplashScreenBinding? = null
     private val binding get() = _binding!!
 
-    private val prefViewModel by viewModels<PrefViewModel> {
-        PrefViewModelFactory.getInstance(SettingPreferences.getInstance(dataStore))
-    }
-    private val splashViewModel by viewModels<SplashViewModel>()
+    private val viewModel: SplashViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +47,7 @@ class SplashScreenActivity : AppCompatActivity(), View.OnClickListener {
         val delay: Long = 4000
 
         handler.postDelayed({
-            splashViewModel.isDelay.observe(this) { isDelay ->
+            viewModel.isDelay.observe(this) { isDelay ->
                 if (isDelay) {
                     startActivity(intent)
                     finish()
@@ -67,9 +57,9 @@ class SplashScreenActivity : AppCompatActivity(), View.OnClickListener {
             }
         }, delay)
 
-        splashViewModel.clickCount.observe(this) { clickCount ->
+        viewModel.clickCount.observe(this) { clickCount ->
             if (clickCount == 3) {
-                splashViewModel.setIsDelay(false)
+                viewModel.setIsDelay(false)
                 startActivity(Intent(this, DevActivity::class.java))
                 finish()
             }
@@ -83,25 +73,29 @@ class SplashScreenActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun observeData() {
-        prefViewModel.getTheme().observe(this) { isDarkMode ->
-            when {
-                isDarkMode -> {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    binding.bg.setImageResource(R.color.brown_dark)
-                    binding.splash.isVisible = false
-                    binding.splashGreen.isVisible = true
-                }
+        viewModel.getTheme().observe(this) { event ->
+            event.getContentIfNotHandled()?.let { isDarkMode ->
+                when {
+                    isDarkMode -> {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                        binding.bg.setImageResource(R.color.brown_dark)
+                        binding.splash.isVisible = false
+                        binding.splashGreen.isVisible = true
+                    }
 
-                else -> {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    else -> {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    }
                 }
             }
         }
 
-        prefViewModel.getIntro().observe(this) { isAlreadyIntro ->
-            when {
-                isAlreadyIntro -> splashDelay(Intent(this, MainActivity::class.java))
-                else -> splashDelay(Intent(this, IntroActivity::class.java))
+        viewModel.getIntro().observe(this) { event ->
+            event.getContentIfNotHandled()?.let { isAlreadyIntro ->
+                when {
+                    isAlreadyIntro -> splashDelay(Intent(this, MainActivity::class.java))
+                    else -> splashDelay(Intent(this, IntroActivity::class.java))
+                }
             }
         }
     }
@@ -113,7 +107,7 @@ class SplashScreenActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.root -> splashViewModel.incrementClickCount()
+            R.id.root -> viewModel.incrementClickCount()
         }
     }
 }

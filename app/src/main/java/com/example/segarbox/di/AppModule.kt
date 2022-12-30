@@ -83,4 +83,9 @@ abstract class AppModule {
     @ViewModelScoped
     abstract fun provideTransactionUseCase(interactor: Interactor): TransactionUseCase
 
+    @Singleton
+    @Binds
+    @ViewModelScoped
+    abstract fun provideSplashUseCase(interactor: Interactor): SplashUseCase
+
 }
