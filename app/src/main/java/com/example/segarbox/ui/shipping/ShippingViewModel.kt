@@ -2,17 +2,11 @@ package com.example.segarbox.ui.shipping
 
 import androidx.lifecycle.*
 import com.example.core.data.Resource
-import com.example.core.data.RoomRepository
-import com.example.core.data.source.remote.response.CityResults
-import com.example.core.data.source.remote.response.ShippingResponse
 import com.example.core.domain.model.City
 import com.example.core.domain.model.Shipping
 import com.example.core.domain.usecase.ShippingUseCase
-import com.example.core.utils.Code
 import com.example.core.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

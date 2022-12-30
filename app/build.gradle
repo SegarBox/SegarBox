@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'dagger.hilt.android.plugin'
 }
 
 apply from: '../shared_dependencies.gradle'

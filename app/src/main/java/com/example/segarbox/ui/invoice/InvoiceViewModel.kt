@@ -1,19 +1,13 @@
 package com.example.segarbox.ui.invoice
 
 import androidx.lifecycle.*
-import com.example.core.data.Repository
 import com.example.core.data.Resource
-import com.example.core.data.source.remote.response.TransactionByIdResponse
-import com.example.core.data.source.remote.response.TransactionsStatusResponse
-import com.example.core.data.source.remote.response.UserResponse
 import com.example.core.domain.body.UpdateStatusBody
 import com.example.core.domain.model.Transaction
 import com.example.core.domain.model.User
 import com.example.core.domain.usecase.InvoiceUseCase
 import com.example.core.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

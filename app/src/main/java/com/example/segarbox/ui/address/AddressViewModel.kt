@@ -2,13 +2,10 @@ package com.example.segarbox.ui.address
 
 import androidx.lifecycle.*
 import com.example.core.data.Resource
-import com.example.core.data.source.remote.response.DeleteAddressResponse
-import com.example.core.data.source.remote.response.GetAddressResponse
 import com.example.core.domain.model.Address
 import com.example.core.domain.usecase.AddressUseCase
 import com.example.core.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

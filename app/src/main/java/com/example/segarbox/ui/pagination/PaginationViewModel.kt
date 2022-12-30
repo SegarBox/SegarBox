@@ -2,19 +2,12 @@ package com.example.segarbox.ui.pagination
 
 import androidx.lifecycle.*
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.example.core.data.Repository
 import com.example.core.data.Resource
-import com.example.core.data.source.remote.network.ApiServices
-import com.example.core.data.source.remote.response.ProductItem
-import com.example.core.data.source.remote.response.UserCartResponse
 import com.example.core.domain.model.Cart
 import com.example.core.domain.model.Product
 import com.example.core.domain.usecase.SearchUseCase
 import com.example.core.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
