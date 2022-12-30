@@ -16,7 +16,7 @@ import javax.inject.Singleton
 class Interactor @Inject constructor(private val repository: IRepository) : AddressUseCase,
     CartUseCase, CheckoutUseCase, DetailUseCase, HomeUseCase, InvoiceUseCase, LoginUseCase,
     MapsUseCase, ProfileUseCase, RatingUseCase, RegisterUseCase, SearchUseCase, ShippingUseCase,
-    TransactionUseCase {
+    TransactionUseCase, SplashUseCase {
 
     override fun getUserAddresses(token: String): Flow<Resource<List<Address>>> =
         repository.getUserAddresses(token)

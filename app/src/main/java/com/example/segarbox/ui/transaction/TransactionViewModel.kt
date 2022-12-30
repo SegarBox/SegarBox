@@ -17,6 +17,9 @@ import javax.inject.Inject
 @HiltViewModel
 class TransactionViewModel @Inject constructor(private val transactionUseCase: TransactionUseCase): ViewModel() {
 
+    private val _isLoading = MutableLiveData<Event<Boolean>>()
+    val isLoading: LiveData<Event<Boolean>> = _isLoading
+
     fun getCart(token: String): LiveData<Event<Resource<List<Cart>>>> =
         transactionUseCase.getCart(token).asLiveData().map {
             Event(it)
@@ -26,6 +29,14 @@ class TransactionViewModel @Inject constructor(private val transactionUseCase: T
         transactionUseCase.getTransactions(token, status).asLiveData().map {
             Event(it)
         }
+
+    fun getToken(): LiveData<Event<String>> =
+        transactionUseCase.getToken().asLiveData().map {
+            Event(it)
+        }
+
+    fun setLoading(isLoading: Boolean) =
+        _isLoading.postValue(Event(isLoading))
 
 //    private val _transactionsResponse = MutableLiveData<Event<TransactionsResponse>>()
 //    val transactionsResponse: LiveData<Event<TransactionsResponse>> = _transactionsResponse
