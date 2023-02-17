@@ -10,7 +10,15 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://www.jitpack.io' }
+        jcenter()
+        maven {
+            url "http://dl.bintray.com/pt-midtrans/maven"
+            allowInsecureProtocol = true
+        }
+        maven {
+            url "https://jitpack.io"
+            allowInsecureProtocol = true
+        }
     }
 }
 rootProject.name = "SegarBox"

@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SegarBox">
         <activity
+            android:name=".ui.dev.MidtransActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.dev.DevActivity"
             android:exported="false" />
         <activity

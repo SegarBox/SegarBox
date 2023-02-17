@@ -47,4 +47,18 @@
         app:cornerRadius="8dp"
         app:layout_constraintTop_toBottomOf="@+id/ti_base_url" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_midtrans"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:text="Midtrans"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:theme="@style/poppinsMedium"
+        app:cornerRadius="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/btn_save_url" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
