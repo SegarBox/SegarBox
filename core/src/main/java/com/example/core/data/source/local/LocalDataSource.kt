@@ -2,19 +2,13 @@ package com.example.core.data.source.local
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
-import com.example.core.BuildConfig
 import com.example.core.data.Resource
 import com.example.core.data.source.local.room.CityDao
 import com.example.core.domain.model.City
 import com.example.core.utils.DataMapper
-import com.example.core.utils.Event
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,7 +17,6 @@ class LocalDataSource @Inject constructor(
     private val cityDao: CityDao,
     private val dataStore: DataStore<Preferences>,
 ) {
-
     private val keyTheme = booleanPreferencesKey("key_theme")
     private val keyIntro = booleanPreferencesKey("key_intro")
     private val keyToken = stringPreferencesKey("key_token")

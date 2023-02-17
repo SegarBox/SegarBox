@@ -2,6 +2,7 @@ package com.example.segarbox.ui.pagination
 
 import androidx.lifecycle.*
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.core.data.Resource
 import com.example.core.domain.model.Cart
 import com.example.core.domain.model.Product
@@ -27,7 +28,7 @@ class PaginationViewModel @Inject constructor(private val searchUseCase: SearchU
         filterValue: String,
     ) {
         setLoading(true)
-        searchUseCase.getProductPaging(filter, filterValue).asLiveData().map {
+        searchUseCase.getProductPaging(filter, filterValue).asLiveData().cachedIn(viewModelScope).map {
             _getProductPagingResponse.postValue(Event(it))
         }
         setLoading(false)
