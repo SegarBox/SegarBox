@@ -10,8 +10,7 @@ plugins {
 apply from: '../shared_dependencies.gradle'
 
 android {
-    compileSdk 31
-    flavorDimensions("default")
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.segarbox"
@@ -44,17 +43,6 @@ android {
         freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
     }
 
-    productFlavors {
-        sandbox {
-            buildConfigField "String", "BASE_URL", "\"https://segarbox-midtrans.000webhostapp.com/midtrans/charge/\""
-            buildConfigField "String", "CLIENT_KEY", "\"SB-Mid-client-5qnz8GGU1cEM80I1\""
-        }
-
-        production {
-            buildConfigField "String", "BASE_URL", "\"https://merchant-url-production.com/\""
-            buildConfigField "String", "CLIENT_KEY", "\"VT-CLIENT-production-client-key\""
-        }
-    }
 }
 
 dependencies {
@@ -70,9 +58,9 @@ dependencies {
     implementation "com.github.ybq:Android-SpinKit:$spinkit_version"
     implementation "com.airbnb.android:lottie:$lottie_version"
 
-//    implementation 'com.midtrans:uikit:1.26.0'
-    sandboxImplementation 'com.midtrans:uikit:1.27.0-SANDBOX' // change the version to latest one
-    productionImplementation 'com.midtrans:uikit:1.26.0' // change the version to latest one
+    implementation 'com.midtrans:uikit:1.26.0-SANDBOX'
+//    sandboxImplementation 'com.midtrans:uikit:1.27.0-SANDBOX' // change the version to latest one
+//    productionImplementation 'com.midtrans:uikit:1.26.0' // change the version to latest one
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.4.0'

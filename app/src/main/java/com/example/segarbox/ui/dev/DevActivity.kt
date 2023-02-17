@@ -25,6 +25,7 @@ class DevActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun init() {
         binding.btnSaveUrl.setOnClickListener(this)
+        binding.btnMidtrans.setOnClickListener(this)
     }
 
     override fun onDestroy() {
@@ -37,6 +38,10 @@ class DevActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_save_url -> {
                 DYNAMIC_BASE_URL = binding.etBaseUrl.text.toString()
                 startActivity(Intent(this, MainActivity::class.java))
+            }
+
+            R.id.btn_midtrans -> {
+                startActivity(Intent(this, MidtransActivity::class.java))
             }
         }
     }
