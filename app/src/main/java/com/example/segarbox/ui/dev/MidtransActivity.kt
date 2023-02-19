@@ -41,9 +41,9 @@ class MidtransActivity : AppCompatActivity(), TransactionFinishedCallback, View.
         val baseUrl: String = BuildConfig.MERCHANT_BASE_CHECKOUT_URL
         val sdkUIFlowBuilder: SdkUIFlowBuilder = SdkUIFlowBuilder.init()
             .setClientKey("SB-Mid-client-5qnz8GGU1cEM80I1") // client_key is mandatory
-            .setContext(this) // context is mandatory
+            .setContext(applicationContext) // context is mandatory
             .setTransactionFinishedCallback(this) // set transaction finish callback (sdk callback)
-            .setMerchantBaseUrl("https://segarbox-midtrans.000webhostapp.com/midtrans/charge/") //set merchant url
+            .setMerchantBaseUrl("https://djstudio.my.id/mesa/index.php/") //set merchant url
             .setUIkitCustomSetting(uiKitCustomSetting())
             .enableLog(true) // enable sdk log
             .setColorTheme(CustomColorTheme("#FFE51255",
@@ -67,7 +67,6 @@ class MidtransActivity : AppCompatActivity(), TransactionFinishedCallback, View.
         shippingAddress.lastName = "Mesa"
         shippingAddress.phone = "085310102020"
         shippingAddress.city = "Semarang"
-        shippingAddress.countryCode = "+62"
         shippingAddress.postalCode = "50144"
         return shippingAddress
     }
@@ -79,7 +78,6 @@ class MidtransActivity : AppCompatActivity(), TransactionFinishedCallback, View.
         billingAddress.lastName = "Mesa"
         billingAddress.phone = "085310102020"
         billingAddress.city = "Semarang"
-        billingAddress.countryCode = "+62"
         billingAddress.postalCode = "50144"
         return billingAddress
     }
