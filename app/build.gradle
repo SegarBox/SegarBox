@@ -58,7 +58,7 @@ dependencies {
     implementation "com.github.ybq:Android-SpinKit:$spinkit_version"
     implementation "com.airbnb.android:lottie:$lottie_version"
 
-    implementation 'com.midtrans:uikit:1.26.0-SANDBOX'
+    implementation 'com.midtrans:uikit:1.27.0-SANDBOX'
 //    sandboxImplementation 'com.midtrans:uikit:1.27.0-SANDBOX' // change the version to latest one
 //    productionImplementation 'com.midtrans:uikit:1.26.0' // change the version to latest one
 
