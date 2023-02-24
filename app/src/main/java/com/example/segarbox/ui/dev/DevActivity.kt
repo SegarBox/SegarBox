@@ -2,18 +2,22 @@ package com.example.segarbox.ui.dev
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.core.utils.DYNAMIC_BASE_URL
 import com.example.segarbox.R
 import com.example.segarbox.databinding.ActivityDevBinding
 import com.example.segarbox.ui.home.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class DevActivity : AppCompatActivity(), View.OnClickListener {
 
     private var _binding: ActivityDevBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: DevViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +30,7 @@ class DevActivity : AppCompatActivity(), View.OnClickListener {
     private fun init() {
         binding.btnSaveUrl.setOnClickListener(this)
         binding.btnMidtrans.setOnClickListener(this)
+        binding.btnGetAllProducts.setOnClickListener(this)
     }
 
     override fun onDestroy() {
@@ -42,6 +47,11 @@ class DevActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.btn_midtrans -> {
                 startActivity(Intent(this, MidtransActivity::class.java))
+            }
+
+            R.id.btn_getAllProducts -> {
+                viewModel.getAllProducts().observe(this) { resource ->
+                }
             }
         }
     }

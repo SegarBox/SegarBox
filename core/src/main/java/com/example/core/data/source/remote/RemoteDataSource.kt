@@ -1,5 +1,6 @@
 package com.example.core.data.source.remote
 
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -31,7 +32,7 @@ class RemoteDataSource @Inject constructor(
     private val flaskApiServices: FlaskApiServices,
 ) {
 
-    suspend fun getUserAddresses(token: String): Flow<Resource<List<Address>>> = flow {
+    fun getUserAddresses(token: String): Flow<Resource<List<Address>>> = flow {
         emit(Resource.Loading())
         try {
             val request = segarBoxApiServices.getUserAddresses(token)
@@ -54,7 +55,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun deleteAddress(token: String, addressId: Int): Flow<Resource<String>> = flow {
+    fun deleteAddress(token: String, addressId: Int): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
         try {
             val request = segarBoxApiServices.deleteAddress(token, addressId)
@@ -71,7 +72,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun getCart(token: String): Flow<Resource<List<Cart>>> = flow {
+    fun getCart(token: String): Flow<Resource<List<Cart>>> = flow {
         emit(Resource.Loading())
         try {
             val request = segarBoxApiServices.getUserCart(token)
@@ -94,7 +95,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun getCheckedCart(token: String): Flow<Resource<List<Cart>>> = flow {
+    fun getCheckedCart(token: String): Flow<Resource<List<Cart>>> = flow {
         emit(Resource.Loading())
         try {
             val request = segarBoxApiServices.getIsCheckedUserCart(token)
@@ -116,7 +117,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun addCart(token: String, productId: Int, productQty: Int): Flow<Resource<String>> =
+    fun addCart(token: String, productId: Int, productQty: Int): Flow<Resource<String>> =
         flow {
             emit(Resource.Loading())
             try {
@@ -135,7 +136,7 @@ class RemoteDataSource @Inject constructor(
             }
         }
 
-    suspend fun deleteCart(token: String, cartId: Int): Flow<Resource<String>> = flow {
+    fun deleteCart(token: String, cartId: Int): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
         try {
             val request = segarBoxApiServices.deleteUserCart(token, cartId)
@@ -153,7 +154,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun updateCart(
+    fun updateCart(
         token: String,
         cartId: Int,
         productId: Int,
@@ -180,7 +181,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun getCartDetail(token: String, shippingCost: Int): Flow<Resource<CartDetail>> = flow {
+    fun getCartDetail(token: String, shippingCost: Int): Flow<Resource<CartDetail>> = flow {
         emit(Resource.Loading())
         try {
             val request = segarBoxApiServices.getCartDetail(token, shippingCost)
@@ -198,7 +199,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun makeOrder(token: String, makeOrderBody: MakeOrderBody): Flow<Resource<MakeOrder>> =
+    fun makeOrder(token: String, makeOrderBody: MakeOrderBody): Flow<Resource<MakeOrder>> =
         flow {
             emit(Resource.Loading())
             try {
@@ -224,7 +225,7 @@ class RemoteDataSource @Inject constructor(
             }
         }
 
-    suspend fun getProductById(id: Int): Flow<Resource<Product>> = flow {
+    fun getProductById(id: Int): Flow<Resource<Product>> = flow {
         emit(Resource.Loading())
         try {
             val request = segarBoxApiServices.getProductById(id)
@@ -247,7 +248,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun getCityFromApi(): Flow<Resource<List<City>>> = flow {
+    fun getCityFromApi(): Flow<Resource<List<City>>> = flow {
         emit(Resource.Loading())
         try {
             val request = rajaOngkirApiServices.getCity()
@@ -269,30 +270,32 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun getAllProducts(page: Int, size: Int): Flow<Resource<List<Product>>> = flow {
-        emit(Resource.Loading())
-        try {
-            val request = segarBoxApiServices.getAllProduct(page, size)
+    fun getAllProducts(page: Int, size: Int): Flow<Resource<List<Product>>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val request = segarBoxApiServices.getAllProduct(page, size)
 
-            if (request.isSuccessful) {
-                request.body()?.let { response ->
-                    val data = DataMapper.mapProductResponseToProducts(response)
-                    if (data.isNotEmpty()) {
-                        emit(Resource.Success(data))
-                    } else {
-                        emit(Resource.Empty())
+                if (request.isSuccessful) {
+                    request.body()?.let { response ->
+                        val data = DataMapper.mapProductResponseToProducts(response)
+                        if (data.isNotEmpty()) {
+                            emit(Resource.Success(data))
+                        } else {
+                            emit(Resource.Empty())
+                        }
                     }
+                } else {
+                    emit(Resource.Error(message = "Something went wrong, can't access products"))
                 }
-            } else {
+
+            } catch (ex: Exception) {
                 emit(Resource.Error(message = "Something went wrong, can't access products"))
             }
-
-        } catch (ex: Exception) {
-            emit(Resource.Error(message = "Something went wrong, can't access products"))
         }
     }
 
-    suspend fun getProductByCategory(
+    fun getProductByCategory(
         page: Int,
         size: Int,
         category: String,
@@ -319,7 +322,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun getProductByMostPopular(mostPopularBody: MostPopularBody): Flow<Resource<List<Product>>> =
+    fun getProductByMostPopular(mostPopularBody: MostPopularBody): Flow<Resource<List<Product>>> =
         flow {
             emit(Resource.Loading())
             try {
@@ -343,7 +346,7 @@ class RemoteDataSource @Inject constructor(
             }
         }
 
-    suspend fun getTransactionById(token: String, transactionId: Int): Flow<Resource<Transaction>> =
+    fun getTransactionById(token: String, transactionId: Int): Flow<Resource<Transaction>> =
         flow {
             emit(Resource.Loading())
             try {
@@ -367,30 +370,32 @@ class RemoteDataSource @Inject constructor(
             }
         }
 
-    suspend fun getUser(token: String): Flow<Resource<User>> = flow {
-        emit(Resource.Loading())
-        try {
-            val request = segarBoxApiServices.getUser(token)
+    fun getUser(token: String): Flow<Resource<User>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val request = segarBoxApiServices.getUser(token)
 
-            if (request.isSuccessful) {
-                request.body()?.let { response ->
-                    val data = DataMapper.mapUserResponseToUser(response)
-                    if (data != null) {
-                        emit(Resource.Success(data))
-                    } else {
-                        emit(Resource.Error(message = "Something went wrong, can't access user"))
+                if (request.isSuccessful) {
+                    request.body()?.let { response ->
+                        val data = DataMapper.mapUserResponseToUser(response)
+                        if (data != null) {
+                            emit(Resource.Success(data))
+                        } else {
+                            emit(Resource.Error(message = "Something went wrong, can't access user"))
+                        }
                     }
+                } else {
+                    emit(Resource.Error(message = "Something went wrong, can't access user"))
                 }
-            } else {
+
+            } catch (ex: Exception) {
                 emit(Resource.Error(message = "Something went wrong, can't access user"))
             }
-
-        } catch (ex: Exception) {
-            emit(Resource.Error(message = "Something went wrong, can't access user"))
         }
     }
 
-    suspend fun updateTransactionStatus(
+    fun updateTransactionStatus(
         token: String,
         transactionId: Int,
         updateStatusBody: UpdateStatusBody,
@@ -414,7 +419,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun login(email: String, password: String): Flow<Resource<Login>> = flow {
+    fun login(email: String, password: String): Flow<Resource<Login>> = flow {
         emit(Resource.Loading())
         try {
             val request = segarBoxApiServices.login(email, password)
@@ -435,7 +440,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun logout(token: String): Flow<Resource<String>> = flow {
+    fun logout(token: String): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
         try {
             val request = segarBoxApiServices.logout(token)
@@ -454,7 +459,7 @@ class RemoteDataSource @Inject constructor(
     }
 
 
-    suspend fun getAddress(latLng: String): Flow<Resource<List<Maps>>> = flow {
+    fun getAddress(latLng: String): Flow<Resource<List<Maps>>> = flow {
         emit(Resource.Loading())
         try {
             val request = mapsApiServices.getAddress(latLng)
@@ -477,7 +482,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun saveAddress(
+    fun saveAddress(
         token: String,
         street: String,
         city: String,
@@ -502,7 +507,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun getRatings(token: String): Flow<Resource<List<Rating>>> = flow {
+    fun getRatings(token: String): Flow<Resource<List<Rating>>> = flow {
         emit(Resource.Loading())
         try {
             val request = segarBoxApiServices.getRatings(token)
@@ -524,7 +529,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun saveRating(
+    fun saveRating(
         token: String,
         ratingId: Int,
         transactionId: Int,
@@ -549,7 +554,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun register(
+    fun register(
         name: String,
         email: String,
         phone: String,
@@ -590,7 +595,7 @@ class RemoteDataSource @Inject constructor(
             }
         ).flow
 
-    suspend fun getShippingCosts(
+    fun getShippingCosts(
         destination: String,
         weight: String,
     ): Flow<Resource<List<Shipping>>> = flow {
@@ -653,7 +658,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun getTransactions(token: String, status: String): Flow<Resource<List<Transaction>>> =
+    fun getTransactions(token: String, status: String): Flow<Resource<List<Transaction>>> =
         flow {
             emit(Resource.Loading())
             try {

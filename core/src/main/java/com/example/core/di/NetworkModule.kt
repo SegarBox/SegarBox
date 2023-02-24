@@ -38,7 +38,7 @@ class NetworkModule {
     @Provides
     fun provideSegarBoxApiService(client: OkHttpClient): SegarBoxApiServices {
         val retrofit = Retrofit.Builder()
-            .baseUrl(DYNAMIC_BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL_SEGARBOX)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

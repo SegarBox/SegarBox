@@ -12,7 +12,6 @@ import com.example.core.domain.model.ShippingModel
 import com.example.core.utils.Code
 import com.example.core.utils.formatToRupiah
 import com.example.core.utils.tidyUpJneAndTikiEtd
-import com.example.core.utils.tidyUpPosEtd
 
 class ShippingAdapter(private val onItemClickCallback: OnItemClickCallback): ListAdapter<ShippingModel, ShippingAdapter.ShippingViewHolder>(
     DiffCallbackShipping) {
@@ -49,7 +48,7 @@ class ShippingAdapter(private val onItemClickCallback: OnItemClickCallback): Lis
                         .load(R.drawable.pos)
                         .into(ivKurir)
 
-                    tvEtd.text = item.etd.tidyUpPosEtd(context)
+                    tvEtd.text = item.etd.tidyUpJneAndTikiEtd(context)
                 }
             }
 

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -94,7 +95,9 @@ class SplashScreenActivity : AppCompatActivity(), View.OnClickListener {
             event.getContentIfNotHandled()?.let { isAlreadyIntro ->
                 when {
                     isAlreadyIntro -> splashDelay(Intent(this, MainActivity::class.java))
-                    else -> splashDelay(Intent(this, IntroActivity::class.java))
+                    else -> {
+                        splashDelay(Intent(this, IntroActivity::class.java))
+                    }
                 }
             }
         }

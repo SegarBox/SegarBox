@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +32,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun init() {
         setBottomNav()
-        observeData()
     }
 
     private fun setBottomNav() {
@@ -54,67 +52,6 @@ class MainActivity : AppCompatActivity() {
         val navView = binding.bottomNav
         val navController = findNavController(R.id.nav_host_fragment)
         navView.setupWithNavController(navController)
-
-    }
-
-    private fun observeData() {
-        viewModel.getCityCount().observe(this) { event ->
-            event.getContentIfNotHandled()?.let { resource ->
-                when(resource) {
-                    is Resource.Loading -> {
-                        viewModel.setLoading(true)
-                    }
-
-                    is Resource.Success -> {
-                        resource.data?.let {
-                            viewModel.setLoading(false)
-                            if (it == 0) {
-                                viewModel.getCityFromApi()
-                            }
-                        }
-                    }
-
-                    else -> {
-                        resource.message?.let {
-                            viewModel.setLoading(false)
-                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
-                        }
-                    }
-                }
-            }
-        }
-
-        viewModel.getCityFromApiResponse.observe(this) { event ->
-            event.getContentIfNotHandled()?.let { resource ->
-                when(resource) {
-                    is Resource.Loading -> {
-                        viewModel.setLoading(true)
-                    }
-
-                    is Resource.Success -> {
-                        resource.data?.let {
-                            viewModel.setLoading(false)
-                            viewModel.insertCityToDb(it)
-                        }
-                    }
-
-                    else -> {
-                        resource.message?.let {
-                            viewModel.setLoading(false)
-                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
-                        }
-                    }
-                }
-            }
-        }
-
-        viewModel.getIntro().observe(this) { event ->
-            event.getContentIfNotHandled()?.let { isAlreadyIntro ->
-                if (!isAlreadyIntro) {
-                    viewModel.saveIntro(true)
-                }
-            }
-        }
 
     }
 

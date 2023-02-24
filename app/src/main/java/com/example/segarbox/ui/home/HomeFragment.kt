@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,6 +56,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         init()
     }
 
@@ -128,7 +130,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
             override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {}
 
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                binding.content.rvStartShopping.smoothScrollToPosition( 0)
+                binding.content.rvStartShopping.smoothScrollToPosition(0)
             }
 
             override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {}
@@ -139,7 +141,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
     private fun observeData() {
 
-        viewModel.getToken().observe(viewLifecycleOwner) { event ->
+        viewModel.getTokenResponse.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
                 this.token = it
             }
@@ -183,7 +185,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
         viewModel.getAllProductsResponse.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { resource ->
-                when(resource) {
+                when (resource) {
                     is Resource.Loading -> {
                         viewModel.setLoading(true)
                     }
@@ -201,17 +203,17 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
                     else -> {
                         resource.message?.let {
-                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                .setAction("OK") {}.show()
                         }
                     }
                 }
             }
         }
 
-
         viewModel.getProductResponse.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { resource ->
-                when(resource) {
+                when (resource) {
                     is Resource.Loading -> {
                         viewModel.setLoading(true)
                     }
@@ -243,7 +245,8 @@ class HomeFragment : Fragment(), View.OnClickListener,
                     else -> {
                         resource.message?.let {
                             viewModel.setLoading(false)
-                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                .setAction("OK") {}.show()
                         }
                     }
                 }
@@ -253,7 +256,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
         viewModel.getCartResponse.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { resource ->
-                when(resource) {
+                when (resource) {
                     is Resource.Loading -> {
                         viewModel.setLoading(true)
                     }
@@ -275,7 +278,8 @@ class HomeFragment : Fragment(), View.OnClickListener,
                     else -> {
                         resource.message?.let {
                             viewModel.setLoading(false)
-                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                .setAction("OK") {}.show()
                         }
                     }
                 }
@@ -288,7 +292,6 @@ class HomeFragment : Fragment(), View.OnClickListener,
                 binding.progressBar.isVisible = isLoading
             }
         }
-
     }
 
     private fun setAdapter() {

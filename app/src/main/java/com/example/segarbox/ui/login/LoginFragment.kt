@@ -86,7 +86,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                     password = binding.etPassword.text.toString()
                 ).observe(viewLifecycleOwner) { event ->
                     event.getContentIfNotHandled()?.let { resource ->
-                        when(resource) {
+                        when (resource) {
                             is Resource.Loading -> {
                                 viewModel.setLoading(true)
                             }
@@ -118,9 +118,11 @@ class LoginFragment : Fragment(), View.OnClickListener {
                                     }
                                 }
 
-                                resource.message?.let {
-                                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
-                                }
+                                if (!resource.message.isNullOrEmpty())
+                                    Snackbar.make(binding.root,
+                                        resource.message.toString(),
+                                        Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
+
                             }
                         }
                     }
