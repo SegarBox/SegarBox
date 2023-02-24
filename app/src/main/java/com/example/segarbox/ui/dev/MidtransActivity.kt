@@ -3,6 +3,8 @@ package com.example.segarbox.ui.dev
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import com.example.core.utils.getHelperColor
 import com.example.segarbox.BuildConfig
 import com.example.segarbox.R
 import com.example.segarbox.databinding.ActivityMidtransBinding
@@ -37,20 +39,19 @@ class MidtransActivity : AppCompatActivity(), TransactionFinishedCallback, View.
     }
 
     private fun initMidtransSdk() {
-        val clientKey: String = BuildConfig.MERCHANT_CLIENT_KEY
-        val baseUrl: String = BuildConfig.MERCHANT_BASE_CHECKOUT_URL
-        val sdkUIFlowBuilder: SdkUIFlowBuilder = SdkUIFlowBuilder.init()
-            .setClientKey("SB-Mid-client-5qnz8GGU1cEM80I1") // client_key is mandatory
+        SdkUIFlowBuilder.init()
+            .setMerchantBaseUrl(BuildConfig.MERCHANT_BASE_CHECKOUT_URL) //set merchant url
+            .setClientKey(BuildConfig.MERCHANT_CLIENT_KEY) // client_key is mandatory
             .setContext(applicationContext) // context is mandatory
             .setTransactionFinishedCallback(this) // set transaction finish callback (sdk callback)
-            .setMerchantBaseUrl("https://djstudio.my.id/mesa/index.php/") //set merchant url
             .setUIkitCustomSetting(uiKitCustomSetting())
             .enableLog(true) // enable sdk log
-            .setColorTheme(CustomColorTheme("#FFE51255",
-                "#B61548",
-                "#FFE51255")) // will replace theme on snap theme on MAP
+            .setColorTheme(CustomColorTheme(
+                "#02B80E",
+                "#02B80E",
+                "#02B80E")) // will replace theme on snap theme on MAP
             .setLanguage("en")
-        sdkUIFlowBuilder.buildSDK()
+            .buildSDK()
     }
 
     private fun uiKitCustomSetting(): UIKitCustomSetting {
@@ -62,7 +63,7 @@ class MidtransActivity : AppCompatActivity(), TransactionFinishedCallback, View.
 
     private fun initShippingAddress(): ShippingAddress {
         val shippingAddress = ShippingAddress()
-        shippingAddress.address =  "Jl Kenangan Terindah 18b"
+        shippingAddress.address = "Jl Kenangan Terindah 18b"
         shippingAddress.firstName = "Stanley"
         shippingAddress.lastName = "Mesa"
         shippingAddress.phone = "085310102020"
@@ -73,7 +74,7 @@ class MidtransActivity : AppCompatActivity(), TransactionFinishedCallback, View.
 
     private fun initBillingAddress(): BillingAddress {
         val billingAddress = BillingAddress()
-        billingAddress.address =  "Jl Kenangan Terindah 18b"
+        billingAddress.address = "Jl Kenangan Terindah 18b"
         billingAddress.firstName = "Stanley"
         billingAddress.lastName = "Mesa"
         billingAddress.phone = "085310102020"
@@ -100,7 +101,29 @@ class MidtransActivity : AppCompatActivity(), TransactionFinishedCallback, View.
         _binding = null
     }
 
-    override fun onTransactionFinished(p0: TransactionResult?) {
+    override fun onTransactionFinished(result: TransactionResult?) {
+        if (result != null) {
+            if (result.isTransactionCanceled) {
+                Toast.makeText(this, "Transaction Canceled", Toast.LENGTH_LONG).show()
+            } else {
+                when (result.status) {
+                    TransactionResult.STATUS_SUCCESS -> Toast.makeText(this,
+                        "Transaction Finished. ID: " + result.response.transactionId,
+                        Toast.LENGTH_LONG).show()
+                    TransactionResult.STATUS_PENDING -> Toast.makeText(this,
+                        "Transaction Pending. ID: " + result.response.transactionId,
+                        Toast.LENGTH_LONG).show()
+                    TransactionResult.STATUS_FAILED -> Toast.makeText(this,
+                        "Transaction Failed. ID: " + result.response.transactionId.toString() + ". Message: " + result.response.statusMessage,
+                        Toast.LENGTH_LONG).show()
+                    TransactionResult.STATUS_INVALID -> Toast.makeText(this,
+                        "Transaction Invalid",
+                        Toast.LENGTH_LONG).show()
+                }
+            }
+        } else {
+            Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onClick(v: View?) {

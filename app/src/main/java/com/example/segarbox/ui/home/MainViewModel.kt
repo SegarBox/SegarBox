@@ -1,5 +1,6 @@
 package com.example.segarbox.ui.home
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.core.data.Resource
 import com.example.core.domain.body.MostPopularBody
@@ -10,19 +11,22 @@ import com.example.core.domain.usecase.HomeUseCase
 import com.example.core.utils.Code
 import com.example.core.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : ViewModel() {
+
+    private val _getTokenResponse = MutableLiveData<Event<String>>()
+    val getTokenResponse: LiveData<Event<String>> = _getTokenResponse
 
     private val _checkedChips = MutableLiveData<String>()
     val checkedChips: LiveData<String> = _checkedChips
 
     private val _mostPopularProductIds = MutableLiveData<Event<List<String>>>()
     val mostPopularProductIds: LiveData<Event<List<String>>> = _mostPopularProductIds
-
-    private val _getCityFromApiResponse = MutableLiveData<Event<Resource<List<City>>>>()
-    val getCityFromApiResponse: LiveData<Event<Resource<List<City>>>> = _getCityFromApiResponse
 
     private val _getProductResponse = MutableLiveData<Event<Resource<List<Product>>>>()
     val getProductResponse: LiveData<Event<Resource<List<Product>>>> = _getProductResponse
@@ -37,10 +41,16 @@ class MainViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
     val isLoading: LiveData<Event<Boolean>> = _isLoading
 
     init {
+        // Token
+        getToken()
+        // Intro Onboarding
+        saveIntro(true)
         // Most Popular
         saveCheckedChips(Code.MOST_POPULAR_CHIPS)
         // All Products
-        getAllProducts(1, 20)
+        getAllProducts()
+        // Get City From Rajaongkir
+        getCityFromApi()
     }
 
     fun saveCheckedChips(chips: String) {
@@ -51,23 +61,37 @@ class MainViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
         _mostPopularProductIds.postValue(Event(listProductId))
     }
 
-    fun getCityFromApi() =
-        homeUseCase.getCityFromApi().asLiveData().map {
-            _getCityFromApiResponse.postValue(Event(it))
+    fun getCityFromApi() {
+        viewModelScope.launch(Dispatchers.IO) {
+            // Get City Count
+            homeUseCase.getCityCount().collect { resourceCount ->
+                setLoading(true)
+                if (resourceCount is Resource.Success) {
+                    resourceCount.data?.let { cityCount ->
+                        Log.e("CITY COUNT", cityCount.toString())
+                        if (cityCount == 0) {
+                            homeUseCase.getCityFromApi().collect { resourceCity ->
+                                if (resourceCity is Resource.Success) {
+                                    resourceCity.data?.let { city ->
+                                        homeUseCase.insertCityToDb(city)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                setLoading(false)
+            }
         }
+    }
 
-    fun insertCityToDb(listCity: List<City>) =
-        homeUseCase.insertCityToDb(listCity)
-
-    fun getCityCount(): LiveData<Event<Resource<Int>>> =
-        homeUseCase.getCityCount().asLiveData().map {
-            Event(it)
+    private fun getAllProducts() {
+        viewModelScope.launch {
+            homeUseCase.getAllProducts(1, 20).collect {
+                _getAllProductsResponse.postValue(Event(it))
+            }
         }
-
-    fun getAllProducts(page: Int, size: Int) =
-        homeUseCase.getAllProducts(page, size).asLiveData().map {
-            _getAllProductsResponse.postValue(Event(it))
-        }
+    }
 
     fun getProductById(id: Int): LiveData<Event<Resource<Product>>> =
         homeUseCase.getProductById(id).asLiveData().map {
@@ -79,8 +103,8 @@ class MainViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
         size: Int,
         category: String,
     ) = homeUseCase.getProductByCategory(page, size, category).asLiveData().map {
-            _getProductResponse.postValue(Event(it))
-        }
+        _getProductResponse.postValue(Event(it))
+    }
 
     fun getProductByMostPopular(mostPopularBody: MostPopularBody) =
         homeUseCase.getProductByMostPopular(mostPopularBody).asLiveData().map {
@@ -92,15 +116,18 @@ class MainViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
             _getCartResponse.postValue(Event(it))
         }
 
-    fun getIntro(): LiveData<Event<Boolean>> =
-        homeUseCase.getIntro().asLiveData().map {
-            Event(it)
+    fun getToken() {
+        viewModelScope.launch(Dispatchers.IO) {
+            homeUseCase.getToken().collect {
+                Log.e("TOKEN", it)
+                _getTokenResponse.postValue(Event(it))
+            }
         }
-
-    fun getToken(): LiveData<Event<String>> =
-        homeUseCase.getToken().asLiveData().map {
-            Event(it)
-        }
+    }
+//        homeUseCase.getToken().asLiveData().map {
+//            Log.e("TOKEN", "TOKEN")
+//            Event(it)
+//        }
 
     fun saveIntro(isAlreadyIntro: Boolean) =
         homeUseCase.saveIntro(isAlreadyIntro)

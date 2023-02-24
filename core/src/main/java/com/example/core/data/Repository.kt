@@ -1,5 +1,6 @@
 package com.example.core.data
 
+import android.util.Log
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.example.core.data.source.local.LocalDataSource
@@ -100,9 +101,11 @@ class Repository @Inject constructor(
         emitAll(remoteDataSource.getTransactionById(token, transactionId))
     }.flowOn(Dispatchers.IO)
 
-    override fun getUser(token: String): Flow<Resource<User>> = flow {
-        emitAll(remoteDataSource.getUser(token))
-    }.flowOn(Dispatchers.IO)
+    override fun getUser(token: String): Flow<Resource<User>> {
+        return flow {
+            emitAll(remoteDataSource.getUser(token))
+        }.flowOn(Dispatchers.IO)
+    }
 
     override fun updateTransactionStatus(
         token: String,

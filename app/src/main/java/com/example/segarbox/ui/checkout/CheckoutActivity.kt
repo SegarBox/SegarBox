@@ -37,8 +37,6 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
     private var token = ""
     private var isShippingCostAdded = false
     private val checkoutDetailsAdapter = CheckoutDetailsAdapter()
-    private var isGotToken = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,10 +82,10 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                     viewModel.getCheckedCart(token.tokenFormat())
 
                     if (costs != null) {
-                        costs?.let {
+                        costs?.let { cartDetail ->
                             viewModel.getCartDetail(
                                 token = token.tokenFormat(),
-                                shippingCost = it.shippingCost
+                                shippingCost = cartDetail.shippingCost
                             )
                         }
                     } else {
@@ -229,7 +227,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                                         .load(R.drawable.pos)
                                         .into(ivKurir)
 
-                                    tvEtd.text = it.etd.tidyUpPosEtd(this@CheckoutActivity)
+                                    tvEtd.text = it.etd.tidyUpJneAndTikiEtd(this@CheckoutActivity)
                                 }
                             }
                             tvKurir.text = it.code
