@@ -35,4 +35,6 @@ interface HomeUseCase {
 
     fun getToken(): Flow<String>
 
+    fun getTheme(): Flow<Boolean>
+
 }
