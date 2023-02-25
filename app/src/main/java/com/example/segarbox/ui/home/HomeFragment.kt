@@ -4,6 +4,8 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +17,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.core.data.Resource
-import com.example.core.domain.body.MostPopularBody
 import com.example.core.domain.model.Product
 import com.example.core.ui.AllProductAdapter
 import com.example.core.ui.StartShoppingAdapter
@@ -42,8 +43,8 @@ class HomeFragment : Fragment(), View.OnClickListener,
     private val allProductAdapter = AllProductAdapter(this)
     private val startShoppingAdapter = StartShoppingAdapter(this)
     private var checkedChips = ""
-    private val mostPopularProductIds = arrayListOf<String>()
     private var token = ""
+    private val handler = Handler(Looper.getMainLooper())
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreateView(
@@ -142,43 +143,25 @@ class HomeFragment : Fragment(), View.OnClickListener,
     private fun observeData() {
 
         viewModel.getTokenResponse.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let {
-                this.token = it
+            event.getContentIfNotHandled()?.let { token ->
+                this.token = token
             }
         }
 
-//        prefViewModel.getUserId().getContentIfNotHandled()?.let {
-//            it.observe(viewLifecycleOwner) { userId ->
-//                viewModel.getRecommendationSystem(userId)
-//            }
-//        }
+        viewModel.checkedChips.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { checkedChips ->
+                this.checkedChips = checkedChips
 
-//        viewModel.recommendationSystem.observe(viewLifecycleOwner) { event ->
-//            event.getContentIfNotHandled()?.let {
-//                viewModel.saveMostPopularProductIds(it)
-//            }
-//        }
-
-//        viewModel.mostPopularProductIds.observe(viewLifecycleOwner) { event ->
-//            event.getContentIfNotHandled()?.let {
-//
-//            }
-//        }
-
-        viewModel.checkedChips.observe(viewLifecycleOwner) { checkedChips ->
-            this.checkedChips = checkedChips
-
-            when (checkedChips) {
-                Code.MOST_POPULAR_CHIPS -> {
-                    if (mostPopularProductIds.isNotEmpty()) {
-                        viewModel.getProductByMostPopular(MostPopularBody(mostPopularProductIds))
+                when (checkedChips) {
+                    Code.MOST_POPULAR_CHIPS -> {
+                        viewModel.getProductByMostPopular()
                     }
-                }
-                Code.VEGGIES_CHIPS -> {
-                    viewModel.getProductByCategory(1, 10, Code.VEGGIES_CATEGORY)
-                }
-                else -> {
-                    viewModel.getProductByCategory(1, 10, Code.FRUITS_CATEGORY)
+                    Code.VEGGIES_CHIPS -> {
+                        viewModel.getProductByCategory(1, 10, Code.VEGGIES_CATEGORY)
+                    }
+                    else -> {
+                        viewModel.getProductByCategory(1, 10, Code.FRUITS_CATEGORY)
+                    }
                 }
             }
         }
@@ -313,16 +296,18 @@ class HomeFragment : Fragment(), View.OnClickListener,
     override fun onResume() {
         super.onResume()
         // Update Badge
-        if (token.isNotEmpty()) {
-            viewModel.getCart(token.tokenFormat())
-        } else {
-            binding.toolbar.ivCart.badgeValue = 0
-        }
-
         val newAlpha = (ratio * 255).toInt()
         binding.toolbar.root.background.alpha = newAlpha
-    }
 
+        // Kasih delay agar bisa dapat updated token
+        handler.postDelayed({
+            if (token.isNotEmpty()) {
+                viewModel.getCart(token.tokenFormat())
+            } else {
+                binding.toolbar.ivCart.badgeValue = 0
+            }
+        }, 1000)
+    }
 
     override fun onDestroy() {
         super.onDestroy()
