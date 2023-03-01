@@ -9,6 +9,7 @@ import com.example.core.data.Resource
 import com.example.core.domain.model.Cart
 import com.example.core.domain.model.Product
 import com.example.core.domain.usecase.HomeUseCase
+import com.example.core.utils.CHIPS_VALUE
 import com.example.core.utils.Code
 import com.example.core.utils.Event
 import com.example.core.utils.tokenFormat
@@ -50,10 +51,10 @@ class MainViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
         getCityFromApi()
     }
 
-    fun getTheme() = viewModelScope.launch(Dispatchers.IO) {
+    private fun getTheme() = viewModelScope.launch(Dispatchers.IO) {
         homeUseCase.getTheme().collect {
             // Most Popular
-            saveCheckedChips(Code.MOST_POPULAR_CHIPS)
+            saveCheckedChips(CHIPS_VALUE)
             // All Products
             getAllProducts()
         }
@@ -99,7 +100,7 @@ class MainViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
     }
 
     fun getProductByMostPopular() = viewModelScope.launch(Dispatchers.IO) {
-        homeUseCase.getAllProducts(9, 10).collect {
+        homeUseCase.getAllProducts(2, 10).collect {
             _getProductResponse.postValue(Event(it))
         }
     }

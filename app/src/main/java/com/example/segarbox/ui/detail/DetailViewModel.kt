@@ -7,6 +7,9 @@ import com.example.core.domain.model.Product
 import com.example.core.domain.usecase.DetailUseCase
 import com.example.core.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,15 +40,17 @@ class DetailViewModel @Inject constructor(private val detailUseCase: DetailUseCa
             Event(it)
         }
 
-    fun getProductById(id: Int) =
-        detailUseCase.getProductById(id).asLiveData().map {
+    fun getProductById(id: Int) = viewModelScope.launch(Dispatchers.IO) {
+        detailUseCase.getProductById(id).collect {
             _getProductByIdResponse.postValue(Event(it))
         }
+    }
 
-    fun getCart(token: String) =
-        detailUseCase.getCart(token).asLiveData().map {
+    fun getCart(token: String) = viewModelScope.launch(Dispatchers.IO) {
+        detailUseCase.getCart(token).collect {
             _getCartResponse.postValue(Event(it))
         }
+    }
 
     fun addCart(token: String, productId: Int, productQty: Int): LiveData<Event<Resource<String>>> =
         detailUseCase.addCart(token, productId, productQty).asLiveData().map {
