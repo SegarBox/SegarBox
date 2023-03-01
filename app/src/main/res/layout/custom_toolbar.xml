@@ -37,14 +37,12 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Title" />
 
-
     <ru.nikartm.support.ImageBadgeView
         android:id="@+id/iv_cart"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_baseline_shopping_cart_24"
-        android:visibility="gone"
         app:ibv_badgeTextSize="11dp"
         app:ibv_badgeValue="0"
         app:ibv_fixedBadgeRadius="9dp"

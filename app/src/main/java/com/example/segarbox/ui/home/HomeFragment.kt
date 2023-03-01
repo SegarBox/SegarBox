@@ -6,7 +6,6 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +41,6 @@ class HomeFragment : Fragment(), View.OnClickListener,
     private var ratio = 0F
     private val allProductAdapter = AllProductAdapter(this)
     private val startShoppingAdapter = StartShoppingAdapter(this)
-    private var checkedChips = ""
     private var token = ""
     private val handler = Handler(Looper.getMainLooper())
     private val viewModel: MainViewModel by viewModels()
@@ -150,7 +148,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
         viewModel.checkedChips.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { checkedChips ->
-                this.checkedChips = checkedChips
+                CHIPS_VALUE = checkedChips
 
                 when (checkedChips) {
                     Code.MOST_POPULAR_CHIPS -> {
@@ -175,8 +173,8 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
                     is Resource.Success -> {
                         resource.data?.let {
-                            viewModel.setLoading(false)
                             allProductAdapter.submitList(it)
+                            viewModel.setLoading(false)
                         }
                     }
 
@@ -203,14 +201,12 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
                     is Resource.Success -> {
                         resource.data?.let {
-                            viewModel.setLoading(false)
-
                             val listProduct = arrayListOf<Product>()
                             var dummy: Product? = null
-                            if (checkedChips == Code.FRUITS_CHIPS) {
+                            if (CHIPS_VALUE == Code.FRUITS_CHIPS) {
                                 dummy = addDummyProduct(Code.DUMMY_FRUITS)
                             }
-                            if (checkedChips == Code.VEGGIES_CHIPS) {
+                            if (CHIPS_VALUE == Code.VEGGIES_CHIPS) {
                                 dummy = addDummyProduct(Code.DUMMY_VEGGIES)
                             }
                             listProduct.addAll(it)
@@ -218,6 +214,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
                                 listProduct.add(dummy)
                             }
                             startShoppingAdapter.submitList(listProduct)
+                            viewModel.setLoading(false)
                         }
                     }
 
@@ -227,9 +224,9 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
                     else -> {
                         resource.message?.let {
-                            viewModel.setLoading(false)
                             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                                 .setAction("OK") {}.show()
+                            viewModel.setLoading(false)
                         }
                     }
                 }
@@ -246,23 +243,23 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
                     is Resource.Success -> {
                         resource.data?.let { listCart ->
-                            viewModel.setLoading(false)
                             listCart[0].total?.let { total ->
                                 binding.toolbar.ivCart.badgeValue = total
                             }
+                            viewModel.setLoading(false)
                         }
                     }
 
                     is Resource.Empty -> {
-                        viewModel.setLoading(false)
                         binding.toolbar.ivCart.badgeValue = 0
+                        viewModel.setLoading(false)
                     }
 
                     else -> {
                         resource.message?.let {
-                            viewModel.setLoading(false)
                             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                                 .setAction("OK") {}.show()
+                            viewModel.setLoading(false)
                         }
                     }
                 }

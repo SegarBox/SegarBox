@@ -23,6 +23,7 @@ import java.util.*
 import kotlin.math.floor
 
 var DYNAMIC_BASE_URL = BuildConfig.BASE_URL_SEGARBOX
+var CHIPS_VALUE = Code.MOST_POPULAR_CHIPS
 
 private const val DEFAULT_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 private const val DATE_TIME_PATTERN = "dd MMM yyyy, HH:mm"

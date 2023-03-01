@@ -8,6 +8,11 @@
     tools:context=".ui.detail.DetailActivity">
 
     <include
+        android:id="@+id/toolbar"
+        layout="@layout/custom_toolbar"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <include
         android:id="@+id/content"
         layout="@layout/content_detail"
         android:layout_width="match_parent"
@@ -15,11 +20,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/custom_toolbar"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_add_to_cart"
