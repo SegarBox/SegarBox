@@ -54,7 +54,6 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
         // From Cart
         fromActivity = intent.getStringExtra(Code.KEY_FROM_ACTIVITY)
-
         fromActivity?.let {
             cart = intent.getParcelableExtra(Code.KEY_USERCART_VALUE)
             cart?.let {
@@ -165,24 +164,9 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
         viewModel.quantity.observe(this) { qty ->
             quantity = qty
-//            binding.btnAddToCart.isEnabled = qty != 0
             binding.content.counter.apply {
                 tvCount.text = qty.toString()
                 ivRemove.isEnabled = qty != 0
-            }
-
-            // Set Button jika dari Cart
-            fromActivity?.let {
-                if (it == Code.CART_ACTIVITY) {
-//                    binding.btnAddToCart.isEnabled = true
-                    if (qty > 0) {
-                        binding.btnAddToCart.backgroundTintList = this.getColorStateListPrimary()
-                        binding.btnAddToCart.text = getString(R.string.update_cart)
-                    } else {
-                        binding.btnAddToCart.backgroundTintList = this.getColorStateListRed()
-                        binding.btnAddToCart.text = getString(R.string.delete_from_cart)
-                    }
-                }
             }
         }
 
@@ -190,7 +174,22 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             event.getContentIfNotHandled()?.let { isLoading ->
                 // Set Button Jika dari Cart
                 if (fromActivity != null && fromActivity == Code.CART_ACTIVITY) {
-                    binding.btnAddToCart.isEnabled = !isLoading
+                    binding.btnAddToCart.apply {
+                        isEnabled = !isLoading
+                        if (quantity > 0) {
+                            text = getString(R.string.update_cart)
+                            backgroundTintList = if (isLoading)
+                                getColorStateListGray()
+                            else
+                                this@DetailActivity.getColorStateListPrimary()
+                        } else {
+                            backgroundTintList = if (isLoading)
+                                getColorStateListGray()
+                            else
+                                this@DetailActivity.getColorStateListRed()
+                            text = getString(R.string.delete_from_cart)
+                        }
+                    }
                 } else {
                     binding.btnAddToCart.isEnabled = !isLoading && quantity != 0
                 }

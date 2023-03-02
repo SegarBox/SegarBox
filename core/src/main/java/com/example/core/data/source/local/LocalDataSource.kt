@@ -1,6 +1,5 @@
 package com.example.core.data.source.local
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import com.example.core.data.Resource
@@ -8,8 +7,6 @@ import com.example.core.data.source.local.room.CityDao
 import com.example.core.domain.model.City
 import com.example.core.utils.DataMapper
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton

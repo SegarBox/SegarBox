@@ -93,7 +93,6 @@
         <activity
             android:name=".ui.detail.DetailActivity"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity

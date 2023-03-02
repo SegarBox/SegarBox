@@ -71,7 +71,6 @@
 
         </HorizontalScrollView>
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_start_shopping"
             android:layout_width="match_parent"

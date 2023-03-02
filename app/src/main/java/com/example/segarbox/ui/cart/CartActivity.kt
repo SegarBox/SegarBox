@@ -1,7 +1,9 @@
 package com.example.segarbox.ui.cart
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -47,11 +49,11 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
         setupView()
         scrollToTopListAdapter()
         binding.toolbar.ivBack.setOnClickListener(this)
-        binding.bottomPaymentInfo.checkoutLayout.setOnClickListener(this)
+        binding.bottomPaymentInfo.btnCheckout.setOnClickListener(this)
     }
 
     private fun setupView() {
-        binding.bottomPaymentInfo.tvButton.text = getString(R.string.checkout)
+        binding.bottomPaymentInfo.btnCheckout.text = getString(R.string.checkout)
     }
 
     private fun setAdapter() {
@@ -66,6 +68,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
     private fun setToolbar() {
         binding.toolbar.apply {
             ivBack.isVisible = true
+            ivCart.isVisible = false
             tvTitle.text = getString(R.string.cart)
         }
     }
@@ -90,28 +93,29 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
 
                     is Resource.Success -> {
                         resource.data?.let {
-                            viewModel.setLoading(false)
                             binding.ivEmptycart.isVisible = false
                             binding.tvEmptycart.isVisible = false
                             binding.bottomPaymentInfo.root.isVisible = true
 
                             cartAdapter.submitList(it)
                             viewModel.getCartDetail(token.tokenFormat(), 0)
+                            viewModel.setLoading(false)
                         }
                     }
 
                     is Resource.Empty -> {
-                        viewModel.setLoading(false)
                         binding.ivEmptycart.isVisible = true
                         binding.tvEmptycart.isVisible = true
+                        binding.content.rvCart.isVisible = false
                         binding.bottomPaymentInfo.root.isVisible = false
+                        viewModel.setLoading(false)
                     }
 
                     else -> {
                         resource.message?.let {
-                            viewModel.setLoading(false)
                             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                                 .setAction("OK") {}.show()
+                            viewModel.setLoading(false)
                         }
                     }
                 }
@@ -127,17 +131,17 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
 
                     is Resource.Success -> {
                         resource.data?.let {
-                            viewModel.setLoading(false)
                             binding.bottomPaymentInfo.tvPrice.text =
                                 it.subtotalProducts.formatToRupiah()
+                            viewModel.setLoading(false)
                         }
                     }
 
                     else -> {
                         resource.message?.let {
-                            viewModel.setLoading(false)
                             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                                 .setAction("OK") {}.show()
+                            viewModel.setLoading(false)
                         }
                     }
                 }
@@ -153,21 +157,21 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
 
                     is Resource.Success -> {
                         resource.data?.let {
-                            viewModel.setLoading(false)
                             if (token.isNotEmpty()) {
                                 viewModel.getCart(token.tokenFormat())
                             }
+                            viewModel.setLoading(false)
                         }
                     }
 
                     else -> {
                         resource.message?.let {
-                            viewModel.setLoading(false)
                             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                                 .setAction("OK") {}.show()
                             if (token.isNotEmpty()) {
                                 viewModel.getCart(token.tokenFormat())
                             }
+                            viewModel.setLoading(false)
                         }
                     }
                 }
@@ -227,7 +231,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
             R.id.iv_back -> {
                 finish()
             }
-            R.id.checkout_layout -> {
+            R.id.btn_checkout -> {
                 if (token.isNotEmpty()) {
                     viewModel.getCheckedCart(token.tokenFormat()).observe(this) { event ->
                         event.getContentIfNotHandled()?.let { resource ->
@@ -256,9 +260,9 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
                                                     CheckoutActivity::class.java))
                                             }
                                             else -> {
-                                                if (token.isNotEmpty()) {
+                                                if (token.isNotEmpty())
                                                     viewModel.getCart(token.tokenFormat())
-                                                }
+
                                             }
                                         }
                                     }
@@ -330,17 +334,18 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
 
                         is Resource.Success -> {
                             resource.data?.let {
-                                viewModel.setLoading(false)
                                 Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                                     .setAction("OK") {}.show()
+                                if (token.isNotEmpty()) viewModel.getCart(token.tokenFormat())
+                                viewModel.setLoading(false)
                             }
                         }
 
                         else -> {
                             resource.message?.let {
-                                viewModel.setLoading(false)
                                 Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                                     .setAction("OK") {}.show()
+                                viewModel.setLoading(false)
                             }
                         }
                     }
