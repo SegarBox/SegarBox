@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import androidx.annotation.AttrRes
@@ -136,6 +137,20 @@ fun Context.getColorStateListPrimary(): ColorStateList {
         intArrayOf(
             this.getColorFromAttr(colorPrimary),
             this.getColorFromAttr(colorPrimary)
+        )
+    )
+}
+
+fun getColorStateListGray(): ColorStateList {
+    return ColorStateList(
+        arrayOf(
+            intArrayOf(-state_focused),
+            intArrayOf(state_focused),
+        ),
+
+        intArrayOf(
+            Color.LTGRAY,
+            Color.LTGRAY
         )
     )
 }

@@ -50,11 +50,11 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
         setToolbar()
         observeData()
         setAdapter()
-        binding.bottomPaymentInfo.tvButton.text = getString(R.string.make_order)
+        binding.bottomPaymentInfo.btnCheckout.text = getString(R.string.make_order)
         binding.toolbar.ivBack.setOnClickListener(this)
         binding.content.btnChooseAddress.setOnClickListener(this)
         binding.content.layoutShipping.setOnClickListener(this)
-        binding.bottomPaymentInfo.checkoutLayout.setOnClickListener(this)
+        binding.bottomPaymentInfo.btnCheckout.setOnClickListener(this)
     }
 
     private fun setToolbar() {
@@ -267,7 +267,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
 
-            R.id.checkout_layout -> {
+            R.id.btn_checkout -> {
                 if (isShippingCostAdded) {
                     if (token.isNotEmpty() && addressItem != null && costs != null && listProductTransactions.isNotEmpty()) {
 

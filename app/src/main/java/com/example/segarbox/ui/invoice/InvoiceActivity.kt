@@ -58,13 +58,13 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
         }
         binding.toolbar.ivBack.setOnClickListener(this)
-        binding.bottomPaymentInfo.checkoutLayout.setOnClickListener(this)
+        binding.bottomPaymentInfo.btnCheckout.setOnClickListener(this)
         binding.content.btnHome.setOnClickListener(this)
         binding.content.btnRating.setOnClickListener(this)
     }
 
     private fun setupView() {
-        binding.bottomPaymentInfo.tvButton.text = getString(R.string.complete)
+        binding.bottomPaymentInfo.btnCheckout.text = getString(R.string.complete)
     }
 
     private fun setToolbar() {
@@ -186,7 +186,7 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
         when (v?.id) {
             R.id.iv_back -> finish()
 
-            R.id.checkout_layout -> {
+            R.id.btn_checkout -> {
                 if (token.isNotEmpty() && listProductId.isNotEmpty()) {
                     viewModel.updateTransactionStatus(token.tokenFormat(),
                         getTransactionId,
