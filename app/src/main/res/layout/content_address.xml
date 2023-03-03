@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_address"
+        android:textAllCaps="false"
         app:layout_constraintTop_toTopOf="parent"
         app:cornerRadius="16dp"
         android:theme="@style/poppinsMedium"

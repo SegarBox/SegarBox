@@ -6,6 +6,9 @@ import com.example.core.domain.model.Address
 import com.example.core.domain.usecase.AddressUseCase
 import com.example.core.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,10 +20,11 @@ class AddressViewModel @Inject constructor(private val addressUseCase: AddressUs
     private val _isLoading = MutableLiveData<Event<Boolean>>()
     val isLoading: LiveData<Event<Boolean>> = _isLoading
 
-    fun getUserAddresses(token: String) =
-        addressUseCase.getUserAddresses(token).asLiveData().map {
+    fun getUserAddresses(token: String) = viewModelScope.launch(Dispatchers.IO) {
+        addressUseCase.getUserAddresses(token).collect {
             _getUserAddressesResponse.postValue(Event(it))
         }
+    }
 
     fun deleteAddress(token: String, addressId: Int): LiveData<Event<Resource<String>>> =
         addressUseCase.deleteAddress(token, addressId).asLiveData().map {
@@ -35,30 +39,4 @@ class AddressViewModel @Inject constructor(private val addressUseCase: AddressUs
     fun setLoading(isLoading: Boolean) =
         _isLoading.postValue(Event(isLoading))
 
-//    private val _addressResponse = MutableLiveData<GetAddressResponse>()
-//    val addressResponse: LiveData<GetAddressResponse> = _addressResponse
-//
-//    private val _deleteAddressResponse = MutableLiveData<DeleteAddressResponse>()
-//    val deleteAddressResponse: LiveData<DeleteAddressResponse> = _deleteAddressResponse
-//
-//    private val _isLoading = MutableLiveData<Boolean>()
-//    val isLoading: LiveData<Boolean> = _isLoading
-
-//    fun getUserAddresses(token: String) {
-//        viewModelScope.launch {
-//            _isLoading.postValue(true)
-//            val request = retrofitRepository.getUserAddresses(token)
-//            _addressResponse.postValue(request)
-//            _isLoading.postValue(false)
-//        }
-//    }
-
-//    fun deleteAddress(token: String, addressId: Int) {
-//        viewModelScope.launch {
-//            _isLoading.postValue(true)
-//            val request = retrofitRepository.deleteAddress(token, addressId)
-//            _deleteAddressResponse.postValue(request)
-//            _isLoading.postValue(false)
-//        }
-//    }
 }

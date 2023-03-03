@@ -2,6 +2,7 @@ package com.example.segarbox.ui.checkout
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -60,6 +61,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
     private fun setToolbar() {
         binding.toolbar.apply {
             tvTitle.text = getString(R.string.checkout)
+            ivCart.isVisible = false
             ivBack.isVisible = true
         }
     }
@@ -74,10 +76,9 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun observeData() {
 
-        // TOKEN DIAMBIL TERUS TIAP ONRESUME -_-
-        viewModel.getToken().observe(this) { event ->
-            event.getContentIfNotHandled()?.let {
-                this.token = it
+        viewModel.getTokenResponse.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { token ->
+                this.token = token
                 if (token.isNotEmpty()) {
                     viewModel.getCheckedCart(token.tokenFormat())
 
@@ -107,9 +108,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
 
                     is Resource.Success -> {
                         resource.data?.let {
-                            viewModel.setLoading(false)
                             checkoutDetailsAdapter.submitList(it)
-
                             listProductTransactions.clear()
                             it.forEach { userCartItem ->
                                 listProductTransactions.add(ProductTransactions(
@@ -117,14 +116,15 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                                     userCartItem.productQty
                                 ))
                             }
+                            viewModel.setLoading(false)
                         }
                     }
 
                     else -> {
                         resource.message?.let {
-                            viewModel.setLoading(false)
                             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                                 .setAction("OK") {}.show()
+                            viewModel.setLoading(false)
                         }
                     }
                 }
@@ -140,7 +140,6 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
 
                     is Resource.Success -> {
                         resource.data?.let {
-                            viewModel.setLoading(false)
                             this.costs = it
                             binding.content.apply {
                                 tvProductsSubtotal.text = it.subtotalProducts.formatToRupiah()
@@ -148,13 +147,15 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                                 tvTotalPrice.text = it.totalPrice.formatToRupiah()
                             }
                             binding.bottomPaymentInfo.tvPrice.text = it.totalPrice.formatToRupiah()
+                            viewModel.setLoading(false)
                         }
                     }
 
                     else -> {
                         resource.message?.let {
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                .setAction("OK") {}.show()
                             viewModel.setLoading(false)
-                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
                         }
                     }
                 }
@@ -164,6 +165,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
         viewModel.isLoading.observe(this) { event ->
             event.getContentIfNotHandled()?.let { isLoading ->
                 binding.progressBar.isVisible = isLoading
+                binding.bottomPaymentInfo.btnCheckout.isEnabled = !isLoading
             }
         }
 
@@ -203,7 +205,6 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                             viewModel.getCartDetail(token.tokenFormat(), it.price)
                         }
 
-
                         binding.content.contentShipping.apply {
                             isShippingCostAdded = true
                             root.isVisible = true
@@ -234,7 +235,6 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                             tvService.text = it.service
                             tvPrice.text = it.price.formatToRupiah()
                         }
-
 
                     }
                 }
@@ -291,12 +291,12 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
 
                                         is Resource.Success -> {
                                             resource.data?.let {
-                                                viewModel.setLoading(false)
                                                 val intent =
                                                     Intent(this, InvoiceActivity::class.java)
                                                 intent.putExtra(Code.KEY_TRANSACTION_ID, it.id)
                                                 intent.putExtra(Code.SNACKBAR_VALUE,
                                                     "Successfully making order!")
+                                                viewModel.setLoading(false)
                                                 startActivity(intent)
                                                 finish()
                                             }
@@ -304,10 +304,10 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
 
                                         else -> {
                                             resource.message?.let {
-                                                viewModel.setLoading(false)
                                                 Snackbar.make(binding.root,
                                                     it,
                                                     Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
+                                                viewModel.setLoading(false)
                                             }
                                         }
                                     }

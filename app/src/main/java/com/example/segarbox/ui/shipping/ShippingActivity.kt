@@ -2,6 +2,7 @@ package com.example.segarbox.ui.shipping
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.core.data.Resource
 import com.example.core.data.source.remote.response.AddressItem
+import com.example.core.domain.model.Address
 import com.example.core.domain.model.ShippingModel
 import com.example.core.ui.ShippingAdapter
 import com.example.core.utils.Code
@@ -49,12 +51,13 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
     private fun setToolbar() {
         binding.toolbar.apply {
             ivBack.isVisible = true
+            ivCart.isVisible = false
             tvTitle.text = getString(R.string.shipment_details)
         }
     }
 
     private fun getAddress() {
-        val address = intent.getParcelableExtra<AddressItem>(Code.ADDRESS_VALUE)?.city
+        val address = intent.getParcelableExtra<Address>(Code.ADDRESS_VALUE)?.city
 
         address?.let {
             val split = it.split(" ")
@@ -85,17 +88,16 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
                             }
 
                             is Resource.Success -> {
-                                resource.data?.let {
+                                resource.data?.let { listCity ->
+                                    Log.e("CITY FROM DB", listCity.toString())
+                                    if (listCity.isNotEmpty())
+                                        viewModel.setDestinationId(listCity[0].cityId)
+                                    else
+                                        Snackbar.make(binding.root,
+                                            Code.LOCATION_CANT_BE_REACHED,
+                                            Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
                                     viewModel.setLoading(false)
-                                    viewModel.setDestinationId(it[0].cityId)
                                 }
-                            }
-
-                            is Resource.Empty -> {
-                                viewModel.setLoading(false)
-                                Snackbar.make(binding.root,
-                                    Code.LOCATION_CANT_BE_REACHED,
-                                    Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
                             }
 
                             else -> {
@@ -124,14 +126,14 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
 
         viewModel.getShippingCostsResponse.observe(this) { event ->
             event.getContentIfNotHandled()?.let { resource ->
-                when(resource) {
+                when (resource) {
                     is Resource.Loading -> {
                         viewModel.setLoading(true)
                     }
 
                     is Resource.Success -> {
                         resource.data?.let { listShipping ->
-                            viewModel.setLoading(false)
+                            Log.e("SHIPPING", listShipping.toString())
                             listShipping.forEach { shipping ->
                                 shipping.costs.forEach { costs ->
                                     val shippingModel = ShippingModel()
@@ -167,22 +169,31 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
                                             }
                                         }
                                     }
-                                    shippingAdapter.submitList(listShipment)
                                 }
                             }
+                            if (listShipment.isNotEmpty())
+                                shippingAdapter.submitList(listShipment)
+                            else
+                                Snackbar.make(binding.root,
+                                    Code.LOCATION_CANT_BE_REACHED,
+                                    Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
                         }
+                        viewModel.setLoading(false)
                     }
 
                     is Resource.Empty -> {
-                        viewModel.setLoading(false)
-                        Snackbar.make(binding.root, Code.LOCATION_CANT_BE_REACHED, Snackbar.LENGTH_SHORT)
+                        Snackbar.make(binding.root,
+                            Code.LOCATION_CANT_BE_REACHED,
+                            Snackbar.LENGTH_SHORT)
                             .setAction("OK") {}.show()
+                        viewModel.setLoading(false)
                     }
 
                     else -> {
                         resource.message?.let {
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                .setAction("OK") {}.show()
                             viewModel.setLoading(false)
-                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
                         }
                     }
                 }

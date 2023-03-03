@@ -111,7 +111,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
 
                     is Resource.Success -> {
                         resource.data?.let {
-                            viewModel.setLoading(false)
                             addressModel = AddressModel(
                                 street = getAddressFromResponse(it),
                                 city = getCityFromResponse(it),
@@ -121,6 +120,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                                 text = getAddressFromResponse(it)
                                 textSize = 14F
                             }
+                            viewModel.setLoading(false)
                         }
                     }
 
@@ -134,7 +134,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
             }
         }
 
-        viewModel.getToken().observe(this) { event ->
+        viewModel.getTokenResponse.observe(this) { event ->
             event.getContentIfNotHandled()?.let {
                 this.token = it
             }
@@ -143,6 +143,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
         viewModel.isLoading.observe(this) { event ->
             event.getContentIfNotHandled()?.let { isLoading ->
                 binding.progressBar.isVisible = isLoading
+                binding.btnSaveLocation.isEnabled = !isLoading
             }
         }
 
@@ -178,6 +179,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
 
     private fun setToolbar() {
         binding.toolbar.ivBack.isVisible = true
+        binding.toolbar.ivCart.isVisible = false
     }
 
     private val requestPermissionLauncher =
@@ -262,9 +264,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
 
                                     is Resource.Success -> {
                                         resource.data?.let {
-                                            viewModel.setLoading(false)
                                             val intent = Intent()
                                             intent.putExtra(Code.SNACKBAR_VALUE, it)
+                                            viewModel.setLoading(false)
                                             setResult(Code.RESULT_SNACKBAR, intent)
                                             finish()
                                         }
@@ -272,8 +274,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
 
                                     else -> {
                                         resource.message?.let {
-                                            viewModel.setLoading(false)
                                             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                                            viewModel.setLoading(false)
                                         }
                                     }
                                 }
