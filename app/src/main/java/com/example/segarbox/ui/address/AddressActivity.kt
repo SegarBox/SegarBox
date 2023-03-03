@@ -50,6 +50,7 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
     private fun setToolbar() {
         binding.toolbar.apply {
             ivBack.isVisible = true
+            ivCart.isVisible = false
             tvTitle.text = getString(R.string.address)
         }
     }
@@ -96,23 +97,23 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
 
                     is Resource.Success -> {
                         resource.data?.let {
-                            viewModel.setLoading(false)
                             binding.ivEmptymap.isVisible = false
                             binding.tvEmptymap.isVisible = false
                             addressAdapter.submitList(it)
+                            viewModel.setLoading(false)
                         }
                     }
                     is Resource.Empty -> {
-                        viewModel.setLoading(false)
                         binding.ivEmptymap.isVisible = true
                         binding.tvEmptymap.isVisible = true
+                        viewModel.setLoading(false)
                     }
 
                     else -> {
                         resource.message?.let {
-                            viewModel.setLoading(false)
                             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                                 .setAction("OK") {}.show()
+                            viewModel.setLoading(false)
                         }
                     }
                 }
@@ -181,18 +182,18 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
 
                         is Resource.Success -> {
                             resource.data?.let {
-                                viewModel.setLoading(false)
                                 Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                                     .setAction("OK") {}.show()
                             }
                             viewModel.getUserAddresses(token.tokenFormat())
+                            viewModel.setLoading(false)
                         }
 
                         else -> {
                             resource.message?.let {
-                                viewModel.setLoading(false)
                                 Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                                     .setAction("OK") {}.show()
+                                viewModel.setLoading(false)
                             }
                         }
                     }

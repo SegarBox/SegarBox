@@ -45,6 +45,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:text="@string/choose_address"
+            android:textAllCaps="false"
             android:textStyle="bold"
             android:theme="@style/poppinsMedium"
             app:cornerRadius="16dp"

@@ -7,6 +7,9 @@ import com.example.core.domain.model.Shipping
 import com.example.core.domain.usecase.ShippingUseCase
 import com.example.core.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,10 +29,11 @@ class ShippingViewModel @Inject constructor(private val shippingUseCase: Shippin
             Event(it)
         }
 
-    fun getShippingCosts(destination: String, weight: String) =
-        shippingUseCase.getShippingCosts(destination, weight).asLiveData().map {
+    fun getShippingCosts(destination: String, weight: String) = viewModelScope.launch(Dispatchers.IO) {
+        shippingUseCase.getShippingCosts(destination, weight).collect {
             _getShippingCostsResponse.postValue(Event(it))
         }
+    }
 
     fun setDestinationId(id: String) {
         _destinationId.postValue(Event(id))
@@ -37,29 +41,5 @@ class ShippingViewModel @Inject constructor(private val shippingUseCase: Shippin
 
     fun setLoading(isLoading: Boolean) =
         _isLoading.postValue(Event(isLoading))
-
-//    private var _shippingCosts = MutableLiveData<List<ShippingResponse>>()
-//    val shippingCosts: LiveData<List<ShippingResponse>> = _shippingCosts
-//
-//    private var _isLoading = MutableLiveData<Boolean>()
-//    val isLoading: LiveData<Boolean> = _isLoading
-//
-//    fun getCity(city: String, type: String): LiveData<List<CityResults>> =
-//        roomRepository.getCity(city, type)
-
-//    fun getShippingCosts(
-//        destination: String,
-//        weight: String,
-//    ) {
-//        viewModelScope.launch {
-//            _isLoading.postValue(true)
-//            val responseTiki = retrofitRepository.getShippingCosts(destination, weight, Code.TIKI)
-//            val responseJne = retrofitRepository.getShippingCosts(destination, weight, Code.JNE)
-//            val responsePos = retrofitRepository.getShippingCosts(destination, weight, Code.POS)
-//
-//            _shippingCosts.postValue(listOf(responseTiki, responseJne, responsePos))
-//            _isLoading.postValue(false)
-//        }
-//    }
 
 }

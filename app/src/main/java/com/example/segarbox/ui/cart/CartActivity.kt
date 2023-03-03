@@ -46,14 +46,10 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
         setToolbar()
         observeData()
         setAdapter()
-        setupView()
         scrollToTopListAdapter()
+        binding.bottomPaymentInfo.btnCheckout.text = getString(R.string.checkout)
         binding.toolbar.ivBack.setOnClickListener(this)
         binding.bottomPaymentInfo.btnCheckout.setOnClickListener(this)
-    }
-
-    private fun setupView() {
-        binding.bottomPaymentInfo.btnCheckout.text = getString(R.string.checkout)
     }
 
     private fun setAdapter() {
@@ -75,8 +71,9 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
 
     private fun observeData() {
         viewModel.getToken().observe(this) { event ->
-            event.getContentIfNotHandled()?.let {
-                this.token = it
+            event.getContentIfNotHandled()?.let { token ->
+                Log.e("TOKEN", token)
+                this.token = token
                 if (token.isEmpty()) {
                     startActivity(Intent(this, LoginActivity::class.java))
                     finish()
@@ -181,6 +178,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
         viewModel.isLoading.observe(this) { event ->
             event.getContentIfNotHandled()?.let { isLoading ->
                 binding.progressBar.isVisible = isLoading
+                binding.bottomPaymentInfo.btnCheckout.isEnabled = !isLoading
             }
         }
 
@@ -208,6 +206,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
 
     override fun onResume() {
         super.onResume()
+        Log.e("ON RESUME", token)
         if (token.isNotEmpty()) {
             viewModel.getCart(token.tokenFormat())
         }
@@ -242,7 +241,6 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
 
                                 is Resource.Success -> {
                                     resource.data?.let {
-                                        viewModel.setLoading(false)
                                         var passTest = true
                                         for (i in it.indices) {
                                             if (it[i].productQty > it[i].product.qty) {
@@ -253,7 +251,6 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
                                                 break
                                             }
                                         }
-
                                         when {
                                             passTest -> {
                                                 startActivity(Intent(this,
@@ -262,24 +259,24 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
                                             else -> {
                                                 if (token.isNotEmpty())
                                                     viewModel.getCart(token.tokenFormat())
-
                                             }
                                         }
                                     }
+                                    viewModel.setLoading(false)
                                 }
 
                                 is Resource.Empty -> {
-                                    viewModel.setLoading(false)
                                     Snackbar.make(binding.root,
                                         "You haven't selected any items yet", Snackbar.LENGTH_SHORT)
                                         .setAction("OK") {}.show()
+                                    viewModel.setLoading(false)
                                 }
 
                                 else -> {
                                     resource.message?.let {
-                                        viewModel.setLoading(false)
                                         Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                                             .setAction("OK") {}.show()
+                                        viewModel.setLoading(false)
                                     }
                                 }
                             }

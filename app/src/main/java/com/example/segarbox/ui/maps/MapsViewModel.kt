@@ -7,10 +7,16 @@ import com.example.core.domain.usecase.MapsUseCase
 import com.example.core.utils.Event
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MapsViewModel @Inject constructor(private val mapsUseCase: MapsUseCase) : ViewModel() {
+
+    private val _getTokenResponse = MutableLiveData<Event<String>>()
+    val getTokenResponse: LiveData<Event<String>> = _getTokenResponse
 
     private val _getLatLng = MutableLiveData<Event<LatLng>>()
     val getLatLng: LiveData<Event<LatLng>> = _getLatLng
@@ -21,15 +27,17 @@ class MapsViewModel @Inject constructor(private val mapsUseCase: MapsUseCase) : 
     private val _isLoading = MutableLiveData<Event<Boolean>>()
     val isLoading: LiveData<Event<Boolean>> = _isLoading
 
-    fun getToken(): LiveData<Event<String>> =
-        mapsUseCase.getToken().asLiveData().map {
-            Event(it)
+    fun getToken() = viewModelScope.launch(Dispatchers.IO) {
+        mapsUseCase.getToken().collect {
+            _getTokenResponse.postValue(Event(it))
         }
+    }
 
-    fun getAddress(latLng: String) =
-        mapsUseCase.getAddress(latLng).asLiveData().map {
+    fun getAddress(latLng: String) = viewModelScope.launch(Dispatchers.IO) {
+        mapsUseCase.getAddress(latLng).collect {
             _getAddressResponse.postValue(Event(it))
         }
+    }
 
     fun saveAddress(
         token: String,
@@ -48,31 +56,4 @@ class MapsViewModel @Inject constructor(private val mapsUseCase: MapsUseCase) : 
     fun setLoading(isLoading: Boolean) =
         _isLoading.postValue(Event(isLoading))
 
-
-//    private var _addressResponse = MutableLiveData<AddAddressResponse>()
-//    val addressResponse: LiveData<AddAddressResponse> = _addressResponse
-//
-//    private var _isLoading = MutableLiveData<Boolean>()
-//    val isLoading: LiveData<Boolean> = _isLoading
-//
-//
-//    private var _address = MutableLiveData<MapsResponse>()
-//    val address: LiveData<MapsResponse> = _address
-//
-//    fun getAddress(latLng: String) {
-//        viewModelScope.launch {
-//            _isLoading.postValue(true)
-//            val mapsResponse = retrofitRepository.getAddress(latLng)
-//            _address.postValue(mapsResponse)
-//            _isLoading.postValue(false)
-//        }
-//    }
-//    fun saveAddress(token: String, street: String, city: String, postalCode: String) {
-//        viewModelScope.launch {
-//            _isLoading.postValue(true)
-//            val request = retrofitRepository.saveAddress(token, street, city, postalCode)
-//            _addressResponse.postValue(request)
-//            _isLoading.postValue(false)
-//        }
-//    }
 }
