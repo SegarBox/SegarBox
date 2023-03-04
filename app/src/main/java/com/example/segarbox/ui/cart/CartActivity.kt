@@ -1,9 +1,7 @@
 package com.example.segarbox.ui.cart
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -72,7 +70,6 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
     private fun observeData() {
         viewModel.getToken().observe(this) { event ->
             event.getContentIfNotHandled()?.let { token ->
-                Log.e("TOKEN", token)
                 this.token = token
                 if (token.isEmpty()) {
                     startActivity(Intent(this, LoginActivity::class.java))
@@ -206,7 +203,6 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
 
     override fun onResume() {
         super.onResume()
-        Log.e("ON RESUME", token)
         if (token.isNotEmpty()) {
             viewModel.getCart(token.tokenFormat())
         }

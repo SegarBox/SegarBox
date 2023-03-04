@@ -216,7 +216,6 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.iv_cart -> {
                 startActivity(Intent(this, CartActivity::class.java))
-//                finish()
             }
             R.id.iv_add -> {
                 viewModel.saveQuantity(quantity + 1)

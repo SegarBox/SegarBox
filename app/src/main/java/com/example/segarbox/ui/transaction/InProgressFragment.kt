@@ -15,6 +15,7 @@ import com.example.core.utils.Code
 import com.example.core.utils.tokenFormat
 import com.example.segarbox.databinding.FragmentInProgressBinding
 import com.example.segarbox.ui.invoice.InvoiceActivity
+import com.example.segarbox.ui.login.LoginActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -55,8 +56,8 @@ class InProgressFragment : Fragment(), TransactionsAdapter.OnItemTransactionsCli
     private fun observeData() {
 
         viewModel.getToken().observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let {
-                this.token = it
+            event.getContentIfNotHandled()?.let { token ->
+                this.token = token
             }
         }
 
@@ -69,8 +70,8 @@ class InProgressFragment : Fragment(), TransactionsAdapter.OnItemTransactionsCli
 
                     is Resource.Success -> {
                         resource.data?.let {
-                            viewModel.setLoading(false)
                             transactionsAdapter.submitList(it)
+                            viewModel.setLoading(false)
                         }
                     }
 
@@ -80,8 +81,8 @@ class InProgressFragment : Fragment(), TransactionsAdapter.OnItemTransactionsCli
 
                     else -> {
                         resource.message?.let {
-                            viewModel.setLoading(false)
                             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                            viewModel.setLoading(false)
                         }
                     }
                 }

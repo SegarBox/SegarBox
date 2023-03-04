@@ -134,7 +134,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
             }
         }
 
-        viewModel.getTokenResponse.observe(this) { event ->
+        viewModel.getToken().observe(this) { event ->
             event.getContentIfNotHandled()?.let {
                 this.token = it
             }

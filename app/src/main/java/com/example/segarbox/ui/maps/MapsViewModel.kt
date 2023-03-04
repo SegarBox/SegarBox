@@ -15,9 +15,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MapsViewModel @Inject constructor(private val mapsUseCase: MapsUseCase) : ViewModel() {
 
-    private val _getTokenResponse = MutableLiveData<Event<String>>()
-    val getTokenResponse: LiveData<Event<String>> = _getTokenResponse
-
     private val _getLatLng = MutableLiveData<Event<LatLng>>()
     val getLatLng: LiveData<Event<LatLng>> = _getLatLng
 
@@ -27,11 +24,10 @@ class MapsViewModel @Inject constructor(private val mapsUseCase: MapsUseCase) : 
     private val _isLoading = MutableLiveData<Event<Boolean>>()
     val isLoading: LiveData<Event<Boolean>> = _isLoading
 
-    fun getToken() = viewModelScope.launch(Dispatchers.IO) {
-        mapsUseCase.getToken().collect {
-            _getTokenResponse.postValue(Event(it))
+    fun getToken(): LiveData<Event<String>> =
+        mapsUseCase.getToken().asLiveData().map {
+            Event(it)
         }
-    }
 
     fun getAddress(latLng: String) = viewModelScope.launch(Dispatchers.IO) {
         mapsUseCase.getAddress(latLng).collect {

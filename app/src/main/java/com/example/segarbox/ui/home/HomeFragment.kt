@@ -4,9 +4,6 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +40,6 @@ class HomeFragment : Fragment(), View.OnClickListener,
     private val allProductAdapter = AllProductAdapter(this)
     private val startShoppingAdapter = StartShoppingAdapter(this)
     private var token = ""
-    private val handler = Handler(Looper.getMainLooper())
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreateView(
@@ -141,9 +137,14 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
     private fun observeData() {
 
-        viewModel.getTokenResponse.observe(viewLifecycleOwner) { event ->
+        viewModel.getToken().observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { token ->
                 this.token = token
+                if (token.isNotEmpty()) {
+                    viewModel.getCart(token.tokenFormat())
+                } else {
+                    binding.toolbar.ivCart.badgeValue = 0
+                }
             }
         }
 
@@ -293,18 +294,8 @@ class HomeFragment : Fragment(), View.OnClickListener,
 
     override fun onResume() {
         super.onResume()
-        // Update Badge
         val newAlpha = (ratio * 255).toInt()
         binding.toolbar.root.background.alpha = newAlpha
-
-        // Kasih delay agar bisa dapat updated token
-        handler.postDelayed({
-            if (token.isNotEmpty()) {
-                viewModel.getCart(token.tokenFormat())
-            } else {
-                binding.toolbar.ivCart.badgeValue = 0
-            }
-        }, 1000)
     }
 
     override fun onDestroy() {

@@ -61,6 +61,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             event.getContentIfNotHandled()?.let {
                 this.token = it
                 if (token.isNotEmpty()) {
+                    viewModel.getCart(token.tokenFormat())
                     viewModel.getUser(token.tokenFormat())
                 } else {
                     startActivity(Intent(requireActivity(), LoginActivity::class.java))
@@ -98,19 +99,19 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
                     is Resource.Success -> {
                         resource.data?.let {
-                            viewModel.setLoading(false)
                             binding.content.apply {
                                 tvUserName.text = it.name
                                 tvPhone.text = it.phone
                                 tvEmail.text = it.email
                             }
+                            viewModel.setLoading(false)
                         }
                     }
 
                     else -> {
                         resource.message?.let {
-                            viewModel.setLoading(false)
                             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                            viewModel.setLoading(false)
                         }
                     }
                 }
@@ -126,17 +127,17 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
                     is Resource.Success -> {
                         resource.data?.let { listData ->
-                            viewModel.setLoading(false)
                             listData[0].total?.let { total ->
                                 binding.toolbar.ivCart.badgeValue = total
                             }
+                            viewModel.setLoading(false)
                         }
                     }
 
                     else -> {
                         resource.message?.let {
-                            viewModel.setLoading(false)
                             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                            viewModel.setLoading(false)
                         }
                     }
                 }
@@ -148,15 +149,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             event.getContentIfNotHandled()?.let { isLoading ->
                 binding.progressBar.isVisible = isLoading
             }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (token.isNotEmpty()) {
-            viewModel.getCart(token.tokenFormat())
-        } else {
-            binding.toolbar.ivCart.badgeValue = 0
         }
     }
 

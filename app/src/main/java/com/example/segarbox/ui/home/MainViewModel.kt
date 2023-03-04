@@ -1,10 +1,7 @@
 package com.example.segarbox.ui.home
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.core.data.Resource
 import com.example.core.domain.model.Cart
 import com.example.core.domain.model.Product
@@ -21,9 +18,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : ViewModel() {
-
-    private val _getTokenResponse = MutableLiveData<Event<String>>()
-    val getTokenResponse: LiveData<Event<String>> = _getTokenResponse
 
     private val _checkedChips = MutableLiveData<Event<String>>()
     val checkedChips: LiveData<Event<String>> = _checkedChips
@@ -43,8 +37,6 @@ class MainViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
     init {
         // Refresh data jika change theme, karena di init block tidak ngefek
         getTheme()
-        // Token
-        getToken()
         // Intro Onboarding
         saveIntro(true)
         // Get City From Rajaongkir
@@ -111,11 +103,10 @@ class MainViewModel @Inject constructor(private val homeUseCase: HomeUseCase) : 
         }
     }
 
-    fun getToken() = viewModelScope.launch(Dispatchers.IO) {
-        homeUseCase.getToken().collect {
-            _getTokenResponse.postValue(Event(it))
+    fun getToken(): LiveData<Event<String>> =
+        homeUseCase.getToken().asLiveData().map {
+            Event(it)
         }
-    }
 
     fun saveIntro(isAlreadyIntro: Boolean) = homeUseCase.saveIntro(isAlreadyIntro)
 

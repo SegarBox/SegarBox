@@ -63,9 +63,15 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
 
     private fun observeData() {
 
-        viewModel.getToken().observe(this) { event ->
-            event.getContentIfNotHandled()?.let {
-                this.token = it
+        viewModel.getTokenResponse.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { token ->
+                this.token = token
+                if (token.isNotEmpty()) {
+                    viewModel.getRatings(token.tokenFormat())
+                    viewModel.getCart(token.tokenFormat())
+                } else {
+                    binding.toolbar.ivCart.badgeValue = 0
+                }
             }
         }
 
@@ -78,24 +84,24 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
 
                     is Resource.Success -> {
                         resource.data?.let {
-                            viewModel.setLoading(false)
                             binding.ivEmptyrating.isVisible = false
                             binding.tvEmptyrating.isVisible = false
                             ratingAdapter.submitList(it)
+                            viewModel.setLoading(false)
                         }
                     }
 
                     is Resource.Empty -> {
-                        viewModel.setLoading(false)
                         binding.ivEmptyrating.isVisible = true
                         binding.tvEmptyrating.isVisible = true
+                        viewModel.setLoading(false)
                     }
 
                     else -> {
                         resource.message?.let {
-                            viewModel.setLoading(false)
                             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                                 .setAction("OK") {}.show()
+                            viewModel.setLoading(false)
                         }
                     }
                 }
@@ -111,23 +117,23 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
 
                     is Resource.Success -> {
                         resource.data?.let { listData ->
-                            viewModel.setLoading(false)
                             listData[0].total?.let { total ->
                                 binding.toolbar.ivCart.badgeValue = total
                             }
+                            viewModel.setLoading(false)
                         }
                     }
 
                     is Resource.Empty -> {
-                        viewModel.setLoading(false)
                         binding.toolbar.ivCart.badgeValue = 0
+                        viewModel.setLoading(false)
                     }
 
                     else -> {
                         resource.message?.let {
-                            viewModel.setLoading(false)
                             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                                 .setAction("OK") {}.show()
+                            viewModel.setLoading(false)
                         }
                     }
                 }
@@ -144,16 +150,6 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (token.isNotEmpty()) {
-            viewModel.getRatings(token.tokenFormat())
-            viewModel.getCart(token.tokenFormat())
-        } else {
-            binding.toolbar.ivCart.badgeValue = 0
-        }
     }
 
     override fun onClick(v: View?) {
@@ -184,12 +180,12 @@ class RatingActivity : AppCompatActivity(), View.OnClickListener,
 
                         is Resource.Success -> {
                             resource.data?.let {
-                                viewModel.setLoading(false)
                                 if (token.isNotEmpty()) {
                                     viewModel.getRatings(token.tokenFormat())
                                     Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                                         .setAction("OK") {}.show()
                                 }
+                                viewModel.setLoading(false)
                             }
                         }
 
