@@ -68,9 +68,11 @@ class TransactionFragment : Fragment(), View.OnClickListener {
 
     private fun observeData() {
         viewModel.getToken().observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let {
-                this.token = it
-                if (token.isEmpty()) {
+            event.getContentIfNotHandled()?.let { token ->
+                this.token = token
+                if (token.isNotEmpty()) {
+                    viewModel.getCart(token.tokenFormat())
+                } else {
                     startActivity(Intent(requireActivity(), LoginActivity::class.java))
                     requireActivity().onBackPressed()
                 }
@@ -86,36 +88,26 @@ class TransactionFragment : Fragment(), View.OnClickListener {
 
                     is Resource.Success -> {
                         resource.data?.let { listData ->
-                            viewModel.setLoading(false)
                             listData[0].total?.let { total ->
                                 binding.toolbar.ivCart.badgeValue = total
                             }
+                            viewModel.setLoading(false)
                         }
                     }
 
                     is Resource.Empty -> {
-                        viewModel.setLoading(false)
                         binding.toolbar.ivCart.badgeValue = 0
+                        viewModel.setLoading(false)
                     }
 
                     else -> {
                         resource.message?.let {
-                            viewModel.setLoading(false)
                             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                            viewModel.setLoading(false)
                         }
                     }
                 }
             }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // Update Badge
-        if (token.isNotEmpty()) {
-            viewModel.getCart(token.tokenFormat())
-        } else {
-            binding.toolbar.ivCart.badgeValue = 0
         }
     }
 

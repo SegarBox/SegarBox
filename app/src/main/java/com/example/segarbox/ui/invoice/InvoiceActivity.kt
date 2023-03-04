@@ -70,6 +70,7 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
     private fun setToolbar() {
         binding.toolbar.apply {
             tvTitle.text = getString(R.string.invoice)
+            ivCart.isVisible = false
             ivBack.isVisible = true
         }
     }
@@ -234,7 +235,6 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra(Code.KEY_DETAIL_VALUE, productId)
         startActivity(intent)
-        finish()
     }
 
 

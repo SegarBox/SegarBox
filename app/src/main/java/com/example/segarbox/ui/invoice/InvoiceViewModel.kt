@@ -8,6 +8,9 @@ import com.example.core.domain.model.User
 import com.example.core.domain.usecase.InvoiceUseCase
 import com.example.core.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,14 +29,17 @@ class InvoiceViewModel @Inject constructor(private val invoiceUseCase: InvoiceUs
     fun getTransactionById(
         token: String,
         transactionId: Int,
-    ) = invoiceUseCase.getTransactionById(token, transactionId).asLiveData().map {
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        invoiceUseCase.getTransactionById(token, transactionId).collect {
             _getTransactionByIdResponse.postValue(Event(it))
         }
+    }
 
-    fun getUser(token: String) =
-        invoiceUseCase.getUser(token).asLiveData().map {
+    fun getUser(token: String) = viewModelScope.launch(Dispatchers.IO) {
+        invoiceUseCase.getUser(token).collect {
             _getUserResponse.postValue(Event(it))
         }
+    }
 
     fun updateTransactionStatus(
         token: String,
@@ -41,9 +47,7 @@ class InvoiceViewModel @Inject constructor(private val invoiceUseCase: InvoiceUs
         updateStatusBody: UpdateStatusBody,
     ): LiveData<Event<Resource<String>>> =
         invoiceUseCase.updateTransactionStatus(token, transactionId, updateStatusBody).asLiveData()
-            .map {
-                Event(it)
-            }
+            .map { Event(it) }
 
     fun getToken(): LiveData<Event<String>> =
         invoiceUseCase.getToken().asLiveData().map {
@@ -52,44 +56,5 @@ class InvoiceViewModel @Inject constructor(private val invoiceUseCase: InvoiceUs
 
     fun setLoading(isLoading: Boolean) =
         _isLoading.postValue(Event(isLoading))
-
-//    private val _transactionById = MutableLiveData<TransactionByIdResponse>()
-//    val transactionById: LiveData<TransactionByIdResponse> = _transactionById
-//
-//    private val _userResponse = MutableLiveData<UserResponse>()
-//    val userResponse: LiveData<UserResponse> = _userResponse
-//
-//    private val _updateTransactionStatusResponse = MutableLiveData<TransactionsStatusResponse>()
-//    val updateTransactionStatusResponse: LiveData<TransactionsStatusResponse> = _updateTransactionStatusResponse
-//
-//    private val _isLoading = MutableLiveData<Boolean>()
-//    val isLoading: LiveData<Boolean> = _isLoading
-//
-//    fun getTransactionById(token: String, transactionId: Int) {
-//        viewModelScope.launch {
-//            _isLoading.postValue(true)
-//            val request = retrofitRepository.getTransactionById(token, transactionId)
-//            _transactionById.postValue(request)
-//            _isLoading.postValue(false)
-//        }
-//    }
-//
-//    fun getUser(token: String) {
-//        viewModelScope.launch {
-//            _isLoading.postValue(true)
-//            val response = retrofitRepository.getUser(token)
-//            _userResponse.postValue(response)
-//            _isLoading.postValue(false)
-//        }
-//    }
-//
-//    fun updateTransactionStatus(token: String, transactionId: Int, updateStatusBody: UpdateStatusBody) {
-//        viewModelScope.launch {
-//            _isLoading.postValue(true)
-//            val response = retrofitRepository.updateTransactionStatus(token, transactionId, updateStatusBody)
-//            _updateTransactionStatusResponse.postValue(response)
-//            _isLoading.postValue(false)
-//        }
-//    }
 
 }

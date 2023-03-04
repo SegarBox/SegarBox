@@ -5,6 +5,9 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
@@ -37,6 +40,7 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
     private var filterValue: String? = null
     private var isHomeSearchBarPressed: Boolean = false
     private val paginationAdapter = PaginationAdapter(this)
+    private val handler = Handler(Looper.getMainLooper())
     private val viewModel: PaginationViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -164,12 +168,20 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
         viewModel.getProductPagingResponse.observe(this) { event ->
             event.getContentIfNotHandled()?.let { data ->
                 paginationAdapter.submitData(lifecycle, data)
+                handler.postDelayed({
+                    viewModel.setLoading(false)
+                }, 5000)
             }
         }
 
         viewModel.getToken().observe(this) { event ->
-            event.getContentIfNotHandled()?.let {
-                this.token = it
+            event.getContentIfNotHandled()?.let { token ->
+                this.token = token
+                if (token.isNotEmpty()) {
+                    viewModel.getCart(token.tokenFormat())
+                } else {
+                    binding.toolbar.ivCart.badgeValue = 0
+                }
             }
         }
 
@@ -182,22 +194,22 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
 
                     is Resource.Success -> {
                         resource.data?.let { listData ->
-                            viewModel.setLoading(false)
                             listData[0].total?.let { total ->
                                 binding.toolbar.ivCart.badgeValue = total
                             }
+                            viewModel.setLoading(false)
                         }
                     }
 
                     is Resource.Empty -> {
-                        viewModel.setLoading(false)
                         binding.toolbar.ivCart.badgeValue = 0
+                        viewModel.setLoading(false)
                     }
 
                     else -> {
                         resource.message?.let {
-                            viewModel.setLoading(false)
                             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                            viewModel.setLoading(false)
                         }
                     }
                 }
@@ -208,17 +220,6 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
             event.getContentIfNotHandled()?.let { isLoading ->
                 binding.progressBar.isVisible = isLoading
             }
-        }
-
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (token.isNotEmpty()) {
-            viewModel.getCart(token.tokenFormat())
-        } else {
-            binding.toolbar.ivCart.badgeValue = 0
         }
     }
 

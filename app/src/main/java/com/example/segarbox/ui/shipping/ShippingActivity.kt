@@ -2,14 +2,12 @@ package com.example.segarbox.ui.shipping
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.core.data.Resource
-import com.example.core.data.source.remote.response.AddressItem
 import com.example.core.domain.model.Address
 import com.example.core.domain.model.ShippingModel
 import com.example.core.ui.ShippingAdapter
@@ -89,7 +87,6 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
 
                             is Resource.Success -> {
                                 resource.data?.let { listCity ->
-                                    Log.e("CITY FROM DB", listCity.toString())
                                     if (listCity.isNotEmpty())
                                         viewModel.setDestinationId(listCity[0].cityId)
                                     else
@@ -133,7 +130,6 @@ class ShippingActivity : AppCompatActivity(), View.OnClickListener,
 
                     is Resource.Success -> {
                         resource.data?.let { listShipping ->
-                            Log.e("SHIPPING", listShipping.toString())
                             listShipping.forEach { shipping ->
                                 shipping.costs.forEach { costs ->
                                     val shippingModel = ShippingModel()

@@ -7,6 +7,9 @@ import com.example.core.domain.model.User
 import com.example.core.domain.usecase.ProfileUseCase
 import com.example.core.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,15 +24,17 @@ class ProfileViewModel @Inject constructor (private val profileUseCase: ProfileU
     private val _isLoading = MutableLiveData<Event<Boolean>>()
     val isLoading: LiveData<Event<Boolean>> = _isLoading
 
-    fun getUser(token: String) =
-        profileUseCase.getUser(token).asLiveData().map {
+    fun getUser(token: String) = viewModelScope.launch(Dispatchers.IO) {
+        profileUseCase.getUser(token).collect {
             _getUserResponse.postValue(Event(it))
         }
+    }
 
-    fun getCart(token: String) =
-        profileUseCase.getCart(token).asLiveData().map {
+    fun getCart(token: String) = viewModelScope.launch(Dispatchers.IO) {
+        profileUseCase.getCart(token).collect {
             _getCartResponse.postValue(Event(it))
         }
+    }
 
     fun logout(token: String): LiveData<Event<Resource<String>>> =
         profileUseCase.logout(token).asLiveData().map {
@@ -55,36 +60,4 @@ class ProfileViewModel @Inject constructor (private val profileUseCase: ProfileU
     fun setLoading(isLoading: Boolean) =
         _isLoading.postValue(Event(isLoading))
 
-//    private val _userResponse = MutableLiveData<Event<UserResponse>>()
-//    val userResponse: LiveData<Event<UserResponse>> = _userResponse
-//
-//    private var _userCart = MutableLiveData<Event<UserCartResponse>>()
-//    val userCart: LiveData<Event<UserCartResponse>> = _userCart
-//
-//    private val _isLoading = MutableLiveData<Boolean>()
-//    val isLoading: LiveData<Boolean> = _isLoading
-//
-//    fun getUser(token: String) {
-//        viewModelScope.launch {
-//            _isLoading.postValue(true)
-//            val response = retrofitRepository.getUser(token)
-//            _userResponse.postValue(Event(response))
-//            _isLoading.postValue(false)
-//        }
-//    }
-//
-//    fun getUserCart(token: String) {
-//        viewModelScope.launch {
-//            _isLoading.postValue(true)
-//            val request = retrofitRepository.getUserCart(token)
-//            _userCart.postValue(Event(request))
-//            _isLoading.postValue(false)
-//        }
-//    }
-//
-//    fun logout(token: String) {
-//        viewModelScope.launch {
-//            val response = retrofitRepository.logout(token)
-//        }
-//    }
 }
