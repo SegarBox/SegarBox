@@ -71,7 +71,9 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
         viewModel.getToken().observe(this) { event ->
             event.getContentIfNotHandled()?.let { token ->
                 this.token = token
-                if (token.isEmpty()) {
+                if (token.isNotEmpty()) {
+                    viewModel.getCart(token.tokenFormat())
+                } else {
                     startActivity(Intent(this, LoginActivity::class.java))
                     finish()
                 }
@@ -198,14 +200,6 @@ class CartActivity : AppCompatActivity(), View.OnClickListener,
 
             override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {}
         })
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        if (token.isNotEmpty()) {
-            viewModel.getCart(token.tokenFormat())
-        }
     }
 
     override fun onDestroy() {

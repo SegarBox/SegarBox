@@ -34,18 +34,4 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
     fun setLoading(isLoading: Boolean) =
         _isLoading.postValue(Event(isLoading))
 
-//    private val _loginResponse = MutableLiveData<LoginResponse>()
-//    val loginResponse: LiveData<LoginResponse> = _loginResponse
-//
-//    private val _isLoading = MutableLiveData<Boolean>()
-//    val isLoading: LiveData<Boolean> = _isLoading
-//
-//    fun login(email: String, password: String) {
-//        viewModelScope.launch {
-//            _isLoading.postValue(true)
-//            val response = retrofitRepository.login(email, password)
-//            _loginResponse.postValue(response)
-//            _isLoading.postValue(false)
-//        }
-//    }
 }
