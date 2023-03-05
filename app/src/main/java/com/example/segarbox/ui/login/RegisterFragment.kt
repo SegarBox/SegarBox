@@ -134,6 +134,11 @@ class RegisterFragment : Fragment(), View.OnClickListener {
                             else -> {
                                 viewModel.setLoading(false)
                                 resource.data?.let { register ->
+                                    register.message?.let { registerErrorMessage ->
+                                        Snackbar.make(binding.root,
+                                            registerErrorMessage,
+                                            Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
+                                    }
                                     register.registerError?.let { registerError ->
                                         if (!registerError.name.isNullOrEmpty()) {
                                             binding.etName.error = registerError.name!![0]
@@ -154,7 +159,9 @@ class RegisterFragment : Fragment(), View.OnClickListener {
                                 }
 
                                 if (!resource.message.isNullOrEmpty())
-                                    Snackbar.make(binding.root, resource.message.toString(), Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
+                                    Snackbar.make(binding.root,
+                                        resource.message.toString(),
+                                        Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
                             }
                         }
                     }

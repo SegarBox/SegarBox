@@ -1,5 +1,6 @@
 package com.example.segarbox.ui.address
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.core.data.Resource
 import com.example.core.domain.model.Address

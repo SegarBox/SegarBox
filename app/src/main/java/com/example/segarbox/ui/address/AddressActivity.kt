@@ -83,8 +83,10 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
 
     private fun observeData() {
         viewModel.getToken().observe(this) { event ->
-            event.getContentIfNotHandled()?.let {
-                this.token = it
+            event.getContentIfNotHandled()?.let { token ->
+                this.token = token
+                if (token.isNotEmpty())
+                    viewModel.getUserAddresses(token.tokenFormat())
             }
         }
 
@@ -126,13 +128,6 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
             }
         }
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (token.isNotEmpty()) {
-            viewModel.getUserAddresses(token.tokenFormat())
-        }
     }
 
     override fun onDestroy() {

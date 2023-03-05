@@ -2,6 +2,7 @@ package com.example.segarbox.ui.login
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -92,8 +93,8 @@ class LoginFragment : Fragment(), View.OnClickListener {
                             }
 
                             is Resource.Success -> {
+                                viewModel.setLoading(false)
                                 resource.data?.let { login ->
-                                    viewModel.setLoading(false)
                                     login.token?.let { token ->
                                         viewModel.saveToken(token)
                                         login.user?.let { user ->
@@ -107,6 +108,11 @@ class LoginFragment : Fragment(), View.OnClickListener {
                             else -> {
                                 viewModel.setLoading(false)
                                 resource.data?.let { login ->
+                                    login.message?.let { loginErrorMessage ->
+                                        Snackbar.make(binding.root,
+                                            loginErrorMessage,
+                                            Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
+                                    }
                                     login.loginError?.let { loginError ->
                                         if (!loginError.email.isNullOrEmpty()) {
                                             binding.etEmail.error = loginError.email!![0]
