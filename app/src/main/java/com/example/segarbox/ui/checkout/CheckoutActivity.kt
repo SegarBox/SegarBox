@@ -2,7 +2,6 @@ package com.example.segarbox.ui.checkout
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -16,25 +15,44 @@ import com.example.core.domain.body.ProductTransactions
 import com.example.core.domain.model.Address
 import com.example.core.domain.model.CartDetail
 import com.example.core.domain.model.ShippingModel
+import com.example.core.domain.model.User
 import com.example.core.ui.CheckoutDetailsAdapter
-import com.example.core.utils.*
+import com.example.core.utils.Code
+import com.example.core.utils.formatToRupiah
+import com.example.core.utils.tidyUpJneAndTikiEtd
+import com.example.core.utils.tokenFormat
+import com.example.segarbox.BuildConfig
 import com.example.segarbox.R
 import com.example.segarbox.databinding.ActivityCheckoutBinding
 import com.example.segarbox.ui.address.AddressActivity
 import com.example.segarbox.ui.invoice.InvoiceActivity
 import com.example.segarbox.ui.shipping.ShippingActivity
 import com.google.android.material.snackbar.Snackbar
+import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback
+import com.midtrans.sdk.corekit.core.MidtransSDK
+import com.midtrans.sdk.corekit.core.TransactionRequest
+import com.midtrans.sdk.corekit.core.UIKitCustomSetting
+import com.midtrans.sdk.corekit.core.themes.CustomColorTheme
+import com.midtrans.sdk.corekit.models.BillingAddress
+import com.midtrans.sdk.corekit.models.CustomerDetails
+import com.midtrans.sdk.corekit.models.ItemDetails
+import com.midtrans.sdk.corekit.models.ShippingAddress
+import com.midtrans.sdk.corekit.models.snap.TransactionResult
+import com.midtrans.sdk.uikit.SdkUIFlowBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
+class CheckoutActivity : AppCompatActivity(), View.OnClickListener, TransactionFinishedCallback {
 
     private var _binding: ActivityCheckoutBinding? = null
     private val binding get() = _binding!!
     private val viewModel: CheckoutViewModel by viewModels()
-    private var addressItem: Address? = null
+    private var address: Address? = null
     private var costs: CartDetail? = null
     private val listProductTransactions: ArrayList<ProductTransactions> = arrayListOf()
+    private val listMidtransItemDetails: ArrayList<ItemDetails> = arrayListOf()
+    private var user: User? = null
+    private var makeOrderId: Int = 0
     private var token = ""
     private var isShippingCostAdded = false
     private val checkoutDetailsAdapter = CheckoutDetailsAdapter()
@@ -50,6 +68,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
     private fun init() {
         setToolbar()
         observeData()
+        initMidtransSdk()
         setAdapter()
         binding.bottomPaymentInfo.btnCheckout.text = getString(R.string.make_order)
         binding.toolbar.ivBack.setOnClickListener(this)
@@ -64,6 +83,61 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
             ivCart.isVisible = false
             ivBack.isVisible = true
         }
+    }
+
+    private fun initMidtransSdk() {
+        SdkUIFlowBuilder.init()
+            .setMerchantBaseUrl(BuildConfig.MERCHANT_BASE_CHECKOUT_URL) //set merchant url
+            .setClientKey(BuildConfig.MERCHANT_CLIENT_KEY) // client_key is mandatory
+            .setContext(applicationContext) // context is mandatory
+            .setTransactionFinishedCallback(this) // set transaction finish callback (sdk callback)
+            .setUIkitCustomSetting(uiKitCustomSetting())
+            .enableLog(true) // enable sdk log
+            .setColorTheme(CustomColorTheme(
+                "#02B80E",
+                "#02B80E",
+                "#02B80E")) // will replace theme on snap theme on MAP
+            .setLanguage("en")
+            .buildSDK()
+    }
+
+    private fun uiKitCustomSetting(): UIKitCustomSetting {
+        val uIKitCustomSetting = UIKitCustomSetting()
+        uIKitCustomSetting.isSkipCustomerDetailsPages = true
+        uIKitCustomSetting.isShowPaymentStatus = true
+        return uIKitCustomSetting
+    }
+
+    private fun initShippingAddress(
+        address: String,
+        name: String,
+        phone: String,
+        city: String,
+        postalCode: String,
+    ): ShippingAddress {
+        val shippingAddress = ShippingAddress()
+        shippingAddress.address = address
+        shippingAddress.firstName = name
+        shippingAddress.phone = phone
+        shippingAddress.city = city
+        shippingAddress.postalCode = postalCode
+        return shippingAddress
+    }
+
+    private fun initBillingAddress(
+        address: String,
+        name: String,
+        phone: String,
+        city: String,
+        postalCode: String,
+    ): BillingAddress {
+        val billingAddress = BillingAddress()
+        billingAddress.address = address
+        billingAddress.firstName = name
+        billingAddress.phone = phone
+        billingAddress.city = city
+        billingAddress.postalCode = postalCode
+        return billingAddress
     }
 
     private fun setAdapter() {
@@ -82,6 +156,9 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                 if (token.isNotEmpty()) {
                     viewModel.getCheckedCart(token.tokenFormat())
 
+                    // Get User buat Midtrans
+                    viewModel.getUser(token.tokenFormat())
+
                     if (costs != null) {
                         costs?.let { cartDetail ->
                             viewModel.getCartDetail(
@@ -99,22 +176,57 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
+        viewModel.getUserResponse.observe(this) { event ->
+            event.getContentIfNotHandled()?.let { resource ->
+                when (resource) {
+                    is Resource.Loading -> viewModel.setLoading(true)
+
+                    is Resource.Success -> {
+                        resource.data?.let { user ->
+                            this.user = user
+                        }
+                        viewModel.setLoading(false)
+                    }
+
+                    else -> {
+                        resource.message?.let {
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                .setAction("OK") {}.show()
+                            viewModel.setLoading(false)
+                        }
+                    }
+                }
+            }
+        }
+
         viewModel.getCheckedCartResponse.observe(this) { event ->
             event.getContentIfNotHandled()?.let { resource ->
                 when (resource) {
-                    is Resource.Loading -> {
-                        viewModel.setLoading(true)
-                    }
+                    is Resource.Loading -> viewModel.setLoading(true)
 
                     is Resource.Success -> {
                         resource.data?.let {
                             checkoutDetailsAdapter.submitList(it)
                             listProductTransactions.clear()
-                            it.forEach { userCartItem ->
-                                listProductTransactions.add(ProductTransactions(
-                                    userCartItem.product.id,
-                                    userCartItem.productQty
-                                ))
+                            listMidtransItemDetails.clear()
+                            it.forEach { cart ->
+                                // Buat Segarbox API
+                                listProductTransactions.add(
+                                    ProductTransactions(
+                                        cart.product.id,
+                                        cart.productQty
+                                    )
+                                )
+
+                                // Buat Midtrans API
+                                listMidtransItemDetails.add(
+                                    ItemDetails(
+                                        cart.product.id.toString(),
+                                        cart.product.price.toDouble(),
+                                        cart.productQty,
+                                        cart.product.label
+                                    )
+                                )
                             }
                             viewModel.setLoading(false)
                         }
@@ -134,9 +246,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
         viewModel.getCartDetailResponse.observe(this) { event ->
             event.getContentIfNotHandled()?.let { resource ->
                 when (resource) {
-                    is Resource.Loading -> {
-                        viewModel.setLoading(true)
-                    }
+                    is Resource.Loading -> viewModel.setLoading(true)
 
                     is Resource.Success -> {
                         resource.data?.let {
@@ -182,10 +292,10 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                         viewModel.getCartDetail(token.tokenFormat(), 0)
                     }
 
-                    addressItem =
+                    address =
                         result.data?.getParcelableExtra(Code.ADDRESS_VALUE)
 
-                    addressItem?.let {
+                    address?.let {
                         isShippingCostAdded = false
                         binding.content.tvAddress.apply {
                             isVisible = true
@@ -256,9 +366,9 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.layout_shipping -> {
-                if (addressItem != null) {
+                if (address != null) {
                     val intent = Intent(this, ShippingActivity::class.java)
-                    intent.putExtra(Code.ADDRESS_VALUE, addressItem)
+                    intent.putExtra(Code.ADDRESS_VALUE, address)
                     resultLauncher.launch(intent)
                 } else {
                     Snackbar.make(binding.root,
@@ -269,11 +379,37 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.btn_checkout -> {
                 if (isShippingCostAdded) {
-                    if (token.isNotEmpty() && addressItem != null && costs != null && listProductTransactions.isNotEmpty()) {
+                    if (token.isNotEmpty() &&
+                        address != null &&
+                        costs != null &&
+                        user != null &&
+                        listProductTransactions.isNotEmpty() &&
+                        listMidtransItemDetails.isNotEmpty()
+                    ) {
+                        // Customer Detail for Midtrans
+                        val mCustomerDetails = CustomerDetails()
+                        mCustomerDetails.firstName = user!!.name
+                        mCustomerDetails.email = user!!.email
+                        mCustomerDetails.phone = user!!.phone
+                        mCustomerDetails.shippingAddress = initShippingAddress(
+                            address!!.street,
+                            user!!.name,
+                            user!!.phone,
+                            address!!.city,
+                            address!!.postalCode
+                        )
+                        mCustomerDetails.billingAddress = initBillingAddress(
+                            address!!.street,
+                            user!!.name,
+                            user!!.phone,
+                            address!!.city,
+                            address!!.postalCode
+                        )
 
+                        // Make Order Segarbox API
                         val makeOrderBody = MakeOrderBody(
                             token.tokenFormat(),
-                            addressItem!!.id,
+                            address!!.id,
                             costs!!.qtyTransaction,
                             costs!!.subtotalProducts,
                             costs!!.totalPrice,
@@ -290,15 +426,33 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                                         }
 
                                         is Resource.Success -> {
-                                            resource.data?.let {
-                                                val intent =
-                                                    Intent(this, InvoiceActivity::class.java)
-                                                intent.putExtra(Code.KEY_TRANSACTION_ID, it.id)
-                                                intent.putExtra(Code.SNACKBAR_VALUE,
-                                                    "Successfully making order!")
+                                            resource.data?.let { makeOrder ->
+                                                this.makeOrderId = makeOrder.id
+
+                                                // Start open Midtrans Activity
+                                                val transactionRequest =
+                                                    TransactionRequest(makeOrder.id.toString(),
+                                                        costs!!.totalPrice.toDouble())
+                                                transactionRequest.customerDetails =
+                                                    mCustomerDetails
+                                                // Add Shipping Cost to list item
+                                                listMidtransItemDetails.add(
+                                                    ItemDetails(
+                                                        "Shipping",
+                                                        costs!!.shippingCost.toDouble(),
+                                                        1,
+                                                        "Shipping Cost"
+                                                    )
+                                                )
+                                                transactionRequest.itemDetails =
+                                                    listMidtransItemDetails
+
+                                                val midtransSDK = MidtransSDK.getInstance()
+                                                midtransSDK.transactionRequest = transactionRequest
+                                                midtransSDK.startPaymentUiFlow(this)
+
                                                 viewModel.setLoading(false)
-                                                startActivity(intent)
-                                                finish()
+
                                             }
                                         }
 
@@ -321,6 +475,16 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener {
                         Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
                 }
             }
+        }
+    }
+
+    override fun onTransactionFinished(result: TransactionResult?) {
+        if (this.makeOrderId != 0) {
+            val intent = Intent(this, InvoiceActivity::class.java)
+            intent.putExtra(Code.KEY_TRANSACTION_ID, this.makeOrderId)
+            intent.putExtra(Code.SNACKBAR_VALUE, "Successfully making order!")
+            startActivity(intent)
+            finish()
         }
     }
 }

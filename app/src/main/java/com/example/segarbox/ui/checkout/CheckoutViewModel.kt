@@ -6,6 +6,7 @@ import com.example.core.domain.body.MakeOrderBody
 import com.example.core.domain.model.Cart
 import com.example.core.domain.model.CartDetail
 import com.example.core.domain.model.MakeOrder
+import com.example.core.domain.model.User
 import com.example.core.domain.usecase.CheckoutUseCase
 import com.example.core.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +20,9 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
 
     private val _getTokenResponse = MutableLiveData<Event<String>>()
     val getTokenResponse: LiveData<Event<String>> = _getTokenResponse
+
+    private val _getUserResponse = MutableLiveData<Event<Resource<User>>>()
+    val getUserResponse: LiveData<Event<Resource<User>>> = _getUserResponse
 
     private val _getCheckedCartResponse = MutableLiveData<Event<Resource<List<Cart>>>>()
     val getCheckedCartResponse: LiveData<Event<Resource<List<Cart>>>> = _getCheckedCartResponse
@@ -36,6 +40,12 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
     fun getToken() = viewModelScope.launch(Dispatchers.IO) {
         checkoutUseCase.getToken().collect {
             _getTokenResponse.postValue(Event(it))
+        }
+    }
+
+    fun getUser(token: String) = viewModelScope.launch(Dispatchers.IO) {
+        checkoutUseCase.getUser(token).collect {
+            _getUserResponse.postValue(Event(it))
         }
     }
 

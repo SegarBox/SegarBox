@@ -2,7 +2,6 @@ package com.example.core.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.core.data.source.remote.network.ApiServices
 import com.example.core.data.source.remote.network.SegarBoxApiServices
 import com.example.core.data.source.remote.response.ProductItem
 import com.example.core.data.source.remote.response.ProductResponse

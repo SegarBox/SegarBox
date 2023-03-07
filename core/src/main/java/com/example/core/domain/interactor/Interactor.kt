@@ -119,6 +119,9 @@ class Interactor @Inject constructor(private val repository: IRepository) : Addr
     ): Flow<Resource<String>> =
         repository.updateTransactionStatus(token, transactionId, updateStatusBody)
 
+    override fun getMidtransStatus(orderId: String): Flow<Resource<MidtransStatus>> =
+        repository.getMidtransStatus(orderId)
+
     override fun login(email: String, password: String): Flow<Resource<Login>> =
         repository.login(email, password)
 
