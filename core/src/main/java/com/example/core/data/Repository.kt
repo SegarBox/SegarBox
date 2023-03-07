@@ -115,6 +115,10 @@ class Repository @Inject constructor(
         emitAll(remoteDataSource.updateTransactionStatus(token, transactionId, updateStatusBody))
     }.flowOn(Dispatchers.IO)
 
+    override fun getMidtransStatus(orderId: String): Flow<Resource<MidtransStatus>> = flow {
+        emitAll(remoteDataSource.getMidtransStatus(orderId))
+    }.flowOn(Dispatchers.IO)
+
     override fun login(email: String, password: String): Flow<Resource<Login>> = flow {
         emitAll(remoteDataSource.login(email, password))
     }.flowOn(Dispatchers.IO)

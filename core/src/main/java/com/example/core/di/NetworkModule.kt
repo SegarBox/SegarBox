@@ -78,4 +78,15 @@ class NetworkModule {
         return retrofit.create(FlaskApiServices::class.java)
     }
 
+    @Singleton
+    @Provides
+    fun provideMidtransApiService(client: OkHttpClient): MidtransApiServices {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL_MIDTRANS)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+        return retrofit.create(MidtransApiServices::class.java)
+    }
+
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -140,6 +141,7 @@ class HomeFragment : Fragment(), View.OnClickListener,
         viewModel.getToken().observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { token ->
                 this.token = token
+                Log.e("TOKEN", token)
                 if (token.isNotEmpty()) {
                     viewModel.getCart(token.tokenFormat())
                 } else {

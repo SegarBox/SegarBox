@@ -2,6 +2,7 @@ package com.example.core.domain.usecase
 
 import com.example.core.data.Resource
 import com.example.core.domain.body.UpdateStatusBody
+import com.example.core.domain.model.MidtransStatus
 import com.example.core.domain.model.Transaction
 import com.example.core.domain.model.User
 import kotlinx.coroutines.flow.Flow
@@ -17,6 +18,8 @@ interface InvoiceUseCase {
         transactionId: Int,
         updateStatusBody: UpdateStatusBody,
     ): Flow<Resource<String>>
+
+    fun getMidtransStatus(orderId: String): Flow<Resource<MidtransStatus>>
 
     fun getToken(): Flow<String>
     

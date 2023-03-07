@@ -1,17 +1,12 @@
 package com.example.core.domain.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.example.core.data.Resource
-import com.example.core.data.source.remote.network.ApiServices
 import com.example.core.domain.body.MakeOrderBody
 import com.example.core.domain.body.MostPopularBody
 import com.example.core.domain.body.UpdateStatusBody
 import com.example.core.domain.model.*
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 
 interface IRepository {
 
@@ -56,6 +51,8 @@ interface IRepository {
         transactionId: Int,
         updateStatusBody: UpdateStatusBody,
     ): Flow<Resource<String>>
+
+    fun getMidtransStatus(orderId: String): Flow<Resource<MidtransStatus>>
 
     fun login(email: String, password: String): Flow<Resource<Login>>
 

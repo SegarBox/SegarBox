@@ -7,10 +7,7 @@ import androidx.paging.PagingData
 import com.beust.klaxon.Klaxon
 import com.example.core.data.Resource
 import com.example.core.data.paging.ProductPagingSource
-import com.example.core.data.source.remote.network.FlaskApiServices
-import com.example.core.data.source.remote.network.MapsApiServices
-import com.example.core.data.source.remote.network.RajaOngkirApiServices
-import com.example.core.data.source.remote.network.SegarBoxApiServices
+import com.example.core.data.source.remote.network.*
 import com.example.core.data.source.remote.response.*
 import com.example.core.domain.body.MakeOrderBody
 import com.example.core.domain.body.MostPopularBody
@@ -30,6 +27,7 @@ class RemoteDataSource @Inject constructor(
     private val mapsApiServices: MapsApiServices,
     private val rajaOngkirApiServices: RajaOngkirApiServices,
     private val flaskApiServices: FlaskApiServices,
+    private val midtransApiServices: MidtransApiServices,
 ) {
 
     fun getUserAddresses(token: String): Flow<Resource<List<Address>>> = flow {
@@ -678,6 +676,28 @@ class RemoteDataSource @Inject constructor(
 
             } catch (ex: Exception) {
                 emit(Resource.Error(message = "Something went wrong, can't get your transactions"))
+            }
+        }
+
+    fun getMidtransStatus(orderId: String): Flow<Resource<MidtransStatus>> =
+        flow {
+            emit(Resource.Loading())
+            try {
+                val request = midtransApiServices.getMidtransStatus(orderId)
+                if (request.isSuccessful) {
+                    request.body()?.let { response ->
+                        val data = DataMapper.mapMidtransStatusResponseToMidtransStatus(response)
+                        if (data.statusCode == "200")
+                            emit(Resource.Success(data))
+                        else
+                            emit(Resource.Error(message = data.statusMessage))
+                    }
+                } else {
+                    emit(Resource.Error(message = "Something went wrong, can't get your transaction status"))
+                }
+
+            } catch (ex: Exception) {
+                emit(Resource.Error(message = ex.message.toString()))
             }
         }
 

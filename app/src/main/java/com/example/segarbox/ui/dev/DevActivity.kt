@@ -30,7 +30,7 @@ class DevActivity : AppCompatActivity(), View.OnClickListener {
     private fun init() {
         binding.btnSaveUrl.setOnClickListener(this)
         binding.btnMidtrans.setOnClickListener(this)
-        binding.btnGetAllProducts.setOnClickListener(this)
+        binding.btnGetMidtransStatus.setOnClickListener(this)
     }
 
     override fun onDestroy() {
@@ -49,8 +49,11 @@ class DevActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(Intent(this, MidtransActivity::class.java))
             }
 
-            R.id.btn_getAllProducts -> {
-                viewModel.getAllProducts().observe(this) { resource ->
+            R.id.btn_getMidtransStatus -> {
+                viewModel.getMidtransStatus("SegarBox-167808768020").observe(this) { event ->
+                    event.getContentIfNotHandled()?.let { resource ->
+                        Log.e("HASIL", resource.toString())
+                    }
                 }
             }
         }

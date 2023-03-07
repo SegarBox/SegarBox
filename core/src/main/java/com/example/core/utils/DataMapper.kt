@@ -3,7 +3,6 @@ package com.example.core.utils
 import com.example.core.data.source.remote.response.*
 import com.example.core.domain.model.*
 import com.example.core.domain.model.Shipping
-import kotlin.math.cos
 
 object DataMapper {
 
@@ -288,4 +287,18 @@ object DataMapper {
                 createdAt = results.createdAt
             )
         }
+
+    fun mapMidtransStatusResponseToMidtransStatus(midtransStatusResponse: MidtransStatusResponse): MidtransStatus =
+        MidtransStatus(
+            transactionId = midtransStatusResponse.transactionId ?: "",
+            statusMessage = midtransStatusResponse.statusMessage ?: "",
+            paymentType = midtransStatusResponse.paymentType ?: "",
+            transactionStatus = midtransStatusResponse.transactionStatus ?: "",
+            statusCode = midtransStatusResponse.statusCode ?: "",
+            transactionTime = midtransStatusResponse.transactionTime ?: "",
+            currency = midtransStatusResponse.currency ?: "",
+            grossAmount = midtransStatusResponse.grossAmount ?: "",
+            expiryTime = midtransStatusResponse.expiryTime ?: "",
+            orderId = midtransStatusResponse.orderId ?: ""
+        )
 }
