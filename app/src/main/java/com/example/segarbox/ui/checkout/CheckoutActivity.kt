@@ -513,12 +513,14 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener, TransactionF
     }
 
     override fun onTransactionFinished(result: TransactionResult?) {
-        if (this.makeOrderId != 0) {
-            val intent = Intent(this, InvoiceActivity::class.java)
-            intent.putExtra(Code.KEY_TRANSACTION_ID, this.makeOrderId)
-            intent.putExtra(Code.SNACKBAR_VALUE, "Successfully making order!")
-            startActivity(intent)
-            finish()
+        if (result != null) {
+            if (!result.isTransactionCanceled && this.makeOrderId != 0) {
+                val intent = Intent(this, InvoiceActivity::class.java)
+                intent.putExtra(Code.KEY_TRANSACTION_ID, this.makeOrderId)
+                intent.putExtra(Code.SNACKBAR_VALUE, "Successfully making order!")
+                startActivity(intent)
+                finish()
+            }
         }
     }
 }
