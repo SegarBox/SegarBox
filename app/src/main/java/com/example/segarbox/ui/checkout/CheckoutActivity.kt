@@ -429,30 +429,64 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener, TransactionF
                                             resource.data?.let { makeOrder ->
                                                 this.makeOrderId = makeOrder.id
 
-                                                // Start open Midtrans Activity
-                                                val transactionRequest =
-                                                    TransactionRequest(makeOrder.id.toString(),
-                                                        costs!!.totalPrice.toDouble())
-                                                transactionRequest.customerDetails =
-                                                    mCustomerDetails
-                                                // Add Shipping Cost to list item
-                                                listMidtransItemDetails.add(
-                                                    ItemDetails(
-                                                        "Shipping",
-                                                        costs!!.shippingCost.toDouble(),
-                                                        1,
-                                                        "Shipping Cost"
-                                                    )
-                                                )
-                                                transactionRequest.itemDetails =
-                                                    listMidtransItemDetails
+                                                // Get Invoice Number
+                                                viewModel.getTransactionById(token.tokenFormat(),
+                                                    makeOrder.id)
+                                                    .observe(this) { event ->
+                                                        event.getContentIfNotHandled()
+                                                            ?.let { resource ->
+                                                                when (resource) {
+                                                                    is Resource.Loading -> {
+                                                                        viewModel.setLoading(true)
+                                                                    }
 
-                                                val midtransSDK = MidtransSDK.getInstance()
-                                                midtransSDK.transactionRequest = transactionRequest
-                                                midtransSDK.startPaymentUiFlow(this)
+                                                                    is Resource.Success -> {
+                                                                        resource.data?.let { transaction ->
+                                                                            // Start open Midtrans Activity
+                                                                            val transactionRequest =
+                                                                                TransactionRequest(
+                                                                                    transaction.invoiceNumber,
+                                                                                    costs!!.totalPrice.toDouble())
+                                                                            transactionRequest.customerDetails =
+                                                                                mCustomerDetails
+                                                                            // Add Shipping Cost to list item
+                                                                            listMidtransItemDetails.add(
+                                                                                ItemDetails(
+                                                                                    "Shipping",
+                                                                                    costs!!.shippingCost.toDouble(),
+                                                                                    1,
+                                                                                    "Shipping Cost"
+                                                                                )
+                                                                            )
+                                                                            transactionRequest.itemDetails =
+                                                                                listMidtransItemDetails
 
-                                                viewModel.setLoading(false)
+                                                                            val midtransSDK =
+                                                                                MidtransSDK.getInstance()
+                                                                            midtransSDK.transactionRequest =
+                                                                                transactionRequest
+                                                                            midtransSDK.startPaymentUiFlow(
+                                                                                this)
 
+                                                                        }
+                                                                        viewModel.setLoading(false)
+
+                                                                    }
+
+                                                                    else -> {
+                                                                        resource.message?.let {
+                                                                            Snackbar.make(binding.root,
+                                                                                it,
+                                                                                Snackbar.LENGTH_SHORT)
+                                                                                .setAction("OK") {}
+                                                                                .show()
+                                                                            viewModel.setLoading(
+                                                                                false)
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                    }
                                             }
                                         }
 

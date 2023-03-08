@@ -141,7 +141,6 @@ class HomeFragment : Fragment(), View.OnClickListener,
         viewModel.getToken().observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { token ->
                 this.token = token
-                Log.e("TOKEN", token)
                 if (token.isNotEmpty()) {
                     viewModel.getCart(token.tokenFormat())
                 } else {
