@@ -1,11 +1,8 @@
 package com.example.core.domain.usecase
 
 import com.example.core.data.Resource
-import com.example.core.domain.model.Cart
-import com.example.core.domain.model.CartDetail
-import com.example.core.domain.model.MakeOrder
 import com.example.core.domain.body.MakeOrderBody
-import com.example.core.domain.model.User
+import com.example.core.domain.model.*
 import kotlinx.coroutines.flow.Flow
 
 interface CheckoutUseCase {
@@ -15,6 +12,8 @@ interface CheckoutUseCase {
     fun getCartDetail(token: String, shippingCost: Int): Flow<Resource<CartDetail>>
 
     fun makeOrder(token: String, makeOrderBody: MakeOrderBody): Flow<Resource<MakeOrder>>
+
+    fun getTransactionById(token: String, transactionId: Int): Flow<Resource<Transaction>>
 
     fun getUser(token: String): Flow<Resource<User>>
 

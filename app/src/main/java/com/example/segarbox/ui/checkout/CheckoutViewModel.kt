@@ -3,10 +3,7 @@ package com.example.segarbox.ui.checkout
 import androidx.lifecycle.*
 import com.example.core.data.Resource
 import com.example.core.domain.body.MakeOrderBody
-import com.example.core.domain.model.Cart
-import com.example.core.domain.model.CartDetail
-import com.example.core.domain.model.MakeOrder
-import com.example.core.domain.model.User
+import com.example.core.domain.model.*
 import com.example.core.domain.usecase.CheckoutUseCase
 import com.example.core.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -65,6 +62,12 @@ class CheckoutViewModel @Inject constructor(private val checkoutUseCase: Checkou
         checkoutUseCase.makeOrder(token, makeOrderBody).asLiveData().map {
             Event(it)
         }
+
+    fun getTransactionById(token: String, transactionId: Int): LiveData<Event<Resource<Transaction>>> =
+        checkoutUseCase.getTransactionById(token, transactionId).asLiveData().map {
+            Event(it)
+        }
+
 
     fun setLoading(isLoading: Boolean) =
         _isLoading.postValue(Event(isLoading))
