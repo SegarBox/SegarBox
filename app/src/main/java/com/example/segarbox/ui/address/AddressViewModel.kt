@@ -18,8 +18,15 @@ class AddressViewModel @Inject constructor(private val addressUseCase: AddressUs
     private val _getUserAddressesResponse = MutableLiveData<Event<Resource<List<Address>>>>()
     val getUserAddressesResponse: LiveData<Event<Resource<List<Address>>>> = _getUserAddressesResponse
 
+    private val _getTokenResponse = MutableLiveData<Event<String>>()
+    val getTokenResponse: LiveData<Event<String>> = _getTokenResponse
+
     private val _isLoading = MutableLiveData<Event<Boolean>>()
     val isLoading: LiveData<Event<Boolean>> = _isLoading
+
+    init {
+        getToken()
+    }
 
     fun getUserAddresses(token: String) = viewModelScope.launch(Dispatchers.IO) {
         addressUseCase.getUserAddresses(token).collect {
@@ -32,10 +39,12 @@ class AddressViewModel @Inject constructor(private val addressUseCase: AddressUs
             Event(it)
         }
 
-    fun getToken(): LiveData<Event<String>> =
-        addressUseCase.getToken().asLiveData().map {
-            Event(it)
+    fun getToken() = viewModelScope.launch(Dispatchers.IO) {
+        addressUseCase.getToken().collect {
+            _getTokenResponse.postValue(Event(it))
         }
+    }
+
 
     fun setLoading(isLoading: Boolean) =
         _isLoading.postValue(Event(isLoading))

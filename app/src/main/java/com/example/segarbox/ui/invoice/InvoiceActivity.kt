@@ -199,8 +199,9 @@ class InvoiceActivity : AppCompatActivity(), View.OnClickListener,
                                 }
 
                                 is Resource.Success -> {
-                                    resource.data?.let {
+                                    resource.data?.let { message ->
                                         viewModel.setLoading(false)
+                                        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
                                         viewModel.getTransactionById(token.tokenFormat(), getTransactionId)
                                     }
                                 }
