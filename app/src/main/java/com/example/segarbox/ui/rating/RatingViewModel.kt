@@ -40,7 +40,6 @@ class RatingViewModel @Inject constructor(private val ratingUseCase: RatingUseCa
 
     fun getCart(token: String) = viewModelScope.launch(Dispatchers.IO) {
         ratingUseCase.getCart(token).collect {
-            Log.e("GET CART", it.toString())
             _getCartResponse.postValue(Event(it))
         }
     }
@@ -57,7 +56,6 @@ class RatingViewModel @Inject constructor(private val ratingUseCase: RatingUseCa
 
     fun getToken() = viewModelScope.launch(Dispatchers.IO) {
         ratingUseCase.getToken().collect {
-            Log.e("GET TOKEN", it)
             _getTokenResponse.postValue(Event(it))
         }
     }

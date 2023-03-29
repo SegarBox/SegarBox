@@ -3,6 +3,7 @@ package com.example.segarbox.ui.login
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.segarbox.R
 import com.example.segarbox.databinding.ActivityLoginBinding
 import com.google.android.material.tabs.TabLayoutMediator

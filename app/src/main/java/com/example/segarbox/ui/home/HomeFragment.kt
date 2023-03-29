@@ -141,11 +141,6 @@ class HomeFragment : Fragment(), View.OnClickListener,
         viewModel.getToken().observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { token ->
                 this.token = token
-                if (token.isNotEmpty()) {
-                    viewModel.getCart(token.tokenFormat())
-                } else {
-                    binding.toolbar.ivCart.badgeValue = 0
-                }
             }
         }
 
@@ -297,6 +292,12 @@ class HomeFragment : Fragment(), View.OnClickListener,
         super.onResume()
         val newAlpha = (ratio * 255).toInt()
         binding.toolbar.root.background.alpha = newAlpha
+
+        if (token.isNotEmpty()) {
+            viewModel.getCart(token.tokenFormat())
+        } else {
+            binding.toolbar.ivCart.badgeValue = 0
+        }
     }
 
     override fun onDestroy() {

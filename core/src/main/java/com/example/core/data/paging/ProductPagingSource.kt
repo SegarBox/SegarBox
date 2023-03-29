@@ -19,7 +19,6 @@ class ProductPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductItem> {
         return try {
             val position = params.key ?: INITIAL_PAGE_INDEX
-            responseData = segarboxApiServices.getAllProduct(page = position, size = params.loadSize)
 
             when (filter) {
                 Code.CATEGORY_FILTER -> {
