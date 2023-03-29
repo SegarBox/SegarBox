@@ -1,18 +1,14 @@
 package com.example.segarbox.ui.home
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.core.data.Resource
 import com.example.core.domain.model.Cart
 import com.example.core.domain.model.Product
 import com.example.core.domain.usecase.HomeUseCase
 import com.example.core.utils.CHIPS_VALUE
-import com.example.core.utils.Code
 import com.example.core.utils.Event
-import com.example.core.utils.tokenFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

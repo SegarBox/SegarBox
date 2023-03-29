@@ -404,7 +404,7 @@ class RemoteDataSource @Inject constructor(
                 segarBoxApiServices.updateTransactionStatus(token, transactionId, updateStatusBody)
             if (request.isSuccessful) {
                 request.body()?.let { response ->
-                    response.message?.let {
+                    response.info?.let {
                         emit(Resource.Success(it))
                     }
                 }

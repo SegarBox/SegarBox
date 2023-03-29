@@ -2,6 +2,7 @@ package com.example.segarbox.ui.address
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -82,7 +83,7 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun observeData() {
-        viewModel.getToken().observe(this) { event ->
+        viewModel.getTokenResponse.observe(this) { event ->
             event.getContentIfNotHandled()?.let { token ->
                 this.token = token
                 if (token.isNotEmpty())
@@ -139,6 +140,7 @@ class AddressActivity : AppCompatActivity(), View.OnClickListener,
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             when {
                 result.resultCode == Code.RESULT_SNACKBAR && result.data != null -> {
+                    viewModel.getUserAddresses(token.tokenFormat())
                     val snackbarValue = result.data?.getStringExtra(Code.SNACKBAR_VALUE)
                     snackbarValue?.let {
                         Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK") {}
