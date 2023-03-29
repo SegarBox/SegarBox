@@ -52,7 +52,7 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener, TransactionF
     private val listProductTransactions: ArrayList<ProductTransactions> = arrayListOf()
     private val listMidtransItemDetails: ArrayList<ItemDetails> = arrayListOf()
     private var user: User? = null
-    private var makeOrderId: Int = 0
+    private var invoiceNumber = ""
     private var token = ""
     private var isShippingCostAdded = false
     private val checkoutDetailsAdapter = CheckoutDetailsAdapter()
@@ -406,101 +406,33 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener, TransactionF
                             address!!.postalCode
                         )
 
-                        // Make Order Segarbox API
-                        val makeOrderBody = MakeOrderBody(
-                            token.tokenFormat(),
-                            address!!.id,
-                            costs!!.qtyTransaction,
-                            costs!!.subtotalProducts,
-                            costs!!.totalPrice,
-                            costs!!.shippingCost,
-                            listProductTransactions
+                        this.invoiceNumber = "INV${System.currentTimeMillis()}"
+
+                        // Start open Midtrans Activity
+                        val transactionRequest =
+                            TransactionRequest(this.invoiceNumber,
+                                costs!!.totalPrice.toDouble())
+                        transactionRequest.customerDetails = mCustomerDetails
+
+                        // Add Shipping Cost to list item
+                        val newListMidtransItemDetails = ArrayList(
+                            listMidtransItemDetails.filter { itemDetails -> itemDetails.id != "Shipping" }
                         )
 
-                        viewModel.makeOrder(token.tokenFormat(), makeOrderBody)
-                            .observe(this) { event ->
-                                event.getContentIfNotHandled()?.let { resource ->
-                                    when (resource) {
-                                        is Resource.Loading -> {
-                                            viewModel.setLoading(true)
-                                        }
+                        newListMidtransItemDetails.add(
+                            ItemDetails(
+                                "Shipping",
+                                costs!!.shippingCost.toDouble(),
+                                1,
+                                "Shipping Cost"
+                            )
+                        )
 
-                                        is Resource.Success -> {
-                                            resource.data?.let { makeOrder ->
-                                                this.makeOrderId = makeOrder.id
+                        transactionRequest.itemDetails = newListMidtransItemDetails
 
-                                                // Get Invoice Number
-                                                viewModel.getTransactionById(token.tokenFormat(),
-                                                    makeOrder.id)
-                                                    .observe(this) { event ->
-                                                        event.getContentIfNotHandled()
-                                                            ?.let { resource ->
-                                                                when (resource) {
-                                                                    is Resource.Loading -> {
-                                                                        viewModel.setLoading(true)
-                                                                    }
-
-                                                                    is Resource.Success -> {
-                                                                        resource.data?.let { transaction ->
-                                                                            // Start open Midtrans Activity
-                                                                            val transactionRequest =
-                                                                                TransactionRequest(
-                                                                                    transaction.invoiceNumber,
-                                                                                    costs!!.totalPrice.toDouble())
-                                                                            transactionRequest.customerDetails =
-                                                                                mCustomerDetails
-                                                                            // Add Shipping Cost to list item
-                                                                            listMidtransItemDetails.add(
-                                                                                ItemDetails(
-                                                                                    "Shipping",
-                                                                                    costs!!.shippingCost.toDouble(),
-                                                                                    1,
-                                                                                    "Shipping Cost"
-                                                                                )
-                                                                            )
-                                                                            transactionRequest.itemDetails =
-                                                                                listMidtransItemDetails
-
-                                                                            val midtransSDK =
-                                                                                MidtransSDK.getInstance()
-                                                                            midtransSDK.transactionRequest =
-                                                                                transactionRequest
-                                                                            midtransSDK.startPaymentUiFlow(
-                                                                                this)
-
-                                                                        }
-                                                                        viewModel.setLoading(false)
-
-                                                                    }
-
-                                                                    else -> {
-                                                                        resource.message?.let {
-                                                                            Snackbar.make(binding.root,
-                                                                                it,
-                                                                                Snackbar.LENGTH_SHORT)
-                                                                                .setAction("OK") {}
-                                                                                .show()
-                                                                            viewModel.setLoading(
-                                                                                false)
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                    }
-                                            }
-                                        }
-
-                                        else -> {
-                                            resource.message?.let {
-                                                Snackbar.make(binding.root,
-                                                    it,
-                                                    Snackbar.LENGTH_SHORT).setAction("OK") {}.show()
-                                                viewModel.setLoading(false)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                        val midtransSDK = MidtransSDK.getInstance()
+                        midtransSDK.transactionRequest = transactionRequest
+                        midtransSDK.startPaymentUiFlow(this)
                     }
 
                 } else {
@@ -514,12 +446,50 @@ class CheckoutActivity : AppCompatActivity(), View.OnClickListener, TransactionF
 
     override fun onTransactionFinished(result: TransactionResult?) {
         if (result != null) {
-            if (!result.isTransactionCanceled && this.makeOrderId != 0) {
-                val intent = Intent(this, InvoiceActivity::class.java)
-                intent.putExtra(Code.KEY_TRANSACTION_ID, this.makeOrderId)
-                intent.putExtra(Code.SNACKBAR_VALUE, "Successfully making order!")
-                startActivity(intent)
-                finish()
+            if (result.status == TransactionResult.STATUS_SUCCESS && this.invoiceNumber.isNotEmpty()) {
+
+                // Make Order Segarbox API
+                val makeOrderBody = MakeOrderBody(
+                    token.tokenFormat(),
+                    address!!.id,
+                    costs!!.qtyTransaction,
+                    costs!!.subtotalProducts,
+                    costs!!.totalPrice,
+                    costs!!.shippingCost,
+                    listProductTransactions,
+                    this.invoiceNumber
+                )
+
+                viewModel.makeOrder(token.tokenFormat(), makeOrderBody).observe(this) { event ->
+                    event.getContentIfNotHandled()?.let { resource ->
+                        when (resource) {
+                            is Resource.Loading -> {
+                                viewModel.setLoading(true)
+                            }
+
+                            is Resource.Success -> {
+                                resource.data?.let { makeOrder ->
+                                    val intent = Intent(this, InvoiceActivity::class.java)
+                                    intent.putExtra(Code.KEY_TRANSACTION_ID, makeOrder.id)
+                                    intent.putExtra(Code.SNACKBAR_VALUE,
+                                        "Successfully making order!")
+                                    startActivity(intent)
+                                    finish()
+                                }
+                            }
+
+                            else -> {
+                                resource.message?.let {
+                                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                        .setAction("OK") {}.show()
+                                    viewModel.setLoading(false)
+                                }
+                            }
+                        }
+                    }
+                }
+
+
             }
         }
     }
