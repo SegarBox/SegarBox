@@ -22,5 +22,8 @@ data class MakeOrderBody(
     val shippingCost: Int,
 
     @field:SerializedName("product_transactions")
-    val productTransactions: List<ProductTransactions>
+    val productTransactions: List<ProductTransactions>,
+
+    @field:SerializedName("invoice_number")
+    val invoiceNumber: String,
 )
