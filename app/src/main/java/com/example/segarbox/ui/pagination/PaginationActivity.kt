@@ -15,7 +15,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import com.example.core.data.Resource
 import com.example.core.ui.PaginationAdapter
@@ -28,6 +30,7 @@ import com.google.android.material.R.attr.colorPrimary
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -166,11 +169,36 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
         }
 
         viewModel.getProductPagingResponse.observe(this) { event ->
-            event.getContentIfNotHandled()?.let { data ->
-                paginationAdapter.submitData(lifecycle, data)
-                handler.postDelayed({
-                    viewModel.setLoading(false)
-                }, 5000)
+            event.getContentIfNotHandled()?.let { resource ->
+                when (resource) {
+                    is Resource.Loading -> {}
+
+                    is Resource.Success -> {
+                        resource.data?.let {
+                            paginationAdapter.submitData(lifecycle, it)
+                        }
+                    }
+
+                    else -> {
+                        resource.message?.let {
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                .setAction("OK") {}.show()
+                        }
+                        viewModel.setLoading(false)
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            paginationAdapter.loadStateFlow.collectLatest { loadState ->
+                when (loadState.refresh) {
+                    is LoadState.Loading -> viewModel.setLoading(true)
+
+                    is LoadState.NotLoading -> viewModel.setLoading(false)
+
+                    else -> viewModel.setLoading(false)
+                }
             }
         }
 
@@ -187,7 +215,7 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
 
         viewModel.getCartResponse.observe(this) { event ->
             event.getContentIfNotHandled()?.let { resource ->
-                when(resource) {
+                when (resource) {
                     is Resource.Loading -> {
                         viewModel.setLoading(true)
                     }
@@ -197,8 +225,8 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
                             listData[0].total?.let { total ->
                                 binding.toolbar.ivCart.badgeValue = total
                             }
-                            viewModel.setLoading(false)
                         }
+                        viewModel.setLoading(false)
                     }
 
                     is Resource.Empty -> {
@@ -208,9 +236,10 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
 
                     else -> {
                         resource.message?.let {
-                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).setAction("OK"){}.show()
-                            viewModel.setLoading(false)
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
+                                .setAction("OK") {}.show()
                         }
+                        viewModel.setLoading(false)
                     }
                 }
             }
@@ -236,7 +265,7 @@ class PaginationActivity : AppCompatActivity(), PaginationAdapter.OnItemPaginati
     }
 
     override fun onClick(v: View?) {
-        when(v?.id) {
+        when (v?.id) {
             R.id.iv_cart -> {
                 startActivity(Intent(this, CartActivity::class.java))
             }

@@ -16,8 +16,8 @@ import javax.inject.Inject
 class PaginationViewModel @Inject constructor(private val searchUseCase: SearchUseCase) :
     ViewModel() {
 
-    private val _getProductPagingResponse = MutableLiveData<Event<PagingData<Product>>>()
-    val getProductPagingResponse: LiveData<Event<PagingData<Product>>> = _getProductPagingResponse
+    private val _getProductPagingResponse = MutableLiveData<Event<Resource<PagingData<Product>>>>()
+    val getProductPagingResponse: LiveData<Event<Resource<PagingData<Product>>>> = _getProductPagingResponse
 
     private val _getCartResponse = MutableLiveData<Event<Resource<List<Cart>>>>()
     val getCartResponse: LiveData<Event<Resource<List<Cart>>>> = _getCartResponse
@@ -29,7 +29,6 @@ class PaginationViewModel @Inject constructor(private val searchUseCase: SearchU
         filter: String,
         filterValue: String,
     ) = viewModelScope.launch(Dispatchers.IO) {
-        setLoading(true)
         searchUseCase.getProductPaging(filter, filterValue).collect {
             _getProductPagingResponse.postValue(Event(it))
         }

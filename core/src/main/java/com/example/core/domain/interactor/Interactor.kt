@@ -61,7 +61,7 @@ class Interactor @Inject constructor(private val repository: IRepository) : Addr
     override fun getProductPaging(
         filter: String,
         filterValue: String,
-    ): Flow<PagingData<Product>> =
+    ): Flow<Resource<PagingData<Product>>> =
         repository.getProductPaging(filter, filterValue)
 
     override fun getTransactions(token: String, status: String): Flow<Resource<List<Transaction>>> =
