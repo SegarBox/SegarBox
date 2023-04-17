@@ -1,5 +1,6 @@
 package com.example.core.data.paging
 
+import androidx.paging.CombinedLoadStates
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.core.data.source.remote.network.SegarBoxApiServices
