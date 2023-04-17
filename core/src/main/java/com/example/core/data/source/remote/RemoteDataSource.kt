@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.map
 import com.beust.klaxon.Klaxon
 import com.example.core.data.Resource
 import com.example.core.data.paging.ProductPagingSource
@@ -17,6 +18,7 @@ import com.example.core.domain.model.Shipping
 import com.example.core.utils.Code
 import com.example.core.utils.DataMapper
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -583,15 +585,26 @@ class RemoteDataSource @Inject constructor(
     fun getProductPaging(
         filter: String,
         filterValue: String,
-    ): Flow<PagingData<ProductItem>> =
-        Pager(
-            config = PagingConfig(
-                pageSize = 10
-            ),
-            pagingSourceFactory = {
-                ProductPagingSource(segarBoxApiServices, filter, filterValue)
+    ): Flow<Resource<PagingData<Product>>> = flow {
+        try {
+            val pagingData = Pager(
+                config = PagingConfig(
+                    pageSize = 5
+                ),
+                pagingSourceFactory = {
+                    ProductPagingSource(segarBoxApiServices, filter, filterValue)
+                }
+            ).flow
+
+            pagingData.collect { data ->
+                emit(Resource.Success(data.map {
+                    DataMapper.mapProductItemToProduct(it)
+                }))
             }
-        ).flow
+        } catch (ex: Exception) {
+            emit(Resource.Error(message = "Something went wrong, can't get products"))
+        }
+    }
 
     fun getShippingCosts(
         destination: String,

@@ -77,7 +77,7 @@ interface IRepository {
     fun getProductPaging(
         filter: String,
         filterValue: String,
-    ): Flow<PagingData<Product>>
+    ): Flow<Resource<PagingData<Product>>>
 
     fun getCity(city: String, type: String): Flow<Resource<List<City>>>
 

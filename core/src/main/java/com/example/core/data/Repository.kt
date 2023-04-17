@@ -167,12 +167,9 @@ class Repository @Inject constructor(
     override fun getProductPaging(
         filter: String,
         filterValue: String,
-    ): Flow<PagingData<Product>> =
-        remoteDataSource.getProductPaging(filter, filterValue).map { pagingData ->
-            pagingData.map {
-                DataMapper.mapProductItemToProduct(it)
-            }
-        }
+    ): Flow<Resource<PagingData<Product>>> = flow {
+        emitAll(remoteDataSource.getProductPaging(filter, filterValue))
+    }.flowOn(Dispatchers.IO)
 
     override fun getShippingCosts(
         destination: String,

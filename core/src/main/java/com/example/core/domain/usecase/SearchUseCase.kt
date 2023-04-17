@@ -11,7 +11,7 @@ interface SearchUseCase {
     fun getProductPaging(
         filter: String,
         filterValue: String,
-    ): Flow<PagingData<Product>>
+    ): Flow<Resource<PagingData<Product>>>
 
     fun getCart(token: String): Flow<Resource<List<Cart>>>
 
